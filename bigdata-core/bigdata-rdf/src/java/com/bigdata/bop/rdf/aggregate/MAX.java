@@ -23,6 +23,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.bop.rdf.aggregate;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.Map;
 
 import com.bigdata.bop.BOp;
@@ -49,7 +51,7 @@ import com.bigdata.rdf.internal.constraints.INeedsMaterialization;
  */
 public class MAX extends AggregateBase<IV> implements INeedsMaterialization{
 
-//    private static final transient Logger log = Logger.getLogger(MAX.class);
+//    private static final transient Logger log = LogManager.getLogger(MAX.class);
 
     /**
 	 *

@@ -12,7 +12,7 @@ java \
  -Djava.security.policy=${POLICY_FILE}\
  -Djava.security.debug=off\
  -Djava.protocol.handler.pkgs=net.jini.url\
- -Dlog4j.configuration=${LOG4J_CONFIG}\
+ -Dlog4j2.configurationFile=${LOG4J_CONFIG}\
  -Dcodebase.port=${CODEBASE_PORT}\
  -Djava.net.preferIPv4Stack=true\
  -Dbigdata.fedname=${FEDNAME}\

@@ -25,8 +25,8 @@ package com.bigdata.rdf.sail.webapp;
 
 import junit.framework.Test;
 
-import org.openrdf.model.Graph;
-import org.openrdf.model.ValueFactory;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.ValueFactory;
 
 import com.bigdata.journal.IIndexManager;
 import com.bigdata.rdf.sail.webapp.client.RemoteRepository;
@@ -64,17 +64,17 @@ public class Test_REST_ServiceDescription<S extends IIndexManager> extends
 	 */
 	public void test_SERVICE_DESCRIPTION() throws Exception {
 
-		final Graph g = RemoteRepository
+		final Model g = RemoteRepository
 				.asGraph(m_repo.getServiceDescription());
 
-		final ValueFactory f = g.getValueFactory();
+		final ValueFactory f = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance();
 
 		// Verify the end point is disclosed.
 		assertEquals(
 				1,
 				countMatches(g, null/* service */, SD.endpoint,
-						f.createURI(m_repo.getSparqlEndPoint())));
-//		            f.createURI(m_serviceURL + "/sparql")));
+						f.createIRI(m_repo.getSparqlEndPoint())));
+//		            f.createIRI(m_serviceURL + "/sparql")));
 
 		// Verify description includes supported query and update languages.
 		assertEquals(

@@ -32,21 +32,22 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.BNode;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.BNodeImpl;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.StatementImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.FOAF;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.model.vocabulary.XMLSchema;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleBNode;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.FOAF;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.internal.IV;
@@ -85,7 +86,7 @@ import com.bigdata.striterator.ChunkedArrayIterator;
  */
 public class TestTripleStore extends AbstractTripleStoreTestCase {
 
-    private static final Logger log = Logger.getLogger(TestTripleStore.class);
+    private static final Logger log = LogManager.getLogger(TestTripleStore.class);
     
     /**
      * 
@@ -147,7 +148,7 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
             assertFalse("isURI()",id.isURI());
             assertFalse("isStatement()",id.isStatement());
 
-        } else if( term instanceof URI) {
+        } else if( term instanceof IRI) {
 
             assertFalse("isLiteral()",id.isLiteral());
             assertFalse("isBNode()",id.isBNode());
@@ -210,17 +211,19 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
         
         try {
 
-            doAddTermTest(store, new LiteralImpl("abc"));
-            doAddTermTest(store, new LiteralImpl("abc", XMLSchema.STRING));
-            doAddTermTest(store, new LiteralImpl("abc", "en"));
+            doAddTermTest(store, org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc"));
+            // RDF 1.1: xsd:string is the same term as the plain literal.
+            assertEquals(store.getIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc")),
+                    store.getIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc", XSD.STRING)));
+            doAddTermTest(store, org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc", "en"));
     
-            doAddTermTest(store, new URIImpl("http://www.bigdata.com"));
+            doAddTermTest(store, org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com"));
             doAddTermTest(store, RDF.TYPE);
             doAddTermTest(store, RDFS.SUBCLASSOF);
-            doAddTermTest(store, XMLSchema.DECIMAL);
+            doAddTermTest(store, XSD.DECIMAL);
     
-            doAddTermTest(store, new BNodeImpl(UUID.randomUUID().toString()));
-            doAddTermTest(store, new BNodeImpl("a12"));
+            doAddTermTest(store, SimpleValueFactory.getInstance().createBNode(UUID.randomUUID().toString()));
+            doAddTermTest(store, SimpleValueFactory.getInstance().createBNode("a12"));
     
 //            store.commit();
     
@@ -233,19 +236,19 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
              * verify that we can detect literals by examining the term identifier.
              */
 
-            assertTrue(store.getIV(new LiteralImpl("abc")).isLiteral());
+            assertTrue(store.getIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc")).isLiteral());
             
-            assertTrue(store.getIV(new LiteralImpl("abc",XMLSchema.STRING)).isLiteral());
+            assertTrue(store.getIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc",XSD.STRING)).isLiteral());
             
-            assertTrue(store.getIV(new LiteralImpl("abc", "en")).isLiteral());
+            assertTrue(store.getIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc", "en")).isLiteral());
 
-            assertFalse(store.getIV(new URIImpl("http://www.bigdata.com")).isLiteral());
+            assertFalse(store.getIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com")).isLiteral());
 
             assertFalse(store.getIV(RDF.TYPE).isLiteral());
 
-//            assertFalse(VTE.isLiteral(store.getIV(new BNodeImpl(UUID.randomUUID().toString())).getTermId()));
+//            assertFalse(VTE.isLiteral(store.getIV(SimpleValueFactory.getInstance().createBNode(UUID.randomUUID().toString())).getTermId()));
             
-//            assertFalse(VTE.isLiteral(store.getIV(new BNodeImpl("a12")).getTermId()));
+//            assertFalse(VTE.isLiteral(store.getIV(SimpleValueFactory.getInstance().createBNode("a12")).getTermId()));
             
         } finally {
             
@@ -282,7 +285,7 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
         
         try {
 
-            doAddTermTest(store, new LiteralImpl("abc", XMLSchema.DECIMAL));
+            doAddTermTest(store, org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc", XSD.DECIMAL));
     
             if(log.isInfoEnabled()) {
 				log.info(DumpLexicon
@@ -293,7 +296,7 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
              * verify that we can detect literals by examining the term identifier.
              */
 
-            assertTrue(store.getIV(new LiteralImpl("abc", XMLSchema.DECIMAL))
+            assertTrue(store.getIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc", XSD.DECIMAL))
                     .isLiteral());
             
         } finally {
@@ -317,14 +320,14 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
             
             final BigdataValue[] terms = new BigdataValue[] {//
     
-                valueFactory.createURI("http://www.bigdata.com"),//
+                valueFactory.createIRI("http://www.bigdata.com"),//
 
-                valueFactory.createURI(RDF.TYPE.stringValue()),//
-                valueFactory.createURI(RDFS.SUBCLASSOF.stringValue()),//
-                valueFactory.createURI(XMLSchema.DECIMAL.stringValue()),//
+                valueFactory.createIRI(RDF.TYPE.stringValue()),//
+                valueFactory.createIRI(RDFS.SUBCLASSOF.stringValue()),//
+                valueFactory.createIRI(XSD.DECIMAL.stringValue()),//
 
                 valueFactory.createLiteral("abc"),//
-                valueFactory.createLiteral("abc", XMLSchema.STRING),//
+                valueFactory.createLiteral("abc", XSD.STRING),//
                 valueFactory.createLiteral("abc", "en"),//
 
                 valueFactory.createBNode(UUID.randomUUID().toString()),//
@@ -381,19 +384,19 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
              * identifier.
              */
 
-            assertTrue(store.getIV(new LiteralImpl("abc")).isLiteral());
+            assertTrue(store.getIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc")).isLiteral());
             
-            assertTrue(store.getIV(new LiteralImpl("abc",XMLSchema.STRING)).isLiteral());
+            assertTrue(store.getIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc",XSD.STRING)).isLiteral());
             
-            assertTrue(store.getIV(new LiteralImpl("abc", "en")).isLiteral());
+            assertTrue(store.getIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc", "en")).isLiteral());
 
-            assertFalse(store.getIV(new URIImpl("http://www.bigdata.com")).isLiteral());
+            assertFalse(store.getIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com")).isLiteral());
 
             assertFalse(store.getIV(RDF.TYPE).isLiteral());
 
-//            assertFalse(VTE.isLiteral(store.getIV(new BNodeImpl(UUID.randomUUID().toString())).getTermId()));
+//            assertFalse(VTE.isLiteral(store.getIV(SimpleValueFactory.getInstance().createBNode(UUID.randomUUID().toString())).getTermId()));
             
-//            assertFalse(VTE.isLiteral(store.getIV(new BNodeImpl("a12")).getTermId()));
+//            assertFalse(VTE.isLiteral(store.getIV(SimpleValueFactory.getInstance().createBNode("a12")).getTermId()));
 
         } finally {
 
@@ -415,8 +418,8 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
         try {
         
             final BigdataValueFactory valueFactory = store.getValueFactory();
-            final BigdataURI x = valueFactory.createURI("http://www.foo.org/x");
-            final BigdataURI y = valueFactory.createURI("http://www.foo.org/y");
+            final BigdataURI x = valueFactory.createIRI("http://www.foo.org/x");
+            final BigdataURI y = valueFactory.createIRI("http://www.foo.org/y");
             final BigdataLiteral z = valueFactory.createLiteral("z");
             final BigdataBNode b = valueFactory.createBNode();
             final BigdataBNode c = valueFactory.createBNode("_c");
@@ -486,8 +489,8 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
         
             final BigdataValueFactory valueFactory = store.getValueFactory();
             
-            final BigdataURI x = valueFactory.createURI("http://www.foo.org/x");
-            final BigdataURI y = valueFactory.createURI("http://www.foo.org/y");
+            final BigdataURI x = valueFactory.createIRI("http://www.foo.org/x");
+            final BigdataURI y = valueFactory.createIRI("http://www.foo.org/y");
             final BigdataLiteral z = valueFactory.createLiteral("z");
             
             // add terms - lots of duplicates here.
@@ -536,8 +539,8 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
              */
             {
 
-                final BigdataURI x1 = valueFactory.createURI("http://www.foo.org/x");
-                final BigdataURI y1 = valueFactory.createURI("http://www.foo.org/y");
+                final BigdataURI x1 = valueFactory.createIRI("http://www.foo.org/x");
+                final BigdataURI y1 = valueFactory.createIRI("http://www.foo.org/y");
                 final BigdataLiteral z1 = valueFactory.createLiteral("z");
                 
                 // add terms - lots of duplicates here.
@@ -677,32 +680,32 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
              * Declare URIs.
              */
             final int nuris = 9;
-            final URI x = new URIImpl("http://www.foo.org/x");
-            final URI y = new URIImpl("http://www.foo.org/y");
-            final URI z = new URIImpl("http://www.foo.org/z");
-            final URI A = new URIImpl("http://www.foo.org/A");
-            final URI B = new URIImpl("http://www.foo.org/B");
-            final URI C = new URIImpl("http://www.foo.org/C");
-            final URI rdfType = RDF.TYPE;
-            final URI rdfsSubClassOf = RDFS.SUBCLASSOF;
-            final URI big = new URIImpl(getVeryLargeURI());
+            final IRI x = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/x");
+            final IRI y = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/y");
+            final IRI z = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/z");
+            final IRI A = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/A");
+            final IRI B = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/B");
+            final IRI C = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/C");
+            final IRI rdfType = RDF.TYPE;
+            final IRI rdfsSubClassOf = RDFS.SUBCLASSOF;
+            final IRI big = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(getVeryLargeURI());
 
             /*
              * Declare literals.
              */
             final int nliterals = 4;
-            final Literal lit1 = new LiteralImpl("abc");
-            final Literal lit2 = new LiteralImpl("abc", A);
-            final Literal lit3 = new LiteralImpl("abc", "en");
-            final Literal lit5 = new LiteralImpl(getVeryLargeLiteral());
+            final Literal lit1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc");
+            final Literal lit2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc", A);
+            final Literal lit3 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc", "en");
+            final Literal lit5 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral(getVeryLargeLiteral());
 
             /*
              * Declare blank nodes.
              */
             final int nbnodes = 3;
-            final BNode bn1 = new BNodeImpl(UUID.randomUUID().toString());
-            final BNode bn2 = new BNodeImpl("a12");
-            final BNode bn3 = new BNodeImpl(getVeryLargeLiteral());
+            final BNode bn1 = SimpleValueFactory.getInstance().createBNode(UUID.randomUUID().toString());
+            final BNode bn2 = SimpleValueFactory.getInstance().createBNode("a12");
+            final BNode bn3 = SimpleValueFactory.getInstance().createBNode(getVeryLargeLiteral());
 
             // Create an array of those Value objects.
             final Value[] values = new Value[] {//
@@ -783,8 +786,8 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
     }
     
     /**
-     * Test of {@link ITripleStore#addStatement(Resource, URI, Value)} and
-     * {@link ITripleStore#hasStatement(Resource, URI, Value)}.
+     * Test of {@link ITripleStore#addStatement(Resource, IRI, Value)} and
+     * {@link ITripleStore#hasStatement(Resource, IRI, Value)}.
      */
     public void test_statements() {
 
@@ -811,14 +814,14 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
             final boolean storeBlankNodes = store.getLexiconRelation()
                     .isStoreBlankNodes();
             
-            final URI x = new URIImpl("http://www.foo.org/x");
-            final URI y = new URIImpl("http://www.foo.org/y");
-            final URI z = new URIImpl("http://www.foo.org/z");
-            final URI A = new URIImpl("http://www.foo.org/A");
-            final URI B = new URIImpl("http://www.foo.org/B");
-            final URI C = new URIImpl("http://www.foo.org/C");
-            final URI rdfType = RDF.TYPE;
-            final URI rdfsSubClassOf = RDFS.SUBCLASSOF;
+            final IRI x = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/x");
+            final IRI y = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/y");
+            final IRI z = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/z");
+            final IRI A = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/A");
+            final IRI B = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/B");
+            final IRI C = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/C");
+            final IRI rdfType = RDF.TYPE;
+            final IRI rdfsSubClassOf = RDFS.SUBCLASSOF;
             final int nuris = 8;
     
             // add statements using the URIs declared above.
@@ -839,7 +842,7 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
                  * defeats the caching of the termId on the _Value).
                  */
     
-                x_termId = store.getIV(new URIImpl("http://www.foo.org/x"));
+                x_termId = store.getIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/x"));
     
                 assertTrue(x_termId != NULL);
     
@@ -865,9 +868,9 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
             /*
              * Declare 3 literals and add them to the lexicon.
              */
-            final Literal lit1 = new LiteralImpl("abc");
-            final Literal lit2 = new LiteralImpl("abc", A);
-            final Literal lit3 = new LiteralImpl("abc", "en");
+            final Literal lit1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc");
+            final Literal lit2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc", A);
+            final Literal lit3 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc", "en");
             final int nliterals = 3;
 
             // 3 literals.
@@ -881,8 +884,8 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
             /*
              * Declare two blank nodes and add them to the lexicon.
              */
-            final BNode bn1 = new BNodeImpl(UUID.randomUUID().toString());
-            final BNode bn2 = new BNodeImpl("a12");
+            final BNode bn1 = SimpleValueFactory.getInstance().createBNode(UUID.randomUUID().toString());
+            final BNode bn2 = SimpleValueFactory.getInstance().createBNode("a12");
             final int nbnodes = 2;
             
             // 2 blank nodes.
@@ -985,10 +988,10 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
                     store.getAccessPath(NULL,NULL,NULL).iterator());
             
             final BigdataValueFactory valueFactory = store.getValueFactory();
-            final BigdataURI A = valueFactory.createURI("http://www.bigdata.com/A");
-            final BigdataURI B = valueFactory.createURI("http://www.bigdata.com/B");
-            final BigdataURI C = valueFactory.createURI("http://www.bigdata.com/C");
-            final BigdataURI rdfType = valueFactory.createURI(RDF.TYPE.stringValue());
+            final BigdataURI A = valueFactory.createIRI("http://www.bigdata.com/A");
+            final BigdataURI B = valueFactory.createIRI("http://www.bigdata.com/B");
+            final BigdataURI C = valueFactory.createIRI("http://www.bigdata.com/C");
+            final BigdataURI rdfType = valueFactory.createIRI(RDF.TYPE.stringValue());
 
             store.addTerms(new BigdataValue[] { A, B, C, rdfType });
             
@@ -1196,9 +1199,9 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
 
             final BigdataValueFactory f = store.getValueFactory();
             
-            final BigdataURI A = f.createURI("http://www.bigdata.com/A");
-            final BigdataURI B = f.createURI("http://www.bigdata.com/B");
-            final BigdataURI C = f.createURI("http://www.bigdata.com/C");
+            final BigdataURI A = f.createIRI("http://www.bigdata.com/A");
+            final BigdataURI B = f.createIRI("http://www.bigdata.com/B");
+            final BigdataURI C = f.createIRI("http://www.bigdata.com/C");
             final BigdataURI rdfType = f.asValue(RDF.TYPE);
             
             // assign term identifiers for reuse below.
@@ -1273,9 +1276,9 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
             
             final BigdataValueFactory f = store.getValueFactory();
 
-            final BigdataURI v1 = f.createURI("http://www.bigdata.com/1"); 
-            final BigdataURI v2 = f.createURI("http://www.bigdata.com/2"); 
-            final BigdataURI v3 = f.createURI("http://www.bigdata.com/3"); 
+            final BigdataURI v1 = f.createIRI("http://www.bigdata.com/1"); 
+            final BigdataURI v2 = f.createIRI("http://www.bigdata.com/2"); 
+            final BigdataURI v3 = f.createIRI("http://www.bigdata.com/3"); 
             
             // assign term identifiers.
             store.addTerms(new BigdataValue[]{v1,v2,v3});
@@ -1331,9 +1334,9 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
 
             final BigdataValueFactory f = store.getValueFactory();
 
-            final BigdataURI A = f.createURI("http://www.bigdata.com/A");
-            final BigdataURI B = f.createURI("http://www.bigdata.com/B");
-            final BigdataURI C = f.createURI("http://www.bigdata.com/C");
+            final BigdataURI A = f.createIRI("http://www.bigdata.com/A");
+            final BigdataURI B = f.createIRI("http://www.bigdata.com/B");
+            final BigdataURI C = f.createIRI("http://www.bigdata.com/C");
             final BigdataURI rdfType = f.asValue(RDF.TYPE);
 
             {
@@ -1349,8 +1352,8 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
             }
 
             assertSameStatements(new Statement[]{
-                    new StatementImpl(A,RDF.TYPE,B),
-                    new StatementImpl(A,RDF.TYPE,C),
+                    SimpleValueFactory.getInstance().createStatement(A,RDF.TYPE,B),
+                    SimpleValueFactory.getInstance().createStatement(A,RDF.TYPE,C),
                     },
                     store.getStatements(null,null,null)
                     );
@@ -1364,7 +1367,7 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
                 log.info("\n" + store.dumpStore());
             
             assertSameStatements(new Statement[]{
-                    new StatementImpl(A,rdfType,C),
+                    SimpleValueFactory.getInstance().createStatement(A,rdfType,C),
                     },
                     store.getStatements(null,null,null)
                     );
@@ -1404,9 +1407,9 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
 
             final BigdataValueFactory f = store.getValueFactory();
 
-            final BigdataURI x = f.createURI("http://www.foo.org/x1");
-            final BigdataURI y = f.createURI("http://www.foo.org/y2");
-            final BigdataURI z = f.createURI("http://www.foo.org/z3");
+            final BigdataURI x = f.createIRI("http://www.foo.org/x1");
+            final BigdataURI y = f.createIRI("http://www.foo.org/y2");
+            final BigdataURI z = f.createIRI("http://www.foo.org/z3");
     
             store.addTerms(new BigdataValue[] { x, y, z });
             
@@ -1481,9 +1484,9 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
 
             final BigdataValueFactory f = store.getValueFactory();
 
-            final BigdataURI A = f.createURI("http://www.bigdata.com/A");
-            final BigdataURI B = f.createURI("http://www.bigdata.com/B");
-            final BigdataURI C = f.createURI("http://www.bigdata.com/C");
+            final BigdataURI A = f.createIRI("http://www.bigdata.com/A");
+            final BigdataURI B = f.createIRI("http://www.bigdata.com/B");
+            final BigdataURI C = f.createIRI("http://www.bigdata.com/C");
             final BigdataURI Person = f.asValue(FOAF.PERSON);
             final BigdataURI rdfType = f.asValue(RDF.TYPE);
             final BigdataURI foafKnows = f.asValue(FOAF.KNOWS);
@@ -1523,7 +1526,7 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
                 };
                 assertSameStatements(
                         new Statement[] {//
-                        new StatementImpl(A, rdfType, Person),//
+                        SimpleValueFactory.getInstance().createStatement(A, rdfType, Person),//
                         },//
                         store.getStatements(new ChunkedArrayIterator<BigdataTriplePattern>(
                                 triplePatterns)));
@@ -1536,9 +1539,9 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
                 };
                 assertSameStatements(
                         new Statement[] {//
-                                new StatementImpl(A, rdfType, Person),//
-                                new StatementImpl(B, rdfType, Person),//
-                                new StatementImpl(C, rdfType, Person),//
+                                SimpleValueFactory.getInstance().createStatement(A, rdfType, Person),//
+                                SimpleValueFactory.getInstance().createStatement(B, rdfType, Person),//
+                                SimpleValueFactory.getInstance().createStatement(C, rdfType, Person),//
                         },//
                         store.getStatements(new ChunkedArrayIterator<BigdataTriplePattern>(
                                 triplePatterns)));
@@ -1552,10 +1555,10 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
                 };
                 assertSameIteratorAnyOrder(
                         new Statement[] {//
-                                new StatementImpl(A, foafKnows, B),//
-                                new StatementImpl(A, rdfType, Person),//
-                                new StatementImpl(B, rdfType, Person),//
-                                new StatementImpl(C, rdfType, Person),//
+                                SimpleValueFactory.getInstance().createStatement(A, foafKnows, B),//
+                                SimpleValueFactory.getInstance().createStatement(A, rdfType, Person),//
+                                SimpleValueFactory.getInstance().createStatement(B, rdfType, Person),//
+                                SimpleValueFactory.getInstance().createStatement(C, rdfType, Person),//
                         },//
                         store.getStatements(new ChunkedArrayIterator<BigdataTriplePattern>(
                                 triplePatterns)));
@@ -1570,10 +1573,10 @@ public class TestTripleStore extends AbstractTripleStoreTestCase {
                 };
                 assertSameIteratorAnyOrder(
                         new Statement[] {//
-                                new StatementImpl(A, foafKnows, B),//
-                                new StatementImpl(A, rdfType, Person),//
-                                new StatementImpl(B, rdfType, Person),//
-                                new StatementImpl(C, rdfType, Person),//
+                                SimpleValueFactory.getInstance().createStatement(A, foafKnows, B),//
+                                SimpleValueFactory.getInstance().createStatement(A, rdfType, Person),//
+                                SimpleValueFactory.getInstance().createStatement(B, rdfType, Person),//
+                                SimpleValueFactory.getInstance().createStatement(C, rdfType, Person),//
                         },//
                         store.getStatements(new ChunkedArrayIterator<BigdataTriplePattern>(
                                 triplePatterns)));

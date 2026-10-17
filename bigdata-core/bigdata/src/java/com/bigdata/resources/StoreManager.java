@@ -55,8 +55,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bfs.BigdataFileSystem;
 import com.bigdata.btree.BTree;
 import com.bigdata.btree.Checkpoint;
@@ -137,7 +138,7 @@ abstract public class StoreManager extends ResourceEvents implements
     /**
      * Logger.
      */
-    private static final Logger log = Logger.getLogger(StoreManager.class);
+    private static final Logger log = LogManager.getLogger(StoreManager.class);
 
     /**
      * Options for the {@link StoreManager}.

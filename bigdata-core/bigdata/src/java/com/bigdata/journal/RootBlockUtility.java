@@ -34,8 +34,9 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.io.ChecksumUtility;
 import com.bigdata.io.FileChannelUtility;
 import com.bigdata.io.IReopenChannel;
@@ -50,7 +51,7 @@ import com.bigdata.io.IReopenChannel;
  */
 public class RootBlockUtility {
 
-    private static final Logger log = Logger.getLogger(RootBlockUtility.class);
+    private static final Logger log = LogManager.getLogger(RootBlockUtility.class);
 
     /**
      * The 1st root block.

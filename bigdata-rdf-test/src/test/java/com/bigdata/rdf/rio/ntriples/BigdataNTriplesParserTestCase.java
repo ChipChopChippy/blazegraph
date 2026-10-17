@@ -9,12 +9,13 @@ import java.io.InputStream;
 
 import junit.framework.TestCase2;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Statement;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParseException;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.helpers.RDFHandlerBase;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFParseException;
+import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.helpers.AbstractRDFHandler;
 
 /**
  * JUnit test for the N-Triples parser.
@@ -42,7 +43,7 @@ public abstract class BigdataNTriplesParserTestCase extends TestCase2 {
 	 */
 	private static String NTRIPLES_TEST_FILE_WITH_REIFICATION = "test-reify.nt";
 
-	private static final transient Logger log = Logger.getLogger(BigdataNTriplesParserTestCase.class);
+	private static final transient Logger log = LogManager.getLogger(BigdataNTriplesParserTestCase.class);
 	
 	/*---------*
 	 * Methods *
@@ -52,8 +53,8 @@ public abstract class BigdataNTriplesParserTestCase extends TestCase2 {
 		throws Exception
 	{
 		RDFParser turtleParser = createRDFParser();
-		turtleParser.setDatatypeHandling(RDFParser.DatatypeHandling.IGNORE);
-		turtleParser.setRDFHandler(new RDFHandlerBase() {
+		turtleParser.getParserConfig().set(org.eclipse.rdf4j.rio.helpers.BasicParserSettings.VERIFY_DATATYPE_VALUES, false);
+		turtleParser.setRDFHandler(new AbstractRDFHandler() {
 			public void handleStatement(Statement st)
 					throws RDFHandlerException {
 				if (log.isInfoEnabled())
@@ -98,8 +99,8 @@ public abstract class BigdataNTriplesParserTestCase extends TestCase2 {
 	 */
 	public void testNTriplesFileWithSIDS() throws Exception {
 		RDFParser turtleParser = createRDFParser();
-		turtleParser.setDatatypeHandling(RDFParser.DatatypeHandling.IGNORE);
-		turtleParser.setRDFHandler(new RDFHandlerBase() {
+		turtleParser.getParserConfig().set(org.eclipse.rdf4j.rio.helpers.BasicParserSettings.VERIFY_DATATYPE_VALUES, false);
+		turtleParser.setRDFHandler(new AbstractRDFHandler() {
 			public void handleStatement(final Statement st)
 					throws RDFHandlerException {
 				if (log.isInfoEnabled())
@@ -124,8 +125,8 @@ public abstract class BigdataNTriplesParserTestCase extends TestCase2 {
 
 	public void testNTriplesFileWithReification() throws Exception {
 		RDFParser turtleParser = createRDFParser();
-		turtleParser.setDatatypeHandling(RDFParser.DatatypeHandling.IGNORE);
-		turtleParser.setRDFHandler(new RDFHandlerBase() {
+		turtleParser.getParserConfig().set(org.eclipse.rdf4j.rio.helpers.BasicParserSettings.VERIFY_DATATYPE_VALUES, false);
+		turtleParser.setRDFHandler(new AbstractRDFHandler() {
 			public void handleStatement(final Statement st)
 					throws RDFHandlerException {
 				if (log.isInfoEnabled())

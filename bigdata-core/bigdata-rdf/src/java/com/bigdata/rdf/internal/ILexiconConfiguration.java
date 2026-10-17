@@ -26,8 +26,8 @@ package com.bigdata.rdf.internal;
 
 import java.util.TimeZone;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.rdf.internal.constraints.IMathOpHandler;
 import com.bigdata.rdf.internal.impl.AbstractInlineExtensionIV;
@@ -51,7 +51,7 @@ public interface ILexiconConfiguration<V extends BigdataValue> {
     /**
      * Return the maximum length of a Unicode string which may be inlined into
      * the statement indices. This applies to blank node IDs, literal labels
-     * (including the {@link XSDStringExtension}), local names of {@link URI}s,
+     * (including the {@link XSDStringExtension}), local names of {@link IRI}s,
      * etc.
      *
      * @see AbstractTripleStore.Options#MAX_INLINE_TEXT_LENGTH
@@ -124,12 +124,12 @@ public interface ILexiconConfiguration<V extends BigdataValue> {
     IV createInlineIV(final Value value);
 
     /**
-     * Inflate the localName portion of an inline URI using its storage delegate.
+     * Inflate the localName portion of an inline IRI using its storage delegate.
      * @param namespace the uris's prefix
      * @param delegate the storage delegate
      * @return the inflated localName
      */
-    String getInlineURILocalNameFromDelegate(final URI namespace,
+    String getInlineURILocalNameFromDelegate(final IRI namespace,
             final AbstractLiteralIV<BigdataLiteral, ?> delegate);
 
     /**
@@ -175,7 +175,7 @@ public interface ILexiconConfiguration<V extends BigdataValue> {
      * Should the specified datatype be included in the text index (even though
      * it is an inline datatype, for example IPv4).
      */
-    boolean isInlineDatatypeToTextIndex(URI datatype);
+    boolean isInlineDatatypeToTextIndex(IRI datatype);
 
     /**
      * Get iterator over registered type handlers.

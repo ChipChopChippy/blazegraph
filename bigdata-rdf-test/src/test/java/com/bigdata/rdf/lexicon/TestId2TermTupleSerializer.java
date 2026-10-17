@@ -39,7 +39,7 @@ import com.bigdata.rdf.internal.IVUtility;
 import com.bigdata.rdf.internal.VTE;
 import com.bigdata.rdf.internal.impl.TermId;
 import com.bigdata.rdf.model.BigdataURI;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.util.BytesUtil;
 
 /**
@@ -68,17 +68,17 @@ public class TestId2TermTupleSerializer extends TestCase2 {
         final String namespace = "lexicon";
         
         final Id2TermTupleSerializer fixture = new Id2TermTupleSerializer(
-                namespace, BigdataValueFactoryImpl.getInstance(namespace));
+                namespace, BigdataSimpleValueFactory.getInstance(namespace));
 
         final TermId<?> id1, id2, id3;
         if (IVUtility.PACK_TIDS) {
-            id1 = new TermId<BigdataURI>(VTE.URI, 0);
-            id2 = new TermId<BigdataURI>(VTE.URI, 1);
-            id3 = new TermId<BigdataURI>(VTE.URI, 2);
+            id1 = new TermId<BigdataURI>(VTE.IRI, 0);
+            id2 = new TermId<BigdataURI>(VTE.IRI, 1);
+            id3 = new TermId<BigdataURI>(VTE.IRI, 2);
         } else {
-            id1 = new TermId<BigdataURI>(VTE.URI, -1);
-            id2 = new TermId<BigdataURI>(VTE.URI, 0);
-            id3 = new TermId<BigdataURI>(VTE.URI, 1);
+            id1 = new TermId<BigdataURI>(VTE.IRI, -1);
+            id2 = new TermId<BigdataURI>(VTE.IRI, 0);
+            id3 = new TermId<BigdataURI>(VTE.IRI, 1);
         }
 
         final byte[] k1 = fixture.id2key(id1);
@@ -107,7 +107,7 @@ public class TestId2TermTupleSerializer extends TestCase2 {
     public void test_versionedSerialization() {
         
         final TestClass v0 = new TestClass((short) 0/* version */, "namespace",
-                BigdataValueFactoryImpl.class.getName());
+                BigdataSimpleValueFactory.class.getName());
 
         final TestClass v1 = new TestClass((short) 1/* version */, "namespace",
                 "valueFactoryClass");
@@ -220,7 +220,7 @@ public class TestId2TermTupleSerializer extends TestCase2 {
                 ClassNotFoundException {
             short version = VERSION0;
             String s1 = in.readUTF();
-            String s2 = BigdataValueFactoryImpl.class.getName();
+            String s2 = BigdataSimpleValueFactory.class.getName();
             if (s1.length() == 0) {
                 version = in.readShort();
                 s1 = in.readUTF();

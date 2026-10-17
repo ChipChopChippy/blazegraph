@@ -37,8 +37,9 @@ import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.nio.charset.Charset;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.io.ByteCountInputStream;
 import com.bigdata.io.ByteCountOutputStream;
 
@@ -54,7 +55,7 @@ public class SCSUCompressor implements IUnicodeCompressor, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final transient Logger log = Logger
+    private static final transient Logger log = LogManager
             .getLogger(SCSUCompressor.class);
 
     // @todo factor out lookup? (static)

@@ -27,6 +27,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sparql.ast.eval.rto;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -88,7 +90,7 @@ import com.bigdata.rdf.sparql.ast.QueryHints;
  */
 public class TestRTO_BSBM extends AbstractRTOTestCase {
 
-//    private final static Logger log = Logger.getLogger(TestRTO_LUBM.class);
+//    private final static Logger log = LogManager.getLogger(TestRTO_LUBM.class);
     
     /**
      * 

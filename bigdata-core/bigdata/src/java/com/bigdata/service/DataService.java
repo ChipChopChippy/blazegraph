@@ -39,8 +39,9 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.Banner;
 import com.bigdata.bop.engine.IQueryPeer;
 import com.bigdata.bop.engine.QueryEngine;
@@ -122,7 +123,7 @@ abstract public class DataService extends AbstractService
     implements IDataService, IServiceShutdown, ISession //IWritePipeline
 {
 
-    protected static final Logger log = Logger.getLogger(DataService.class);
+    protected static final Logger log = LogManager.getLogger(DataService.class);
 
     /**
      * Options understood by the {@link DataService}.

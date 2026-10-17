@@ -28,8 +28,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.sail.SailException;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.sail.SailException;
 
 import com.bigdata.counters.CAT;
 import com.bigdata.journal.IConcurrencyManager;
@@ -240,7 +240,7 @@ abstract public class AbstractApiTask<T> implements IApiTask<T>, IReadOnly {
 
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
 
-        repo.initialize();
+        repo.init();
 
         if (TimestampUtility.isReadOnly(timestamp)) {
 
@@ -294,7 +294,7 @@ abstract public class AbstractApiTask<T> implements IApiTask<T>, IReadOnly {
 
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
 
-        repo.initialize();
+        repo.init();
 
         final BigdataSailRepositoryConnection conn = repo.getConnection();
         

@@ -23,10 +23,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.rdf.internal.impl;
 
-import org.openrdf.model.BNode;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.btree.keys.IKeyBuilder;
 import com.bigdata.btree.keys.KeyBuilder;
@@ -43,7 +43,7 @@ import com.bigdata.util.Bytes;
 
 /**
  * Implementation for any kind of RDF {@link Value} when the values is not being
- * inlined. Instances of this class can represent {@link URI}s, {@link BNode}s
+ * inlined. Instances of this class can represent {@link IRI}s, {@link BNode}s
  * (if they are not being inlined), or {@link Literal}s (including datatype
  * literals if they are not being inlined). Larger RDF {@link Value}s should be
  * represented with {@link BlobIV} instead of this class.
@@ -73,7 +73,7 @@ public class TermId<V extends BigdataValue>
     /**
      * Singleton for a "null" {@link IV}.
      */
-    final public static transient TermId<?> NullIV = TermId.mockIV(VTE.URI);
+    final public static transient TermId<?> NullIV = TermId.mockIV(VTE.IRI);
 
     /**
      * Create a mock {@link IV} having the indicated {@link VTE} which will
@@ -147,8 +147,8 @@ public class TermId<V extends BigdataValue>
     
     /**
      * Human readable representation includes the term identifier, whether this
-     * is a URI, Literal, Blank node, or Statement identifier and the datatype
-     * URI if one is assigned. This representation is based solely on the flag
+     * is a IRI, Literal, Blank node, or Statement identifier and the datatype
+     * IRI if one is assigned. This representation is based solely on the flag
      * bits and the term identifier.
      * <p>
      * The cached {@link BigdataValue}, if any, is also rendered. This is done

@@ -23,10 +23,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.gom.om;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 /**
- * The IIDGenerator interface is used to create default object URI
+ * The IIDGenerator interface is used to create default object IRI
  * ids for new objects.  This can be exploited by various use cases where
  * a unique id can be conveniently managed by the system.
  * <p>
@@ -38,24 +38,24 @@ import org.openrdf.model.URI;
 public interface IIDGenerator {
 
     /**
-     * Generate a globally unique URI.
+     * Generate a globally unique IRI.
      * 
-     * @return The URI.
+     * @return The IRI.
      */
-    URI genId();
+    IRI genId();
 
     /**
-     * Generate a globally unique URI.
+     * Generate a globally unique IRI.
      * 
      * @param scope
-     *            The scope will be incorporated into the URI. This is not
-     *            necessary to make the URI globally unique, but it can make it
+     *            The scope will be incorporated into the IRI. This is not
+     *            necessary to make the IRI globally unique, but it can make it
      *            easier to embed some non-opaque semantics into a globally
-     *            unique URI.
+     *            unique IRI.
      * 
-     * @return The URI.
+     * @return The IRI.
      */
-    URI genId(final String scope);
+    IRI genId(final String scope);
 
     /**
      * A rollback hook is required

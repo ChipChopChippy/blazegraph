@@ -39,8 +39,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.AbstractBTree;
 import com.bigdata.btree.BTree;
 import com.bigdata.btree.BTreeCounters;
@@ -95,7 +96,7 @@ abstract public class IndexManager extends StoreManager {
     /**
      * Logger.
      */
-    private static final Logger log = Logger.getLogger(IndexManager.class);
+    private static final Logger log = LogManager.getLogger(IndexManager.class);
 
     /**
      * Options understood by the {@link IndexManager}.

@@ -33,10 +33,10 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.openrdf.model.vocabulary.DC;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.algebra.StatementPattern.Scope;
-import org.openrdf.query.impl.DatasetImpl;
+import org.eclipse.rdf4j.model.vocabulary.DC;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.query.impl.SimpleDataset;
 
 import com.bigdata.rdf.internal.IV;
 import com.bigdata.rdf.model.BigdataStatement;
@@ -140,18 +140,18 @@ public class TestVirtualGraphs extends AbstractBigdataExprBuilderTestCase {
         final BigdataURI virtualGraph = valueFactory.asValue(BD.VIRTUAL_GRAPH);
 
         final BigdataURI vg = valueFactory
-                .createURI("http://example.org/vg");
+                .createIRI("http://example.org/vg");
 
         final BigdataURI context = valueFactory
-                .createURI("http://www.bigdata.com/context");
+                .createIRI("http://www.bigdata.com/context");
 
         final BigdataURI uri1 = valueFactory
-                .createURI("http://example.org/dft.ttl");
+                .createIRI("http://example.org/dft.ttl");
 
         final BigdataURI alice = valueFactory
-                .createURI("http://example.org/alice");
+                .createIRI("http://example.org/alice");
 
-        final BigdataURI bob = valueFactory.createURI("http://example.org/bob");
+        final BigdataURI bob = valueFactory.createIRI("http://example.org/bob");
         
         /*
          * Most URIs wind up declared when we insert the statements, but not
@@ -207,7 +207,7 @@ public class TestVirtualGraphs extends AbstractBigdataExprBuilderTestCase {
             }
 
             {
-                final DatasetImpl dataset = new DatasetImpl();
+                final SimpleDataset dataset = new SimpleDataset();
                 dataset.addDefaultGraph(uri1);
                 dataset.addNamedGraph(alice);
                 dataset.addNamedGraph(bob);
@@ -220,7 +220,7 @@ public class TestVirtualGraphs extends AbstractBigdataExprBuilderTestCase {
                 expected.setWhereClause(whereClause);
              
                 whereClause.addChild(new StatementPatternNode(new VarNode("g"),
-                        new ConstantNode(makeIV(valueFactory.createURI(DC.PUBLISHER
+                        new ConstantNode(makeIV(valueFactory.createIRI(DC.PUBLISHER
                                 .toString()))), new VarNode("who"), null/* c */,
                         Scope.DEFAULT_CONTEXTS));
                 
@@ -230,7 +230,7 @@ public class TestVirtualGraphs extends AbstractBigdataExprBuilderTestCase {
                 group.addChild(new StatementPatternNode(
                         new VarNode("x"),
                         new ConstantNode(makeIV(valueFactory
-                                .createURI(FOAFVocabularyDecl.mbox.toString()))),
+                                .createIRI(FOAFVocabularyDecl.mbox.toString()))),
                         new VarNode("mbox"), new VarNode("g"),
                         Scope.NAMED_CONTEXTS));
 
@@ -294,18 +294,18 @@ public class TestVirtualGraphs extends AbstractBigdataExprBuilderTestCase {
         final BigdataURI virtualGraph = valueFactory.asValue(BD.VIRTUAL_GRAPH);
 
         final BigdataURI vg = valueFactory
-                .createURI("http://example.org/vg");
+                .createIRI("http://example.org/vg");
 
         final BigdataURI context = valueFactory
-                .createURI("http://www.bigdata.com/context");
+                .createIRI("http://www.bigdata.com/context");
 
         final BigdataURI uri1 = valueFactory
-                .createURI("http://example.org/dft.ttl");
+                .createIRI("http://example.org/dft.ttl");
 
         final BigdataURI alice = valueFactory
-                .createURI("http://example.org/alice");
+                .createIRI("http://example.org/alice");
 
-        final BigdataURI bob = valueFactory.createURI("http://example.org/bob");
+        final BigdataURI bob = valueFactory.createIRI("http://example.org/bob");
         
         /*
          * Most URIs wind up declared when we insert the statements, but not
@@ -372,10 +372,10 @@ public class TestVirtualGraphs extends AbstractBigdataExprBuilderTestCase {
                  * Value is not resolved when we resolve the virtual graph IV to
                  * the IVs of the virtual graph membership.
                  */
-//                final BigdataURI alice2 = valueFactory.createURI(alice
+//                final BigdataURI alice2 = valueFactory.createIRI(alice
 //                        .stringValue());
 //                alice2.setIV(alice.getIV().clone(true/* clearCache */));
-//                final BigdataURI bob2 = valueFactory.createURI(bob
+//                final BigdataURI bob2 = valueFactory.createIRI(bob
 //                        .stringValue());
 //                bob2.setIV(bob.getIV().clone(true/* clearCache */));
                 @SuppressWarnings("rawtypes")
@@ -393,7 +393,7 @@ public class TestVirtualGraphs extends AbstractBigdataExprBuilderTestCase {
                 expected.setWhereClause(whereClause);
              
                 whereClause.addChild(new StatementPatternNode(new VarNode("g"),
-                        new ConstantNode(makeIV(valueFactory.createURI(DC.PUBLISHER
+                        new ConstantNode(makeIV(valueFactory.createIRI(DC.PUBLISHER
                                 .toString()))), new VarNode("who"), null/* c */,
                         Scope.DEFAULT_CONTEXTS));
                 
@@ -403,7 +403,7 @@ public class TestVirtualGraphs extends AbstractBigdataExprBuilderTestCase {
                 group.addChild(new StatementPatternNode(
                         new VarNode("x"),
                         new ConstantNode(makeIV(valueFactory
-                                .createURI(FOAFVocabularyDecl.mbox.toString()))),
+                                .createIRI(FOAFVocabularyDecl.mbox.toString()))),
                         new VarNode("mbox"), new VarNode("g"),
                         Scope.NAMED_CONTEXTS));
 

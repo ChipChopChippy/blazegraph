@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.NoSuchElementException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.IndexSegment.IndexSegmentTupleCursor;
 import com.bigdata.btree.IndexSegment.ImmutableNodeFactory.ImmutableLeaf;
 import com.bigdata.btree.data.ILeafData;
@@ -58,7 +59,7 @@ import com.bigdata.util.BytesUtil;
  */
 public class IndexSegmentMultiBlockIterator<E> implements ITupleIterator<E> {
 
-    protected static final transient Logger log = Logger
+    protected static final transient Logger log = LogManager
             .getLogger(IndexSegmentMultiBlockIterator.class);
     
     /**

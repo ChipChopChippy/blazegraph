@@ -30,9 +30,9 @@ package com.bigdata.rdf.sail.sparql;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.rdf.internal.DTE;
 import com.bigdata.rdf.internal.ILexiconConfiguration;
@@ -63,7 +63,6 @@ import com.bigdata.rdf.sparql.ast.UnionNode;
 import com.bigdata.rdf.sparql.ast.ValueExpressionNode;
 import com.bigdata.rdf.sparql.ast.VarNode;
 import com.bigdata.rdf.sparql.ast.service.ServiceNode;
-import com.bigdata.rdf.store.TestInsertRate.XMLSchema;
 
 /**
  * Test suite for translating the openrdf SPARQL AST nodes for
@@ -189,7 +188,7 @@ public class TestGroupGraphPatternBuilder extends
         final String sparql = "select ?s where {GRAPH <http://www.bigdata.com> {?s ?p ?o}}";
 
         final IV<BigdataValue, ?> graphConst = makeIV(valueFactory
-                .createURI("http://www.bigdata.com"));
+                .createIRI("http://www.bigdata.com"));
 
         final QueryRoot expected = new QueryRoot(QueryType.SELECT);
         {
@@ -823,7 +822,7 @@ public class TestGroupGraphPatternBuilder extends
             final ValueExpressionNode ve1 = new FunctionNode(
                     FunctionRegistry.GE, null/* scalarValues */,
                     new ValueExpressionNode[] { new VarNode("a"),
-                            new ConstantNode(lexiconConfiguration.createInlineIV(new LiteralImpl("1", XSD.UNSIGNED_LONG))) });
+                            new ConstantNode(lexiconConfiguration.createInlineIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("1", XSD.UNSIGNED_LONG))) });
 
             whereClause.addChild(new FilterNode(ve1));
 
@@ -831,7 +830,7 @@ public class TestGroupGraphPatternBuilder extends
             final ValueExpressionNode ve2 = new FunctionNode(
                     FunctionRegistry.GE, null/* scalarValues */,
                     new ValueExpressionNode[] { new VarNode("b"),
-                            new ConstantNode(lexiconConfiguration.createInlineIV(new LiteralImpl("1", XSD.UNSIGNED_LONG))) });
+                            new ConstantNode(lexiconConfiguration.createInlineIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("1", XSD.UNSIGNED_LONG))) });
 
             whereClause.addChild(new FilterNode(ve2));
 
@@ -1152,7 +1151,7 @@ public class TestGroupGraphPatternBuilder extends
         final String sparql = "SELECT ?s where {?s ?p ?o. "+serviceExpr+"}";
 
         final IV<?, ?> serviceRefIV = makeIV(valueFactory
-                .createURI("http://bigdata.com/myService"));
+                .createIRI("http://bigdata.com/myService"));
 
         final QueryRoot expected = new QueryRoot(QueryType.SELECT);
         {
@@ -1206,7 +1205,7 @@ public class TestGroupGraphPatternBuilder extends
         final String sparql = "SELECT ?s where {?s ?p ?o. " + serviceExpr + "}";
 
         final IV<?, ?> serviceRefIV = makeIV(valueFactory
-                .createURI("http://bigdata.com/myService"));
+                .createIRI("http://bigdata.com/myService"));
         
         final QueryRoot expected = new QueryRoot(QueryType.SELECT);
         {

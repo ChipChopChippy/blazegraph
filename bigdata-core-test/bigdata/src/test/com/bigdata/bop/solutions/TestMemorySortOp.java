@@ -61,7 +61,7 @@ import com.bigdata.rdf.internal.impl.TermId;
 import com.bigdata.rdf.internal.impl.literal.XSDNumericIV;
 import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.sparql.ast.GlobalAnnotations;
 import com.bigdata.rdf.store.AbstractTripleStore;
 import com.bigdata.rdf.store.LocalTripleStore;
@@ -114,7 +114,7 @@ public class TestMemorySortOp extends TestCase2 {
     public void testMaterializedIVs() 
     {
 
-        final BigdataValueFactory f = BigdataValueFactoryImpl.getInstance(getName());
+        final BigdataValueFactory f = BigdataSimpleValueFactory.getInstance(getName());
         
     	final IVariable<IV> x = Var.var ( "x" ) ;
     	final IVariable<IV> y = Var.var ( "y" ) ;
@@ -227,7 +227,7 @@ public class TestMemorySortOp extends TestCase2 {
     public void testInlineIVs() 
     {
 
-        final BigdataValueFactory f = BigdataValueFactoryImpl.getInstance(getName());
+        final BigdataValueFactory f = BigdataSimpleValueFactory.getInstance(getName());
         
         final IVariable<IV> x = Var.var ( "x" ) ;
         final IVariable<IV> y = Var.var ( "y" ) ;

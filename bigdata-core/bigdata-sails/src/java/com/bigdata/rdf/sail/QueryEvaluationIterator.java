@@ -2,10 +2,10 @@ package com.bigdata.rdf.sail;
 
 import java.util.NoSuchElementException;
 
-import info.aduna.iteration.CloseableIteration;
+import org.eclipse.rdf4j.common.iteration.CloseableIteration;
 
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.sail.SailException;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.sail.SailException;
 
 /**
  * Class exists to align exceptions thrown by Sesame 2 query evaluation with
@@ -15,14 +15,14 @@ import org.openrdf.sail.SailException;
  * @version $Id$
  */
 public class QueryEvaluationIterator<T> implements
-        CloseableIteration<T, QueryEvaluationException> {
+        CloseableIteration<T> {
 
-    private final CloseableIteration<? extends T, SailException> src;
+    private final CloseableIteration<? extends T> src;
 
     private boolean open = true;
 
     public QueryEvaluationIterator(
-            CloseableIteration<? extends T, SailException> src) {
+            CloseableIteration<? extends T> src) {
 
         assert src != null;
         

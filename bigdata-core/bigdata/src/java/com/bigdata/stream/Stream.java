@@ -39,8 +39,9 @@ import java.util.concurrent.locks.Lock;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.Banner;
 import com.bigdata.BigdataStatics;
 import com.bigdata.bop.solutions.SolutionSetStream;
@@ -88,7 +89,7 @@ import cutthecrap.utils.striterators.ICloseableIterator;
  */
 abstract public class Stream implements ICheckpointProtocol {
 
-    private static final Logger log = Logger.getLogger(Stream.class);
+    private static final Logger log = LogManager.getLogger(Stream.class);
 
     /**
      * The index is already closed.

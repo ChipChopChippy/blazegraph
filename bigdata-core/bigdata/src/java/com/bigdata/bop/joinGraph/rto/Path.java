@@ -23,6 +23,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package com.bigdata.bop.joinGraph.rto;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -85,7 +87,7 @@ import com.bigdata.rdf.sparql.ast.eval.AST2BOpRTO;
  */
 public class Path {
 
-//    private static final transient Logger log = Logger.getLogger(Path.class);
+//    private static final transient Logger log = LogManager.getLogger(Path.class);
 
     /**
      * An ordered list of the vertices in the {@link Path}.

@@ -34,17 +34,19 @@ import java.util.concurrent.atomic.AtomicLong;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Graph;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.impl.LinkedHashModel;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.GraphQueryResult;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFWriter;
-import org.openrdf.rio.RDFWriterFactory;
-import org.openrdf.rio.RDFWriterRegistry;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.impl.LinkedHashModel;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.query.GraphQueryResult;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFWriter;
+import org.eclipse.rdf4j.rio.RDFWriterFactory;
+import org.eclipse.rdf4j.rio.RDFWriterRegistry;
 import org.xml.sax.Attributes;
 import org.xml.sax.ext.DefaultHandler2;
 
@@ -56,7 +58,7 @@ import org.xml.sax.ext.DefaultHandler2;
  */
 public class RemoteRepositoryBase extends RemoteRepositoryDecls {
 
-   private static final transient Logger log = Logger
+   private static final transient Logger log = LogManager
          .getLogger(RemoteRepositoryDecls.class);
 
    /**
@@ -118,18 +120,18 @@ public class RemoteRepositoryBase extends RemoteRepositoryDecls {
    }
 
    /**
-    * Utility method to turn a {@link GraphQueryResult} into a {@link Graph}.
+    * Utility method to turn a {@link GraphQueryResult} into a {@link Model}.
     * 
     * @param result
     *            The {@link GraphQueryResult}.
     * 
-    * @return The {@link Graph}.
+    * @return The {@link Model}.
     * 
     * @throws Exception
     */
-   static public Graph asGraph(final GraphQueryResult result) throws Exception {
+   static public Model asGraph(final GraphQueryResult result) throws Exception {
 
-       final Graph g = new LinkedHashModel();
+       final Model g = new LinkedHashModel();
 
        while (result.hasNext()) {
 
@@ -149,7 +151,8 @@ public class RemoteRepositoryBase extends RemoteRepositoryDecls {
            final RDFFormat format) throws Exception {
        
        final RDFWriterFactory writerFactory = 
-           RDFWriterRegistry.getInstance().get(format);
+           RDFWriterRegistry.getInstance().get(format).orElseThrow(
+                   () -> new IllegalStateException("No writer registered for " + format));
 
        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
        
@@ -158,6 +161,17 @@ public class RemoteRepositoryBase extends RemoteRepositoryDecls {
        writer.startRDF();
        
        for (Statement stmt : stmts) {
+           if (stmt.getObject() instanceof Literal) {
+               final Literal literal = (Literal) stmt.getObject();
+               if (!literal.getLanguage().isPresent()
+                       && literal.getDatatype() == null) {
+                   stmt = SimpleValueFactory.getInstance().createStatement(
+                           stmt.getSubject(), stmt.getPredicate(),
+                           SimpleValueFactory.getInstance().createLiteral(
+                                   literal.getLabel()),
+                           stmt.getContext());
+               }
+           }
        
            writer.handleStatement(stmt);
            
@@ -386,7 +400,7 @@ public class RemoteRepositoryBase extends RemoteRepositoryDecls {
                        final Attributes attributes) {
 
                    if ("context".equals(qName))
-                    contexts.add(new URIImpl(attributes.getValue("uri")));
+                   contexts.add(SimpleValueFactory.getInstance().createIRI(attributes.getValue("uri")));
 
                }
                

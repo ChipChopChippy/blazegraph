@@ -32,8 +32,9 @@ import java.util.LinkedHashSet;
 import java.util.Random;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.Constant;
 import com.bigdata.rdf.internal.IV;
 import com.bigdata.rdf.internal.VTE;
@@ -79,7 +80,7 @@ import com.bigdata.rdf.internal.impl.TermId;
 public class TestStaticAnalysis_CanJoinUsingConstraints extends
         AbstractASTEvaluationTestCase {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(TestStaticAnalysis_CanJoinUsingConstraints.class);
     
     /**
@@ -100,7 +101,7 @@ public class TestStaticAnalysis_CanJoinUsingConstraints extends
      */
     @SuppressWarnings("rawtypes")
     private IV mockIV() {
-        return TermId.mockIV(VTE.URI);
+        return TermId.mockIV(VTE.IRI);
     }
 
     /**

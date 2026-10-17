@@ -85,7 +85,7 @@ import cutthecrap.utils.striterators.ICloseableIterator;
  * sequence of pipeline joins, a slice applied to a query, etc.
  * 
  * <pre>
- * -Dlog4j.configuration=bigdata/src/resources/logging/log4j.properties
+ * -Dlog4j2.configurationFile=bigdata/src/resources/logging/log4j2.properties
  * </pre>
  * 
  * @author <a href="mailto:thompsonbry@users.sourceforge.net">Bryan Thompson</a>

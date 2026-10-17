@@ -30,9 +30,10 @@ import java.io.ObjectOutput;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.AbstractBTree;
 import com.bigdata.btree.BTree;
 import com.bigdata.btree.IIndex;
@@ -60,20 +61,18 @@ public class AtomicBlockAppendProc implements ISimpleIndexProcedure<Object>,
 
     private static final long serialVersionUID = 1441331704737671258L;
 
-    protected static transient Logger log = Logger
+    protected static transient Logger log = LogManager
             .getLogger(AtomicBlockAppendProc.class);
 
     /**
      * True iff the {@link #log} level is INFO or less.
      */
-    final protected static transient boolean INFO = log.getEffectiveLevel()
-            .toInt() <= Level.INFO.toInt();
+    final protected static transient boolean INFO = log.isEnabled(Level.INFO);
 
     /**
      * True iff the {@link #log} level is DEBUG or less.
      */
-    final protected static transient boolean DEBUG = log.getEffectiveLevel()
-            .toInt() <= Level.DEBUG.toInt();
+    final protected static transient boolean DEBUG = log.isEnabled(Level.DEBUG);
 
     private String id;
     private int version;

@@ -30,8 +30,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bfs.BigdataFileSystem;
 import com.bigdata.btree.IIndex;
 import com.bigdata.btree.IRangeQuery;
@@ -161,7 +162,7 @@ import cutthecrap.utils.striterators.Striterator;
  */
 public class SparseRowStore implements IRowStoreConstants {
 
-    protected static final Logger log = Logger.getLogger(SparseRowStore.class);
+    protected static final Logger log = LogManager.getLogger(SparseRowStore.class);
 
 //    /**
 //     * True iff the {@link #log} level is INFO or less.

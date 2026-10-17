@@ -22,6 +22,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.rdf.sail;
 
+
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.journal.IIndexManager;
 import com.bigdata.service.IBigdataFederation;
 
@@ -32,7 +34,7 @@ import com.bigdata.service.IBigdataFederation;
  */
 public class BigdataBaseContext {
 
-//	static private final Logger log = Logger.getLogger(BigdataBaseContext.class); 
+//	static private final Logger log = LogManager.getLogger(BigdataBaseContext.class); 
 
 	private final IIndexManager m_indexManager;
 	

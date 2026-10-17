@@ -24,8 +24,9 @@ package com.bigdata.blueprints;
 
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 /**
  * An implementation of a Blueprints Graph that implements immortality using
  * the RDR specification.
@@ -70,7 +71,7 @@ import org.apache.log4j.Logger;
  */
 public abstract class ImmortalGraph extends BigdataGraph {
 
-    private static final transient Logger log = Logger.getLogger(ImmortalGraph.class);
+    private static final transient Logger log = LogManager.getLogger(ImmortalGraph.class);
     
     public ImmortalGraph(final BlueprintsValueFactory factory) {
         this(factory, new Properties());

@@ -42,7 +42,7 @@ import com.bigdata.rdf.internal.impl.literal.XSDNumericIV;
 import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 
 /**
  * Test suite for logic which "joins" two solutions, propagating bindings,
@@ -198,7 +198,7 @@ public class TestBind extends TestCase2 {
      */
     public void test_bind05() {
 
-        final BigdataValueFactory f = BigdataValueFactoryImpl
+        final BigdataValueFactory f = BigdataSimpleValueFactory
                 .getInstance(getName());
         
         final BigdataLiteral lit = f.createLiteral(1);
@@ -239,7 +239,7 @@ public class TestBind extends TestCase2 {
      */
     public void test_bind05b() {
 
-        final BigdataValueFactory f = BigdataValueFactoryImpl
+        final BigdataValueFactory f = BigdataSimpleValueFactory
                 .getInstance(getName());
         
         final BigdataLiteral lit = f.createLiteral(1);
@@ -279,7 +279,7 @@ public class TestBind extends TestCase2 {
      */
     public void test_bind06() {
 
-        final BigdataValueFactory f = BigdataValueFactoryImpl
+        final BigdataValueFactory f = BigdataSimpleValueFactory
                 .getInstance(getName());
         
         final BigdataLiteral lit = f.createLiteral(1);

@@ -27,12 +27,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sparql.ast.optimizers;
 
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.DC;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.DC;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.rdf.internal.IV;
@@ -112,8 +112,8 @@ public class TestASTEmptyGroupOptimizer extends AbstractASTEvaluationTestCase {
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV bdSearchIV = TermId.mockIV(VTE.URI);
-        bdSearchIV.setValue(store.getValueFactory().createURI(
+        final IV bdSearchIV = TermId.mockIV(VTE.IRI);
+        bdSearchIV.setValue(store.getValueFactory().createIRI(
                 BDS.SEARCH.toString()));
 
         final IV mikeIV = TermId.mockIV(VTE.LITERAL);
@@ -345,10 +345,10 @@ public class TestASTEmptyGroupOptimizer extends AbstractASTEvaluationTestCase {
         final IBindingSet[] bsets = new IBindingSet[]{};
 
         @SuppressWarnings("rawtypes")
-        final IV p = makeIV(new URIImpl("http://example/p"));
+        final IV p = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/p"));
 
         @SuppressWarnings("rawtypes")
-        final IV q = makeIV(new URIImpl("http://example/q"));
+        final IV q = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/q"));
         
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -444,16 +444,16 @@ public class TestASTEmptyGroupOptimizer extends AbstractASTEvaluationTestCase {
         final IBindingSet[] bsets = new IBindingSet[]{};
 
         @SuppressWarnings("rawtypes")
-        final IV p = makeIV(new URIImpl("http://example/p"));
+        final IV p = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/p"));
 
         @SuppressWarnings("rawtypes")
-        final IV q = makeIV(new URIImpl("http://example/q"));
+        final IV q = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/q"));
         
         @SuppressWarnings("rawtypes")
-        final IV x = makeIV(new URIImpl("http://example/x"));
+        final IV x = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/x"));
         
         @SuppressWarnings("rawtypes")
-        final IV y = makeIV(new URIImpl("http://example/y"));
+        final IV y = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/y"));
         
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -696,13 +696,13 @@ public class TestASTEmptyGroupOptimizer extends AbstractASTEvaluationTestCase {
         final IBindingSet[] bsets = new IBindingSet[]{};
 
         @SuppressWarnings("rawtypes")
-        final IV x = makeIV(new URIImpl("http://example/x"));
+        final IV x = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/x"));
 
         @SuppressWarnings("rawtypes")
-        final IV p = makeIV(new URIImpl("http://example/p"));
+        final IV p = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/p"));
 
         @SuppressWarnings("rawtypes")
-        final IV ONE = makeIV(new LiteralImpl("1",XSD.INTEGER));
+        final IV ONE = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("1",XSD.INTEGER));
 
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -909,19 +909,19 @@ public class TestASTEmptyGroupOptimizer extends AbstractASTEvaluationTestCase {
         final IBindingSet[] bsets = new IBindingSet[]{};
 
         @SuppressWarnings("rawtypes")
-        final IV a = makeIV(new URIImpl("http://example/a"));
+        final IV a = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/a"));
 
         @SuppressWarnings("rawtypes")
-        final IV b = makeIV(new URIImpl("http://example/b"));
+        final IV b = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/b"));
         
         @SuppressWarnings("rawtypes")
-        final IV c = makeIV(new URIImpl("http://example/c"));
+        final IV c = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/c"));
         
         @SuppressWarnings("rawtypes")
-        final IV d = makeIV(new URIImpl("http://example/d"));
+        final IV d = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/d"));
         
         @SuppressWarnings("rawtypes")
-        final IV e = makeIV(new URIImpl("http://example/e"));
+        final IV e = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/e"));
         
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -1062,8 +1062,8 @@ public class TestASTEmptyGroupOptimizer extends AbstractASTEvaluationTestCase {
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV bdSearchIV = TermId.mockIV(VTE.URI);
-        bdSearchIV.setValue(store.getValueFactory().createURI(
+        final IV bdSearchIV = TermId.mockIV(VTE.IRI);
+        bdSearchIV.setValue(store.getValueFactory().createIRI(
                 BDS.SEARCH.toString()));
 
         final IV mikeIV = TermId.mockIV(VTE.LITERAL);
@@ -1163,7 +1163,7 @@ public class TestASTEmptyGroupOptimizer extends AbstractASTEvaluationTestCase {
         
         final IV<?,?> type = makeIV(RDF.TYPE);
         
-        final IV<?,?> a = makeIV(new URIImpl("http://example/a"));
+        final IV<?,?> a = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/a"));
 
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -1298,8 +1298,8 @@ public class TestASTEmptyGroupOptimizer extends AbstractASTEvaluationTestCase {
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV bdSearchIV = TermId.mockIV(VTE.URI);
-        bdSearchIV.setValue(store.getValueFactory().createURI(
+        final IV bdSearchIV = TermId.mockIV(VTE.IRI);
+        bdSearchIV.setValue(store.getValueFactory().createIRI(
                 BDS.SEARCH.toString()));
 
         final IV mikeIV = TermId.mockIV(VTE.LITERAL);
@@ -1394,8 +1394,8 @@ public class TestASTEmptyGroupOptimizer extends AbstractASTEvaluationTestCase {
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV bdSearchIV = TermId.mockIV(VTE.URI);
-        bdSearchIV.setValue(store.getValueFactory().createURI(
+        final IV bdSearchIV = TermId.mockIV(VTE.IRI);
+        bdSearchIV.setValue(store.getValueFactory().createIRI(
                 BDS.SEARCH.toString()));
 
         final IV mikeIV = TermId.mockIV(VTE.LITERAL);
@@ -1504,8 +1504,8 @@ public class TestASTEmptyGroupOptimizer extends AbstractASTEvaluationTestCase {
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV bdSearchIV = TermId.mockIV(VTE.URI);
-        bdSearchIV.setValue(store.getValueFactory().createURI(
+        final IV bdSearchIV = TermId.mockIV(VTE.IRI);
+        bdSearchIV.setValue(store.getValueFactory().createIRI(
                 BDS.SEARCH.toString()));
 
         final IV mikeIV = TermId.mockIV(VTE.LITERAL);
@@ -1605,8 +1605,8 @@ public class TestASTEmptyGroupOptimizer extends AbstractASTEvaluationTestCase {
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV bdSearchIV = TermId.mockIV(VTE.URI);
-        bdSearchIV.setValue(store.getValueFactory().createURI(
+        final IV bdSearchIV = TermId.mockIV(VTE.IRI);
+        bdSearchIV.setValue(store.getValueFactory().createIRI(
                 BDS.SEARCH.toString()));
 
         final IV mikeIV = TermId.mockIV(VTE.LITERAL);
@@ -1720,8 +1720,8 @@ public class TestASTEmptyGroupOptimizer extends AbstractASTEvaluationTestCase {
         final IBindingSet[] bsets = new IBindingSet[]{};
 
         @SuppressWarnings("rawtypes")
-        final IV dcTitle = TermId.mockIV(VTE.URI);
-        dcTitle.setValue(store.getValueFactory().createURI(
+        final IV dcTitle = TermId.mockIV(VTE.IRI);
+        dcTitle.setValue(store.getValueFactory().createIRI(
                 DC.TITLE.stringValue()));
 
         // The source AST.

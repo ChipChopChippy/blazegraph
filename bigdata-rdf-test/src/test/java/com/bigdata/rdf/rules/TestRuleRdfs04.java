@@ -29,12 +29,12 @@ package com.bigdata.rdf.rules;
 
 import java.util.Properties;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.rules.InferenceEngine.Options;
@@ -96,11 +96,11 @@ public class TestRuleRdfs04 extends AbstractRuleTestCase {
 
         try {
 
-            URI U = new URIImpl("http://www.foo.org/U");
-            URI A = new URIImpl("http://www.foo.org/A");
-            URI X = new URIImpl("http://www.foo.org/X");
-            URI rdfType = RDF.TYPE;
-            URI rdfsResource = RDFS.RESOURCE;
+            IRI U = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/U");
+            IRI A = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/A");
+            IRI X = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/X");
+            IRI rdfType = RDF.TYPE;
+            IRI rdfsResource = RDFS.RESOURCE;
 
             store.addStatement(U, A, X);
 
@@ -149,11 +149,11 @@ public class TestRuleRdfs04 extends AbstractRuleTestCase {
 
         try {
 
-            URI U = new URIImpl("http://www.foo.org/U");
-            URI A = new URIImpl("http://www.foo.org/A");
-            URI V = new URIImpl("http://www.foo.org/V");
-            URI rdfType = RDF.TYPE;
-            URI rdfsResource = RDFS.RESOURCE;
+            IRI U = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/U");
+            IRI A = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/A");
+            IRI V = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/V");
+            IRI rdfType = RDF.TYPE;
+            IRI rdfsResource = RDFS.RESOURCE;
 
             store.addStatement(U, A, V);
 
@@ -205,10 +205,10 @@ public class TestRuleRdfs04 extends AbstractRuleTestCase {
 
         try {
 
-            URI A = new URIImpl("http://www.foo.org/A");
-            Literal C = new LiteralImpl("C");
-            URI rdfType = RDF.TYPE;
-            URI rdfsResource = RDFS.RESOURCE;
+            IRI A = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/A");
+            Literal C = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("C");
+            IRI rdfType = RDF.TYPE;
+            IRI rdfsResource = RDFS.RESOURCE;
 
             store.addStatement(A, rdfType, C);
 

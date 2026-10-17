@@ -29,8 +29,9 @@ import java.nio.ByteBuffer;
 import java.util.Date;
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.io.ChecksumUtility;
 import com.bigdata.io.FileChannelUtility;
 import com.bigdata.io.NOPReopener;
@@ -62,7 +63,7 @@ public class IndexSegmentCheckpoint implements ICheckpoint {
     /**
      * Logger.
      */
-	private static final Logger log = Logger
+	private static final Logger log = LogManager
 			.getLogger(IndexSegmentCheckpoint.class);
 
     /**

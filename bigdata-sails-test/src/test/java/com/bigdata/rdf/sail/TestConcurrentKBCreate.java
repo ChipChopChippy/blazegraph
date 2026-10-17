@@ -34,8 +34,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.sail.SailException;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.sail.SailException;
 
 import com.bigdata.BigdataStatics;
 import com.bigdata.journal.IIndexManager;
@@ -69,8 +69,8 @@ import com.bigdata.util.InnerCause;
  * INFO : 41211 2012-11-06 08:38:41,874 :    at com.bigdata.rdf.sail.webapp.QueryServlet.doEstCard(QueryServlet.java:1120)
  * INFO : 41211 2012-11-06 08:38:41,874 :    at com.bigdata.rdf.sail.webapp.QueryServlet.doGet(QueryServlet.java:178)
  * INFO : 41211 2012-11-06 08:38:41,874 :    at com.bigdata.rdf.sail.webapp.RESTServlet.doGet(RESTServlet.java:175)
- * INFO : 41211 2012-11-06 08:38:41,874 :    at javax.servlet.http.HttpServlet.service(HttpServlet.java:707)
- * INFO : 41211 2012-11-06 08:38:41,874 :    at javax.servlet.http.HttpServlet.service(HttpServlet.java:820)
+ * INFO : 41211 2012-11-06 08:38:41,874 :    at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:707)
+ * INFO : 41211 2012-11-06 08:38:41,874 :    at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:820)
  * INFO : 41211 2012-11-06 08:38:41,874 :    at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:534)
  * INFO : 41211 2012-11-06 08:38:41,874 :    at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:475)
  * INFO : 41211 2012-11-06 08:38:41,874 :    at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:929)
@@ -762,7 +762,7 @@ abstract public class TestConcurrentKBCreate extends ProxyBigdataSailTestCase {
 //        final BigdataSail sail = new BigdataSail(namespace, indexManager);
 //        try {
 //            final BigdataSailRepository repo = new BigdataSailRepository(sail);
-//            repo.initialize();
+//            repo.init();
 //            try {
 //                final BigdataSailRepositoryConnection con;
 //                if (TimestampUtility.isReadOnly(timestamp)) {
@@ -806,7 +806,7 @@ abstract public class TestConcurrentKBCreate extends ProxyBigdataSailTestCase {
 
          final BigdataSailRepository repo = new BigdataSailRepository(sail);
 
-         repo.initialize();
+         repo.init();
 
          if (TimestampUtility.isReadOnly(timestamp)) {
 
@@ -887,7 +887,7 @@ abstract public class TestConcurrentKBCreate extends ProxyBigdataSailTestCase {
 //
 //        final BigdataSailRepository repo = new BigdataSailRepository(sail);
 //
-//        repo.initialize();
+//        repo.init();
 //
 //        final BigdataSailRepositoryConnection conn = (BigdataSailRepositoryConnection) repo
 //                .getUnisolatedConnection();

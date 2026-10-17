@@ -53,17 +53,17 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import junit.framework.Test;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.StatementImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.impl.ValueFactoryImpl;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.parser.sparql.SPARQLUpdateTest;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.parser.sparql.SPARQLUpdateTest;
 
 import com.bigdata.BigdataStatics;
 import com.bigdata.bop.engine.QueryTimeoutException;
@@ -545,7 +545,7 @@ public class StressTestConcurrentRestApiRequests<S extends IIndexManager>
         // declarations.append("PREFIX dc: <" + DC.NAMESPACE + "> \n");
         // declarations.append("PREFIX foaf: <" + FOAF.NAMESPACE + "> \n");
         declarations.append("PREFIX ex: <" + EX_NS + "> \n");
-        // declarations.append("PREFIX xsd: <" + XMLSchema.NAMESPACE + "> \n");
+        // declarations.append("PREFIX xsd: <" + XSD.NAMESPACE + "> \n");
         declarations.append("\n");
 
         return declarations.toString();
@@ -1533,8 +1533,8 @@ if(!BigdataStatics.runKnownBadTests)return; // FIXME Conditionally disabled in C
 
         private static Statement generateTriple() {
 
-            return new StatementImpl(new URIImpl(EX_NS + UUID.randomUUID()),
-                    new URIImpl(EX_NS + UUID.randomUUID()), new URIImpl(EX_NS
+            return SimpleValueFactory.getInstance().createStatement(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(EX_NS + UUID.randomUUID()),
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(EX_NS + UUID.randomUUID()), org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(EX_NS
                             + UUID.randomUUID()));
 
         }
@@ -1585,7 +1585,7 @@ if(!BigdataStatics.runKnownBadTests)return; // FIXME Conditionally disabled in C
              * Note: This uses SELECT rather than CONSTRUCT since we need to get
              * the graph as well when addressing a QUADS mode namespace.
              */
-            final ValueFactory vf = ValueFactoryImpl.getInstance();
+            final ValueFactory vf = SimpleValueFactory.getInstance();
             final Collection<Statement> stmts = new ArrayList<>(batchSize);
             TupleQueryResult result = null;
             try {
@@ -1601,7 +1601,7 @@ if(!BigdataStatics.runKnownBadTests)return; // FIXME Conditionally disabled in C
                     final BindingSet bset = result.next();
                     final Resource s = (Resource) bset.getBinding("s")
                             .getValue();
-                    final URI p = (URI) bset.getBinding("p").getValue();
+                    final IRI p = (IRI) bset.getBinding("p").getValue();
                     final Value o = (Value) bset.getBinding("o").getValue();
                     final Resource g = (Resource) (quads ? bset.getBinding("g")
                             .getValue() : null);

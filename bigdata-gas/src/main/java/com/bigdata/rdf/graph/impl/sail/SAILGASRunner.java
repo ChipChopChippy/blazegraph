@@ -17,12 +17,13 @@ package com.bigdata.rdf.graph.impl.sail;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.sail.Sail;
-import org.openrdf.sail.SailConnection;
-import org.openrdf.sail.SailException;
-import org.openrdf.sail.memory.MemoryStore;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.sail.Sail;
+import org.eclipse.rdf4j.sail.SailConnection;
+import org.eclipse.rdf4j.sail.SailException;
+import org.eclipse.rdf4j.sail.memory.MemoryStore;
 
 import com.bigdata.rdf.graph.IGASEngine;
 import com.bigdata.rdf.graph.IGraphAccessor;
@@ -37,7 +38,7 @@ import com.bigdata.rdf.graph.util.SailGraphLoader;
  */
 public class SAILGASRunner<VS, ES, ST> extends GASRunnerBase<VS, ES, ST> {
 
-    private static final Logger log = Logger.getLogger(SAILGASRunner.class);
+    private static final Logger log = LogManager.getLogger(SAILGASRunner.class);
 
     public SAILGASRunner(String[] args) throws ClassNotFoundException {
         super(args);
@@ -56,7 +57,7 @@ public class SAILGASRunner<VS, ES, ST> extends GASRunnerBase<VS, ES, ST> {
 
             sail = new MemoryStore();
 
-            sail.initialize();
+            sail.init();
             
             cxn = sail.getConnection();
             

@@ -27,6 +27,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.cache;
 
+
+import org.apache.logging.log4j.LogManager;
 /**
  * <p>
  * A cache for hard references using an LRU policy. References are simply
@@ -61,7 +63,7 @@ package com.bigdata.cache;
  */
 public class HardReferenceQueue<T> extends RingBuffer<T> implements IHardReferenceQueue<T> {
 
-//    protected static final Logger log = Logger.getLogger(HardReferenceQueue.class);
+//    protected static final Logger log = LogManager.getLogger(HardReferenceQueue.class);
     
 //    protected static final boolean INFO = log.isInfoEnabled(); 
     

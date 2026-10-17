@@ -21,10 +21,10 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.sail.Sail;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.sail.Sail;
 
 import com.bigdata.rdf.graph.AbstractGraphTestCase;
 import com.bigdata.rdf.graph.util.IGraphFixture;
@@ -79,7 +79,7 @@ public class AbstractSailGraphTestCase extends AbstractGraphTestCase {
         static private final String smallGraph1 = "bigdata-gas/src/test/resources/com/bigdata/rdf/graph/data/smallGraph.ttl";
         static private final String smallGraph2 = "src/test/resources/com/bigdata/rdf/graph/data/smallGraph.ttl";
         
-        private final URI rdfType, foafKnows, foafPerson, mike, bryan, martyn, dc;
+        private final IRI rdfType, foafKnows, foafPerson, mike, bryan, martyn, dc;
 
         private final Set<Value> vertices;
 
@@ -105,24 +105,24 @@ public class AbstractSailGraphTestCase extends AbstractGraphTestCase {
 
             final Sail sail = graphFixture.getSail();
 
-            rdfType = sail.getValueFactory().createURI(RDF.TYPE.stringValue());
+            rdfType = sail.getValueFactory().createIRI(RDF.TYPE.stringValue());
 
-            foafKnows = sail.getValueFactory().createURI(
+            foafKnows = sail.getValueFactory().createIRI(
                     "http://xmlns.com/foaf/0.1/knows");
 
-            foafPerson = sail.getValueFactory().createURI(
+            foafPerson = sail.getValueFactory().createIRI(
                     "http://xmlns.com/foaf/0.1/Person");
 
-            mike = sail.getValueFactory().createURI(
+            mike = sail.getValueFactory().createIRI(
                     "http://www.bigdata.com/Mike");
 
-            bryan = sail.getValueFactory().createURI(
+            bryan = sail.getValueFactory().createIRI(
                     "http://www.bigdata.com/Bryan");
 
-            martyn = sail.getValueFactory().createURI(
+            martyn = sail.getValueFactory().createIRI(
                     "http://www.bigdata.com/Martyn");
 
-            dc = sail.getValueFactory().createURI(
+            dc = sail.getValueFactory().createIRI(
                     "http://www.bigdata.com/DC");
 
             vertices = new LinkedHashSet<Value>(Arrays.asList(new Value[] {
@@ -133,31 +133,31 @@ public class AbstractSailGraphTestCase extends AbstractGraphTestCase {
 
         }
 
-        public URI getRdfType() {
+        public IRI getRdfType() {
             return rdfType;
         }
 
-        public URI getFoafKnows() {
+        public IRI getFoafKnows() {
             return foafKnows;
         }
 
-        public URI getFoafPerson() {
+        public IRI getFoafPerson() {
             return foafPerson;
         }
 
-        public URI getMike() {
+        public IRI getMike() {
             return mike;
         }
 
-        public URI getBryan() {
+        public IRI getBryan() {
             return bryan;
         }
 
-        public URI getMartyn() {
+        public IRI getMartyn() {
             return martyn;
         }
 
-        public URI getDC() {
+        public IRI getDC() {
             return dc;
         }
 
@@ -205,7 +205,7 @@ public class AbstractSailGraphTestCase extends AbstractGraphTestCase {
         static private final String ssspGraph1 = "src/test/resources/com/bigdata/rdf/graph/data/ssspGraph.ttlx";
         static private final String ssspGraph2 = "src/test/resources/com/bigdata/rdf/graph/data/ssspGraph.ttlx";
         
-        public final URI link, v1, v2, v3, v4, v5;
+        public final IRI link, v1, v2, v3, v4, v5;
 
         private final Set<Value> vertices;
         
@@ -232,14 +232,14 @@ public class AbstractSailGraphTestCase extends AbstractGraphTestCase {
 
             final Sail sail = graphFixture.getSail();
 
-            link = sail.getValueFactory().createURI(
+            link = sail.getValueFactory().createIRI(
                     "http://www.bigdata.com/ssspGraph/link");
 
-            v1 = sail.getValueFactory().createURI("http://www.bigdata.com/ssspGraph/1");
-            v2 = sail.getValueFactory().createURI("http://www.bigdata.com/ssspGraph/2");
-            v3 = sail.getValueFactory().createURI("http://www.bigdata.com/ssspGraph/3");
-            v4 = sail.getValueFactory().createURI("http://www.bigdata.com/ssspGraph/4");
-            v5 = sail.getValueFactory().createURI("http://www.bigdata.com/ssspGraph/5");
+            v1 = sail.getValueFactory().createIRI("http://www.bigdata.com/ssspGraph/1");
+            v2 = sail.getValueFactory().createIRI("http://www.bigdata.com/ssspGraph/2");
+            v3 = sail.getValueFactory().createIRI("http://www.bigdata.com/ssspGraph/3");
+            v4 = sail.getValueFactory().createIRI("http://www.bigdata.com/ssspGraph/4");
+            v5 = sail.getValueFactory().createIRI("http://www.bigdata.com/ssspGraph/5");
 
             vertices = new LinkedHashSet<Value>(Arrays.asList(new Value[] {
                     v1, v2, v3, v4, v5 }));

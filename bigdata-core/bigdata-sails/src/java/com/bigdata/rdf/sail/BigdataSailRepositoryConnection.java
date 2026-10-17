@@ -24,18 +24,19 @@
 
 package com.bigdata.rdf.sail;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.Update;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.sail.SailQuery;
-import org.openrdf.repository.sail.SailRepositoryConnection;
-import org.openrdf.sail.SailConnection;
-import org.openrdf.sail.SailException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.Update;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.sail.SailQuery;
+import org.eclipse.rdf4j.repository.sail.SailRepositoryConnection;
+import org.eclipse.rdf4j.sail.SailConnection;
+import org.eclipse.rdf4j.sail.SailException;
 
 import com.bigdata.journal.ITx;
 import com.bigdata.journal.TimestampUtility;
@@ -57,7 +58,7 @@ import com.bigdata.rdf.store.AbstractTripleStore;
  */
 public class BigdataSailRepositoryConnection extends SailRepositoryConnection {
    
-	private static transient final Logger log = Logger
+	private static transient final Logger log = LogManager
 			.getLogger(BigdataSailRepositoryConnection.class);
 
 	@Override
@@ -105,11 +106,11 @@ public class BigdataSailRepositoryConnection extends SailRepositoryConnection {
     *      hasStatement() </a>
     * 
     *      TODO This should be using
-    *      {@link BigdataSailConnection#hasStatement(Resource, URI, Value, boolean, Resource...)}
+    *      {@link BigdataSailConnection#hasStatement(Resource, IRI, Value, boolean, Resource...)}
     *      for improved performance.  See #1178.
     */
    @Override
-   public boolean hasStatement(final Resource s, final URI p, final Value o,
+   public boolean hasStatement(final Resource s, final IRI p, final Value o,
          final boolean includeInferred, final Resource... contexts)
          throws RepositoryException {
       return super.hasStatement(s,p,o, includeInferred, contexts);
@@ -195,7 +196,7 @@ public class BigdataSailRepositoryConnection extends SailRepositoryConnection {
      * @param queryStr
      *            The query.
      * @param baseURI
-     *            The base URI.
+     *            The base IRI.
      * 
      * @return An object wrapping the bigdata AST model for that query.
      * 
@@ -248,7 +249,7 @@ public class BigdataSailRepositoryConnection extends SailRepositoryConnection {
      * @param updateStr
      *            The update request.
      * @param baseURI
-     *            The base URI.
+     *            The base IRI.
      * 
      * @return An object wrapping the bigdata AST model for that request.
      * 

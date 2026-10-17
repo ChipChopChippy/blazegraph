@@ -27,21 +27,22 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Graph;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.GraphImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.repository.sail.SailTupleQuery;
-import org.openrdf.sail.Sail;
-import org.openrdf.sail.memory.MemoryStore;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.LinkedHashModel;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.sail.SailRepository;
+import org.eclipse.rdf4j.repository.sail.SailTupleQuery;
+import org.eclipse.rdf4j.sail.Sail;
+import org.eclipse.rdf4j.sail.memory.MemoryStore;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.vocab.NoVocabulary;
@@ -69,7 +70,7 @@ import com.bigdata.rdf.vocab.NoVocabulary;
  */
 public class TestTicket669 extends QuadsTestCase {
 
-    protected static final Logger log = Logger.getLogger(TestTicket669.class);
+    protected static final Logger log = LogManager.getLogger(TestTicket669.class);
 
     /**
      * Please set your database properties here, except for your journal file,
@@ -148,17 +149,17 @@ public class TestTicket669 extends QuadsTestCase {
 	  	
 	  	try {
 	  	
-	  		sesameSail.initialize();
+	  		sesameSail.init();
 	  		bigdataSail.initialize();
 	  		
   			final Repository sesameRepo = new SailRepository(sesameSail);
   			final BigdataSailRepository bigdataRepo = new BigdataSailRepository(bigdataSail);
   			
-  			final URI book1 = new URIImpl("http://example.com/book1");
-  			final URI book2 = new URIImpl("http://example.com/book2");
-  			final URI book3 = new URIImpl("http://example.com/book3");
-  			final URI book = new URIImpl("http://example.com/book");
-  			final Graph data = new GraphImpl();
+  			final IRI book1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.com/book1");
+  			final IRI book2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.com/book2");
+  			final IRI book3 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.com/book3");
+  			final IRI book = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.com/book");
+  			final Model data = new LinkedHashModel();
   			data.add(book1, RDF.TYPE, book);
   			data.add(book2, RDF.TYPE, book);
   			data.add(book3, RDF.TYPE, book);
@@ -199,10 +200,10 @@ public class TestTicket669 extends QuadsTestCase {
              */
 
 //            answer.add(createBindingSet(
-//            		new BindingImpl("neType", vf.createURI("http://example/class/Location"))
+//            		new SimpleBinding("neType", vf.createIRI("http://example/class/Location"))
 //            		));
 //            answer.add(createBindingSet(
-//            		new BindingImpl("neType", vf.createURI("http://example/class/Person"))
+//            		new SimpleBinding("neType", vf.createIRI("http://example/class/Person"))
 //            		));
 
 	  		/*

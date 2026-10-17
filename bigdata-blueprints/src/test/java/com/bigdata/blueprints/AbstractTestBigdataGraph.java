@@ -29,6 +29,7 @@ import com.bigdata.journal.Journal;
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.sail.BigdataSail;
 import com.bigdata.rdf.sail.BigdataSail.Options;
+import com.bigdata.rdf.sail.webapp.NanoSparqlServer;
 import com.bigdata.rdf.vocab.NoVocabulary;
 import com.tinkerpop.blueprints.EdgeTestSuite;
 import com.tinkerpop.blueprints.GraphQueryTestSuite;
@@ -42,6 +43,13 @@ import junit.framework.TestCase2;
 /**
  */
 public abstract class AbstractTestBigdataGraph extends TestCase2 { 
+
+    static {
+        if (System.getProperty(NanoSparqlServer.SystemProperties.JETTY_XML) == null) {
+            System.setProperty(NanoSparqlServer.SystemProperties.JETTY_XML,
+                    "jetty/jettyBlueprintsTest.xml");
+        }
+    }
     
     /**
      * 

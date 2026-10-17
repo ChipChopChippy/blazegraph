@@ -111,15 +111,15 @@ public class TestSPORelation extends AbstractTripleStoreTestCase {
 
         factory = new MockTermIdFactory();
 
-        rdfsSubClassOf = new Constant<IV>(factory.newTermId(VTE.URI));
+        rdfsSubClassOf = new Constant<IV>(factory.newTermId(VTE.IRI));
 
-        rdfsResource = new Constant<IV>(factory.newTermId(VTE.URI));
+        rdfsResource = new Constant<IV>(factory.newTermId(VTE.IRI));
 
-        rdfType = new Constant<IV>(factory.newTermId(VTE.URI));
+        rdfType = new Constant<IV>(factory.newTermId(VTE.IRI));
 
-        rdfsClass = new Constant<IV>(factory.newTermId(VTE.URI));
+        rdfsClass = new Constant<IV>(factory.newTermId(VTE.IRI));
 
-        someGraph = new Constant<IV>(factory.newTermId(VTE.URI));
+        someGraph = new Constant<IV>(factory.newTermId(VTE.IRI));
 
     }
     
@@ -140,11 +140,11 @@ public class TestSPORelation extends AbstractTripleStoreTestCase {
 //     * test the term id bits.
 //     */
 //    private static TermId uriId(long in) {
-//        return new TermId(VTE.URI, in);
+//        return new TermId(VTE.IRI, in);
 //    }
 
     private IV<?,?> uriId(long ignored) {
-        return factory.newTermId(VTE.URI);
+        return factory.newTermId(VTE.IRI);
     }
 
 //    private static long literalId(long in) {

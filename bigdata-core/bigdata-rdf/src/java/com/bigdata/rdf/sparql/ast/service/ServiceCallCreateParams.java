@@ -29,7 +29,7 @@ package com.bigdata.rdf.sparql.ast.service;
 
 import org.apache.http.conn.ClientConnectionManager;
 import org.eclipse.jetty.client.HttpClient;
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.bop.join.BaseJoinStats;
 import com.bigdata.rdf.store.AbstractTripleStore;
@@ -45,7 +45,7 @@ public interface ServiceCallCreateParams {
     /**
      * The end point for which the {@link ServiceCall} will be invoked.
      */
-    URI getServiceURI();
+    IRI getServiceURI();
     
     /**
      * The {@link AbstractTripleStore} against which the query is being

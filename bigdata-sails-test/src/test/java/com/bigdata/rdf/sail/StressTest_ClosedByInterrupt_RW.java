@@ -9,24 +9,25 @@ import java.util.Properties;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.query.Binding;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.RepositoryResult;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.query.Binding;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.RepositoryResult;
 
 public class StressTest_ClosedByInterrupt_RW extends TestCase {
     
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(StressTest_ClosedByInterrupt_RW.class);
     
     public StressTest_ClosedByInterrupt_RW() {
@@ -104,7 +105,7 @@ public class StressTest_ClosedByInterrupt_RW extends TestCase {
 
         final BigdataSail sail = new BigdataSail(props);
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
-        repo.initialize();
+        repo.init();
 
         final InsertDeleteRunner mapper = new InsertDeleteRunner(repo);
         final ReadOnlyRunner mdp = new ReadOnlyRunner(repo);
@@ -189,10 +190,10 @@ public class StressTest_ClosedByInterrupt_RW extends TestCase {
         private void doInsert(final RepositoryConnection conn, final int loop, final int index)
                 throws RepositoryException {
             final ValueFactory vf = conn.getValueFactory();
-            final URI c = vf.createURI("context:loop:" + loop + ":item:" + index);
-            final URI s = vf.createURI("subject:loop:" + loop + ":item:" + index);
+            final IRI c = vf.createIRI("context:loop:" + loop + ":item:" + index);
+            final IRI s = vf.createIRI("subject:loop:" + loop + ":item:" + index);
             for (int x = 0; x < NUM_STATEMENTS_PER_INSERT; ++x) {
-                final URI p = vf.createURI("predicate:" + x);
+                final IRI p = vf.createIRI("predicate:" + x);
                 final Literal o = vf.createLiteral("SomeValue");
                 conn.add(s, p, o, c);
             }
@@ -201,7 +202,7 @@ public class StressTest_ClosedByInterrupt_RW extends TestCase {
         private void doDelete(final RepositoryConnection conn, final int loop, final int index)
                 throws RepositoryException {
             final ValueFactory vf = conn.getValueFactory();
-            final URI context = vf.createURI("context:loop:" + loop + ":item:" + index);
+            final IRI context = vf.createIRI("context:loop:" + loop + ":item:" + index);
             final Collection<Statement> statements = getStatementsForContext(conn, context);
             for (Statement statement : statements) {
                 conn.remove(statement, context);
@@ -209,7 +210,7 @@ public class StressTest_ClosedByInterrupt_RW extends TestCase {
         }
 
         private Collection<Statement> getStatementsForContext(final RepositoryConnection conn,
-                final URI context) throws RepositoryException {
+                final IRI context) throws RepositoryException {
             RepositoryResult<Statement> res = null;
             final Collection<Statement> statements = new ArrayList<Statement>();
             try {

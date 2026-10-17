@@ -209,8 +209,8 @@ public class TestIVariableBindingRequirements extends AbstractOptimizerTestCase 
              
        final List<IBindingSet> bindingSets = new ArrayList<IBindingSet>() {{
           add(new ListBindingSet() {{
-             set(Var.var("x"), new Constant<>(TermId.mockIV(VTE.URI)));
-             set(Var.var("y"), new Constant<>(TermId.mockIV(VTE.URI)));
+             set(Var.var("x"), new Constant<>(TermId.mockIV(VTE.IRI)));
+             set(Var.var("y"), new Constant<>(TermId.mockIV(VTE.IRI)));
           }});
        }};
           
@@ -612,7 +612,7 @@ public class TestIVariableBindingRequirements extends AbstractOptimizerTestCase 
     public void testServiceSparql11Constant() {
        
       final BigdataValueFactory f = store.getValueFactory();
-      final BigdataURI serviceEndpoint = f.createURI("http://custom.endpoint");
+      final BigdataURI serviceEndpoint = f.createIRI("http://custom.endpoint");
       final IV serviceEndpointIV = makeIV(serviceEndpoint);
       
       final BigdataValue[] values = new BigdataValue[] { serviceEndpoint };       
@@ -678,10 +678,10 @@ public class TestIVariableBindingRequirements extends AbstractOptimizerTestCase 
     public void testServiceBDS() {
        
        final BigdataValueFactory f = store.getValueFactory();
-       final BigdataURI bdsSearch = f.createURI(BDS.NAMESPACE + "search");
-       final BigdataURI predSearch = f.createURI(BDS.SEARCH.toString());
-       final BigdataURI predSearchTimeout = f.createURI(BDS.SEARCH_TIMEOUT.toString());
-       final BigdataURI predMatchExact = f.createURI(BDS.MATCH_EXACT.toString());
+       final BigdataURI bdsSearch = f.createIRI(BDS.NAMESPACE + "search");
+       final BigdataURI predSearch = f.createIRI(BDS.SEARCH.toString());
+       final BigdataURI predSearchTimeout = f.createIRI(BDS.SEARCH_TIMEOUT.toString());
+       final BigdataURI predMatchExact = f.createIRI(BDS.MATCH_EXACT.toString());
        
        final BigdataValue[] values = 
           new BigdataValue[] { bdsSearch, predSearch, predSearchTimeout, predMatchExact };       
@@ -718,18 +718,18 @@ public class TestIVariableBindingRequirements extends AbstractOptimizerTestCase 
    public void testServiceFTS() {
        
        final BigdataValueFactory f = store.getValueFactory();
-       final BigdataURI ftsSearch = f.createURI(FTS.NAMESPACE + "search");
-       final BigdataURI predSearch = f.createURI(FTS.SEARCH.toString());
-       final BigdataURI predEndpoint = f.createURI(FTS.ENDPOINT.toString());
-       final BigdataURI predEndpointType = f.createURI(FTS.ENDPOINT_TYPE.toString());
-       final BigdataURI predParams = f.createURI(FTS.PARAMS.toString());
-       final BigdataURI predScore = f.createURI(FTS.SCORE.toString());
-       final BigdataURI predScoreField = f.createURI(FTS.SCORE_FIELD.toString());
-       final BigdataURI predSearchField = f.createURI(FTS.SEARCH_FIELD.toString());
-       final BigdataURI predSnippet = f.createURI(FTS.SNIPPET.toString());
-       final BigdataURI predSnippetField = f.createURI(FTS.SNIPPET_FIELD.toString());
-       final BigdataURI predTimeout = f.createURI(FTS.TIMEOUT.toString());
-       final BigdataURI predSearchResultType = f.createURI(FTS.SEARCH_RESULT_TYPE.toString());
+       final BigdataURI ftsSearch = f.createIRI(FTS.NAMESPACE + "search");
+       final BigdataURI predSearch = f.createIRI(FTS.SEARCH.toString());
+       final BigdataURI predEndpoint = f.createIRI(FTS.ENDPOINT.toString());
+       final BigdataURI predEndpointType = f.createIRI(FTS.ENDPOINT_TYPE.toString());
+       final BigdataURI predParams = f.createIRI(FTS.PARAMS.toString());
+       final BigdataURI predScore = f.createIRI(FTS.SCORE.toString());
+       final BigdataURI predScoreField = f.createIRI(FTS.SCORE_FIELD.toString());
+       final BigdataURI predSearchField = f.createIRI(FTS.SEARCH_FIELD.toString());
+       final BigdataURI predSnippet = f.createIRI(FTS.SNIPPET.toString());
+       final BigdataURI predSnippetField = f.createIRI(FTS.SNIPPET_FIELD.toString());
+       final BigdataURI predTimeout = f.createIRI(FTS.TIMEOUT.toString());
+       final BigdataURI predSearchResultType = f.createIRI(FTS.SEARCH_RESULT_TYPE.toString());
        
        final BigdataValue[] values = 
           new BigdataValue[] { 

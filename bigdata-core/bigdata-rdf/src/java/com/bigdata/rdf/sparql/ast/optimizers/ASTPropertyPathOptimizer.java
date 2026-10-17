@@ -27,13 +27,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sparql.ast.optimizers;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -65,7 +67,7 @@ import com.bigdata.rdf.sparql.ast.eval.AST2BOpContext;
 public class ASTPropertyPathOptimizer extends AbstractJoinGroupOptimizer
 		implements IASTOptimizer {
 
-//	private static final transient Logger log = Logger.getLogger(ASTPropertyPathOptimizer.class);
+//	private static final transient Logger log = LogManager.getLogger(ASTPropertyPathOptimizer.class);
 	
     /**
      * Optimize the join group.

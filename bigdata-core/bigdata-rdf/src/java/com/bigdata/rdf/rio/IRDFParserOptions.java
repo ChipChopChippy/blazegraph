@@ -1,13 +1,12 @@
 package com.bigdata.rdf.rio;
 
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.RDFParser.DatatypeHandling;
-import org.openrdf.rio.helpers.RDFParserBase;
+import org.eclipse.rdf4j.rio.RDFParser;
+import com.bigdata.rdf.rio.DatatypeHandling;
 
 /**
  * Instances of this interface may be used to configure options on an
  * {@link RDFParser}. The options all have the defaults specified by
- * {@link RDFParserBase}.
+ * {@link RDFParser}.
  */
 public interface IRDFParserOptions {
 

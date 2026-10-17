@@ -28,8 +28,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.relation.accesspath;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 /**
  * An abstract implementation of an unsynchronized buffer backed by a fixed
  * capacity array.
@@ -40,7 +41,7 @@ import org.apache.log4j.Logger;
  */
 public abstract class AbstractUnsynchronizedArrayBuffer<E> implements IBuffer<E> {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(AbstractUnsynchronizedArrayBuffer.class);
     
     /**

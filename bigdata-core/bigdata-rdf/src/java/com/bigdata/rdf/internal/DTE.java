@@ -31,8 +31,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.UUID;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.rdf.internal.impl.BlobIV;
 import com.bigdata.rdf.lexicon.LexiconRelation;
@@ -56,7 +56,7 @@ import com.bigdata.util.Bytes;
  * {@link BigdataValue}. However, the object materialized from the TERMS index
  * may also provide indirection into the file system, S3, etc.
  * <p>
- * The {@link VTE} has 4 distinctions (URI, Literal, BlankNode, and SID) and is
+ * The {@link VTE} has 4 distinctions (IRI, Literal, BlankNode, and SID) and is
  * coded in the high 2 bits of a byte while the {@link DTE} has 16 possible
  * distinctions, one of which is reserved against future use and one of which is
  * reserved against extensibility in the set of intrinsic types.
@@ -213,12 +213,12 @@ public enum DTE {
      * <dt>{@link VTE#LITERAL} plus the extension bit</dt>
      * <dd>Represent a data type literal where the extension IV is the data type
      * of the literal.</dd>
-     * <dt>{@link VTE#URI} plus the extension bit</dt>
-     * <dd>Represent a URI where the extension IV is the namespace of the URI
-     * and the inline Unicode component is the local name of the URI. This
-     * depends on the openrdf definition of a {@link URI}'s namespace and local
-     * name (basically, everything after the last '/' in the URI path or after
-     * the '#' if there is a URI anchor).</dd>
+     * <dt>{@link VTE#IRI} plus the extension bit</dt>
+     * <dd>Represent a IRI where the extension IV is the namespace of the IRI
+     * and the inline Unicode component is the local name of the IRI. This
+     * depends on the openrdf definition of a {@link IRI}'s namespace and local
+     * name (basically, everything after the last '/' in the IRI path or after
+     * the '#' if there is a IRI anchor).</dd>
      * </dl>
      */
     XSDString((byte) 14, 0/* len */, String.class, XSD.STRING,
@@ -231,7 +231,7 @@ public enum DTE {
 	 * <p>
 	 * Note: This is NOT the same as the {@link AbstractIV#isExtension()} bit.
 	 * The latter <strong>always</strong> indicates that an {@link IV} follows
-	 * the <code>flags</code> byte and indicates the actual datatype URI. In
+	 * the <code>flags</code> byte and indicates the actual datatype IRI. In
 	 * contrast, {@link DTE#Extension} gives you another byte which you can use
 	 * to handle additional "intrinsic" types.
 	 *
@@ -251,13 +251,13 @@ public enum DTE {
      *            The class of the Java object used to represent instances of
      *            the coded data type.
      * @param datatype
-     *            The well-known URI for the data type.
+     *            The well-known IRI for the data type.
      * @param flags
      *            Some bit flags. See {@link #NUMERIC},
      *            {@link #UNSIGNED_NUMERIC}, etc.
      */
     private DTE(final byte v, final int len, final Class<?> cls,
-            final URI datatypeURI, final int flags) {
+            final IRI datatypeURI, final int flags) {
         this.v = v;
         this.len = len;
         this.cls = cls;
@@ -312,18 +312,18 @@ public enum DTE {
     }
 
     /**
-     * Return the {@link DTE} for the datatype {@link URI}.
+     * Return the {@link DTE} for the datatype {@link IRI}.
      * 
      * @param datatype
-     *            The datatype {@link URI}.
+     *            The datatype {@link IRI}.
      *            
      * @return The {@link DTE} for that datatype -or- {@link #Extension} if the
      *         datatype is <code>null</code> (there is no specific datatype for
      *         an extension since extensions by their nature can handle any
-     *         datatype) -or- <code>null</code> if the datatype {@link URI} is
+     *         datatype) -or- <code>null</code> if the datatype {@link IRI} is
      *         none of the datatypes for which native support is provided.
      */
-    static final public DTE valueOf(final URI datatype) {
+    static final public DTE valueOf(final IRI datatype) {
         /*
          * Note: This switch MUST correspond to the declarations above (you can
          * not make the cases of the switch from [v] since it is not considered
@@ -403,9 +403,9 @@ public enum DTE {
     private final Class<?> cls;
 
     /**
-     * The well-known URI for the data type.
+     * The well-known IRI for the data type.
      */
-    private final URI datatypeURI;
+    private final IRI datatypeURI;
 
     /**
      * Some bit flags.
@@ -445,9 +445,9 @@ public enum DTE {
     }
 
     /**
-     * The corresponding datatype {@link URI}.
+     * The corresponding datatype {@link IRI}.
      */
-    final public URI getDatatypeURI() {
+    final public IRI getDatatypeURI() {
 
         return datatypeURI;
         

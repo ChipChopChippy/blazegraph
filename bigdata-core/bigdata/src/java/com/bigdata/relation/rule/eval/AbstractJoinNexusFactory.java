@@ -32,8 +32,9 @@ import java.lang.ref.WeakReference;
 import java.util.Properties;
 import java.util.WeakHashMap;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.bop.joinGraph.IEvaluationPlan;
 import com.bigdata.bop.joinGraph.IEvaluationPlanFactory;
@@ -56,7 +57,7 @@ abstract public class AbstractJoinNexusFactory implements IJoinNexusFactory {
      */
     private static final long serialVersionUID = 1L;
 
-    private static final transient Logger log = Logger.getLogger(AbstractJoinNexusFactory.class);
+    private static final transient Logger log = LogManager.getLogger(AbstractJoinNexusFactory.class);
 
     private final ActionEnum action;
     private final long writeTimestamp;

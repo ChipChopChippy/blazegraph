@@ -27,11 +27,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.rules;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.OWL;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.OWL;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
 import com.bigdata.rdf.inf.OwlSameAsPropertiesExpandingIterator;
 import com.bigdata.rdf.internal.IV;
 import com.bigdata.rdf.model.StatementEnum;
@@ -83,17 +83,17 @@ public class TestOwlSameAsPropertiesExpandingIterator extends AbstractInferenceE
 //                System.err.println(rule.getName());
 //            }
             
-            final URI A = new URIImpl("http://www.bigdata.com/A");
-            final URI B = new URIImpl("http://www.bigdata.com/B");
-//            final URI C = new URIImpl("http://www.bigdata.com/C");
-//            final URI D = new URIImpl("http://www.bigdata.com/D");
-//            final URI E = new URIImpl("http://www.bigdata.com/E");
+            final IRI A = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/A");
+            final IRI B = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/B");
+//            final IRI C = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/C");
+//            final IRI D = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/D");
+//            final IRI E = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/E");
 
-//            final URI V = new URIImpl("http://www.bigdata.com/V");
-            final URI W = new URIImpl("http://www.bigdata.com/W");
-            final URI X = new URIImpl("http://www.bigdata.com/X");
-            final URI Y = new URIImpl("http://www.bigdata.com/Y");
-            final URI Z = new URIImpl("http://www.bigdata.com/Z");
+//            final IRI V = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/V");
+            final IRI W = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/W");
+            final IRI X = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/X");
+            final IRI Y = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/Y");
+            final IRI Z = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/Z");
 
             {
 //                TMStatementBuffer buffer = new TMStatementBuffer

@@ -6,8 +6,9 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.IIndex;
 import com.bigdata.btree.IRangeQuery;
 import com.bigdata.cache.ConcurrentWeakValueCache;
@@ -30,7 +31,7 @@ import com.bigdata.util.NT;
  */
 abstract public class AbstractIndexCache<T extends IRangeQuery> {
 
-    protected static final Logger log = Logger.getLogger(AbstractIndexCache.class);
+    protected static final Logger log = LogManager.getLogger(AbstractIndexCache.class);
     
     /**
      * A canonicalizing cache for the client's {@link IIndex} proxy objects. The

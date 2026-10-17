@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf;
 
-import info.aduna.lang.service.ServiceRegistry;
+import org.eclipse.rdf4j.common.lang.service.ServiceRegistry;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -35,17 +35,18 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.ServiceLoader;
 
-import org.apache.log4j.Logger;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.resultio.TupleQueryResultParserFactory;
-import org.openrdf.query.resultio.TupleQueryResultParserRegistry;
-import org.openrdf.query.resultio.TupleQueryResultWriterFactory;
-import org.openrdf.query.resultio.TupleQueryResultWriterRegistry;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParserFactory;
-import org.openrdf.rio.RDFParserRegistry;
-import org.openrdf.rio.RDFWriterFactory;
-import org.openrdf.rio.RDFWriterRegistry;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultParserFactory;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultParserRegistry;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultWriterFactory;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultWriterRegistry;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParserFactory;
+import org.eclipse.rdf4j.rio.RDFParserRegistry;
+import org.eclipse.rdf4j.rio.RDFWriterFactory;
+import org.eclipse.rdf4j.rio.RDFWriterRegistry;
 
 /**
  * This static class provides a hook which allows the replacement of services
@@ -83,7 +84,7 @@ import org.openrdf.rio.RDFWriterRegistry;
  */
 public class ServiceProviderHook {
 
-	private static final Logger log = Logger.getLogger(ServiceProviderHook.class);
+	private static final Logger log = LogManager.getLogger(ServiceProviderHook.class);
 	
 	public static final String NTRIPLES_PARSER_FACTORY = "com.bigdata.rdf.rio.ntriples.BigdataNTriplesParserFactory";
 
@@ -172,7 +173,7 @@ public class ServiceProviderHook {
 
 		if (log.isInfoEnabled()) {
 
-			for (RDFFormat f : RDFFormat.values()) {
+			for (RDFFormat f : RDFParserRegistry.getInstance().getKeys()) {
 				log.info("RDFFormat: before: " + f);
 			}
 			for (RDFParserFactory f : RDFParserRegistry.getInstance().getAll()) {
@@ -192,7 +193,7 @@ public class ServiceProviderHook {
 //		 * classes.
 //		 */
 //		{
-//			final String className = "info.aduna.lang.service.ServiceRegistry";
+//			final String className = "org.eclipse.rdf4j.common.lang.service.ServiceRegistry";
 //			try {
 //				Class.forName(className);
 //			} catch (ClassNotFoundException ex) {
@@ -200,18 +201,6 @@ public class ServiceProviderHook {
 //			}
 //		}
 //        
-//			RDFFormat.register(NTRIPLES_RDR);
-//			RDFFormat.register(TURTLE_RDR);
-		
-		/*
-		 * Register our RDFFormats.
-		 * 
-		 * Note: They are NOT registered automatically by their constructors.
-		 */
-		RDFFormat.register(TURTLE_RDR);
-		RDFFormat.register(NTRIPLES_RDR);
-		RDFFormat.register(JSON_RDR);
-		
 		/*
          * Force the class loader to resolve the register, which will cause it
          * to be populated with the service provides as declared in the various
@@ -292,7 +281,7 @@ public class ServiceProviderHook {
 //        }
 
 		if (log.isInfoEnabled()) {
-			for (RDFFormat f : RDFFormat.values()) {
+			for (RDFFormat f : RDFParserRegistry.getInstance().getKeys()) {
 				log.info("RDFFormat: after: " + f);
 			}
 			for (RDFParserFactory f : RDFParserRegistry.getInstance().getAll()) {

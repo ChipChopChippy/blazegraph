@@ -35,8 +35,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpEvaluationContext;
@@ -89,7 +90,7 @@ import com.bigdata.relation.rule.EmptyAccessPathExpander;
  */
 public class AST2BOpJoins extends AST2BOpFilters {
 
-    private static final Logger log = Logger.getLogger(AST2BOpFilters.class);
+    private static final Logger log = LogManager.getLogger(AST2BOpFilters.class);
 
     /**
      * 
@@ -308,7 +309,7 @@ public class AST2BOpJoins extends AST2BOpFilters {
 
 		// A mock constant used for predicate in which the distinctVar is not
 		// yet bound.
-		final Constant<IV> mockConst = new Constant<IV>(TermId.mockIV(VTE.URI));
+		final Constant<IV> mockConst = new Constant<IV>(TermId.mockIV(VTE.IRI));
 
 		// ensure distinctVar is bound in mockPred.
 		final IPredicate mockPred = pred.asBound(distinctVar, mockConst);

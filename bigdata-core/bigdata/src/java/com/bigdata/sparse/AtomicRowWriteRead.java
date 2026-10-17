@@ -31,8 +31,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.IIndex;
 import com.bigdata.btree.keys.IKeyBuilder;
 import com.bigdata.util.InnerCause;
@@ -53,7 +54,7 @@ public class AtomicRowWriteRead extends AbstractAtomicRowReadOrWrite {
      */
     private static final long serialVersionUID = 7481235291210326044L;
 
-    private static final Logger log = Logger.getLogger(AtomicRowWriteRead.class);
+    private static final Logger log = LogManager.getLogger(AtomicRowWriteRead.class);
 
     private long writeTime;
     

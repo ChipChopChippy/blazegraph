@@ -30,8 +30,9 @@ package com.bigdata.sparse;
 
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.IIndex;
 import com.bigdata.btree.IndexMetadata;
 import com.bigdata.journal.IIndexManager;
@@ -59,7 +60,7 @@ public class GlobalRowStoreHelper {
     */
     private final IIndexManager indexManager;
     
-    protected static final transient Logger log = Logger.getLogger(GlobalRowStoreHelper.class);
+    protected static final transient Logger log = LogManager.getLogger(GlobalRowStoreHelper.class);
     
 //    protected static final boolean INFO = log.isInfoEnabled();
     

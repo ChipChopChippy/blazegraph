@@ -43,29 +43,30 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.zip.GZIPInputStream;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.GraphQueryResult;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.UpdateExecutionException;
-import org.openrdf.query.algebra.StatementPattern.Scope;
-//import org.openrdf.query.impl.MutableTupleQueryResult;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.RepositoryResult;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParseException;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.RDFParser.DatatypeHandling;
-import org.openrdf.rio.RDFParserFactory;
-import org.openrdf.rio.RDFParserRegistry;
-import org.openrdf.rio.helpers.RDFHandlerBase;
-import org.openrdf.sail.SailException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.GraphQueryResult;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.UpdateExecutionException;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
+//import org.eclipse.rdf4j.query.impl.MutableTupleQueryResult;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.RepositoryResult;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFParseException;
+import org.eclipse.rdf4j.rio.RDFParser;
+import com.bigdata.rdf.rio.DatatypeHandling;
+import org.eclipse.rdf4j.rio.RDFParserFactory;
+import org.eclipse.rdf4j.rio.RDFParserRegistry;
+import org.eclipse.rdf4j.rio.helpers.AbstractRDFHandler;
+import org.eclipse.rdf4j.sail.SailException;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpUtility;
@@ -134,7 +135,7 @@ import com.bigdata.striterator.Chunkerator;
 import cutthecrap.utils.striterators.ICloseableIterator;
 import cutthecrap.utils.striterators.Resolver;
 import cutthecrap.utils.striterators.Striterator;
-import info.aduna.iteration.CloseableIteration;
+import org.eclipse.rdf4j.common.iteration.CloseableIteration;
 
 /**
  * Class handles SPARQL update query plan generation.
@@ -144,7 +145,7 @@ import info.aduna.iteration.CloseableIteration;
  */
 public class AST2BOpUpdate extends AST2BOpUtility {
 
-    private static final Logger log = Logger.getLogger(AST2BOpUpdate.class);
+    private static final Logger log = LogManager.getLogger(AST2BOpUpdate.class);
 
     /**
      * When <code>true</code>, convert the SPARQL UPDATE into a physical
@@ -1098,7 +1099,7 @@ public class AST2BOpUpdate extends AST2BOpUtility {
 	private static ICloseableIterator<IBindingSet[]> asBigdataIterator(
 			final LexiconRelation r,
 			final int chunkSize,
-			final CloseableIteration<BindingSet, QueryEvaluationException> result) {
+			final CloseableIteration<BindingSet> result) {
 		
 		// Wrap with streaming iterator pattern.
 		final Striterator sitr = new Striterator(
@@ -1490,14 +1491,14 @@ public class AST2BOpUpdate extends AST2BOpUtility {
          * Try to get the RDFFormat from the URL's file path.
          */
 
-        RDFFormat fmt = RDFFormat.forFileName(fileName);
+        RDFFormat fmt = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(fileName);
 
         if (fmt == null && fileName.endsWith(".zip")) {
-            fmt = RDFFormat.forFileName(fileName.substring(0, fileName.length() - 4));
+            fmt = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(fileName.substring(0, fileName.length() - 4));
         }
 
         if (fmt == null && fileName.endsWith(".gz")) {
-            fmt = RDFFormat.forFileName(fileName.substring(0, fileName.length() - 3));
+            fmt = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(fileName.substring(0, fileName.length() - 3));
         }
 
         if (fmt == null) {
@@ -1526,14 +1527,14 @@ public class AST2BOpUpdate extends AST2BOpUtility {
      *             the Sail and is therefore easier to place into service.
      */
     private static void doLoad(final BigdataSailConnection conn,
-            final URL sourceURL, final URI defaultContext,
+            final URL sourceURL, final IRI defaultContext,
             final IRDFParserOptions parserOptions, final AtomicLong nmodified,
             final LoadGraph op) throws IOException,
             RDFParseException, RDFHandlerException {
 
         // Use the default context if one was given and otherwise
-        // the URI from which the data are being read.
-        final Resource defactoContext = defaultContext == null ? new URIImpl(
+        // the IRI from which the data are being read.
+        final Resource defactoContext = defaultContext == null ? org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 sourceURL.toExternalForm()) : defaultContext;
 
         URLConnection hconn = null;
@@ -1566,7 +1567,7 @@ public class AST2BOpUpdate extends AST2BOpUtility {
              * <a href="https://sourceforge.net/apps/trac/bigdata/ticket/620">
              * UpdateServlet fails to parse MIMEType when doing conneg. </a>
              */
-            RDFFormat format = RDFFormat.forMIMEType(new MiniMime(contentType)
+            RDFFormat format = com.bigdata.rdf.rio.RDF4JFormatUtil.forMIMEType(new MiniMime(contentType)
                     .getMimeType());
 
             if (format == null) {
@@ -1579,7 +1580,7 @@ public class AST2BOpUpdate extends AST2BOpUtility {
                 throw new UnknownContentTypeException(contentType);
 
             final RDFParserFactory rdfParserFactory = RDFParserRegistry
-                    .getInstance().get(format);
+                    .getInstance().get(format).orElse(null);
 
             if (rdfParserFactory == null)
                 throw new UnknownContentTypeException(contentType);
@@ -1593,13 +1594,13 @@ public class AST2BOpUpdate extends AST2BOpUtility {
              * Apply the RDF parser options.
              */
 
-            rdfParser.setVerifyData(parserOptions.getVerifyData());
+            com.bigdata.rdf.rio.RDFParserOptions.setVerifyData(rdfParser, parserOptions.getVerifyData());
 
-            rdfParser.setPreserveBNodeIDs(parserOptions.getPreserveBNodeIDs());
+            com.bigdata.rdf.rio.RDFParserOptions.setPreserveBNodeIDs(rdfParser, parserOptions.getPreserveBNodeIDs());
 
-            rdfParser.setStopAtFirstError(parserOptions.getStopAtFirstError());
+            
 
-            rdfParser.setDatatypeHandling(parserOptions.getDatatypeHandling());
+            com.bigdata.rdf.rio.RDFParserOptions.setDatatypeHandling(rdfParser, parserOptions.getDatatypeHandling());
 
             rdfParser.setRDFHandler(new AddStatementHandler(conn, nmodified,
                     defactoContext, op));
@@ -1674,7 +1675,7 @@ public class AST2BOpUpdate extends AST2BOpUtility {
     /**
      * Helper class adds statements to the sail as they are visited by a parser.
      */
-    private static class AddStatementHandler extends RDFHandlerBase {
+    private static class AddStatementHandler extends AbstractRDFHandler {
 
         private final LoadGraph op;
         private final long beginNanos;
@@ -1798,7 +1799,7 @@ public class AST2BOpUpdate extends AST2BOpUtility {
      * @throws RepositoryException
      * @throws SailException
      */
-    private static final void clearOneGraph(final URI targetGraph, //
+    private static final void clearOneGraph(final IRI targetGraph, //
             final AST2BOpUpdateContext context//
     ) throws RepositoryException, SailException {
 
@@ -1839,7 +1840,7 @@ public class AST2BOpUpdate extends AST2BOpUtility {
     private static void clearGraph(//
             final boolean silent,//
             final String solutionSet,//
-            final URI targetGraph, //
+            final IRI targetGraph, //
             final Scope scope,//
             final boolean allGraphs,//
             final boolean allSolutionSets,//
@@ -2206,7 +2207,7 @@ public class AST2BOpUpdate extends AST2BOpUtility {
 
         final Resource s = (Resource) spo.getSubject();
 
-        final URI p = (URI) spo.getPredicate();
+        final IRI p = (IRI) spo.getPredicate();
         
         final Value o = (Value) spo.getObject();
         
@@ -2275,13 +2276,13 @@ public class AST2BOpUpdate extends AST2BOpUtility {
 
 //        final Resource s = (Resource) spo.s().getValue();
 //
-//        final URI p = (URI) spo.p().getValue();
+//        final IRI p = (IRI) spo.p().getValue();
 //        
 //        final Value o = (Value) spo.o().getValue();
 
         final Resource s = stmt.getSubject();
         
-        final URI p = stmt.getPredicate();
+        final IRI p = stmt.getPredicate();
         
         final Value o = stmt.getObject();
         

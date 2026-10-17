@@ -15,19 +15,19 @@
 */
 package com.bigdata.rdf.graph.impl.sail;
 
-import info.aduna.iteration.CloseableIteration;
+import org.eclipse.rdf4j.common.iteration.CloseableIteration;
 
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Random;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.sail.Sail;
-import org.openrdf.sail.SailConnection;
-import org.openrdf.sail.SailException;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.sail.Sail;
+import org.eclipse.rdf4j.sail.SailConnection;
+import org.eclipse.rdf4j.sail.SailException;
 
 import com.bigdata.rdf.graph.EdgesEnum;
 import com.bigdata.rdf.graph.IGASContext;
@@ -148,7 +148,7 @@ public class SAILGASEngine extends GASEngine {
                 final IGASContext<?, ?, ?> ctx, final Value u)
                 throws SailException {
 
-            final URI linkTypeIV = (URI) ctx.getLinkType();
+            final IRI linkTypeIV = (IRI) ctx.getLinkType();
             if(linkTypeIV != null) {
                 /*
                  * FIXME RDR: We need to use a union of access paths for link
@@ -178,7 +178,7 @@ public class SAILGASEngine extends GASEngine {
             final boolean posOptimization = linkTypeIV != null
                     && inEdges;
 
-            final CloseableIteration<? extends Statement, SailException> citr;
+            final CloseableIteration<? extends Statement> citr;
             if (posOptimization) {
             
                 /*
@@ -188,7 +188,7 @@ public class SAILGASEngine extends GASEngine {
                  * 
                  * Bind O for this key-range scan.
                  */
-                citr = cxn.getStatements(null/* s */, (URI) linkTypeIV/* p */,
+                citr = cxn.getStatements(null/* s */, (IRI) linkTypeIV/* p */,
                         u/* o */, includeInferred, defaultContext);
 
             } else {
@@ -253,7 +253,7 @@ public class SAILGASEngine extends GASEngine {
 
                 final VertexDistribution sample = new VertexDistribution(r);
 
-                final CloseableIteration<? extends Statement, SailException> citr = cxn
+                final CloseableIteration<? extends Statement> citr = cxn
                         .getStatements(null/* s */, null/* p */, null /* o */,
                                 includeInferred, defaultContext);
 

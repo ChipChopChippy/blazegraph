@@ -26,6 +26,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package com.bigdata.nio;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.SelectableChannel;
@@ -171,7 +173,7 @@ import junit.framework.TestCase;
 
 public class TestPageServer extends TestCase {
 
-//    public static Logger log = Logger.getLogger(TestPageServer.class);
+//    public static Logger log = LogManager.getLogger(TestPageServer.class);
 //
 //    /**
 //     * Port used for the tests.

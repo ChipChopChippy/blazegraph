@@ -24,8 +24,9 @@ package com.bigdata.rdf.changesets;
 
 import java.util.Iterator;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.rdf.spo.ISPO;
 import com.bigdata.rdf.spo.ModifiedEnum;
 import com.bigdata.rdf.spo.SPO;
@@ -36,7 +37,7 @@ import com.bigdata.striterator.IChunkedOrderedIterator;
 
 public class StatementWriter {
     
-//    private static final Logger log = Logger.getLogger(StatementWriter.class);
+//    private static final Logger log = LogManager.getLogger(StatementWriter.class);
     
     public static long addStatements(final AbstractTripleStore database,
             final AbstractTripleStore statementStore, 

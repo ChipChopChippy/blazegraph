@@ -26,8 +26,9 @@ import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.rdf.sail.BigdataSail;
 import com.bigdata.rdf.sail.webapp.BigdataSailNSSWrapper;
 import com.tinkerpop.blueprints.Edge;
@@ -43,7 +44,7 @@ import com.tinkerpop.blueprints.impls.GraphTest;
  */
 public class TestBigdataGraphClientInMemorySail extends AbstractTestBigdataGraph {
 
-    private static final transient Logger log = Logger.getLogger(TestBigdataGraphClientInMemorySail.class);
+    private static final transient Logger log = LogManager.getLogger(TestBigdataGraphClientInMemorySail.class);
     
     /**
      * 

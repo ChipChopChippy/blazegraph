@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package com.bigdata.rdf.internal;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.rdf.internal.impl.literal.AbstractLiteralIV;
 import com.bigdata.rdf.internal.impl.uri.URIExtensionIV;
@@ -31,7 +31,7 @@ import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.vocab.Vocabulary;
 
 /**
- * Do-nothing inline URI factory used in the case where there is no vocabulary
+ * Do-nothing inline IRI factory used in the case where there is no vocabulary
  * defined.
  */
 public class NoInlineURIFactory implements IInlineURIFactory {
@@ -44,12 +44,12 @@ public class NoInlineURIFactory implements IInlineURIFactory {
     
     @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public URIExtensionIV createInlineURIIV(URI uri) {
+    public URIExtensionIV createInlineURIIV(IRI uri) {
         return null;
     }
 
     @Override
-    public String getLocalNameFromDelegate(URI namespace,
+    public String getLocalNameFromDelegate(IRI namespace,
             AbstractLiteralIV<BigdataLiteral, ?> delegate) {
         throw new UnsupportedOperationException(
                 "Since there can't be inlined URIs this should never be attempted.");

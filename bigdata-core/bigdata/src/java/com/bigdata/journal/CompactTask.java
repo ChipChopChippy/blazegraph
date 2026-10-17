@@ -33,8 +33,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bfs.BigdataFileSystem;
 import com.bigdata.btree.BTree;
 import com.bigdata.btree.Checkpoint;
@@ -84,7 +85,7 @@ public class CompactTask implements Callable<Journal> {
     /**
      * Logger.
      */
-    protected static final Logger log = Logger.getLogger(CompactTask.class);
+    protected static final Logger log = LogManager.getLogger(CompactTask.class);
 
     final static protected boolean INFO = log.isInfoEnabled();
 

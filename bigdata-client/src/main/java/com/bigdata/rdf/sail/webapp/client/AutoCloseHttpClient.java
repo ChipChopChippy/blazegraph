@@ -59,9 +59,9 @@ public class AutoCloseHttpClient extends HttpClient implements AutoCloseable {
 	@SuppressWarnings("unused")
 	private volatile StackInfoReport m_stopped = null;
 	
-	public AutoCloseHttpClient(final SslContextFactory sslFactory) {
-		
-		super(sslFactory); 
+	public AutoCloseHttpClient(final SslContextFactory.Client sslFactory) {
+		super();
+		setSslContextFactory(sslFactory);
 
 	}
 

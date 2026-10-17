@@ -27,13 +27,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sail.webapp.client;
 
-import org.openrdf.model.BNode;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 
 /**
  * Utility class to encode/decode RDF {@link Value}s for interchange with the
@@ -240,12 +239,12 @@ public class EncodeDecodeValue {
 //    }
     
     /**
-     * Decode a URI or Literal.
+     * Decode a IRI or Literal.
      * 
      * @param s
      *            The value to be decoded.
      * 
-     * @return The URI or literal -or- <code>null</code> if the argument was
+     * @return The IRI or literal -or- <code>null</code> if the argument was
      *         <code>null</code>.
      * 
      * @throws IllegalArgumentException
@@ -285,7 +284,7 @@ public class EncodeDecodeValue {
                  * Plain literal.
                  */
 
-                return new LiteralImpl(label);
+                return SimpleValueFactory.getInstance().createLiteral(label);
                 
             }
 
@@ -299,7 +298,7 @@ public class EncodeDecodeValue {
                 
                 final String languageCode = s.substring(closeQuotePos + 2);
                 
-                return new LiteralImpl(label, languageCode);
+                return SimpleValueFactory.getInstance().createLiteral(label, languageCode);
                 
             } else if (ch2 == '^') {
                 
@@ -315,9 +314,9 @@ public class EncodeDecodeValue {
 
                 final String datatypeStr = s.substring(closeQuotePos + 3);
 
-                final URI datatypeURI = decodeURI(datatypeStr);
+                final IRI datatypeURI = decodeURI(datatypeStr);
                 
-                return new LiteralImpl(label,datatypeURI);
+                return SimpleValueFactory.getInstance().createLiteral(label, datatypeURI);
                 
             } else {
                 
@@ -328,7 +327,7 @@ public class EncodeDecodeValue {
         } else if (ch == '<') {
 
             /*
-             * URI
+             * IRI
              */
             
             if (s.charAt(slen - 1) != '>')
@@ -336,7 +335,7 @@ public class EncodeDecodeValue {
 
             final String uriStr = s.substring(1, slen - 1);
 
-            return new URIImpl(uriStr);
+            return SimpleValueFactory.getInstance().createIRI(uriStr);
 
         } else {
 
@@ -367,22 +366,22 @@ public class EncodeDecodeValue {
     }
 
    /**
-    * Type safe variant for a {@link URI}.
+    * Type safe variant for a {@link IRI}.
     * 
     * @param param
     *           The encoded value.
     * 
-    * @return The URI -or- <code>null</code> if the argument was
+    * @return The IRI -or- <code>null</code> if the argument was
     *         <code>null</code>.
     */
-   public static URI decodeURI(final String param) {
+   public static IRI decodeURI(final String param) {
 
         final Value v = decodeValue(param);
 
-        if (v == null || v instanceof URI)
-            return (URI) v;
+        if (v == null || v instanceof IRI)
+            return (IRI) v;
 
-        throw new IllegalArgumentException("Not an URI: '" + param + "'");
+        throw new IllegalArgumentException("Not an IRI: '" + param + "'");
 
     }
     
@@ -390,7 +389,7 @@ public class EncodeDecodeValue {
      * Encode an RDF {@link Value} as it should appear if used in a SPARQL
      * query. E.g., a literal will look like <code>"abc"</code>,
      * <code>"abc"@en</code> or
-     * <code>"3"^^xsd:int.  A URI will look like <code>&lt;http://www.bigdata.com/&gt;</code>
+     * <code>"3"^^xsd:int.  A IRI will look like <code>&lt;http://www.bigdata.com/&gt;</code>
      * .
      * 
      * @param v
@@ -407,7 +406,7 @@ public class EncodeDecodeValue {
             return null;
         if (v instanceof BNode)
             throw new IllegalArgumentException();
-        if (v instanceof URI) {
+        if (v instanceof IRI) {
             return "<" + v.stringValue() + ">";
         }
         if (v instanceof Literal) {
@@ -416,11 +415,11 @@ public class EncodeDecodeValue {
             sb.append("\"");
             sb.append(lit.getLabel());
             sb.append("\"");
-            if (lit.getLanguage() != null) {
+            if (lit.getLanguage().isPresent()) {
                 sb.append("@");
-                sb.append(lit.getLanguage());
-            }
-            if (lit.getDatatype() != null) {
+                sb.append(lit.getLanguage().get());
+            } else if (lit.getDatatype() != null
+                    && !org.eclipse.rdf4j.model.vocabulary.XMLSchema.STRING.equals(lit.getDatatype())) {
                 sb.append("^^");
                 sb.append(encodeValue(lit.getDatatype()));
             }

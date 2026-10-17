@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.rdf.store.AbstractTripleStore;
 import com.bigdata.rdf.vocab.core.BigdataCoreVocabulary_v20151210;
@@ -44,13 +44,13 @@ public class TestMultiVocabulary extends BigdataCoreVocabulary_v20151210 {
 	
 	class TestVocabularyDecl implements VocabularyDecl {
 
-		private final URI[] uris = new URI[] { new URIImpl(
+		private final IRI[] uris = new IRI[] { org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
 				"http://blazegraph.com/Data#Position_") };
 
 		public TestVocabularyDecl() {
 		}
 
-		public Iterator<URI> values() {
+		public Iterator<IRI> values() {
 			return Collections.unmodifiableList(Arrays.asList(uris)).iterator();
 		}
 	}

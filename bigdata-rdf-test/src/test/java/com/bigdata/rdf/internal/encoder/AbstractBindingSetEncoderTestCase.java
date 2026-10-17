@@ -37,7 +37,7 @@ import java.util.UUID;
 
 import junit.framework.TestCase2;
 
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.bop.Constant;
 import com.bigdata.bop.IBindingSet;
@@ -75,7 +75,7 @@ import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataURI;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 
 /**
  * Base class for {@link IBindingSetEncoder}and {@link IBindingSetDecoder} test
@@ -113,7 +113,7 @@ abstract public class AbstractBindingSetEncoderTestCase extends TestCase2 {
     /**
      * The value factory for that namespace.
      */
-    protected BigdataValueFactory valueFactory = BigdataValueFactoryImpl
+    protected BigdataValueFactory valueFactory = BigdataSimpleValueFactory
             .getInstance(namespace);
 
     /**
@@ -214,8 +214,8 @@ abstract public class AbstractBindingSetEncoderTestCase extends TestCase2 {
         mockIV3 = (TermId) TermId.mockIV(VTE.LITERAL);
         mockIV3.setValue((BigdataValue) valueFactory.createLiteral("green"));
         
-        mockIVCarryingUri = (TermId) TermId.mockIV(VTE.URI);
-        mockIVCarryingUri.setValue((BigdataValue) valueFactory.createURI("http://green.as.uri"));
+        mockIVCarryingUri = (TermId) TermId.mockIV(VTE.IRI);
+        mockIVCarryingUri.setValue((BigdataValue) valueFactory.createIRI("http://green.as.uri"));
 
         mockIVCarryingBNode = (TermId) TermId.mockIV(VTE.BNODE);
         mockIVCarryingBNode.setValue((BigdataValue) valueFactory.createBNode("_:green_as_bnode"));
@@ -246,7 +246,7 @@ abstract public class AbstractBindingSetEncoderTestCase extends TestCase2 {
         unsignedLongIV = new XSDUnsignedLongIV<>(37747583929L);
         unsignedShortIV = new XSDUnsignedShortIV((short)5);
         
-        fullyInlineUriIV = new FullyInlineURIIV<>(new URIImpl("http://my.random.datatype"));
+        fullyInlineUriIV = new FullyInlineURIIV<>(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://my.random.datatype"));
         
         literalExtensionIV = new LiteralExtensionIV(inlineIV1, fullyInlineUriIV);
         // note: any value will be fine here, it's just about the fact that decoding must recover it
@@ -256,10 +256,10 @@ abstract public class AbstractBindingSetEncoderTestCase extends TestCase2 {
         
         // vocabUriByteIV and vocabUriShortIV both require materialization
         vocabUriByteIV = new VocabURIByteIV((byte)3);
-        vocabUriByteIV.setValue((BigdataURI) valueFactory.createURI("http://some.vocab.item1"));
+        vocabUriByteIV.setValue((BigdataURI) valueFactory.createIRI("http://some.vocab.item1"));
         
         vocabUriShortIV = new VocabURIShortIV((short)4);
-        vocabUriShortIV.setValue((BigdataURI) valueFactory.createURI("http://some.vocab.item2"));
+        vocabUriShortIV.setValue((BigdataURI) valueFactory.createIRI("http://some.vocab.item2"));
         
     }
 
@@ -436,7 +436,7 @@ abstract public class AbstractBindingSetEncoderTestCase extends TestCase2 {
         expected.set(Var.var("x"), new Constant<IV>(
                 new XSDNumericIV<BigdataLiteral>(12)));
         expected.set(Var.var("y"), new Constant<IV>(
-                new FullyInlineURIIV<BigdataURI>(new URIImpl(
+                new FullyInlineURIIV<BigdataURI>(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                         "http://www.bigdata.com"))));
 
         doEncodeDecodeTest(expected);
@@ -454,7 +454,7 @@ abstract public class AbstractBindingSetEncoderTestCase extends TestCase2 {
             expected.set(Var.var("x"), new Constant<IV>(
                     new XSDNumericIV<BigdataLiteral>(12)));
             expected.set(Var.var("y"), new Constant<IV>(
-                    new FullyInlineURIIV<BigdataURI>(new URIImpl(
+                    new FullyInlineURIIV<BigdataURI>(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                             "http://www.bigdata.com"))));
 
             doEncodeDecodeTest(expected);
@@ -489,7 +489,7 @@ abstract public class AbstractBindingSetEncoderTestCase extends TestCase2 {
             expected.set(Var.var("x"), new Constant<IV>(
                     new XSDNumericIV<BigdataLiteral>(99)));
             expected.set(Var.var("y"), new Constant<IV>(
-                    new FullyInlineURIIV<BigdataURI>(new URIImpl(
+                    new FullyInlineURIIV<BigdataURI>(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                             "http://www.bigdata.com"))));
 
             doEncodeDecodeTest(expected);
@@ -523,7 +523,7 @@ abstract public class AbstractBindingSetEncoderTestCase extends TestCase2 {
             expected.set(Var.var("x"), new Constant<IV>(
                     new XSDNumericIV<BigdataLiteral>(99)));
             expected.set(Var.var("y"), new Constant<IV>(
-                    new FullyInlineURIIV<BigdataURI>(new URIImpl(
+                    new FullyInlineURIIV<BigdataURI>(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                             "http://www.bigdata.com"))));
 
             doEncodeDecodeTest(expected);
@@ -556,7 +556,7 @@ abstract public class AbstractBindingSetEncoderTestCase extends TestCase2 {
             expected.set(Var.var("x"), new Constant<IV>(
                     new XSDNumericIV<BigdataLiteral>(99)));
             expected.set(Var.var("y"), new Constant<IV>(
-                    new FullyInlineURIIV<BigdataURI>(new URIImpl(
+                    new FullyInlineURIIV<BigdataURI>(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                             "http://www.bigdata.com"))));
 
             doEncodeDecodeTest(expected);
@@ -583,7 +583,7 @@ abstract public class AbstractBindingSetEncoderTestCase extends TestCase2 {
             expected.set(Var.var("x"), new Constant<IV>(
                     new XSDNumericIV<BigdataLiteral>(99)));
             expected.set(Var.var("y"), new Constant<IV>(
-                    new FullyInlineURIIV<BigdataURI>(new URIImpl(
+                    new FullyInlineURIIV<BigdataURI>(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                             "http://www.bigdata.com"))));
 
             doEncodeDecodeTest(expected);

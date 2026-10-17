@@ -2,8 +2,9 @@ package com.bigdata.search;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 /**
  * Single-token implementation of {@link IHitCollector} backed by a
  * simple array of hits.
@@ -15,7 +16,7 @@ import org.apache.log4j.Logger;
  */
 public class SingleTokenHitCollector<V extends Comparable<V>> implements IHitCollector<V> {
 
-	protected static final transient Logger log = Logger.getLogger(SingleTokenHitCollector.class);
+	protected static final transient Logger log = LogManager.getLogger(SingleTokenHitCollector.class);
 	
 	/**
 	 * The pre-allocated array (allocated using the range count of the search.

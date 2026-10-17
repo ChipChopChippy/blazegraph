@@ -37,11 +37,12 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.datatypes.XMLDatatypeUtil;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.datatypes.XMLDatatypeUtil;
 
 import com.bigdata.rdf.internal.IDatatypeURIResolver;
 import com.bigdata.rdf.internal.IExtension;
@@ -64,7 +65,7 @@ import com.bigdata.util.InnerCause;
  */
 public class DateTimeExtension<V extends BigdataValue> implements IExtension<V> {
 
-	private static final transient Logger log = Logger.getLogger(DateTimeExtension.class);
+	private static final transient Logger log = LogManager.getLogger(DateTimeExtension.class);
 	
 	
     private final Map<IV,BigdataURI> datatypes;
@@ -89,7 +90,7 @@ public class DateTimeExtension<V extends BigdataValue> implements IExtension<V> 
         
     }
     
-    private void resolve(final IDatatypeURIResolver resolver, final URI uri) {
+    private void resolve(final IDatatypeURIResolver resolver, final IRI uri) {
 
         if (log.isDebugEnabled()) {
             log.debug("resolving: " + uri);
@@ -121,7 +122,7 @@ public class DateTimeExtension<V extends BigdataValue> implements IExtension<V> 
         
         final Literal lit = (Literal) value;
         
-        final URI dt = lit.getDatatype();
+        final IRI dt = lit.getDatatype();
         
         final String s = value.stringValue();
         
@@ -177,14 +178,14 @@ public class DateTimeExtension<V extends BigdataValue> implements IExtension<V> 
         
     }
 
-    public LiteralExtensionIV createIV(final long timestamp, final URI dt) {
+    public LiteralExtensionIV createIV(final long timestamp, final IRI dt) {
         
         if (dt == null)
             throw new IllegalArgumentException();
         
         BigdataURI resolvedDT = null;
         for (BigdataURI val : datatypes.values()) {
-            // Note: URI.stringValue() is efficient....
+            // Note: IRI.stringValue() is efficient....
             if (val.stringValue().equals(dt.stringValue())) {
                 resolvedDT = val;
             }

@@ -1,8 +1,8 @@
 package com.bigdata.rdf.sail.remote;
 
-import org.openrdf.model.URI;
-import org.openrdf.query.Binding;
-import org.openrdf.query.impl.AbstractQuery;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.query.Binding;
+import org.eclipse.rdf4j.query.impl.AbstractQuery;
 
 import com.bigdata.rdf.sail.webapp.client.EncodeDecodeValue;
 import com.bigdata.rdf.sail.webapp.client.IPreparedQuery;
@@ -19,7 +19,7 @@ public abstract class AbstractBigdataRemoteQuery extends AbstractQuery {
 	}
 
 	/**
-	 * @see org.openrdf.http.client.HTTPClient#getQueryMethodParameters(QueryLanguage, String, String, Dataset, boolean, int, Binding...)
+	 * @see org.eclipse.rdf4j.http.client.HTTPClient#getQueryMethodParameters(QueryLanguage, String, String, Dataset, boolean, int, Binding...)
 	 */
 	protected void configureConnectOptions(IPreparedQuery q) {
 		if (baseURI != null) {
@@ -27,14 +27,15 @@ public abstract class AbstractBigdataRemoteQuery extends AbstractQuery {
 		}
 		q.addRequestParam(RemoteRepositoryDecls.INCLUDE_INFERRED,
 				Boolean.toString(includeInferred));
-		if (maxQueryTime > 0) {
-			q.addRequestParam(RemoteRepositoryDecls.MAX_QUERY_TIME_MILLIS, Long.toString(1000L*maxQueryTime));
+		if (getMaxExecutionTime() > 0) {
+			q.addRequestParam(RemoteRepositoryDecls.MAX_QUERY_TIME_MILLIS,
+					Long.toString(1000L * getMaxExecutionTime()));
 		}
 
 		if (dataset != null) {
 			String[] defaultGraphs = new String[dataset.getDefaultGraphs().size()];
 			int i=0;
-			for (URI defaultGraphURI : dataset.getDefaultGraphs()) {
+			for (IRI defaultGraphURI : dataset.getDefaultGraphs()) {
 				defaultGraphs[i++] = String.valueOf(defaultGraphURI);
 			}
 
@@ -43,7 +44,7 @@ public abstract class AbstractBigdataRemoteQuery extends AbstractQuery {
 			
 			String[] namedGraphs = new String[dataset.getNamedGraphs().size()];
 			i=0;
-			for (URI namedGraphURI : dataset.getNamedGraphs()) {
+			for (IRI namedGraphURI : dataset.getNamedGraphs()) {
 				namedGraphs[i++] = String.valueOf(String.valueOf(namedGraphURI));
 			}
 			q.addRequestParam(q.isUpdate() ? RemoteRepositoryDecls.USING_NAMED_GRAPH_URI

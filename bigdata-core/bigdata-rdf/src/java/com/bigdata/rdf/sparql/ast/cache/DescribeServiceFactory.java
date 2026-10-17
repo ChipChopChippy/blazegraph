@@ -3,8 +3,9 @@ package com.bigdata.rdf.sparql.ast.cache;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.rdf.changesets.ChangeAction;
 import com.bigdata.rdf.changesets.IChangeLog;
 import com.bigdata.rdf.changesets.IChangeRecord;
@@ -32,7 +33,7 @@ import com.bigdata.rdf.store.BD;
  */
 public class DescribeServiceFactory extends CustomServiceFactoryBase {
 
-    static private transient final Logger log = Logger
+    static private transient final Logger log = LogManager
             .getLogger(DescribeServiceFactory.class);
 
     private final IServiceOptions serviceOptions;

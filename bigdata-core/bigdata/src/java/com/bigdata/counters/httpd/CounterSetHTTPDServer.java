@@ -34,9 +34,11 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.AbstractBTree;
 import com.bigdata.counters.CounterSet;
 import com.bigdata.counters.ICounterSetAccess;
@@ -62,7 +64,7 @@ import com.bigdata.util.httpd.NanoHTTPD;
  */
 public class CounterSetHTTPDServer implements Runnable {
     
-    final static protected transient Logger log = Logger.getLogger(NanoHTTPD.class);
+    final static protected transient Logger log = LogManager.getLogger(NanoHTTPD.class);
 
     /**
      * Runs the httpd server. When the optional file(s) are given, they will be
@@ -143,20 +145,23 @@ public class CounterSetHTTPDServer implements Runnable {
                     
                 } else if( arg.equals("-d")) {
                     
-                    final Level level = Level.toLevel(args[++i]);
+                    Level level = Level.getLevel(args[++i]);
+                    if (level == null) {
+                        level = Level.DEBUG;
+                    }
                     
                     System.out.println("Setting server and service log levels: "+level);
                     
                     try {
 
                         // set logging level on the server.
-                        CounterSetHTTPDServer.log.setLevel(level);
+                        Configurator.setLevel(CounterSetHTTPDServer.log.getName(), level);
                         
                         // set logging level for the view.
-                        Logger.getLogger(XHTMLRenderer.class).setLevel(level);
+                        Configurator.setLevel(LogManager.getLogger(XHTMLRenderer.class).getName(), level);
 
                         // set logging level on the service.
-                        Logger.getLogger(NanoHTTPD.class).setLevel(level);
+                        Configurator.setLevel(LogManager.getLogger(NanoHTTPD.class).getName(), level);
 
                     } catch (Throwable t) {
                         /*

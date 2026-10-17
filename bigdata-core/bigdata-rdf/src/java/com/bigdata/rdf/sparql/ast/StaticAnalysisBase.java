@@ -27,6 +27,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sparql.ast;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -49,7 +51,7 @@ import com.bigdata.rdf.sparql.ast.ssets.ISolutionSetManager;
  */
 public class StaticAnalysisBase {
 
-//    private static final Logger log = Logger.getLogger(StaticAnalysisBase.class);
+//    private static final Logger log = LogManager.getLogger(StaticAnalysisBase.class);
     
     protected final QueryRoot queryRoot;
     

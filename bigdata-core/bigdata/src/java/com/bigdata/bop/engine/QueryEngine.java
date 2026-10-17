@@ -51,7 +51,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.eclipse.jetty.client.HttpClient;
 
 import com.bigdata.bop.BOp;
@@ -211,7 +212,7 @@ import com.bigdata.util.concurrent.IHaltable;
  */
 public class QueryEngine implements IQueryPeer, IQueryClient, ICounterSetAccess {
 
-    private final static transient Logger log = Logger
+    private final static transient Logger log = LogManager
             .getLogger(QueryEngine.class);
 
     /**

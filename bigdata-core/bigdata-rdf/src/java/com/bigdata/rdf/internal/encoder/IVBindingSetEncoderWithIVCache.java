@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -66,7 +66,7 @@ import com.bigdata.rdf.lexicon.Id2TermTupleSerializer;
 import com.bigdata.rdf.lexicon.LexiconRelation;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.sparql.ast.eval.AST2BOpUtility;
 import com.bigdata.util.Bytes;
 
@@ -361,7 +361,7 @@ public class IVBindingSetEncoderWithIVCache extends IVBindingSetEncoder {
     public IVBindingSetEncoderWithIVCache(final IRawStore store,
             final boolean filter, final BOp op) {
 
-        super(BigdataValueFactoryImpl.getInstance(((String[]) op
+        super(BigdataSimpleValueFactory.getInstance(((String[]) op
                 .getRequiredProperty(Predicate.Annotations.RELATION_NAME))[0]), filter);
         
         if (!filter) {
@@ -375,7 +375,7 @@ public class IVBindingSetEncoderWithIVCache extends IVBindingSetEncoder {
             namespace = ((String[]) op
                     .getRequiredProperty(Predicate.Annotations.RELATION_NAME))[0];
 
-            valueFactory = BigdataValueFactoryImpl.getInstance(namespace);
+            valueFactory = BigdataSimpleValueFactory.getInstance(namespace);
 
             ivCache.set(BTree.create(store, getIVCacheIndexMetadata(op)));
 

@@ -30,12 +30,13 @@ package com.bigdata.rdf.sail.sparql;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.vocabulary.RDF;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpUtility;
@@ -81,7 +82,7 @@ import com.bigdata.rdf.sparql.ast.optimizers.ASTPropertyPathOptimizer;
  */
 public class TriplePatternExprBuilder extends ValueExprBuilder {
 
-	private static final transient Logger log = Logger.getLogger(TriplePatternExprBuilder.class);
+	private static final transient Logger log = LogManager.getLogger(TriplePatternExprBuilder.class);
 	
     /**
      * @param context
@@ -1084,7 +1085,7 @@ public class TriplePatternExprBuilder extends ValueExprBuilder {
          * Check constraints.
          */
         Resource cs = null;
-		URI cp = null;
+		IRI cp = null;
     	Value co = null;
 
         if(s instanceof ConstantNode) {
@@ -1122,14 +1123,14 @@ public class TriplePatternExprBuilder extends ValueExprBuilder {
 
             final BigdataValue v = ((ConstantNode) p).getValue();
 
-            if (!(v instanceof URI)) {
+            if (!(v instanceof IRI)) {
 
                 throw new VisitorException(
                         "Predicate in triple reference pattern must be IRI.");
 
             } else {
             
-            	cp = (URI) v;
+            	cp = (IRI) v;
             }
 
         }

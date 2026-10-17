@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.rdf.sail.webapp;
 
-import info.aduna.xml.XMLWriter;
+import org.eclipse.rdf4j.common.xml.XMLWriter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -51,29 +51,30 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.Dataset;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.impl.AbstractOperation;
-import org.openrdf.query.impl.AbstractQuery;
-import org.openrdf.query.impl.DatasetImpl;
-import org.openrdf.query.parser.ParsedQuery;
-import org.openrdf.query.resultio.BooleanQueryResultFormat;
-import org.openrdf.query.resultio.BooleanQueryResultWriter;
-import org.openrdf.query.resultio.BooleanQueryResultWriterRegistry;
-import org.openrdf.query.resultio.TupleQueryResultFormat;
-import org.openrdf.query.resultio.TupleQueryResultWriter;
-import org.openrdf.query.resultio.TupleQueryResultWriterRegistry;
-import org.openrdf.query.resultio.sparqlxml.SPARQLResultsXMLWriter;
-import org.openrdf.repository.sail.SailQuery;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFWriter;
-import org.openrdf.rio.RDFWriterRegistry;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.Dataset;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.impl.AbstractOperation;
+import org.eclipse.rdf4j.query.impl.AbstractQuery;
+import org.eclipse.rdf4j.query.impl.SimpleDataset;
+import org.eclipse.rdf4j.query.parser.ParsedQuery;
+import org.eclipse.rdf4j.query.resultio.BooleanQueryResultFormat;
+import org.eclipse.rdf4j.query.resultio.BooleanQueryResultWriter;
+import org.eclipse.rdf4j.query.resultio.BooleanQueryResultWriterRegistry;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultFormat;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultWriter;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultWriterRegistry;
+import org.eclipse.rdf4j.query.resultio.sparqlxml.SPARQLResultsXMLWriter;
+import org.eclipse.rdf4j.repository.sail.SailQuery;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFWriter;
+import org.eclipse.rdf4j.rio.RDFWriterRegistry;
 
 import com.bigdata.BigdataStatics;
 import com.bigdata.bop.engine.IRunningQuery;
@@ -118,7 +119,7 @@ import com.bigdata.sparse.SparseRowStore;
 import com.bigdata.util.DaemonThreadFactory;
 import com.bigdata.util.concurrent.ThreadPoolExecutorBaseStatisticsTask;
 
-import info.aduna.xml.XMLWriter;
+import org.eclipse.rdf4j.common.xml.XMLWriter;
 
 /**
  * Class encapsulates state shared by {@link QueryServlet}(s) for the same
@@ -129,7 +130,7 @@ import info.aduna.xml.XMLWriter;
  */
 public class BigdataRDFContext extends BigdataBaseContext {
 
-    static private final transient Logger log = Logger
+    static private final transient Logger log = LogManager
             .getLogger(BigdataRDFContext.class);
 
     /**
@@ -1167,15 +1168,15 @@ public class BigdataRDFContext extends BigdataBaseContext {
 
             if (defaultGraphURIs != null || namedGraphURIs != null) {
 
-                final DatasetImpl dataset = new DatasetImpl();
+                final SimpleDataset dataset = new SimpleDataset();
 
                 if (defaultGraphURIs != null)
                     for (String graphURI : defaultGraphURIs)
-                        dataset.addDefaultGraph(new URIImpl(graphURI));
+                        dataset.addDefaultGraph(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(graphURI));
 
                 if (namedGraphURIs != null)
                     for (String graphURI : namedGraphURIs)
-                        dataset.addNamedGraph(new URIImpl(graphURI));
+                        dataset.addNamedGraph(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(graphURI));
 
                 queryOrUpdate.setDataset(dataset);
 
@@ -1638,10 +1639,13 @@ public class BigdataRDFContext extends BigdataBaseContext {
 
             // Note: getQueryTask() verifies that format will be non-null.
             final BooleanQueryResultFormat format = BooleanQueryResultWriterRegistry
-                    .getInstance().getFileFormatForMIMEType(mimeType);
+                    .getInstance().getFileFormatForMIMEType(mimeType)
+                    .map(f -> (BooleanQueryResultFormat) f).orElse(null);
 
             final BooleanQueryResultWriter w = BooleanQueryResultWriterRegistry
-                    .getInstance().get(format).getWriter(os);
+                    .getInstance().get(format).orElseThrow(
+                            () -> new IllegalStateException("No boolean result writer for " + format))
+                    .getWriter(os);
 
             final boolean result = query.evaluate();
 
@@ -1703,9 +1707,12 @@ public class BigdataRDFContext extends BigdataBaseContext {
 
                 // Note: getQueryTask() verifies that format will be non-null.
                 final TupleQueryResultFormat format = TupleQueryResultWriterRegistry
-                        .getInstance().getFileFormatForMIMEType(mimeType);
+                        .getInstance().getFileFormatForMIMEType(mimeType)
+                        .map(f -> (TupleQueryResultFormat) f).orElse(null);
 
                 w = TupleQueryResultWriterRegistry.getInstance().get(format)
+                        .orElseThrow(() -> new IllegalStateException(
+                                "No tuple result writer for " + format))
                         .getWriter(os);
                 
             }
@@ -1769,9 +1776,10 @@ public class BigdataRDFContext extends BigdataBaseContext {
 
             // Note: getQueryTask() verifies that format will be non-null.
             final RDFFormat format = RDFWriterRegistry.getInstance()
-                    .getFileFormatForMIMEType(mimeType);
+                    .getFileFormatForMIMEType(mimeType).orElse(null);
 
             final RDFWriter w = RDFWriterRegistry.getInstance().get(format)
+                    .orElseThrow(() -> new IllegalStateException("No RDF writer for " + format))
                     .getWriter(os);
 
          query.evaluate(w);

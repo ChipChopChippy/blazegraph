@@ -30,7 +30,7 @@ import javax.xml.datatype.DatatypeFactory;
 
 import junit.framework.TestCase2;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.rdf.internal.IDatatypeURIResolver;
 import com.bigdata.rdf.internal.IV;
@@ -47,7 +47,7 @@ import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataURI;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.spo.SPO;
 
 /**
@@ -74,7 +74,7 @@ public class TestIVComparator extends TestCase2 {
 
         private long termId = 1L;
 
-        final BigdataValueFactory f = BigdataValueFactoryImpl
+        final BigdataValueFactory f = BigdataSimpleValueFactory
                 .getInstance(namespace);
         
         /*
@@ -101,8 +101,8 @@ public class TestIVComparator extends TestCase2 {
         /*
          * URIs
          */
-        final IV<BigdataURI, Void> noninline_uri1 = new TermId<BigdataURI>(VTE.URI, termId++);
-        final IV<BigdataURI, Void> noninline_uri2 = new TermId<BigdataURI>(VTE.URI, termId++);
+        final IV<BigdataURI, Void> noninline_uri1 = new TermId<BigdataURI>(VTE.IRI, termId++);
+        final IV<BigdataURI, Void> noninline_uri2 = new TermId<BigdataURI>(VTE.IRI, termId++);
         
         /*
          * Blank nodes.
@@ -126,9 +126,9 @@ public class TestIVComparator extends TestCase2 {
             }
             
             final IDatatypeURIResolver resolver = new IDatatypeURIResolver() {
-                public BigdataURI resolve(final URI uri) {
-                    final BigdataURI buri = f.createURI(uri.stringValue());
-                    buri.setIV(new TermId<BigdataLiteral>(VTE.URI,termId++));
+                public BigdataURI resolve(final IRI uri) {
+                    final BigdataURI buri = f.createIRI(uri.stringValue());
+                    buri.setIV(new TermId<BigdataLiteral>(VTE.IRI,termId++));
                     return buri;
                 }
             };
@@ -150,8 +150,8 @@ public class TestIVComparator extends TestCase2 {
             noninline_xsd_string_lit1.setValue(f.createLiteral("bigdata",XSD.STRING));
             noninline_xsd_string_lit2.setValue(f.createLiteral("systap",XSD.STRING));
             
-            noninline_uri1.setValue(f.createURI("http://www.bigdata.com/"));
-            noninline_uri2.setValue(f.createURI("http://www.bigdata.com/blog/"));
+            noninline_uri1.setValue(f.createIRI("http://www.bigdata.com/"));
+            noninline_uri2.setValue(f.createIRI("http://www.bigdata.com/blog/"));
 
         }
         

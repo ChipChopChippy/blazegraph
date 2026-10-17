@@ -30,8 +30,9 @@ package com.bigdata.service;
 
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.MDC;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.ThreadContext;
 
 import com.bigdata.Banner;
 import com.bigdata.counters.AbstractStatisticsCollector;
@@ -46,7 +47,7 @@ import com.bigdata.counters.CounterSet;
  */
 abstract public class AbstractService implements IService {
 
-    private static final Logger log = Logger.getLogger(AbstractService.class);
+    private static final Logger log = LogManager.getLogger(AbstractService.class);
     
     private String serviceName;
     private UUID serviceUUID;
@@ -231,13 +232,13 @@ abstract public class AbstractService implements IService {
 
             if (serviceUUID != null) {
 
-                MDC.put("serviceUUID", serviceUUID);
+                ThreadContext.put("serviceUUID", serviceUUID.toString());
 
             } 
             
-            MDC.put("serviceName", getServiceName());
+            ThreadContext.put("serviceName", getServiceName());
             
-            MDC.put("hostname", getHostname());
+            ThreadContext.put("hostname", getHostname());
 
         } catch(Throwable t) {
 
@@ -254,11 +255,11 @@ abstract public class AbstractService implements IService {
      */
     protected void clearLoggingContext() {
         
-        MDC.remove("serviceName");
+        ThreadContext.remove("serviceName");
 
-        MDC.remove("serviceUUID");
+        ThreadContext.remove("serviceUUID");
 
-        MDC.remove("hostname");
+        ThreadContext.remove("hostname");
         
     }
 

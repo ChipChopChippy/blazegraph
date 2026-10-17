@@ -72,9 +72,9 @@ public class TestSharedLexiconTempStore extends AbstractTripleStoreTestCase {
 
             final BigdataValueFactory vf = store.getValueFactory();
 
-            final BigdataURI uri1 = vf.createURI(uriString1);
-//            final BigdataURI uri2 = vf.createURI(uriString2);
-            final BigdataURI uri3 = vf.createURI(uriString3);
+            final BigdataURI uri1 = vf.createIRI(uriString1);
+//            final BigdataURI uri2 = vf.createIRI(uriString2);
+            final BigdataURI uri3 = vf.createIRI(uriString3);
             
             // add term to lexicon.
             store.addTerm(uri1);

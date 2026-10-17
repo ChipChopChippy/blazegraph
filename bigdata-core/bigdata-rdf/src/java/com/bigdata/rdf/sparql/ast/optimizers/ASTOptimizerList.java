@@ -31,8 +31,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpUtility;
 import com.bigdata.bop.IBindingSet;
@@ -49,7 +50,7 @@ import com.bigdata.rdf.sparql.ast.eval.AST2BOpContext;
 public class ASTOptimizerList extends LinkedList<IASTOptimizer> implements
         IASTOptimizer {
     
-    private static final Logger log = Logger.getLogger(ASTOptimizerList.class);
+    private static final Logger log = LogManager.getLogger(ASTOptimizerList.class);
 
     /**
      * True iff the {@link #log} level is INFO or less.

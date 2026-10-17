@@ -4,8 +4,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 /**
  * Flyweight {@link DocumentHeader} implementation.
  * 
@@ -15,7 +16,7 @@ import org.apache.log4j.Logger;
 public class DocumentHeaderImpl implements DocumentHeader 
 {
 
-    protected static Logger log = Logger.getLogger(DocumentHeaderImpl.class);
+    protected static Logger log = LogManager.getLogger(DocumentHeaderImpl.class);
 
     final private Map<String,Object> properties;
     

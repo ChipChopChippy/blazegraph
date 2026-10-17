@@ -31,7 +31,7 @@ import java.io.Serializable;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.rdf.store.AbstractTripleStore;
 import com.bigdata.rdf.store.BDS;

@@ -27,18 +27,19 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.impl.BindingImpl;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.sail.SailTupleQuery;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.impl.SimpleBinding;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.sail.SailTupleQuery;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.internal.XSD;
@@ -49,7 +50,7 @@ import com.bigdata.rdf.vocab.NoVocabulary;
 
 public class TestLexJoinOps extends QuadsTestCase {
 
-    private static final Logger log = Logger.getLogger(TestLexJoinOps.class);
+    private static final Logger log = LogManager.getLogger(TestLexJoinOps.class);
 
     @Override
     public Properties getProperties() {
@@ -83,12 +84,12 @@ public class TestLexJoinOps extends QuadsTestCase {
         
 //        final Sail sail = new MemoryStore();
 //        try {
-//        sail.initialize();
+//        sail.init();
 //        final Repository repo = new SailRepository(sail);
 
         final BigdataSail sail = getSail();
         try {
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         
         final RepositoryConnection cxn = repo.getConnection();
@@ -101,8 +102,8 @@ public class TestLexJoinOps extends QuadsTestCase {
             /*
              * Create some terms.
              */
-            final URI X = vf.createURI(BD.NAMESPACE + "X");
-            final URI dt = vf.createURI(BD.NAMESPACE + "myDatatype");
+            final IRI X = vf.createIRI(BD.NAMESPACE + "X");
+            final IRI dt = vf.createIRI(BD.NAMESPACE + "myDatatype");
             final Literal _1 = vf.createLiteral("foo");
             final Literal _2 = vf.createLiteral("foo", XSD.STRING);
             final Literal _3 = vf.createLiteral("foo", dt);
@@ -165,16 +166,16 @@ public class TestLexJoinOps extends QuadsTestCase {
                 
                 final Collection<BindingSet> answer = new LinkedList<BindingSet>();
                 answer.add(createBindingSet(
-                        new BindingImpl("o", _1)
+                        new SimpleBinding("o", _1)
                         ));
                 answer.add(createBindingSet(
-                        new BindingImpl("o", _2)
+                        new SimpleBinding("o", _2)
                         ));
                 answer.add(createBindingSet(
-                        new BindingImpl("o", _3)
+                        new SimpleBinding("o", _3)
                         ));
                 answer.add(createBindingSet(
-                        new BindingImpl("o", _4)
+                        new SimpleBinding("o", _4)
                         ));
 
                 final TupleQueryResult result = tupleQuery.evaluate();
@@ -196,12 +197,12 @@ public class TestLexJoinOps extends QuadsTestCase {
         
 //      final Sail sail = new MemoryStore();
 //      try {
-//      sail.initialize();
+//      sail.init();
 //      final Repository repo = new SailRepository(sail);
 
       final BigdataSail sail = getSail();
       try {
-      sail.initialize();
+      sail.init();
       final BigdataSailRepository repo = new BigdataSailRepository(sail);
       
       final RepositoryConnection cxn = repo.getConnection();
@@ -214,8 +215,8 @@ public class TestLexJoinOps extends QuadsTestCase {
           /*
            * Create some terms.
            */
-          final URI X = vf.createURI(BD.NAMESPACE + "X");
-          final URI dt = vf.createURI(BD.NAMESPACE + "myDatatype");
+          final IRI X = vf.createIRI(BD.NAMESPACE + "X");
+          final IRI dt = vf.createIRI(BD.NAMESPACE + "myDatatype");
           final Literal _1 = vf.createLiteral("foo");
           final Literal _2 = vf.createLiteral("foo", XSD.STRING);
           final Literal _3 = vf.createLiteral("foo", dt);
@@ -279,16 +280,16 @@ public class TestLexJoinOps extends QuadsTestCase {
               
               final Collection<BindingSet> answer = new LinkedList<BindingSet>();
               answer.add(createBindingSet(
-                      new BindingImpl("o", _1)
+                      new SimpleBinding("o", _1)
                       ));
               answer.add(createBindingSet(
-                      new BindingImpl("o", _2)
+                      new SimpleBinding("o", _2)
                       ));
               answer.add(createBindingSet(
-                      new BindingImpl("o", _3)
+                      new SimpleBinding("o", _3)
                       ));
               answer.add(createBindingSet(
-                      new BindingImpl("o", _4)
+                      new SimpleBinding("o", _4)
                       ));
 
               final TupleQueryResult result = tupleQuery.evaluate();
@@ -320,12 +321,12 @@ SELECT ?s WHERE {
         
 //      final Sail sail = new MemoryStore();
 //      try {
-//      sail.initialize();
+//      sail.init();
 //      final Repository repo = new SailRepository(sail);
 
       final BigdataSail sail = getSail();
       try {
-      sail.initialize();
+      sail.init();
       final BigdataSailRepository repo = new BigdataSailRepository(sail);
       
       final RepositoryConnection cxn = repo.getConnection();
@@ -338,8 +339,8 @@ SELECT ?s WHERE {
           /*
            * Create some terms.
            */
-          final URI X = vf.createURI(BD.NAMESPACE + "X");
-          final URI dt = vf.createURI(BD.NAMESPACE + "myDatatype");
+          final IRI X = vf.createIRI(BD.NAMESPACE + "X");
+          final IRI dt = vf.createIRI(BD.NAMESPACE + "myDatatype");
           final Literal _1 = vf.createLiteral("foo");
           final Literal _2 = vf.createLiteral("foo", XSD.STRING);
           final Literal _3 = vf.createLiteral("foo", dt);
@@ -403,10 +404,10 @@ SELECT ?s WHERE {
               
               final Collection<BindingSet> answer = new LinkedList<BindingSet>();
               answer.add(createBindingSet(
-                      new BindingImpl("o", _5)
+                      new SimpleBinding("o", _5)
                       ));
               answer.add(createBindingSet(
-                      new BindingImpl("o", _6)
+                      new SimpleBinding("o", _6)
                       ));
 
               final TupleQueryResult result = tupleQuery.evaluate();
@@ -428,12 +429,12 @@ SELECT ?s WHERE {
         
 //      final Sail sail = new MemoryStore();
 //      try {
-//      sail.initialize();
+//      sail.init();
 //      final Repository repo = new SailRepository(sail);
 
       final BigdataSail sail = getSail();
       try {
-      sail.initialize();
+      sail.init();
       final BigdataSailRepository repo = new BigdataSailRepository(sail);
       
       final RepositoryConnection cxn = repo.getConnection();
@@ -446,8 +447,8 @@ SELECT ?s WHERE {
           /*
            * Create some terms.
            */
-          final URI X = vf.createURI(BD.NAMESPACE + "X");
-          final URI Y = vf.createURI(BD.NAMESPACE + "Y");
+          final IRI X = vf.createIRI(BD.NAMESPACE + "X");
+          final IRI Y = vf.createIRI(BD.NAMESPACE + "Y");
           final Literal _1 = vf.createLiteral("That Seventies Show","en");
           final Literal _2 = vf.createLiteral("Cette S�rie des Ann�es Soixante-dix","fr");
           final Literal _3 = vf.createLiteral("Cette S�rie des Ann�es Septante","fr-BE");
@@ -506,10 +507,10 @@ SELECT ?s WHERE {
               
               final Collection<BindingSet> answer = new LinkedList<BindingSet>();
               answer.add(createBindingSet(
-                      new BindingImpl("title", _2)
+                      new SimpleBinding("title", _2)
                       ));
               answer.add(createBindingSet(
-                      new BindingImpl("title", _3)
+                      new SimpleBinding("title", _3)
                       ));
 
               final TupleQueryResult result = tupleQuery.evaluate();

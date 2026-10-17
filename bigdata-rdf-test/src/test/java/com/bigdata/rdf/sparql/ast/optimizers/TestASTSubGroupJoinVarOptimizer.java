@@ -29,11 +29,11 @@ package com.bigdata.rdf.sparql.ast.optimizers;
 
 import java.util.Collections;
 
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.bop.IVariable;
@@ -128,17 +128,17 @@ public class TestASTSubGroupJoinVarOptimizer extends
         @SuppressWarnings("rawtypes")
         final IV rdfsLabel = makeIV(RDFS.LABEL);
         @SuppressWarnings("rawtypes")
-        final IV politician = makeIV(new URIImpl("http://www.rdfabout.com/rdf/schema/politico/Politician"));
+        final IV politician = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.rdfabout.com/rdf/schema/politico/Politician"));
         @SuppressWarnings("rawtypes")
-        final IV hasRole = makeIV(new URIImpl("http://www.rdfabout.com/rdf/schema/politico/hasRole"));
+        final IV hasRole = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.rdfabout.com/rdf/schema/politico/hasRole"));
         @SuppressWarnings("rawtypes")
-        final IV party = makeIV(new URIImpl("http://www.rdfabout.com/rdf/schema/politico/party"));
+        final IV party = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.rdfabout.com/rdf/schema/politico/party"));
         @SuppressWarnings("rawtypes")
-        final IV democrat = makeIV(new LiteralImpl("Democrat"));
+        final IV democrat = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Democrat"));
         @SuppressWarnings("rawtypes")
-        final IV name = makeIV(new URIImpl("http://www.rdfabout.com/rdf/schema/usgovt/name"));
+        final IV name = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.rdfabout.com/rdf/schema/usgovt/name"));
         @SuppressWarnings("rawtypes")
-        final IV votedBy = makeIV(new URIImpl(
+        final IV votedBy = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://www.rdfabout.com/rdf/schema/vote/votedBy"));
 
         // The source AST.

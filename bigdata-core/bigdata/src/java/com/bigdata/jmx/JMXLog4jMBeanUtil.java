@@ -45,17 +45,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.jmx;
 
-import java.lang.management.ManagementFactory;
-import java.util.Enumeration;
-
 import javax.management.JMException;
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.apache.log4j.jmx.HierarchyDynamicMBean;
-import org.apache.log4j.spi.LoggerRepository;
+import org.apache.logging.log4j.core.jmx.Server;
 
 /**
  * Utility method to register a log4j MBean.
@@ -70,8 +61,6 @@ import org.apache.log4j.spi.LoggerRepository;
  */
 public class JMXLog4jMBeanUtil {
 
-    private static final Logger log = Logger.getLogger(JMXLog4jMBeanUtil.class);
-    
     /**
      * Register the log4j JMX mbeans. 
      * 
@@ -83,57 +72,7 @@ public class JMXLog4jMBeanUtil {
      */
     public static void registerLog4jMBeans() throws JMException {
 
-        // Log4J MBean
-        final HierarchyDynamicMBean hdm = new HierarchyDynamicMBean();
-
-        /*
-         * Register the hierarchy MBean with the platform's mbean server.
-         * 
-         * Note: It appears that you need to do this before you add loggers to
-         * this mbean.
-         */
-        {
-
-            final MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-
-            final ObjectName mbo = new ObjectName("log4j:hierarchy=default");
-
-            mbs.registerMBean(hdm, mbo);
-
-        }
-
-        // Add the root logger to the Hierarchy MBean
-        {
-
-            final Logger rootLogger = Logger.getRootLogger();
-
-            hdm.addLoggerMBean(rootLogger.getName());
-
-        }
-
-        /*
-         * Get each logger from the Log4J Repository and add it to the Hierarchy
-         * MBean created above.
-         */
-        {
-
-            final LoggerRepository r = LogManager.getLoggerRepository();
-
-            final Enumeration enumer = r.getCurrentLoggers();
-
-            while (enumer.hasMoreElements()) {
-
-                final Logger logger = (Logger) enumer.nextElement();
-
-//                try {
-                    hdm.addLoggerMBean(logger.getName());
-//                } catch (Throwable t) {
-//                    log.error("Could not add logger: " + logger.getName(), t);
-//                }
-
-            }
-
-        }
+        Server.reregisterMBeansAfterReconfigure();
 
     }
 

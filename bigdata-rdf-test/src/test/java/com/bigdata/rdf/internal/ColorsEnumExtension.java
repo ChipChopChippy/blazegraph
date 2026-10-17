@@ -27,10 +27,10 @@ package com.bigdata.rdf.internal;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.rdf.internal.impl.literal.AbstractLiteralIV;
 import com.bigdata.rdf.internal.impl.literal.LiteralExtensionIV;
@@ -47,9 +47,9 @@ import com.bigdata.rdf.store.BD;
 public class ColorsEnumExtension<V extends BigdataValue> implements IExtension<V> {
 
     /**
-     * The datatype URI for the colors enum extension.
+     * The datatype IRI for the colors enum extension.
      */
-    public transient static final URI COLOR = new URIImpl(BD.NAMESPACE + "Color");
+    public transient static final IRI COLOR = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Color");
     
     private final BigdataURI color;
     

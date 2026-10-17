@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpContext;
@@ -521,7 +521,7 @@ public class ASTStaticBindingsOptimizer implements IASTOptimizer {
             
             final FunctionNode functionNode = (FunctionNode) vexpr;
             
-            final URI functionURI = functionNode.getFunctionURI();
+            final IRI functionURI = functionNode.getFunctionURI();
             
             // case 3.1: FILTER ?x=<http://uri> or sameTerm(?x,<http://uri>)
             if (functionURI.equals(FunctionRegistry.SAME_TERM) ||

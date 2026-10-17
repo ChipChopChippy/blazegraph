@@ -24,10 +24,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.rules;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.OWL;
-import org.openrdf.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.OWL;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.rdf.rio.IStatementBuffer;
 import com.bigdata.rdf.rio.StatementBuffer;
@@ -68,9 +68,9 @@ public class TestRuleOwlSymmetricProperty extends AbstractRuleTestCase {
 
         try {
 
-            URI A = new URIImpl("http://www.foo.org/A");
-            URI B = new URIImpl("http://www.foo.org/B");
-            URI X = new URIImpl("http://www.foo.org/X");
+            IRI A = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/A");
+            IRI B = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/B");
+            IRI X = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/X");
 
             IStatementBuffer buffer = new StatementBuffer(store, 100/* capacity */);
             

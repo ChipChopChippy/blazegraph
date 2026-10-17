@@ -26,14 +26,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sail;
 
-import info.aduna.iteration.CloseableIteration;
+import org.eclipse.rdf4j.common.iteration.CloseableIteration;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -44,13 +47,13 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import junit.framework.TestCase2;
 
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.sail.SailConnection;
-import org.openrdf.sail.SailException;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.sail.SailConnection;
+import org.eclipse.rdf4j.sail.SailException;
 
 import com.bigdata.journal.ITx;
 import com.bigdata.journal.Journal;
@@ -112,7 +115,7 @@ public class TestBootstrapBigdataSail extends TestCase2 {
             if (!file.exists())
                 fail("Expected file does not exist: " + file);
             
-            sail.initialize();
+            sail.init();
 
             sail.shutDown();
             
@@ -151,7 +154,7 @@ public class TestBootstrapBigdataSail extends TestCase2 {
 
         try {
 
-            sail.initialize();
+            sail.init();
             
             sail.shutDown();
 
@@ -189,7 +192,7 @@ public class TestBootstrapBigdataSail extends TestCase2 {
 
 		try {
 
-			sail.initialize();
+			sail.init();
 
 			final SailConnection conn = sail.getConnection();
 
@@ -228,7 +231,7 @@ public class TestBootstrapBigdataSail extends TestCase2 {
 
 		try {
 
-			sail.initialize();
+			sail.init();
 			service = Executors.newSingleThreadExecutor();
 
 			Future<Void> f = null;
@@ -326,7 +329,7 @@ public class TestBootstrapBigdataSail extends TestCase2 {
 
 		try {
 
-			sail.initialize();
+			sail.init();
 			service = Executors.newFixedThreadPool(2/*nThreads*/);
 
 			Future<Void> f = null;
@@ -452,7 +455,7 @@ public class TestBootstrapBigdataSail extends TestCase2 {
 
 		try {
 
-			sail.initialize();
+			sail.init();
 			service = Executors.newSingleThreadExecutor();
 
 			// wrap a 2nd sail around the same namespace.
@@ -544,6 +547,18 @@ public class TestBootstrapBigdataSail extends TestCase2 {
 
 	}
 
+	private Callable<SailConnection> connectionTask(
+			final BigdataSail sail, final CountDownLatch ready,
+			final CountDownLatch start) {
+		return new Callable<SailConnection>() {
+			public SailConnection call() throws Exception {
+				ready.countDown();
+				start.await();
+				return sail.getUnisolatedConnection();
+			}
+		};
+	}
+
 	/**
 	 * Unit test verifying that exactly one unisolated connection is allowed at
 	 * a time for two sails wrapping different {@link AbstractTripleStore}
@@ -568,7 +583,7 @@ public class TestBootstrapBigdataSail extends TestCase2 {
 
 		try {
 
-			sail.initialize();
+			sail.init();
 			service = Executors.newFixedThreadPool(3/*threads*/);
 
 			// wrap a 2nd sail around a different tripleStore.
@@ -594,45 +609,41 @@ public class TestBootstrapBigdataSail extends TestCase2 {
 
 			try {
 
-				final Callable<SailConnection> task = new Callable<SailConnection>() {
+				final CountDownLatch ready = new CountDownLatch(2);
+				final CountDownLatch start = new CountDownLatch(1);
+				final CompletionService<SailConnection> completed =
+						new ExecutorCompletionService<SailConnection>(service);
+				final Callable<SailConnection> task1 =
+						connectionTask(sail, ready, start);
+				final Callable<SailConnection> task2 =
+						connectionTask(sail2, ready, start);
 
-					public SailConnection call() throws Exception {
+				completed.submit(task1);
+				completed.submit(task2);
+				assertTrue("Both connection requests should be ready",
+						ready.await(2, TimeUnit.SECONDS));
+				start.countDown();
 
-						SailConnection conn1 = null;
+				Future<SailConnection> first =
+						completed.poll(250, TimeUnit.MILLISECONDS);
+				assertNotNull("A connection request should complete", first);
+				SailConnection firstConnection = first.get();
 
-							log.info("Requesting 1st unisolated connection.");
-
-							conn1 = sail.getUnisolatedConnection();
-							
-							return conn1;
-					}
-
-				};
-
-				// run task. it should block when attempting to get the 2nd
-				// connection (on a different thread)
-				Future<SailConnection> f1 = service.submit(task);
-				Future<SailConnection> f2 = service.submit(task);
-
-				// wait up to a timeout to verify that the task blocked rather
-				// than acquiring the 2nd connection.
-				try {
-					f2.get(250, TimeUnit.MILLISECONDS);	
-			} catch (TimeoutException e) {
-				/*
-				 * This is the expected outcome.
-				 */
-				log.info("timeout");
+				Future<SailConnection> unexpectedSecond =
+						completed.poll(250, TimeUnit.MILLISECONDS);
+				if (unexpectedSecond != null) {
+					unexpectedSecond.get().close();
+					firstConnection.close();
+					fail("Only one unisolated connection should be allowed");
 				}
-				
-				f1.get().close();
-				
-				// Now we can get the second connection
-				try {
-					f2.get(250, TimeUnit.MILLISECONDS).close();	
-				} catch (TimeoutException e) {
-					fail("Should have been able to get second connection");
-				}
+
+				firstConnection.close();
+
+				Future<SailConnection> second =
+						completed.poll(2, TimeUnit.SECONDS);
+				assertNotNull("Second connection should be available after release",
+						second);
+				second.get().close();
 
 			} finally {
 
@@ -683,7 +694,7 @@ public class TestBootstrapBigdataSail extends TestCase2 {
 
 		try {
 
-			sail.initialize();
+			sail.init();
 
 			// the unisolated connection
 			conn = sail.getUnisolatedConnection();
@@ -691,11 +702,11 @@ public class TestBootstrapBigdataSail extends TestCase2 {
 			// a read-only transaction.
 			readConn = sail.getReadOnlyConnection();
 
-            final URI s = new URIImpl("http://www.bigdata.com/s");
+            final IRI s = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/s");
 
-            final URI p = new URIImpl("http://www.bigdata.com/p");
+            final IRI p = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/p");
 
-            final Value o = new LiteralImpl("o");
+            final Value o = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("o");
 
             // add a statement.
             conn.addStatement(s, p, o);
@@ -705,7 +716,7 @@ public class TestBootstrapBigdataSail extends TestCase2 {
 
                 int n = 0;
 
-                final CloseableIteration<? extends Statement, SailException> itr = conn
+                final CloseableIteration<? extends Statement> itr = conn
                         .getStatements(s, p, o, false/* includeInferred */);
 
                 try {
@@ -738,7 +749,7 @@ public class TestBootstrapBigdataSail extends TestCase2 {
                 
                 int n = 0;
 
-                final CloseableIteration<? extends Statement, SailException> itr = readConn
+                final CloseableIteration<? extends Statement> itr = readConn
                         .getStatements(s, p, o, false/* includeInferred */);
 
                 try {
@@ -769,7 +780,7 @@ public class TestBootstrapBigdataSail extends TestCase2 {
 
                 int n = 0;
 
-                final CloseableIteration<? extends Statement, SailException> itr = conn
+                final CloseableIteration<? extends Statement> itr = conn
                         .getStatements(s, p, o, false/* includeInferred */);
 
                 try {

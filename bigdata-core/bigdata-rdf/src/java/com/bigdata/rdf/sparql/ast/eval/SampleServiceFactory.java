@@ -33,11 +33,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.URIImpl;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpContextBase;
@@ -92,13 +93,13 @@ import cutthecrap.utils.striterators.ICloseableIterator;
 public class SampleServiceFactory extends AbstractServiceFactory 
 		implements ServiceFactory {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(SampleServiceFactory.class);
 
     /**
-     * The URI service key.
+     * The IRI service key.
      */
-    public static final URI SERVICE_KEY = new URIImpl(BD.NAMESPACE+"sample");
+    public static final IRI SERVICE_KEY = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE+"sample");
     
     /**
      * The service params for this service.
@@ -108,7 +109,7 @@ public class SampleServiceFactory extends AbstractServiceFactory
     	/**
     	 * The limit on the sample.
     	 */
-    	URI LIMIT = new URIImpl(SERVICE_KEY.stringValue() + ".limit");
+    	IRI LIMIT = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SERVICE_KEY.stringValue() + ".limit");
     	
     	/**
     	 * Default = 100.
@@ -118,7 +119,7 @@ public class SampleServiceFactory extends AbstractServiceFactory
     	/**
     	 * The seed on the sample.
     	 */
-    	URI SEED = new URIImpl(SERVICE_KEY.stringValue() + ".seed");
+    	IRI SEED = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SERVICE_KEY.stringValue() + ".seed");
     	
     	/**
     	 * Default = 0.
@@ -128,7 +129,7 @@ public class SampleServiceFactory extends AbstractServiceFactory
     	/**
     	 * The sample type.
     	 */
-    	URI SAMPLE_TYPE = new URIImpl(SERVICE_KEY.stringValue() + ".sampleType");
+    	IRI SAMPLE_TYPE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SERVICE_KEY.stringValue() + ".sampleType");
     	
     	/**
     	 * Default = "RANDOM".
@@ -189,11 +190,11 @@ public class SampleServiceFactory extends AbstractServiceFactory
             final GroupNodeBase<IGroupMemberNode> group,
             final ServiceParams serviceParams) {
 
-    	final Iterator<Map.Entry<URI, List<TermNode>>> it = serviceParams.iterator();
+    	final Iterator<Map.Entry<IRI, List<TermNode>>> it = serviceParams.iterator();
     	
     	while (it.hasNext()) {
     	
-    		final URI param = it.next().getKey();
+    		final IRI param = it.next().getKey();
     		
     		if (SampleParams.LIMIT.equals(param)) {
     			
@@ -312,7 +313,7 @@ public class SampleServiceFactory extends AbstractServiceFactory
 			IPredicate<ISPO> pred = (IPredicate<ISPO>)
     				db.getPredicate(
     						sp.s() != null && sp.s().isConstant() ? (Resource) sp.s().getValue() : null, 
-							sp.p() != null && sp.p().isConstant() ? (URI) sp.p().getValue() : null, 
+							sp.p() != null && sp.p().isConstant() ? (IRI) sp.p().getValue() : null, 
 							sp.o() != null && sp.o().isConstant() ? (Value) sp.o().getValue() : null, 
 							sp.c() != null && sp.c().isConstant() ? (Resource) sp.c().getValue() : null 
     						);

@@ -31,8 +31,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.Constant;
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.bop.IConstant;
@@ -88,7 +89,7 @@ import com.bigdata.striterator.IChunkedOrderedIterator;
  */
 abstract public class AbstractJoinNexus implements IJoinNexus {
 
-    private final static transient Logger log = Logger.getLogger(AbstractJoinNexus.class);
+    private final static transient Logger log = LogManager.getLogger(AbstractJoinNexus.class);
     
     private final IJoinNexusFactory joinNexusFactory;
     

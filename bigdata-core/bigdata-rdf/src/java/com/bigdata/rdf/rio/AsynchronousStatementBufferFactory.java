@@ -68,13 +68,14 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipInputStream;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.BNode;
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParser;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParser;
 
 import com.bigdata.btree.AsynchronousIndexWriteConfiguration;
 import com.bigdata.btree.IndexMetadata;
@@ -105,7 +106,7 @@ import com.bigdata.rdf.lexicon.Term2IdTupleSerializer;
 import com.bigdata.rdf.lexicon.Term2IdWriteProc;
 import com.bigdata.rdf.lexicon.Term2IdWriteProc.Term2IdWriteProcConstructor;
 import com.bigdata.rdf.model.BigdataBNode;
-import com.bigdata.rdf.model.BigdataBNodeImpl;
+import com.bigdata.rdf.model.BigdataSimpleBNode;
 import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataResource;
 import com.bigdata.rdf.model.BigdataStatement;
@@ -321,7 +322,7 @@ import cutthecrap.utils.striterators.Striterator;
 public class AsynchronousStatementBufferFactory<S extends BigdataStatement, R>
         implements IAsynchronousWriteStatementBufferFactory<S> {
 
-    final private transient static Logger log = Logger
+    final private transient static Logger log = LogManager
             .getLogger(AsynchronousStatementBufferFactory.class);
 
     /**
@@ -1152,8 +1153,8 @@ public class AsynchronousStatementBufferFactory<S extends BigdataStatement, R>
          * @todo when resource is URL use reported MimeTYPE also.
          */
         final RDFFormat rdfFormat = (defaultFormat == null //
-                ? RDFFormat.forFileName(resourceStr) //
-                : RDFFormat.forFileName(resourceStr, defaultFormat)//
+                ? com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(resourceStr) //
+                : com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(resourceStr, defaultFormat)//
         );
         
         if (rdfFormat == null) {
@@ -3022,7 +3023,7 @@ public class AsynchronousStatementBufferFactory<S extends BigdataStatement, R>
      */
     static class AsyncTerm2IdIndexWriteTask implements Callable<Void> {
 
-        final protected transient static Logger log = Logger
+        final protected transient static Logger log = LogManager
                 .getLogger(AsyncTerm2IdIndexWriteTask.class);
 
         private final KVOLatch latch;
@@ -3244,7 +3245,7 @@ public class AsynchronousStatementBufferFactory<S extends BigdataStatement, R>
      */
     static class AsyncId2TermIndexWriteTask implements Callable<Void> {
 
-        final protected transient static Logger log = Logger
+        final protected transient static Logger log = LogManager
                 .getLogger(AsyncId2TermIndexWriteTask.class);
 
         private final KVOLatch latch;
@@ -3391,7 +3392,7 @@ public class AsynchronousStatementBufferFactory<S extends BigdataStatement, R>
      */
     static class AsyncTextIndexWriteTask implements Callable<Void> {
 
-        final protected transient static Logger log = Logger
+        final protected transient static Logger log = LogManager
                 .getLogger(AsyncTextIndexWriteTask.class);
 
         private final KVOLatch latch;
@@ -3485,7 +3486,7 @@ public class AsynchronousStatementBufferFactory<S extends BigdataStatement, R>
      */
     static class AsyncSPOIndexWriteTask implements Callable<Void> {
 
-        final protected transient static Logger log = Logger
+        final protected transient static Logger log = LogManager
                 .getLogger(AsyncSPOIndexWriteTask.class);
 
         private final KVOLatch latch;
@@ -3570,7 +3571,7 @@ public class AsynchronousStatementBufferFactory<S extends BigdataStatement, R>
                          * Note: The SPO is deliberately not provided to the KVO
                          * instance since it is not required (there is nothing
                          * being passed back from the write via a side-effect on
-                         * the BigdataStatementImpl) and since it otherwise will
+                         * the BigdataSimpleStatement) and since it otherwise will
                          * force the retention of the RDF Value objects in its
                          * s/p/o/c positions.
                          */
@@ -3771,7 +3772,7 @@ public class AsynchronousStatementBufferFactory<S extends BigdataStatement, R>
          * @param p
          * @param o
          */
-        public void add(Resource s, URI p, Value o) {
+        public void add(Resource s, IRI p, Value o) {
 
             add(s, p, o, null, StatementEnum.Explicit);
 
@@ -3785,7 +3786,7 @@ public class AsynchronousStatementBufferFactory<S extends BigdataStatement, R>
          * @param o
          * @param c
          */
-        public void add(Resource s, URI p, Value o, Resource c) {
+        public void add(Resource s, IRI p, Value o, Resource c) {
 
             add(s, p, o, c, StatementEnum.Explicit);
 
@@ -3794,7 +3795,7 @@ public class AsynchronousStatementBufferFactory<S extends BigdataStatement, R>
         /**
          * Add a statement to the buffer (core impl).
          */
-        public void add(final Resource s, final URI p, final Value o,
+        public void add(final Resource s, final IRI p, final Value o,
                 final Resource c, final StatementEnum type) {
 
             // add to the buffer.
@@ -3818,7 +3819,7 @@ public class AsynchronousStatementBufferFactory<S extends BigdataStatement, R>
          * and MUST be cleared (or set to null) before reading from another
          * source.
          */
-        private BigdataBNode getCanonicalBNode(final BigdataBNodeImpl bnode) {
+        private BigdataBNode getCanonicalBNode(final BigdataSimpleBNode bnode) {
 
             // the BNode's ID.
             final String id = bnode.getID();
@@ -3920,7 +3921,7 @@ public class AsynchronousStatementBufferFactory<S extends BigdataStatement, R>
             if (term0 instanceof BNode) {
 
                 // impose canonicalizing mapping for blank nodes.
-                term = getCanonicalBNode((BigdataBNodeImpl) term0);
+                term = getCanonicalBNode((BigdataSimpleBNode) term0);
 
                 /*
                  * Fall through.
@@ -3998,13 +3999,13 @@ public class AsynchronousStatementBufferFactory<S extends BigdataStatement, R>
          * 
          * @see #nearCapacity()
          */
-        private void handleStatement(final Resource s, final URI p,
+        private void handleStatement(final Resource s, final IRI p,
                 final Value o, final Resource c, final StatementEnum type) {
 
             _handleStatement(
                     (Resource) getCanonicalValue((BigdataResource) valueFactory
                             .asValue(s)),//
-                    (URI) getCanonicalValue((BigdataURI) valueFactory
+                    (IRI) getCanonicalValue((BigdataURI) valueFactory
                             .asValue(p)),//
                     (Value) getCanonicalValue((BigdataValue) valueFactory
                             .asValue(o)),//
@@ -4020,7 +4021,7 @@ public class AsynchronousStatementBufferFactory<S extends BigdataStatement, R>
          * canonical for the scope of this document.
          */
         @SuppressWarnings("unchecked")
-        private void _handleStatement(final Resource s, final URI p,
+        private void _handleStatement(final Resource s, final IRI p,
                 final Value o, final Resource c, final StatementEnum type) {
 
             final BigdataStatement stmt = valueFactory.createStatement(

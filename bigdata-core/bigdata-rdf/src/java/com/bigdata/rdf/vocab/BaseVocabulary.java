@@ -37,9 +37,10 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.bop.Constant;
 import com.bigdata.bop.IConstant;
@@ -50,7 +51,7 @@ import com.bigdata.rdf.internal.impl.uri.VocabURIShortIV;
 import com.bigdata.rdf.model.BigdataURI;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.store.AbstractTripleStore;
 
 /**
@@ -61,7 +62,7 @@ import com.bigdata.rdf.store.AbstractTripleStore;
  */
 abstract public class BaseVocabulary implements Vocabulary, Externalizable {
 
-    final static private transient Logger log = Logger
+    final static private transient Logger log = LogManager
             .getLogger(BaseVocabulary.class);
 
     /**
@@ -120,7 +121,7 @@ abstract public class BaseVocabulary implements Vocabulary, Externalizable {
         if (namespace == null)
             throw new IllegalArgumentException();
 
-        this.valueFactory = BigdataValueFactoryImpl
+        this.valueFactory = BigdataSimpleValueFactory
                 .getInstance(namespace);
         
     }
@@ -214,7 +215,7 @@ abstract public class BaseVocabulary implements Vocabulary, Externalizable {
 //     * @throws IllegalArgumentException
 //     *             if the value is <code>null</code>.
 //     */
-//    final protected void add(final URI value) {
+//    final protected void add(final IRI value) {
 //
 //        if (value == null)
 //            throw new IllegalArgumentException();
@@ -231,7 +232,7 @@ abstract public class BaseVocabulary implements Vocabulary, Externalizable {
 
         for (VocabularyDecl decl : decls) {
         
-            final Iterator<URI> itr = decl.values();
+            final Iterator<IRI> itr = decl.values();
 
             while (itr.hasNext()) {
 
@@ -477,7 +478,7 @@ abstract public class BaseVocabulary implements Vocabulary, Externalizable {
 //         * Note: VERSION0 was not able to provide the correct
 //         * BigdataValueFactory since it did not have access to the KB namespace.
 //         */
-//        final ValueFactory valueFactory = new ValueFactoryImpl();
+//        final ValueFactory valueFactory = new SimpleValueFactory();
 //        
 //        final BigdataValueSerializer<Value> valueSer = new BigdataValueSerializer<Value>(
 //                valueFactory);
@@ -535,7 +536,7 @@ abstract public class BaseVocabulary implements Vocabulary, Externalizable {
 //        final String namespace = in.readUTF();
 //        
 //        // Note: The value factory uses the namespace of the KB instance! 
-//        valueFactory = BigdataValueFactoryImpl.getInstance(namespace);
+//        valueFactory = BigdataSimpleValueFactory.getInstance(namespace);
 //
 //        // ValueSerializer using the namespace of the KB instance!
 //        final BigdataValueSerializer<BigdataValue> valueSer = new BigdataValueSerializer<BigdataValue>(
@@ -606,7 +607,7 @@ abstract public class BaseVocabulary implements Vocabulary, Externalizable {
         final String namespace = in.readUTF();
 
         // Note: The value factory uses the namespace of the KB instance!
-        valueFactory = BigdataValueFactoryImpl.getInstance(namespace);
+        valueFactory = BigdataSimpleValueFactory.getInstance(namespace);
         
         // Initialize the vocabulary.
         init(ndecls, nvalues);
@@ -728,7 +729,7 @@ abstract public class BaseVocabulary implements Vocabulary, Externalizable {
 //        final ByteArrayBuffer tbuf = new ByteArrayBuffer();
 //
 //        final BigdataValueSerializer<Value> valueSer = new BigdataValueSerializer<Value>(
-//                new ValueFactoryImpl());
+//                new SimpleValueFactory());
 //
 //        final IKeyBuilder keyBuilder = KeyBuilder.newInstance();
 //

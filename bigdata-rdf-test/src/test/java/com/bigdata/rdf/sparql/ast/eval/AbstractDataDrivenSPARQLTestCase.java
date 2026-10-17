@@ -72,24 +72,25 @@ import java.util.Set;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipInputStream;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Statement;
-import org.openrdf.query.GraphQueryResult;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.algebra.evaluation.QueryBindingSet;
-import org.openrdf.query.dawg.DAWGTestResultSetUtil;
-import org.openrdf.query.impl.TupleQueryResultBuilder;
-import org.openrdf.query.resultio.BooleanQueryResultFormat;
-import org.openrdf.query.resultio.BooleanQueryResultParserRegistry;
-import org.openrdf.query.resultio.QueryResultIO;
-import org.openrdf.query.resultio.TupleQueryResultFormat;
-import org.openrdf.query.resultio.TupleQueryResultParser;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.RDFParser.DatatypeHandling;
-import org.openrdf.rio.Rio;
-import org.openrdf.rio.helpers.StatementCollector;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.query.GraphQueryResult;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.algebra.evaluation.QueryBindingSet;
+import org.eclipse.rdf4j.query.dawg.DAWGTestResultSetUtil;
+import org.eclipse.rdf4j.query.impl.TupleQueryResultBuilder;
+import org.eclipse.rdf4j.query.resultio.BooleanQueryResultFormat;
+import org.eclipse.rdf4j.query.resultio.BooleanQueryResultParserRegistry;
+import org.eclipse.rdf4j.query.resultio.QueryResultIO;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultFormat;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultParser;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParser;
+import com.bigdata.rdf.rio.DatatypeHandling;
+import org.eclipse.rdf4j.rio.Rio;
+import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 
 import com.bigdata.bop.engine.AbstractQueryEngineTestCase;
 import com.bigdata.bop.engine.QueryEngine;
@@ -100,7 +101,6 @@ import com.bigdata.rdf.sparql.ast.ASTContainer;
 import com.bigdata.rdf.sparql.ast.QueryRoot;
 import com.bigdata.rdf.store.AbstractTripleStore;
 
-import info.aduna.iteration.Iterations;
 
 /**
  * Abstract base class for data driven test suites.
@@ -111,7 +111,7 @@ import info.aduna.iteration.Iterations;
 abstract public class AbstractDataDrivenSPARQLTestCase extends
         AbstractDataAndSPARQLTestCase {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(AbstractDataDrivenSPARQLTestCase.class);
     
     /**
@@ -338,7 +338,7 @@ abstract public class AbstractDataDrivenSPARQLTestCase extends
 //                        queryRoot.getConstruct()//
 //                        );
 
-                final Set<Statement> queryResult = Iterations.asSet(gqr);
+                final Set<Statement> queryResult = org.eclipse.rdf4j.query.QueryResults.asSet(gqr);
 
                 compareGraphs(queryResult, expectedResult);
                 
@@ -373,7 +373,7 @@ abstract public class AbstractDataDrivenSPARQLTestCase extends
         public TupleQueryResult readExpectedTupleQueryResult() throws Exception {
 
             final TupleQueryResultFormat tqrFormat = QueryResultIO
-                    .getParserFormatForFileName(resultFileURL);
+                    .getParserFormatForFileName(resultFileURL).filter(f -> f instanceof TupleQueryResultFormat).map(f -> (TupleQueryResultFormat) f).orElse(null);
 
             if (tqrFormat != null) {
                 
@@ -382,7 +382,7 @@ abstract public class AbstractDataDrivenSPARQLTestCase extends
                 try {
                 
                     final TupleQueryResultParser parser = QueryResultIO
-                            .createParser(tqrFormat);
+                            .createTupleParser(tqrFormat);
                     
                     parser.setValueFactory(store.getValueFactory());
 
@@ -413,7 +413,7 @@ abstract public class AbstractDataDrivenSPARQLTestCase extends
         public boolean readExpectedBooleanQueryResult() throws Exception {
             
             final BooleanQueryResultFormat bqrFormat = BooleanQueryResultParserRegistry
-                    .getInstance().getFileFormatForFileName(resultFileURL);
+                    .getInstance().getFileFormatForFileName(resultFileURL).filter(f -> f instanceof BooleanQueryResultFormat).map(f -> (BooleanQueryResultFormat) f).orElse(null);
 
             if (bqrFormat != null) {
 
@@ -421,7 +421,7 @@ abstract public class AbstractDataDrivenSPARQLTestCase extends
                 
                 try {
                 
-                    return QueryResultIO.parse(in, bqrFormat);
+                    return QueryResultIO.parseBoolean(in, bqrFormat);
                     
                 } finally {
                     
@@ -450,12 +450,12 @@ abstract public class AbstractDataDrivenSPARQLTestCase extends
                 return expectedGraphQueryResult;
             
             final RDFFormat rdfFormat = Rio
-                    .getParserFormatForFileName(resultFileURL);
+                    .getParserFormatForFileName(resultFileURL).orElse(null);
 
             if (rdfFormat != null) {
 
                 final RDFParser parser = Rio.createParser(rdfFormat);
-                parser.setDatatypeHandling(DatatypeHandling.IGNORE);
+                parser.getParserConfig().set(org.eclipse.rdf4j.rio.helpers.BasicParserSettings.VERIFY_DATATYPE_VALUES, false);
                 parser.setPreserveBNodeIDs(true);
                 parser.setValueFactory(store.getValueFactory());
 
@@ -527,7 +527,7 @@ abstract public class AbstractDataDrivenSPARQLTestCase extends
 
                 is = getResourceAsStream(resource);
 
-                final RDFFormat rdfFormat = RDFFormat.forFileName(resource);
+                final RDFFormat rdfFormat = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(resource);
 
                 if (rdfFormat == null)
                     throw new RuntimeException("Unknown format: resource="
@@ -677,7 +677,7 @@ abstract public class AbstractDataDrivenSPARQLTestCase extends
 
                 is = getResourceAsStream(resource);
 
-                final RDFFormat rdfFormat = RDFFormat.forFileName(resource);
+                final RDFFormat rdfFormat = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(resource);
 
                 if (rdfFormat == null)
                     throw new RuntimeException("Unknown format: resource="
@@ -709,14 +709,14 @@ abstract public class AbstractDataDrivenSPARQLTestCase extends
 //
 //        final String n = file.getName();
 //
-//        RDFFormat fmt = RDFFormat.forFileName(n);
+//        RDFFormat fmt = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(n);
 //
 //        if (fmt == null && n.endsWith(".zip")) {
-//            fmt = RDFFormat.forFileName(n.substring(0, n.length() - 4));
+//            fmt = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(n.substring(0, n.length() - 4));
 //        }
 //
 //        if (fmt == null && n.endsWith(".gz")) {
-//            fmt = RDFFormat.forFileName(n.substring(0, n.length() - 3));
+//            fmt = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(n.substring(0, n.length() - 3));
 //        }
 //
 //        if (fmt == null) // fallback

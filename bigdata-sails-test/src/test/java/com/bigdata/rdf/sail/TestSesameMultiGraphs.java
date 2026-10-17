@@ -26,17 +26,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sail;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.repository.sail.SailRepositoryConnection;
-import org.openrdf.sail.Sail;
-import org.openrdf.sail.memory.MemoryStore;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.repository.sail.SailRepository;
+import org.eclipse.rdf4j.repository.sail.SailRepositoryConnection;
+import org.eclipse.rdf4j.sail.Sail;
+import org.eclipse.rdf4j.sail.memory.MemoryStore;
 
 /**
  * @author <a href="mailto:mrpersonick@users.sourceforge.net">Mike Personick</a>
@@ -53,7 +53,7 @@ public class TestSesameMultiGraphs {
         sail = new MemoryStore();
         repo = new SailRepository(sail);
         
-        repo.initialize();
+        repo.init();
         cxn = repo.getConnection();
         cxn.setAutoCommit(false);
         
@@ -63,11 +63,11 @@ public class TestSesameMultiGraphs {
             
             final String ns = "http://namespace/";
             
-            URI a = vf.createURI(ns+"a");
-            URI b = vf.createURI(ns+"b");
-            URI c = vf.createURI(ns+"c");
-            URI g1 = vf.createURI(ns+"graph1");
-            URI g2 = vf.createURI(ns+"graph2");
+            IRI a = vf.createIRI(ns+"a");
+            IRI b = vf.createIRI(ns+"b");
+            IRI c = vf.createIRI(ns+"c");
+            IRI g1 = vf.createIRI(ns+"graph1");
+            IRI g2 = vf.createIRI(ns+"graph2");
 /**/
             cxn.setNamespace("ns", ns);
             

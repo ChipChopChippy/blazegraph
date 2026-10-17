@@ -41,8 +41,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -119,7 +120,7 @@ import com.bigdata.rdf.sparql.ast.optimizers.IASTOptimizer;
  */
 public class BigdataExprBuilder extends GroupGraphPatternBuilder {
 
-    private static final Logger log = Logger.getLogger(BigdataExprBuilder.class);
+    private static final Logger log = LogManager.getLogger(BigdataExprBuilder.class);
 
     public BigdataExprBuilder(final BigdataASTContext context) {
 

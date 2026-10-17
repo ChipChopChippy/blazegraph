@@ -24,7 +24,7 @@ package com.bigdata.rdf.sail.webapp.lbs.policy;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import com.bigdata.rdf.sail.webapp.lbs.AbstractLBSPolicy;
 import com.bigdata.rdf.sail.webapp.lbs.ServiceScore;

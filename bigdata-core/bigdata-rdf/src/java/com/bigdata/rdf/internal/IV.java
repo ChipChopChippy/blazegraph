@@ -29,10 +29,10 @@ package com.bigdata.rdf.internal;
 
 import java.io.Serializable;
 
-import org.openrdf.model.BNode;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.btree.keys.IKeyBuilder;
 import com.bigdata.rdf.internal.impl.TermId;
@@ -95,7 +95,7 @@ public interface IV<V extends BigdataValue, T> extends Serializable,
     boolean isBNode();
 
     /**
-     * Return <code>true</code> iff this is an RDF {@link URI}.
+     * Return <code>true</code> iff this is an RDF {@link IRI}.
      */
     boolean isURI();
 
@@ -106,7 +106,7 @@ public interface IV<V extends BigdataValue, T> extends Serializable,
     boolean isStatement();
     
     /**
-     * Return <code>true</code> iff this is a URI or a bnode.
+     * Return <code>true</code> iff this is a IRI or a bnode.
      */
     boolean isResource();
 
@@ -155,7 +155,7 @@ public interface IV<V extends BigdataValue, T> extends Serializable,
 	 * to the {@link DTE}) will be interpreted. This is used to support
 	 * projections of value spaces for data type literals onto the intrinsic
 	 * types. It is also used to support indirect resolution of the namespace
-	 * associated with a URI.
+	 * associated with a IRI.
 	 */
     boolean isExtension();
 
@@ -225,7 +225,7 @@ public interface IV<V extends BigdataValue, T> extends Serializable,
     /**
      * Each concrete {@link IV} implementation will implement one of the
      * corresponding openrdf {@link Value} interfaces depending on the type of
-     * value the {@link IV} represents ({@link URI}, {@link BNode}, or
+     * value the {@link IV} represents ({@link IRI}, {@link BNode}, or
      * {@link Literal}). This method signifies whether or not the IV can deliver
      * the information needed by those interfaces with or without
      * materialization. For example, inline numerics can implement the entire

@@ -27,9 +27,9 @@ package com.bigdata.rdf.internal.impl.extensions;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.rdf.internal.IDatatypeURIResolver;
 import com.bigdata.rdf.internal.IExtension;
@@ -85,9 +85,9 @@ public class XSDStringExtension<V extends BigdataValue> implements IExtension<V>
         
         final Literal lit = (Literal) value;
         
-        final URI dt = lit.getDatatype();
+        final IRI dt = lit.getDatatype();
         
-        // Note: URI.stringValue() is efficient....
+        // Note: IRI.stringValue() is efficient....
         if (dt == null || !XSD.STRING.stringValue().equals(dt.stringValue()))
             throw new IllegalArgumentException();
         

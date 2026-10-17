@@ -26,9 +26,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
@@ -43,7 +44,7 @@ import com.tinkerpop.blueprints.Vertex;
  */
 public class BigdataEdge extends BigdataElement implements Edge {
 
-    private static final transient Logger log = Logger.getLogger(BigdataEdge.class);
+    private static final transient Logger log = LogManager.getLogger(BigdataEdge.class);
     
 	private static final List<String> blacklist = Arrays.asList(new String[] {
 	        "id", "", "label"
@@ -97,7 +98,7 @@ public class BigdataEdge extends BigdataElement implements Edge {
 			throw new IllegalArgumentException();
 		}
 		
-		final URI uri = (URI)  
+		final IRI uri = (IRI)  
 				(dir == Direction.OUT ? stmt.getSubject() : stmt.getObject());
 		
 		final String id = graph.factory.fromURI(uri);
@@ -107,11 +108,11 @@ public class BigdataEdge extends BigdataElement implements Edge {
 	}
 	
 	public BigdataVertex getFrom() {
-	    return new BigdataVertex((URI) stmt.getSubject(), graph);
+	    return new BigdataVertex((IRI) stmt.getSubject(), graph);
 	}
 	
     public BigdataVertex getTo() {
-        return new BigdataVertex((URI) stmt.getObject(), graph);
+        return new BigdataVertex((IRI) stmt.getObject(), graph);
     }
     
 	@Override
@@ -131,9 +132,9 @@ public class BigdataEdge extends BigdataElement implements Edge {
     @Override
     public String toString() {
         
-        final URI s = (URI) stmt.getSubject();
-        final URI p = (URI) stmt.getPredicate();
-        final URI o = (URI) stmt.getObject();
+        final IRI s = (IRI) stmt.getSubject();
+        final IRI p = (IRI) stmt.getPredicate();
+        final IRI o = (IRI) stmt.getObject();
         return "e["+p.getLocalName()+"]["+s.getLocalName()+"->"+o.getLocalName()+"]";
         
     }

@@ -5,9 +5,9 @@
  */
 package com.bigdata.rdf.sail.sparql;
 
-import info.aduna.net.ParsedURI;
+import org.eclipse.rdf4j.common.net.ParsedIRI;
 
-import org.openrdf.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.MalformedQueryException;
 
 import com.bigdata.rdf.sail.sparql.ast.ASTBaseDecl;
 import com.bigdata.rdf.sail.sparql.ast.ASTDeleteData;
@@ -49,12 +49,12 @@ public class BaseDeclProcessor {
 	public static void process(ASTOperationContainer qc, String externalBaseURI)
 		throws MalformedQueryException
 	{
-		ParsedURI parsedBaseURI = null;
+		ParsedIRI parsedBaseURI = null;
 
 		// Use the query model's own base URI, if available
 		ASTBaseDecl baseDecl = qc.getBaseDecl();
 		if (baseDecl != null) {
-			parsedBaseURI = new ParsedURI(baseDecl.getIRI());
+			parsedBaseURI = parseIRI(baseDecl.getIRI());
 
 			if (!parsedBaseURI.isAbsolute()) {
 				throw new MalformedQueryException("BASE IRI is not an absolute IRI: " + externalBaseURI);
@@ -62,7 +62,7 @@ public class BaseDeclProcessor {
 		}
 		else if (externalBaseURI != null) {
 			// Use external base URI if the query doesn't contain one itself
-			parsedBaseURI = new ParsedURI(externalBaseURI);
+			parsedBaseURI = parseIRI(externalBaseURI);
 
 			if (!parsedBaseURI.isAbsolute()) {
 				throw new IllegalArgumentException("Supplied base URI is not an absolute IRI: " + externalBaseURI);
@@ -100,11 +100,15 @@ public class BaseDeclProcessor {
 	}
 	}
 
+	private static ParsedIRI parseIRI(final String iri) throws MalformedQueryException {
+		return ParsedIRI.create(iri);
+	}
+
 	private static class RelativeIRIResolver extends ASTVisitorBase {
 
-		private ParsedURI parsedBaseURI;
+		private ParsedIRI parsedBaseURI;
 
-		public RelativeIRIResolver(ParsedURI parsedBaseURI) {
+		public RelativeIRIResolver(ParsedIRI parsedBaseURI) {
 			this.parsedBaseURI = parsedBaseURI;
 		}
 
@@ -112,7 +116,8 @@ public class BaseDeclProcessor {
 		public Object visit(ASTIRI node, Object data)
 			throws VisitorException
 		{
-			ParsedURI resolvedURI = parsedBaseURI.resolve(node.getValue());
+			final ParsedIRI nodeIRI = ParsedIRI.create(node.getValue());
+			ParsedIRI resolvedURI = parsedBaseURI.resolve(nodeIRI);
 			node.setValue(resolvedURI.toString());
 
 			return super.visit(node, data);

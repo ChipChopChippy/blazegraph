@@ -31,7 +31,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -361,7 +361,7 @@ public class ASTJoinOrderByTypeOptimizer extends AbstractJoinGroupOptimizer
 
                     if (n.getServiceRef().isConstant()) {
 
-                        final URI serviceURI = (URI) n.getServiceRef()
+                        final IRI serviceURI = (IRI) n.getServiceRef()
                                 .getValue();
 
                         final ServiceFactory f = ServiceRegistry.getInstance()

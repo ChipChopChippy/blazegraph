@@ -31,8 +31,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.rdf.vocab.VocabularyDecl;
 
@@ -52,46 +52,46 @@ public class VoidVocabularyDecl implements VocabularyDecl {
     public static final String NAMESPACE = "http://rdfs.org/ns/void#";
 
     // Classes.
-    public static final URI //
-            Dataset = new URIImpl(NAMESPACE + "Dataset"),//
-            DatasetDescription = new URIImpl(NAMESPACE + "DatasetDescription"),//
-            Linkset = new URIImpl(NAMESPACE + "Linkset"),//
-            TechnicalFeature = new URIImpl(NAMESPACE + "TechnicalFeature")//
+    public static final IRI //
+            Dataset = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Dataset"),//
+            DatasetDescription = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "DatasetDescription"),//
+            Linkset = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Linkset"),//
+            TechnicalFeature = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "TechnicalFeature")//
             ;
 
     // Properties.
-    public static final URI //
-            class_ = new URIImpl(NAMESPACE+"class"),//
-            classPartition = new URIImpl(NAMESPACE+"classPartition"),//
-            classes = new URIImpl(NAMESPACE+"classes"),//
-            dataDump = new URIImpl(NAMESPACE+"dataDump"),//
-            distinctObjects = new URIImpl(NAMESPACE+"distinctObjects"),//
-            distinctSubjects = new URIImpl(NAMESPACE+"distinctSubjects"),//
-            documents = new URIImpl(NAMESPACE+"documents"),//
-            entities = new URIImpl(NAMESPACE+"entities"),//
-            exampleResource = new URIImpl(NAMESPACE+"exampleResource"),//
-            feature = new URIImpl(NAMESPACE+"feature"),//
-            inDataset = new URIImpl(NAMESPACE+"inDataset"),//
-            linkPredicate = new URIImpl(NAMESPACE+"linkPredicate"),//
-            objectsTarget = new URIImpl(NAMESPACE+"objectsTarget"),//
-            openSearchDescription = new URIImpl(NAMESPACE+"openSearchDescription"),//
-            properties = new URIImpl(NAMESPACE+"properties"),//
-            property = new URIImpl(NAMESPACE+"property"),//
-            propertyPartition = new URIImpl(NAMESPACE+"propertyPartition"),//
-            rootResource = new URIImpl(NAMESPACE+"rootResource"),//
-            sparqlEndpoint = new URIImpl(NAMESPACE+"sparqlEndpoint"),//
-            subjectsTarget = new URIImpl(NAMESPACE+"subjectsTarget"),//
-            subset = new URIImpl(NAMESPACE+"subset"),//
-            target = new URIImpl(NAMESPACE+"target"),//
-            triples = new URIImpl(NAMESPACE+"triples"),//
-            uriLookupEndpoint = new URIImpl(NAMESPACE+"uriLookupEndpoint"),//
-            uriRegexPattern = new URIImpl(NAMESPACE+"uriRegexPattern"),//
-            uriSpace = new URIImpl(NAMESPACE+"uriSpace"),//
-            vocabulary = new URIImpl(NAMESPACE+"vocabulary")//
+    public static final IRI //
+            class_ = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"class"),//
+            classPartition = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"classPartition"),//
+            classes = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"classes"),//
+            dataDump = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"dataDump"),//
+            distinctObjects = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"distinctObjects"),//
+            distinctSubjects = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"distinctSubjects"),//
+            documents = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"documents"),//
+            entities = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"entities"),//
+            exampleResource = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"exampleResource"),//
+            feature = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"feature"),//
+            inDataset = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"inDataset"),//
+            linkPredicate = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"linkPredicate"),//
+            objectsTarget = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"objectsTarget"),//
+            openSearchDescription = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"openSearchDescription"),//
+            properties = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"properties"),//
+            property = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"property"),//
+            propertyPartition = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"propertyPartition"),//
+            rootResource = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"rootResource"),//
+            sparqlEndpoint = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"sparqlEndpoint"),//
+            subjectsTarget = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"subjectsTarget"),//
+            subset = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"subset"),//
+            target = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"target"),//
+            triples = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"triples"),//
+            uriLookupEndpoint = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"uriLookupEndpoint"),//
+            uriRegexPattern = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"uriRegexPattern"),//
+            uriSpace = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"uriSpace"),//
+            vocabulary = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"vocabulary")//
     ;
 
-    static private final URI[] uris = new URI[]{
-            new URIImpl(NAMESPACE),
+    static private final IRI[] uris = new IRI[]{
+            org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE),
             // classes
             Dataset,
             DatasetDescription,
@@ -109,7 +109,7 @@ public class VoidVocabularyDecl implements VocabularyDecl {
     public VoidVocabularyDecl() {
     }
     
-    public Iterator<URI> values() {
+    public Iterator<IRI> values() {
 
         return Collections.unmodifiableList(Arrays.asList(uris)).iterator();
         

@@ -29,12 +29,12 @@ package com.bigdata.rdf.sail.webapp;
 
 import java.util.Properties;
 
-import org.openrdf.model.BNode;
-import org.openrdf.model.Graph;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.ha.HAGlue;
 import com.bigdata.ha.QuorumService;
@@ -67,29 +67,29 @@ public class SD {
 
     static public final String NS = "http://www.w3.org/ns/sparql-service-description#";
 
-    static public final URI Service = new URIImpl(NS + "Service");
+    static public final IRI Service = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + "Service");
 
-    static public final URI endpoint = new URIImpl(NS + "endpoint");
+    static public final IRI endpoint = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + "endpoint");
 
     /**
      * <pre>
      * <sd:supportedLanguage rdf:resource="http://www.w3.org/ns/sparql-service-description#SPARQL11Query"/>
      * </pre>
      */
-    static public final URI supportedLanguage = new URIImpl(NS
+    static public final IRI supportedLanguage = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS
             + "supportedLanguage");
 
-    static public final URI SPARQL10Query = new URIImpl(NS + "SPARQL10Query");
+    static public final IRI SPARQL10Query = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + "SPARQL10Query");
 
-    static public final URI SPARQL11Query = new URIImpl(NS + "SPARQL11Query");
+    static public final IRI SPARQL11Query = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + "SPARQL11Query");
 
-    static public final URI SPARQL11Update = new URIImpl(NS + "SPARQL11Update");
+    static public final IRI SPARQL11Update = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + "SPARQL11Update");
 
     /**
      * Relates an instance of {@link #Service} to a format that is supported for
      * serializing query results. URIs for commonly used serialization formats
      * are defined by Unique URIs for File Formats. For formats that do not have
-     * an existing URI, the <a href="http://www.w3.org/ns/formats/media_type">
+     * an existing IRI, the <a href="http://www.w3.org/ns/formats/media_type">
      * media_type </a> and <a
      * href="http://www.w3.org/ns/formats/preferred_suffix"> preferred_suffix
      * </a> properties defined in that document SHOULD be used to describe the
@@ -102,7 +102,7 @@ public class SD {
 //   * <sd:resultFormat rdf:resource="http://www.w3.org/ns/formats/RDF_XML"/>
 //   * <sd:resultFormat rdf:resource="http://www.w3.org/ns/formats/Turtle"/>
 //   * </pre>
-    static public final URI resultFormat = new URIImpl(NS + "resultFormat");
+    static public final IRI resultFormat = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + "resultFormat");
 
     /**
      * Relates an instance of sd:Service to a format that is supported for
@@ -111,7 +111,7 @@ public class SD {
      * clauses (see also sd:DereferencesURIs below).
      * <p>
      * URIs for commonly used serialization formats are defined by Unique URIs
-     * for File Formats. For formats that do not have an existing URI, the <a
+     * for File Formats. For formats that do not have an existing IRI, the <a
      * href="http://www.w3.org/ns/formats/media_type"> media_type </a> and <a
      * href="http://www.w3.org/ns/formats/preferred_suffix"> preferred_suffix
      * </a> properties defined in that document SHOULD be used to describe the
@@ -120,19 +120,19 @@ public class SD {
      * @see <a href="http://www.w3.org/ns/formats/"> Unique URIs for File
      *      Formats </a>
      */
-    static public final URI inputFormat = new URIImpl(NS + "inputFormat");
+    static public final IRI inputFormat = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + "inputFormat");
 
     /**
      * <pre>
      * <sd:feature rdf:resource="http://www.w3.org/ns/sparql-service-description#DereferencesURIs"/>
      * </pre>
      */
-    static public final URI feature = new URIImpl(NS + "feature");
-    static public final URI DereferencesURIs = new URIImpl(NS + "DereferencesURIs");
-    static public final URI UnionDefaultGraph = new URIImpl(NS + "UnionDefaultGraph");
-    static public final URI RequiresDataset = new URIImpl(NS + "RequiresDataset");
-    static public final URI EmptyGraphs = new URIImpl(NS + "EmptyGraphs");
-    static public final URI BasicFederatedQuery = new URIImpl(NS + "BasicFederatedQuery");
+    static public final IRI feature = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + "feature");
+    static public final IRI DereferencesURIs = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + "DereferencesURIs");
+    static public final IRI UnionDefaultGraph = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + "UnionDefaultGraph");
+    static public final IRI RequiresDataset = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + "RequiresDataset");
+    static public final IRI EmptyGraphs = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + "EmptyGraphs");
+    static public final IRI BasicFederatedQuery = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + "BasicFederatedQuery");
     
     /**
      * The namespace for the bigdata specific features.
@@ -142,26 +142,26 @@ public class SD {
     /*
      * KB modes.
      */
-    static public final URI ModeTriples = new URIImpl(BDFNS + "KB/Mode/Triples");
-    static public final URI ModeQuads = new URIImpl(BDFNS + "KB/Mode/Quads");
-    static public final URI ModeSids = new URIImpl(BDFNS + "KB/Mode/Sids");
+    static public final IRI ModeTriples = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BDFNS + "KB/Mode/Triples");
+    static public final IRI ModeQuads = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BDFNS + "KB/Mode/Quads");
+    static public final IRI ModeSids = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BDFNS + "KB/Mode/Sids");
 
     /*
      * Text Index modes.
      */
-    static public final URI TextIndexValueCentric = new URIImpl(BDFNS
+    static public final IRI TextIndexValueCentric = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BDFNS
             + "KB/TextIndex/ValueCentric");
     
-    static public final URI TextIndexSubjectCentric = new URIImpl(BDFNS
+    static public final IRI TextIndexSubjectCentric = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BDFNS
             + "KB/TextIndex/SubjectCentric");
 
     /*
      * Misc KB features.
      */
-    static public final URI TruthMaintenance = new URIImpl(BDFNS
+    static public final IRI TruthMaintenance = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BDFNS
             + "KB/TruthMaintenance");
     
-    static public final URI IsolatableIndices = new URIImpl(BDFNS
+    static public final IRI IsolatableIndices = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BDFNS
             + "KB/IsolatableIndices");
 
     /**
@@ -173,7 +173,7 @@ public class SD {
      * the actual #of running joined instances to determine whether the database
      * can withstand a failure.
      */
-    static public final URI HighlyAvailable = new URIImpl(BDFNS
+    static public final IRI HighlyAvailable = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BDFNS
             + "HighlyAvailable");
 
     /**
@@ -184,13 +184,13 @@ public class SD {
      * highly available. THREE (3) is the minimum configuration that can
      * withstand a failure.
      */
-    static public final URI ReplicationFactor = new URIImpl(BDFNS
+    static public final IRI ReplicationFactor = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BDFNS
             + "replicationFactor");
     
     /**
      * An {@link IBigdataFederation}.
      */
-    static public final URI ScaleOut = new URIImpl(BDFNS
+    static public final IRI ScaleOut = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BDFNS
             + "ScaleOut");
 
     /**
@@ -198,19 +198,19 @@ public class SD {
      * acceleration, but this does not indicate whether or not the namespace is
      * currently loaded in the mapgraph-runtime.
      */
-    static public final URI MapgraphCompatible = new URIImpl(BDFNS + "MapgraphCompatible");
+    static public final IRI MapgraphCompatible = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BDFNS + "MapgraphCompatible");
 
     /**
      * This indicates that the namespace is currently loaded within the
      * mapgraph-runtime.
      */
-    static public final URI MapgraphAcceleration = new URIImpl(BDFNS + "MapgraphAcceleration");
+    static public final IRI MapgraphAcceleration = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BDFNS + "MapgraphAcceleration");
 
     /**
      * The <code>namespace</code> for this KB instance as configured by the
      * {@link BigdataSail.Options#NAMESPACE} property.
      */
-    static public final URI KB_NAMESPACE = new URIImpl(BDFNS
+    static public final IRI KB_NAMESPACE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BDFNS
             + "KB/Namespace");
     
     /**
@@ -230,16 +230,16 @@ public class SD {
      *      usable with the properties sd:defaultSupportedEntailmentProfile and
      *      sd:supportedEntailmentProfile) </a>
      */
-    static public final URI defaultEntailmentRegime = new URIImpl(NS
+    static public final IRI defaultEntailmentRegime = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS
             + "defaultEntailmentRegime");
 
-    static public final URI entailmentRegime = new URIImpl(NS
+    static public final IRI entailmentRegime = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS
             + "entailmentRegime");
 
-    static public final URI supportedEntailmentProfile = new URIImpl(NS
+    static public final IRI supportedEntailmentProfile = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS
             + "supportedEntailmentProfile");
 
-    static public final URI extensionFunction = new URIImpl(NS
+    static public final IRI extensionFunction = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS
             + "extensionFunction");
 
     /*
@@ -251,7 +251,7 @@ public class SD {
      * 
      * @see http://www.w3.org/ns/entailment/Simple
      */
-    static public final URI simpleEntailment = new URIImpl(
+    static public final IRI simpleEntailment = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
             "http://www.w3.org/ns/entailment/Simple");
 
     /**
@@ -259,7 +259,7 @@ public class SD {
      * 
      * @see http://www.w3.org/ns/entailment/RDF
      */
-    static public final URI rdfEntailment = new URIImpl(
+    static public final IRI rdfEntailment = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
             "http://www.w3.org/ns/entailment/RDF");
 
     /**
@@ -267,17 +267,17 @@ public class SD {
      * 
      * @see http://www.w3.org/ns/entailment/RDFS
      */
-    static public final URI rdfsEntailment = new URIImpl(
+    static public final IRI rdfsEntailment = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
             "http://www.w3.org/ns/entailment/RDFS");
     
-    static public final URI Function = new URIImpl(NS + "Function");
-    static public final URI defaultDataset = new URIImpl(NS + "defaultDataset");
-    static public final URI Dataset = new URIImpl(NS + "Dataset");
-    static public final URI defaultGraph = new URIImpl(NS + "defaultGraph");
-    static public final URI Graph = new URIImpl(NS + "Graph");
-    static public final URI namedGraph = new URIImpl(NS + "namedGraph");
-    static public final URI NamedGraph = new URIImpl(NS + "NamedGraph");
-    static public final URI name = new URIImpl(NS + "name");
+    static public final IRI Function = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + "Function");
+    static public final IRI defaultDataset = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + "defaultDataset");
+    static public final IRI Dataset = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + "Dataset");
+    static public final IRI defaultGraph = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + "defaultGraph");
+    static public final IRI Model = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + "Model");
+    static public final IRI namedGraph = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + "namedGraph");
+    static public final IRI NamedGraph = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + "NamedGraph");
+    static public final IRI name = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + "name");
 
     /*
      * RDF data
@@ -286,39 +286,39 @@ public class SD {
      */
     
     /**
-     * Unique URI for RDF/XML
+     * Unique IRI for RDF/XML
      * 
      * @see http://www.w3.org/ns/formats/
      */
-    static public final URI RDFXML = new URIImpl(
+    static public final IRI RDFXML = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
             "http://www.w3.org/ns/formats/RDF_XML");
     
     /**
-     * Unique URI for NTRIPLES
+     * Unique IRI for NTRIPLES
      * 
      * @see http://www.w3.org/ns/formats/
      */
-    static public final URI NTRIPLES = new URIImpl(
+    static public final IRI NTRIPLES = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
             "http://www.w3.org/ns/formats/N-Triples");
 
     /**
-     * Unique URI for TURTLE
+     * Unique IRI for TURTLE
      * 
      * @see http://www.w3.org/ns/formats/
      */
-    static public final URI TURTLE = new URIImpl(
+    static public final IRI TURTLE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
             "http://www.w3.org/ns/formats/Turtle");
 
     // RDR specific extension of TURTLE.
-    static public final URI TURTLE_RDR = new URIImpl(
+    static public final IRI TURTLE_RDR = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
             "http://www.bigdata.com/ns/formats/Turtle-RDR");
 
     /**
-     * Unique URI for N3.
+     * Unique IRI for N3.
      * 
      * @see http://www.w3.org/ns/formats/
      */
-    static public final URI N3 = new URIImpl("http://www.w3.org/ns/formats/N3");
+    static public final IRI N3 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.w3.org/ns/formats/N3");
 
     // /**
     // * TODO The TriX file format.
@@ -332,30 +332,30 @@ public class SD {
      * href="http://www.wiwiss.fu-berlin.de/suhl/bizer/TriG/Spec/">TriG</a> file
      * format.
      */
-    static public final URI TRIG = new URIImpl(
+    static public final IRI TRIG = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
             "http://www.wiwiss.fu-berlin.de/suhl/bizer/TriG/Spec/");
 
     // /**
     // * TODO A binary RDF format (openrdf)
     // *
     // * @see http://www.openrdf.org/issues/browse/RIO-79 (Request for unique
-    // URI)
+    // IRI)
     // */
     // public static final RDFFormat BINARY = new RDFFormat("BinaryRDF",
     // "application/x-binary-rdf", null,
     // "brf", true, true);
 
     /**
-     * The URI that identifies the N-Quads syntax is
+     * The IRI that identifies the N-Quads syntax is
      * <code>http://sw.deri.org/2008/07/n-quads/#n-quads</code>.
      * 
      * @see http://sw.deri.org/2008/07/n-quads/
      */
-    static public final URI NQUADS = new URIImpl(
+    static public final IRI NQUADS = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
             "http://sw.deri.org/2008/07/n-quads/#n-quads");
 
     // RDR specific extension of N-Triples.
-    static public final URI NTRIPLES_RDR = new URIImpl(
+    static public final IRI NTRIPLES_RDR = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
             "http://www.bigdata.com/ns/formats/N-Triples-RDR");
 
     /*
@@ -363,55 +363,55 @@ public class SD {
      */
 
     /**
-     * Unique URI for SPARQL Results in XML
+     * Unique IRI for SPARQL Results in XML
      * 
      * @see http://www.w3.org/ns/formats/
      */
-    static public final URI SPARQL_RESULTS_XML = new URIImpl(
+    static public final IRI SPARQL_RESULTS_XML = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
             "http://www.w3.org/ns/formats/SPARQL_Results_XML");
 
     /**
-     * Unique URI for SPARQL Results in JSON
+     * Unique IRI for SPARQL Results in JSON
      * 
      * @see http://www.w3.org/ns/formats/
      * 
      *      TODO Does openrdf support this yet?
      */
-    static public final URI SPARQL_RESULTS_JSON = new URIImpl(
+    static public final IRI SPARQL_RESULTS_JSON = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
             "http://www.w3.org/ns/formats/SPARQL_Results_JSON");
 
     /**
-     * Unique URI for SPARQL Results in CSV
+     * Unique IRI for SPARQL Results in CSV
      * 
      * @see http://www.w3.org/ns/formats/
      */
-    static public final URI SPARQL_RESULTS_CSV = new URIImpl(
+    static public final IRI SPARQL_RESULTS_CSV = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
             "http://www.w3.org/ns/formats/SPARQL_Results_CSV");
 
     /**
-     * Unique URI for SPARQL Results in TSV
+     * Unique IRI for SPARQL Results in TSV
      * 
      * @see http://www.w3.org/ns/formats/
      */
-    static public final URI SPARQL_RESULTS_TSV = new URIImpl(
+    static public final IRI SPARQL_RESULTS_TSV = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
             "http://www.w3.org/ns/formats/SPARQL_Results_TSV");
 
     // TODO openrdf binary format.
 //    /**
-//     * Unique URI for SPARQL Results in TSV
+//     * Unique IRI for SPARQL Results in TSV
 //     * 
 //     * @see TupleQueryResultFormat#BINARY
 //     * 
-//     * @see http://www.openrdf.org/issues/browse/RIO-79 (Request for unique URI) 
+//     * @see http://www.openrdf.org/issues/browse/RIO-79 (Request for unique IRI) 
 //     */
-//    static public final URI SPARQL_RESULTS_OPENRDF_BINARY = new URIImpl(
+//    static public final IRI SPARQL_RESULTS_OPENRDF_BINARY = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
 //            "http://www.w3.org/ns/formats/SPARQL_Results_TSV");
 
     /**
      * The graph in which the service description is accumulated (from the
      * constructor).
      */
-    protected final Graph g;
+    protected final Model g;
     
     /**
      * The KB instance that is being described (from the constructor).
@@ -456,7 +456,7 @@ public class SD {
      * 
      * @see #describeService()
      */
-    public SD(final Graph g, final AbstractTripleStore tripleStore,
+    public SD(final Model g, final AbstractTripleStore tripleStore,
             final String... serviceURI) {
 
         if (g == null)
@@ -481,7 +481,7 @@ public class SD {
         
         this.serviceURI = serviceURI;
         
-        this.f = g.getValueFactory();
+        this.f = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance();
         
         aService = f.createBNode("service");
 
@@ -549,7 +549,8 @@ public class SD {
 
         for (String uri : serviceURI) {
 
-            g.add(aService, SD.endpoint, g.getValueFactory().createURI(uri));
+            g.add(aService, SD.endpoint,
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(uri));
 
         }
 
@@ -744,7 +745,7 @@ public class SD {
         if (!tripleStore.isQuads())
             return;
 
-        final URI entailmentRegime;
+        final IRI entailmentRegime;
         final Axioms axioms = tripleStore.getAxioms();
         if (axioms == null || axioms instanceof NoAxioms) {
             entailmentRegime = SD.simpleEntailment;

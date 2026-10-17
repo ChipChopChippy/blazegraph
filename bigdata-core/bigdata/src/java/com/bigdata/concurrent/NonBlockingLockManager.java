@@ -51,8 +51,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.cache.ConcurrentWeakValueCacheWithTimeout;
 import com.bigdata.counters.CounterSet;
 import com.bigdata.counters.Instrument;
@@ -115,7 +116,7 @@ import com.bigdata.util.concurrent.WriteTaskCounters;
  */
 public class NonBlockingLockManager</* T, */R extends Comparable<R>> {
 
-    final protected static Logger log = Logger
+    final protected static Logger log = LogManager
             .getLogger(NonBlockingLockManager.class);
 
     final protected static boolean INFO = log.isInfoEnabled();

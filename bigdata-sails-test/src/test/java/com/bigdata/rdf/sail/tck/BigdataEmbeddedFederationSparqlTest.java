@@ -33,13 +33,14 @@ import java.util.Properties;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.apache.log4j.Logger;
-import org.openrdf.query.Dataset;
-import org.openrdf.query.parser.sparql.manifest.ManifestTest;
-import org.openrdf.query.parser.sparql.manifest.SPARQL11ManifestTest;
-import org.openrdf.query.parser.sparql.manifest.SPARQLQueryTest;
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.query.Dataset;
+import org.eclipse.rdf4j.query.parser.sparql.manifest.ManifestTest;
+import org.eclipse.rdf4j.query.parser.sparql.manifest.SPARQL11ManifestTest;
+import org.eclipse.rdf4j.query.parser.sparql.manifest.SPARQLQueryTest;
+import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.RepositoryException;
 
 import com.bigdata.btree.keys.CollatorEnum;
 import com.bigdata.btree.keys.StrengthEnum;
@@ -66,7 +67,7 @@ import com.bigdata.service.IBigdataFederation;
  */
 public class BigdataEmbeddedFederationSparqlTest extends BigdataSparqlTest {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(BigdataEmbeddedFederationSparqlTest.class);
 
     public BigdataEmbeddedFederationSparqlTest(String testURI, String name,

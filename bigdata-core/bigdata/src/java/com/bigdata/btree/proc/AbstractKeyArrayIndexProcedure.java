@@ -47,8 +47,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.AbstractBTree;
 import com.bigdata.btree.BTree;
 import com.bigdata.btree.Errors;
@@ -91,7 +92,7 @@ abstract public class AbstractKeyArrayIndexProcedure<T> extends
         AbstractIndexProcedure<T> implements IKeyArrayIndexProcedure<T>,
         Externalizable {
 	
-	private static final Logger log = Logger.getLogger(AbstractKeyArrayIndexProcedure.class);
+	private static final Logger log = LogManager.getLogger(AbstractKeyArrayIndexProcedure.class);
 
 	/*
 	 * FIXME These parameters should be specified from the derived class and

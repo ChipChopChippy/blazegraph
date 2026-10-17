@@ -27,19 +27,19 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.Set;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.vocabulary.XMLSchema;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParseException;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParseException;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.rdf.internal.IV;
@@ -100,7 +100,7 @@ public class TestTicket4249 extends QuadsTestCase {
 		try {
 			BigdataSailRepository repo = new BigdataSailRepository(sail);
 			try {
-				repo.initialize();
+				repo.init();
 				final RepositoryConnection conn = repo.getConnection();
 				conn.setAutoCommit(false);
 				ValueFactory vf = conn.getValueFactory();
@@ -121,10 +121,10 @@ public class TestTicket4249 extends QuadsTestCase {
 					executeQuery(conn, "12345", -1d/0d, 2d/0d, "");
 					executeQuery(conn, vf.createLiteral("foobar"), 4, vf.createLiteral("bar"));
 					executeQuery(conn, vf.createLiteral("foobar","en"), 4, vf.createLiteral("bar", "en"));
-					executeQuery(conn, vf.createLiteral("foobar", XMLSchema.STRING), 4, vf.createLiteral("bar", XMLSchema.STRING));
+					executeQuery(conn, vf.createLiteral("foobar", XSD.STRING), 4, vf.createLiteral("bar", XSD.STRING));
 					executeQuery(conn, vf.createLiteral("foobar"), 4, 1, vf.createLiteral("b"));
 					executeQuery(conn, vf.createLiteral("foobar", "en"), 4, 1, vf.createLiteral("b", "en"));
-					executeQuery(conn, vf.createLiteral("foobar", XMLSchema.STRING), 4, 1, vf.createLiteral("b", XMLSchema.STRING));
+					executeQuery(conn, vf.createLiteral("foobar", XSD.STRING), 4, 1, vf.createLiteral("b", XSD.STRING));
 				} finally {
 					conn.close();
 				}

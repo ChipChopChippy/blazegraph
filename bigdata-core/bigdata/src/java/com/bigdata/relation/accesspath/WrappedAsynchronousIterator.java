@@ -28,6 +28,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.relation.accesspath;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
@@ -50,7 +52,7 @@ import cutthecrap.utils.striterators.ICloseableIterator;
  */
 public class WrappedAsynchronousIterator<E,F> implements IAsynchronousIterator<E> {
 
-//    private static final Logger log = Logger.getLogger(WrappedAsynchronousIterator.class);
+//    private static final Logger log = LogManager.getLogger(WrappedAsynchronousIterator.class);
     
     private transient volatile boolean open = true;
 

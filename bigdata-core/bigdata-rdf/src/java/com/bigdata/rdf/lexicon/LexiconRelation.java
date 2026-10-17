@@ -52,13 +52,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.log4j.Logger;
-import org.omg.CORBA.portable.ValueFactory;
-import org.openrdf.model.BNode;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -104,7 +104,7 @@ import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataURI;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.model.BigdataValueSerializer;
 import com.bigdata.rdf.rio.StatementBuffer;
 import com.bigdata.rdf.sail.BigdataSailHelper;
@@ -147,7 +147,7 @@ import cutthecrap.utils.striterators.Striterator;
 public class LexiconRelation extends AbstractRelation<BigdataValue> 
         implements IDatatypeURIResolver {
 
-    private final static Logger log = Logger.getLogger(LexiconRelation.class);
+    private final static Logger log = LogManager.getLogger(LexiconRelation.class);
 
     private final Set<String> indexNames;
 
@@ -289,11 +289,11 @@ public class LexiconRelation extends AbstractRelation<BigdataValue>
         final String defaultClassName;
         if (vocab == null || vocab.get(XSD.IPV4) == null) {
             /*
-             * If there is no vocabulary then you can not use an inline URI
+             * If there is no vocabulary then you can not use an inline IRI
              * factory because the namespaces must be in the vocabulary. If the
              * XSD.IPV4 uri is not present in the vocabulary then either you are
              * using NoVocabulary.class or an older version of the vocabulary
-             * that does not have that URI in it. Newer journals should be using
+             * that does not have that IRI in it. Newer journals should be using
              * DefaultBigdataVocabulary.
              */
             defaultClassName = NoInlineURIFactory.class.getName();
@@ -497,7 +497,7 @@ public class LexiconRelation extends AbstractRelation<BigdataValue>
          * read-committed, and unisolated views of the lexicon for a given
          * triple store.
          */
-//        valueFactory = BigdataValueFactoryImpl.getInstance(namespace);
+//        valueFactory = BigdataSimpleValueFactory.getInstance(namespace);
         try {
 			final Class<BigdataValueFactory> vfc = determineValueFactoryClass();
 			final Method gi = vfc.getMethod("getInstance", String.class);
@@ -628,7 +628,7 @@ public class LexiconRelation extends AbstractRelation<BigdataValue>
             try {
                 
                 /*
-                 * Setup the inline URI factory.
+                 * Setup the inline IRI factory.
                  */
                 final Class<IInlineURIFactory> urifc = 
                     determineInlineURIFactoryClass();
@@ -661,7 +661,7 @@ public class LexiconRelation extends AbstractRelation<BigdataValue>
     }
     
     /**
-     * The canonical {@link BigdataValueFactoryImpl} reference (JVM wide) for the
+     * The canonical {@link BigdataSimpleValueFactory} reference (JVM wide) for the
      * lexicon namespace.
      */
 	public BigdataValueFactory getValueFactory() {
@@ -1620,7 +1620,7 @@ public class LexiconRelation extends AbstractRelation<BigdataValue>
      * 
      * @see IDatatypeURIResolver
      */
-    public BigdataURI resolve(final URI uri) {
+    public BigdataURI resolve(final IRI uri) {
 
         if(uri == null)
             throw new IllegalArgumentException();
@@ -1634,7 +1634,7 @@ public class LexiconRelation extends AbstractRelation<BigdataValue>
         if (iv == null) {
 
             /*
-             * The request URI is not part of the pre-declared vocabulary.
+             * The request IRI is not part of the pre-declared vocabulary.
              */
             
             throw new NoSuchVocabularyItem("uri=" + uri + ", vocab=" + vocab);
@@ -1849,7 +1849,7 @@ public class LexiconRelation extends AbstractRelation<BigdataValue>
                  * Some inline IVs will be text indexed per the 
                  * LexiconConfiguration.
                  */
-                final URI dt = ((BigdataLiteral) v).getDatatype();
+                final IRI dt = ((BigdataLiteral) v).getDatatype();
                 if (dt == null || dt.equals(XSD.STRING)) {
                     // always text index strings, even inline ones
                     textIndex.add(v);
@@ -3171,7 +3171,7 @@ public class LexiconRelation extends AbstractRelation<BigdataValue>
      * {@link AbstractTripleStore#isStatement(IV)}. If the term identifier is
      * recognized as being, in fact, a statement identifier, then it is
      * externalized as a {@link BNode}. This fits rather well with the notion
-     * in a quad store that the context position may be either a {@link URI} or
+     * in a quad store that the context position may be either a {@link IRI} or
      * a {@link BNode} and the fact that you can use {@link BNode}s to "stamp"
      * statement identifiers.
      * <p>

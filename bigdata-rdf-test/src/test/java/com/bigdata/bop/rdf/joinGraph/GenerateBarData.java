@@ -34,14 +34,14 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFWriter;
-import org.openrdf.rio.Rio;
-import org.openrdf.sail.memory.model.MemValueFactory;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFWriter;
+import org.eclipse.rdf4j.rio.Rio;
+import org.eclipse.rdf4j.sail.memory.model.MemValueFactory;
 
 import com.bigdata.rdf.sparql.ast.eval.rto.TestRTO_BAR;
 
@@ -86,34 +86,34 @@ public class GenerateBarData {
     
             final MemValueFactory factory = new MemValueFactory();
     
-            final URI empType = factory.createURI("http://test/bar#Employee");
-            final URI employeeNum = factory.createURI("http://test/bar#employeeNum");
-            final URI employee = factory.createURI("http://test/bar#employee");
-            final URI orderType = factory.createURI("http://test/bar#Order");
-            final URI orderItemType = factory.createURI("http://test/bar#OrderItem");
-            final URI orderItems = factory.createURI("http://test/bar#orderItems");
-            final URI beverage = factory.createURI("http://test/bar#beverageType");
+            final IRI empType = factory.createIRI("http://test/bar#Employee");
+            final IRI employeeNum = factory.createIRI("http://test/bar#employeeNum");
+            final IRI employee = factory.createIRI("http://test/bar#employee");
+            final IRI orderType = factory.createIRI("http://test/bar#Order");
+            final IRI orderItemType = factory.createIRI("http://test/bar#OrderItem");
+            final IRI orderItems = factory.createIRI("http://test/bar#orderItems");
+            final IRI beverage = factory.createIRI("http://test/bar#beverageType");
     
             final Literal drinks[] = new Literal[] { factory.createLiteral("Beer"), factory.createLiteral("Wine"), factory.createLiteral("Water"), factory.createLiteral("Soda"), factory.createLiteral("DietSoda"), factory.createLiteral("Juice") };
-            final URI employees[] = new URI[totalServers];
+            final IRI employees[] = new IRI[totalServers];
             for (int s = 0; s < totalServers; s++) {
-                employees[s] = factory.createURI("http://test/bar#employee_" + s);
+                employees[s] = factory.createIRI("http://test/bar#employee_" + s);
                 writer.handleStatement(factory.createStatement(employees[s], RDF.TYPE, empType, employees[s]));
                 writer.handleStatement(factory.createStatement(employees[s], employeeNum, factory.createLiteral(s), employees[s]));
             }
             int totalItems = 0;
             for (int i = 0; i < totalOrders; i++) {
-                final URI orderGraph = factory.createURI("http://test/bar#order_" + UUID.randomUUID().toString());
+                final IRI orderGraph = factory.createIRI("http://test/bar#order_" + UUID.randomUUID().toString());
                 writer.handleStatement(factory.createStatement(orderGraph, RDF.TYPE, orderType, orderGraph));
                 writer.handleStatement(factory.createStatement(orderGraph, employee, employees[getUniformInteger(1.0, 0, totalServers)], orderGraph));
-                final ArrayList<URI> items = new ArrayList<URI>();
+                final ArrayList<IRI> items = new ArrayList<IRI>();
                 for (int k = 0; k < getUniformInteger(0.90, 1, maxItemsPerOrder); k++) {
                     totalItems++;
-                    final URI orderItem = factory.createURI("http://test/bar#orderItem_" + UUID.randomUUID().toString());
+                    final IRI orderItem = factory.createIRI("http://test/bar#orderItem_" + UUID.randomUUID().toString());
                     items.add(orderItem);
                     writer.handleStatement(factory.createStatement(orderGraph, orderItems, orderItem, orderGraph));
                 }
-                for (URI orderItem : items) {
+                for (IRI orderItem : items) {
                     writer.handleStatement(factory.createStatement(orderItem, RDF.TYPE, orderItemType, orderGraph));
                     final Literal drink = drinks[getUniformInteger(1.0, 0, drinks.length)];
                     writer.handleStatement(factory.createStatement(orderItem, beverage, drink, orderGraph));

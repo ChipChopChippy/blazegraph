@@ -29,7 +29,7 @@ package com.bigdata.rdf.vocab.decls;
 
 import java.util.Iterator;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.rdf.vocab.VocabularyDecl;
 
@@ -55,7 +55,7 @@ public class DCAllVocabularyDecl implements VocabularyDecl {
     public DCAllVocabularyDecl() {
     }
     
-    public Iterator<URI> values() {
+    public Iterator<IRI> values() {
 
         return new Striterator(new EmptyIterator())//
             .append(new DCTermsVocabularyDecl().values())//

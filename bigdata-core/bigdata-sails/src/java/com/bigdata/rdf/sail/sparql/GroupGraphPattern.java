@@ -32,9 +32,10 @@ package com.bigdata.rdf.sail.sparql;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.openrdf.query.algebra.StatementPattern;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.query.algebra.StatementPattern;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpUtility;
@@ -60,7 +61,7 @@ import com.bigdata.rdf.sparql.ast.ValueExpressionNode;
  */
 class GroupGraphPattern {
 
-    private static final Logger log = Logger.getLogger(GroupGraphPattern.class);
+    private static final Logger log = LogManager.getLogger(GroupGraphPattern.class);
     
     private boolean invalid = false;
     

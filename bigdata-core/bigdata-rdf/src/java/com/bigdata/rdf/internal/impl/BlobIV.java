@@ -23,10 +23,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.rdf.internal.impl;
 
-import org.openrdf.model.BNode;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.btree.keys.IKeyBuilder;
 import com.bigdata.rdf.internal.DTE;
@@ -39,7 +39,7 @@ import com.bigdata.rdf.model.BigdataValue;
 /**
  * Implementation for any kind of RDF {@link Value} when the value is not being
  * inlined, but primarily used with large RDF {@link Value}s. Instances of this
- * class can represent {@link URI}s, {@link BNode}s (if they are not being
+ * class can represent {@link IRI}s, {@link BNode}s (if they are not being
  * inlined), or {@link Literal}s (including datatype literals if they are not
  * being inlined). The representation of the {@link BlobIV} is simply the key in
  * the TERMS index for the tuple for a given RDF {@link Value}. While flexible,
@@ -105,7 +105,7 @@ public class BlobIV<V extends BigdataValue> extends
 //	/**
 //	 * Singleton for a "null" {@link IV}.
 //	 */
-//	final public static transient BlobIV<?> NullIV = BlobIV.mockIV(VTE.URI);
+//	final public static transient BlobIV<?> NullIV = BlobIV.mockIV(VTE.IRI);
 //
 //	/**
 //	 * Create a mock {@link IV} having the indicated {@link VTE} which will
@@ -186,8 +186,8 @@ public class BlobIV<V extends BigdataValue> extends
 
 	/**
 	 * Human readable representation includes the term identifier, whether this
-	 * is a URI, Literal, Blank node, or Statement identifier and the datatype
-	 * URI if one is assigned. <code>
+	 * is a IRI, Literal, Blank node, or Statement identifier and the datatype
+	 * IRI if one is assigned. <code>
 	 * TermId(<i>hashCode</i>:<i>counter</i>:[U|L|B])
 	 * </code>
 	 * 

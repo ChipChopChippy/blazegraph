@@ -29,8 +29,9 @@ package com.bigdata.rdf.spo;
 
 import java.io.Serializable;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.ILinearList;
 import com.bigdata.btree.ISimpleSplitHandler;
 import com.bigdata.btree.IndexSegment;
@@ -58,7 +59,7 @@ public class XXXCShardSplitHandler implements ISimpleSplitHandler, Serializable 
      */
     private static final long serialVersionUID = 1L;
 
-    private static final transient Logger log = Logger
+    private static final transient Logger log = LogManager
             .getLogger(XXXCShardSplitHandler.class);
 
     /**

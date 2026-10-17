@@ -57,9 +57,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package com.bigdata.rdf.sail.webapp;
 
-import info.aduna.io.IOUtil;
-import info.aduna.iteration.Iterations;
-import info.aduna.text.StringUtil;
+import org.eclipse.rdf4j.common.io.IOUtil;
+import org.eclipse.rdf4j.common.iteration.Iterations;
+import org.eclipse.rdf4j.common.text.StringUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -73,39 +73,39 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import junit.framework.Test;
 import junit.util.PropertyUtil;
 
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.impl.ValueFactoryImpl;
-import org.openrdf.model.util.ModelUtil;
-import org.openrdf.model.vocabulary.FOAF;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.GraphQuery;
-import org.openrdf.query.GraphQueryResult;
-import org.openrdf.query.Query;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.QueryResultUtil;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.dawg.DAWGTestResultSetUtil;
-import org.openrdf.query.impl.MutableTupleQueryResult;
-import org.openrdf.query.impl.TupleQueryResultBuilder;
-import org.openrdf.query.resultio.QueryResultIO;
-import org.openrdf.query.resultio.TupleQueryResultFormat;
-import org.openrdf.query.resultio.TupleQueryResultParser;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.RDFParser.DatatypeHandling;
-import org.openrdf.rio.Rio;
-import org.openrdf.rio.helpers.StatementCollector;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.util.ModelUtil;
+import org.eclipse.rdf4j.model.vocabulary.FOAF;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.GraphQuery;
+import org.eclipse.rdf4j.query.GraphQueryResult;
+import org.eclipse.rdf4j.query.Query;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.QueryResults;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.dawg.DAWGTestResultSetUtil;
+import org.eclipse.rdf4j.query.impl.MutableTupleQueryResult;
+import org.eclipse.rdf4j.query.impl.TupleQueryResultBuilder;
+import org.eclipse.rdf4j.query.resultio.QueryResultIO;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultFormat;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultParser;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParser;
+import com.bigdata.rdf.rio.DatatypeHandling;
+import org.eclipse.rdf4j.rio.Rio;
+import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 
 import com.bigdata.journal.BufferMode;
 import com.bigdata.journal.IIndexManager;
@@ -344,7 +344,7 @@ public class TestFederatedQuery<S extends IIndexManager> extends
 //                con.setAutoCommit(false);
 //                // con.clear();
 //                con.add(dataset, ""/* baseURI */,
-//                        RDFFormat.forFileName(datasetFile));
+//                        com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(datasetFile));
 //                con.commit();
 //            } finally {
 //                con.close();
@@ -359,10 +359,10 @@ public class TestFederatedQuery<S extends IIndexManager> extends
 
         // test setup
         final String EX_NS = "http://example.org/";
-        final ValueFactory f = new ValueFactoryImpl();
-        final URI bob = f.createURI(EX_NS, "bob");
-        final URI alice = f.createURI(EX_NS, "alice");
-        final URI william = f.createURI(EX_NS, "william");
+        final ValueFactory f = SimpleValueFactory.getInstance();
+        final IRI bob = f.createIRI(EX_NS, "bob");
+        final IRI alice = f.createIRI(EX_NS, "alice");
+        final IRI william = f.createIRI(EX_NS, "william");
 
         // clears the repository and adds new data
         prepareTest("simple-default-graph.ttl",
@@ -426,8 +426,8 @@ public class TestFederatedQuery<S extends IIndexManager> extends
 //        if(false) {
 //        final BigdataValueFactory f = (BigdataValueFactory) localSail.getValueFactory();
 //        final BigdataValue[] values = new BigdataValue[] {
-//                f.createURI("http://example.org/a"),
-//                f.createURI("http://example.org/b"),
+//                f.createIRI("http://example.org/a"),
+//                f.createIRI("http://example.org/b"),
 //        };
 //        localSail.getDatabase().getLexiconRelation().addTerms(values, values.length, false/*readOnly*/);
 //        }
@@ -455,14 +455,14 @@ public class TestFederatedQuery<S extends IIndexManager> extends
     // @Test
     public void test5() throws Exception {
         
-        final URI serviceURI1 = new URIImpl(getRepositoryUrl(1));
+        final IRI serviceURI1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(getRepositoryUrl(1));
         
-        final URI serviceURI2 = new URIImpl(getRepositoryUrl(2));
+        final IRI serviceURI2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(getRepositoryUrl(2));
         
-        final URI serviceURI1_alias = new URIImpl(
+        final IRI serviceURI1_alias = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://localhost:18080/openrdf/repositories/endpoint1");
         
-        final URI serviceURI2_alias = new URIImpl(
+        final IRI serviceURI2_alias = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://localhost:18080/openrdf/repositories/endpoint2");
         
         try {
@@ -575,7 +575,7 @@ public class TestFederatedQuery<S extends IIndexManager> extends
      * </pre>
      */
 //    public void test12() throws Exception {
-//        final URI serviceURI = new URIImpl("http://dbpedia.org/sparql");
+//        final IRI serviceURI = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://dbpedia.org/sparql");
 //        ServiceRegistry.getInstance().add(serviceURI,
 //                new RemoteServiceFactoryImpl(false/* isSparql11 */));
 //        try {
@@ -744,13 +744,13 @@ public class TestFederatedQuery<S extends IIndexManager> extends
      */
     private TupleQueryResult readExpectedTupleQueryResult(final String resultFile)    throws Exception
     {
-       final TupleQueryResultFormat tqrFormat = QueryResultIO.getParserFormatForFileName(resultFile);
+       final TupleQueryResultFormat tqrFormat = (TupleQueryResultFormat) org.eclipse.rdf4j.query.resultio.TupleQueryResultParserRegistry.getInstance().getFileFormatForFileName(resultFile).orElse(null);
     
         if (tqrFormat != null) {
            final InputStream in = TestFederatedQuery.class.getResourceAsStream(TEST_RESOURCE_PATH + resultFile);
             try {
-               final TupleQueryResultParser parser = QueryResultIO.createParser(tqrFormat);
-                parser.setValueFactory(ValueFactoryImpl.getInstance());
+               final TupleQueryResultParser parser = QueryResultIO.createTupleParser(tqrFormat);
+                parser.setValueFactory(SimpleValueFactory.getInstance());
     
                 final TupleQueryResultBuilder qrBuilder = new TupleQueryResultBuilder();
                 parser.setTupleQueryResultHandler(qrBuilder);
@@ -777,13 +777,13 @@ public class TestFederatedQuery<S extends IIndexManager> extends
      */
     private Set<Statement> readExpectedGraphQueryResult(String resultFile) throws Exception
     {
-        final RDFFormat rdfFormat = Rio.getParserFormatForFileName(resultFile);
+        final RDFFormat rdfFormat = Rio.getParserFormatForFileName(resultFile).orElse(null);
     
         if (rdfFormat != null) {
             final RDFParser parser = Rio.createParser(rdfFormat);
-            parser.setDatatypeHandling(DatatypeHandling.IGNORE);
+            com.bigdata.rdf.rio.RDFParserOptions.setDatatypeHandling(parser, com.bigdata.rdf.rio.DatatypeHandling.IGNORE);
             parser.setPreserveBNodeIDs(true);
-            parser.setValueFactory(ValueFactoryImpl.getInstance());
+            parser.setValueFactory(SimpleValueFactory.getInstance());
     
             final Set<Statement> result = new LinkedHashSet<Statement>();
             parser.setRDFHandler(new StatementCollector(result));
@@ -824,7 +824,7 @@ public class TestFederatedQuery<S extends IIndexManager> extends
     
         boolean resultsEqual;
         
-        resultsEqual = QueryResultUtil.equals(queryResultTable, expectedResultTable);
+        resultsEqual = QueryResults.equals(queryResultTable, expectedResultTable);
         
         if (checkOrder) {
             // also check the order in which solutions occur.

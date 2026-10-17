@@ -27,10 +27,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sparql.ast.optimizers;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
-import org.openrdf.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.rdf.model.BigdataURI;
@@ -99,7 +101,7 @@ import com.bigdata.rdf.store.AbstractTripleStore;
  */
 public class ASTDescribeOptimizer implements IASTOptimizer {
 
-//    private static final Logger log = Logger.getLogger(DescribeOptimizer.class); 
+//    private static final Logger log = LogManager.getLogger(DescribeOptimizer.class); 
     
 	@SuppressWarnings("unchecked")
     @Override
