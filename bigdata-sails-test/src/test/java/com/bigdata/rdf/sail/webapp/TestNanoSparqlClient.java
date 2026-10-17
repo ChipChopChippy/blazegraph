@@ -29,23 +29,23 @@ import java.io.IOException;
 
 import junit.framework.Test;
 
-import org.openrdf.model.Graph;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.LinkedHashModel;
-import org.openrdf.model.impl.StatementImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.resultio.TupleQueryResultFormat;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFWriter;
-import org.openrdf.rio.RDFWriterFactory;
-import org.openrdf.rio.RDFWriterRegistry;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.LinkedHashModel;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultFormat;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFWriter;
+import org.eclipse.rdf4j.rio.RDFWriterFactory;
+import org.eclipse.rdf4j.rio.RDFWriterRegistry;
 
 import com.bigdata.journal.IIndexManager;
 import com.bigdata.rdf.sail.remote.BigdataSailRemoteRepository;
@@ -287,10 +287,10 @@ public class TestNanoSparqlClient<S extends IIndexManager> extends
 //		final String resource = packagePath
 //				+ "insert_triples_with_defaultContext.ttl";
 //
-//		final Graph g = loadGraphFromResource(resource);
+//		final Model g = loadGraphFromResource(resource);
 //
 //		// Load the resource into the KB.
-//		doInsertByBody("POST", RDFFormat.TURTLE, g, new URIImpl(
+//		doInsertByBody("POST", RDFFormat.TURTLE, g, org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
 //				"http://example.org"));
 //
 //		// Verify that the data were inserted into the appropriate context.
@@ -341,7 +341,7 @@ public class TestNanoSparqlClient<S extends IIndexManager> extends
 //			final AddOp add = new AddOp(new File(packagePath
 //					+ "insert_triples_with_defaultContext.ttl").toURI()
 //					.toString());
-//			add.setContext(new URIImpl("http://example.org"));
+//			add.setContext(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org"));
 //			assertEquals(7, m_repo.add(add));
 //
 //		}
@@ -450,12 +450,12 @@ public class TestNanoSparqlClient<S extends IIndexManager> extends
 //	 */
 //	public void test_INSERT_veryLargeLiteral() throws Exception {
 //
-//		final Graph g = new LinkedHashModel();
+//		final Model g = new LinkedHashModel();
 //
-//		final URI s = new URIImpl("http://www.bigdata.com/");
-//		final URI p = RDFS.LABEL;
+//		final IRI s = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/");
+//		final IRI p = RDFS.LABEL;
 //		final Literal o = getVeryLargeLiteral();
-//		final Statement stmt = new StatementImpl(s, p, o);
+//		final Statement stmt = SimpleValueFactory.getInstance().createStatement(s, p, o);
 //		g.add(stmt);
 //
 //		// Load the resource into the KB.
@@ -464,7 +464,7 @@ public class TestNanoSparqlClient<S extends IIndexManager> extends
 //				doInsertByBody("POST", RDFFormat.RDFXML, g, null/* defaultContext */));
 //
 //		// Read back the data into a graph.
-//		final Graph g2;
+//		final Model g2;
 //		{
 //			// final QueryOptions opts = new QueryOptions();
 //			// opts.serviceURL = m_serviceURL;
@@ -481,12 +481,12 @@ public class TestNanoSparqlClient<S extends IIndexManager> extends
 //
 //		assertEquals(1, g2.size());
 //
-//      assertTrue(g2.match(s, p, o).hasNext());
+//      assertTrue(g2.filter(s, p, o).iterator().hasNext());
 //
 //	}
 //
 //	/**
-//	 * Test ability to load data from a URI.
+//	 * Test ability to load data from a IRI.
 //	 */
 //	public void test_POST_INSERT_LOAD_FROM_URIs() throws Exception {
 //
@@ -747,12 +747,12 @@ public class TestNanoSparqlClient<S extends IIndexManager> extends
 //
 //		// final RemoteRepository repo = new RemoteRepository(m_serviceURL);
 //
-//		final URI mike = new URIImpl(BD.NAMESPACE + "Mike");
-//		final URI bryan = new URIImpl(BD.NAMESPACE + "Bryan");
-//		// final URI person = new URIImpl(BD.NAMESPACE + "Person");
-//		final URI likes = new URIImpl(BD.NAMESPACE + "likes");
-//		final URI rdf = new URIImpl(BD.NAMESPACE + "RDF");
-//		final URI rdfs = new URIImpl(BD.NAMESPACE + "RDFS");
+//		final IRI mike = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Mike");
+//		final IRI bryan = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Bryan");
+//		// final IRI person = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Person");
+//		final IRI likes = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "likes");
+//		final IRI rdf = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "RDF");
+//		final IRI rdfs = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "RDFS");
 //
 //		// The format used to PUT the data.
 //		final RDFFormat format = RDFFormat.NTRIPLES;
@@ -778,10 +778,10 @@ public class TestNanoSparqlClient<S extends IIndexManager> extends
 //		{
 //
 //			// The expected results.
-//			final Graph expected = new LinkedHashModel();
+//			final Model expected = new LinkedHashModel();
 //			{
-//				// expected.add(new StatementImpl(mike, RDF.TYPE, person));
-//				expected.add(new StatementImpl(bryan, likes, rdfs));
+//				// expected.add(SimpleValueFactory.getInstance().createStatement(mike, RDF.TYPE, person));
+//				expected.add(SimpleValueFactory.getInstance().createStatement(bryan, likes, rdfs));
 //			}
 //
 //         assertSameGraph(expected, m_repo.prepareGraphQuery(deleteQueryStr));
@@ -794,10 +794,10 @@ public class TestNanoSparqlClient<S extends IIndexManager> extends
 //		 */
 //		final byte[] data;
 //		{
-//			final Graph g = new LinkedHashModel();
+//			final Model g = new LinkedHashModel();
 //
 //			// The new data.
-//			g.add(new StatementImpl(bryan, likes, rdf));
+//			g.add(SimpleValueFactory.getInstance().createStatement(bryan, likes, rdf));
 //
 //			final RDFWriterFactory writerFactory = RDFWriterRegistry
 //					.getInstance().get(format);
@@ -837,7 +837,7 @@ public class TestNanoSparqlClient<S extends IIndexManager> extends
 //			{
 //
 //				// The expected results.
-//            final Graph expected = new LinkedHashModel();
+//            final Model expected = new LinkedHashModel();
 //
 //            assertSameGraph(expected, m_repo.prepareGraphQuery(deleteQueryStr));
 //
@@ -860,10 +860,10 @@ public class TestNanoSparqlClient<S extends IIndexManager> extends
 //						"}";
 //
 //				// The expected results.
-//				final Graph expected = new LinkedHashModel();
+//				final Model expected = new LinkedHashModel();
 //
-//				expected.add(new StatementImpl(mike, likes, rdf));
-//				expected.add(new StatementImpl(bryan, likes, rdf));
+//				expected.add(SimpleValueFactory.getInstance().createStatement(mike, likes, rdf));
+//				expected.add(SimpleValueFactory.getInstance().createStatement(bryan, likes, rdf));
 //
 //				// final QueryOptions opts = new QueryOptions();
 //				// opts.serviceURL = m_serviceURL;
@@ -915,12 +915,12 @@ public class TestNanoSparqlClient<S extends IIndexManager> extends
 //
 //		// final RemoteRepository repo = new RemoteRepository(m_serviceURL);
 //
-//		final URI mike = new URIImpl(BD.NAMESPACE + "Mike");
-//		final URI bryan = new URIImpl(BD.NAMESPACE + "Bryan");
-//		// final URI person = new URIImpl(BD.NAMESPACE + "Person");
-//		final URI likes = new URIImpl(BD.NAMESPACE + "likes");
-//		final URI rdf = new URIImpl(BD.NAMESPACE + "RDF");
-//		final URI rdfs = new URIImpl(BD.NAMESPACE + "RDFS");
+//		final IRI mike = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Mike");
+//		final IRI bryan = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Bryan");
+//		// final IRI person = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Person");
+//		final IRI likes = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "likes");
+//		final IRI rdf = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "RDF");
+//		final IRI rdfs = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "RDFS");
 //
 //		// The format used to PUT the data.
 //		final RDFFormat format = RDFFormat.NTRIPLES;
@@ -944,10 +944,10 @@ public class TestNanoSparqlClient<S extends IIndexManager> extends
 //		{
 //
 //			// The expected results.
-//			final Graph expected = new LinkedHashModel();
+//			final Model expected = new LinkedHashModel();
 //			{
-//				// expected.add(new StatementImpl(mike, RDF.TYPE, person));
-//				expected.add(new StatementImpl(bryan, likes, rdfs));
+//				// expected.add(SimpleValueFactory.getInstance().createStatement(mike, RDF.TYPE, person));
+//				expected.add(SimpleValueFactory.getInstance().createStatement(bryan, likes, rdfs));
 //			}
 //
 //			// final QueryOptions opts = new QueryOptions();
@@ -970,10 +970,10 @@ public class TestNanoSparqlClient<S extends IIndexManager> extends
 //		 */
 //		final byte[] data;
 //		{
-//			final Graph g = new LinkedHashModel();
+//			final Model g = new LinkedHashModel();
 //
 //			// The new data.
-//			g.add(new StatementImpl(bryan, likes, rdf));
+//			g.add(SimpleValueFactory.getInstance().createStatement(bryan, likes, rdf));
 //
 //			final RDFWriterFactory writerFactory = RDFWriterRegistry
 //					.getInstance().get(format);
@@ -1023,7 +1023,7 @@ public class TestNanoSparqlClient<S extends IIndexManager> extends
 //						"}";
 //
 //				// The expected results.
-//				final Graph expected = new LinkedHashModel();
+//				final Model expected = new LinkedHashModel();
 //
 //				assertSameGraph(expected, m_repo.prepareGraphQuery(queryStr2));
 //
@@ -1046,10 +1046,10 @@ public class TestNanoSparqlClient<S extends IIndexManager> extends
 //						"}";
 //
 //				// The expected results.
-//				final Graph expected = new LinkedHashModel();
+//				final Model expected = new LinkedHashModel();
 //
-//				expected.add(new StatementImpl(mike, likes, rdf));
-//				expected.add(new StatementImpl(bryan, likes, rdf));
+//				expected.add(SimpleValueFactory.getInstance().createStatement(mike, likes, rdf));
+//				expected.add(SimpleValueFactory.getInstance().createStatement(bryan, likes, rdf));
 //
 //				assertSameGraph(expected, m_repo.prepareGraphQuery(queryStr2));
 //
@@ -1078,7 +1078,7 @@ public class TestNanoSparqlClient<S extends IIndexManager> extends
         try {
           String queryStr = "select * where {SERVICE <http://DBpedia.org/sparql> { <http://dbpedia.org/resource/Tonga_(Nyasa)_language> rdfs:label ?langLabel. }}";
 //                String queryStr = "SELECT * WHERE { BIND (<http://dbpedia.org/resource/Tonga_(Nyasa)_language> AS ?ref) . SERVICE <http://DBpedia.org/sparql> { ?ref rdfs:label ?langLabel. } }";
-            final org.openrdf.query.TupleQuery tq = cxn.prepareTupleQuery(QueryLanguage.SPARQL, queryStr);
+            final org.eclipse.rdf4j.query.TupleQuery tq = cxn.prepareTupleQuery(QueryLanguage.SPARQL, queryStr);
             final TupleQueryResult tqr = tq.evaluate();
             try {
                 int cnt = 0;

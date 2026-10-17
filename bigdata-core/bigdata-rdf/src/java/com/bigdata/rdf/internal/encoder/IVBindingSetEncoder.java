@@ -30,8 +30,8 @@ package com.bigdata.rdf.internal.encoder;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.bop.Constant;
 import com.bigdata.bop.IBindingSet;
@@ -50,9 +50,9 @@ import com.bigdata.rdf.internal.impl.bnode.FullyInlineUnicodeBNodeIV;
 import com.bigdata.rdf.internal.impl.literal.FullyInlineTypedLiteralIV;
 import com.bigdata.rdf.internal.impl.literal.MockedValueIV;
 import com.bigdata.rdf.internal.impl.uri.FullyInlineURIIV;
-import com.bigdata.rdf.model.BigdataBNodeImpl;
-import com.bigdata.rdf.model.BigdataLiteralImpl;
-import com.bigdata.rdf.model.BigdataURIImpl;
+import com.bigdata.rdf.model.BigdataSimpleBNode;
+import com.bigdata.rdf.model.BigdataSimpleLiteral;
+import com.bigdata.rdf.model.BigdataSimpleIRI;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
 
@@ -267,25 +267,25 @@ public class IVBindingSetEncoder implements IBindingSetEncoder,
                     final Object val = iv.getValue();
                     
                     final IV<?,?> ivToEncode;
-                    if (val instanceof BigdataURIImpl) {
+                    if (val instanceof BigdataSimpleIRI) {
 
-                        // create fully inlined URI IV
-                        ivToEncode = new FullyInlineURIIV<>((BigdataURIImpl)val);
+                        // create fully inlined IRI IV
+                        ivToEncode = new FullyInlineURIIV<>((BigdataSimpleIRI)val);
                         
-                    } else if (val instanceof BigdataLiteralImpl) {
+                    } else if (val instanceof BigdataSimpleLiteral) {
                         
                         // create fully inlined literal IV
-                        final BigdataLiteralImpl valAsLiteral = (BigdataLiteralImpl)val;
+                        final BigdataSimpleLiteral valAsLiteral = (BigdataSimpleLiteral)val;
                         ivToEncode = 
                             new FullyInlineTypedLiteralIV<>(
                                 valAsLiteral.getLabel(), 
-                                ((BigdataLiteralImpl) val).getLanguage(),
-                                ((BigdataLiteralImpl) val).getDatatype());
+                                ((BigdataSimpleLiteral) val).getLanguage().orElse(null),
+                                ((BigdataSimpleLiteral) val).getDatatype());
                         
-                    } else if (val instanceof BigdataBNodeImpl) {
+                    } else if (val instanceof BigdataSimpleBNode) {
 
                         // create fully inlined blank node IV
-                        final BigdataBNodeImpl valAsBNode = (BigdataBNodeImpl)val;
+                        final BigdataSimpleBNode valAsBNode = (BigdataSimpleBNode)val;
                         ivToEncode = new FullyInlineUnicodeBNodeIV<>(valAsBNode.getID());
                         
                     } else {
@@ -376,10 +376,10 @@ public class IVBindingSetEncoder implements IBindingSetEncoder,
                     
                     final FullyInlineURIIV innerIvAsUri = (FullyInlineURIIV)innerIv;
                     
-                    final URI inlineUri = innerIvAsUri.getInlineValue();
+                    final IRI inlineUri = innerIvAsUri.getInlineValue();
                     
-                    value = vf.createURI(inlineUri.stringValue());
-                    mockIv = TermId.mockIV(VTE.URI);
+                    value = vf.createIRI(inlineUri.stringValue());
+                    mockIv = TermId.mockIV(VTE.IRI);
                     
                 } else if (innerIv instanceof FullyInlineTypedLiteralIV) {
 
@@ -388,8 +388,8 @@ public class IVBindingSetEncoder implements IBindingSetEncoder,
 
                     value = vf.createLiteral(
                             innerIvAsLiteral.getLabel(), 
-                            innerIvAsLiteral.getDatatype(), 
-                            innerIvAsLiteral.getLanguage());
+                            innerIvAsLiteral.getDatatype(),
+                            (String) innerIvAsLiteral.getLanguage().orElse(null));
                     mockIv = TermId.mockIV(VTE.LITERAL);
 
                 } else if (innerIv instanceof FullyInlineUnicodeBNodeIV) {

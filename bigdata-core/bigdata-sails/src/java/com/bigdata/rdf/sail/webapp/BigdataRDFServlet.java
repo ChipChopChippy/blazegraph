@@ -44,22 +44,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.servlet.Servlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.Servlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Graph;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFWriter;
-import org.openrdf.rio.RDFWriterFactory;
-import org.openrdf.rio.RDFWriterRegistry;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFWriter;
+import org.eclipse.rdf4j.rio.RDFWriterFactory;
+import org.eclipse.rdf4j.rio.RDFWriterRegistry;
 
 import com.bigdata.journal.IAtomicStore;
 import com.bigdata.rdf.properties.PropertiesFormat;
@@ -83,7 +84,7 @@ abstract public class BigdataRDFServlet extends BigdataServlet {
      */
     private static final long serialVersionUID = 1L;
 
-    static private final transient Logger log = Logger.getLogger(BigdataRDFServlet.class);
+    static private final transient Logger log = LogManager.getLogger(BigdataRDFServlet.class);
 
     /**
      * The name of the <code>UTF-8</code> character encoding.
@@ -544,13 +545,13 @@ abstract public class BigdataRDFServlet extends BigdataServlet {
    }
        
     /**
-     * Send an RDF Graph as a response using content negotiation.
+     * Send an RDF Model as a response using content negotiation.
      * 
      * @param req
      * @param resp
      */
     static public void sendGraph(final HttpServletRequest req,
-            final HttpServletResponse resp, final Graph g) throws IOException {
+            final HttpServletResponse resp, final Model g) throws IOException {
         /*
          * CONNEG for the MIME type.
          */
@@ -568,7 +569,7 @@ abstract public class BigdataRDFServlet extends BigdataServlet {
             format = RDFFormat.RDFXML;
 
 		RDFWriterFactory writerFactory = RDFWriterRegistry.getInstance().get(
-				format);
+				format).orElse(null);
 
 		if (writerFactory == null) {
 
@@ -579,7 +580,7 @@ abstract public class BigdataRDFServlet extends BigdataServlet {
 
 			format = RDFFormat.RDFXML;
 			
-			writerFactory = RDFWriterRegistry.getInstance().get(format);
+			writerFactory = RDFWriterRegistry.getInstance().get(format).orElse(null);
 			
 		}
 
@@ -648,7 +649,9 @@ abstract public class BigdataRDFServlet extends BigdataServlet {
         final OutputStream os = resp.getOutputStream();
 		try {
 			final PropertiesWriter writer = PropertiesWriterRegistry
-					.getInstance().get(format).getWriter(os);
+					.getInstance().get(format).orElseThrow(
+                            )
+                    .getWriter(os);
 			writer.write(properties);
 			os.flush();
 		} finally {
@@ -695,7 +698,7 @@ abstract public class BigdataRDFServlet extends BigdataServlet {
     	
     	for (int i = 0; i < s.length; i++) {
     		
-    		uris[i] = new URIImpl(s[i]);
+    		uris[i] = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(s[i]);
     		
     	}
 

@@ -54,7 +54,7 @@ import com.bigdata.rdf.internal.VTE;
 import com.bigdata.rdf.internal.impl.TermId;
 import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.striterator.Dechunkerator;
 
 /**
@@ -88,7 +88,7 @@ public class TestThickChunkMessage extends TestCase2 {
         
         this.namespace = getName();
         
-        this.valueFactory = BigdataValueFactoryImpl.getInstance(namespace);
+        this.valueFactory = BigdataSimpleValueFactory.getInstance(namespace);
         
     }
     

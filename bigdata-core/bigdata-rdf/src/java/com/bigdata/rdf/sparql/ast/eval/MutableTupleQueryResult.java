@@ -16,8 +16,7 @@
  */
 package com.bigdata.rdf.sparql.ast.eval;
 
-import info.aduna.iteration.Iteration;
-import info.aduna.iteration.Iterations;
+import org.eclipse.rdf4j.common.iteration.CloseableIteration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,9 +27,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.TupleQueryResult;
 
 /**
  * An implementation of the {@link TupleQueryResult} interface that stores the
@@ -90,11 +89,17 @@ public class MutableTupleQueryResult implements TupleQueryResult, Cloneable {
 	}
 
 	public <E extends Exception> MutableTupleQueryResult(Collection<String> bindingNames,
-			Iteration<? extends BindingSet, E> bindingSetIter)
+			CloseableIteration<? extends BindingSet> bindingSetIter)
 		throws E
 	{
 		this.bindingNames.addAll(bindingNames);
-		Iterations.addAll(bindingSetIter, this.bindingSets);
+		try {
+			while (bindingSetIter.hasNext()) {
+				this.bindingSets.add(bindingSetIter.next());
+			}
+		} finally {
+			bindingSetIter.close();
+		}
 	}
 
 	public MutableTupleQueryResult(TupleQueryResult tqr)

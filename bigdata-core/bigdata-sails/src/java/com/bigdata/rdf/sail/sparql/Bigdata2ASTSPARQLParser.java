@@ -35,17 +35,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.parser.ParsedOperation;
-import org.openrdf.query.parser.ParsedQuery;
-import org.openrdf.query.parser.ParsedUpdate;
-import org.openrdf.query.parser.QueryParser;
-import org.openrdf.query.parser.QueryParserUtil;
-import org.openrdf.query.parser.sparql.SPARQLParser;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.parser.ParsedOperation;
+import org.eclipse.rdf4j.query.parser.ParsedQuery;
+import org.eclipse.rdf4j.query.parser.ParsedUpdate;
+import org.eclipse.rdf4j.query.parser.QueryParser;
+import org.eclipse.rdf4j.query.parser.QueryParserUtil;
+import org.eclipse.rdf4j.query.parser.sparql.SPARQLParser;
 
 import com.bigdata.bop.BOpUtility;
 import com.bigdata.rdf.model.BigdataValue;
@@ -79,13 +80,13 @@ import com.bigdata.rdf.sparql.ast.optimizers.ASTQueryHintOptimizer;
  */
 public class Bigdata2ASTSPARQLParser implements QueryParser {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(Bigdata2ASTSPARQLParser.class);
 
-    static private final URI queryScope = new URIImpl(QueryHints.NAMESPACE
+    static private final IRI queryScope = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE
             + QueryHintScope.Query);
 
-    static private final URI queryIdHint = new URIImpl(QueryHints.NAMESPACE
+    static private final IRI queryIdHint = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE
             + QueryHints.QUERYID);
 
     public Bigdata2ASTSPARQLParser() {
@@ -95,7 +96,7 @@ public class Bigdata2ASTSPARQLParser implements QueryParser {
     /**
      * Parse either a SPARQL QUERY or a SPARQL UPDATE request.
      * @param operation The request.
-     * @param baseURI The base URI.
+     * @param baseURI The base IRI.
      * 
      * @return The {@link ParsedOperation}
      */
@@ -317,7 +318,7 @@ public class Bigdata2ASTSPARQLParser implements QueryParser {
      * @param queryStr
      *            The query.
      * @param baseURI
-     *            The base URI.
+     *            The base IRI.
      * 
      * @return The AST model for that query.
      * 

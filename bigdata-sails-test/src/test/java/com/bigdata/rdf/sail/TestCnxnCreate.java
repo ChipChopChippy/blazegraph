@@ -32,7 +32,7 @@ import java.util.Properties;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.openrdf.sail.SailException;
+import org.eclipse.rdf4j.sail.SailException;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.sail.BigdataSail.BigdataSailConnection;
@@ -94,7 +94,7 @@ public class TestCnxnCreate extends ProxyBigdataSailTestCase {
         
         try {
 
-            sail.initialize();
+            sail.init();
 
             log.info("Sail is initialized.");
                         
@@ -155,7 +155,7 @@ public class TestCnxnCreate extends ProxyBigdataSailTestCase {
         
         try {
 
-            sail.initialize();
+            sail.init();
 
             log.info("Sail is initialized.");
             
@@ -204,7 +204,7 @@ public class TestCnxnCreate extends ProxyBigdataSailTestCase {
         
         try {
 
-            sail.initialize();
+            sail.init();
 
             log.info("Sail is initialized.");
             

@@ -31,8 +31,9 @@ package com.bigdata.sparse;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 /**
  * Base class may be used for combining {@link IPrecondition}. The base class
  * by itself always succeeds, but you can add additional preconditions to be
@@ -43,7 +44,7 @@ import org.apache.log4j.Logger;
  */
 public class Precondition implements IPrecondition {
 
-    protected static final transient Logger log = Logger.getLogger(Precondition.class);
+    protected static final transient Logger log = LogManager.getLogger(Precondition.class);
 
     /**
      * 

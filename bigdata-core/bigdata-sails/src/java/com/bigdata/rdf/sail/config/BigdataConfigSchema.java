@@ -1,8 +1,8 @@
 package com.bigdata.rdf.sail.config;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.ValueFactoryImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 
 /**
  * Defines constants for the schema which is used by
@@ -17,10 +17,10 @@ public class BigdataConfigSchema {
             "http://www.bigdata.com/config/sail/bigdata#";
 
 	/** <tt>http://www.bigdata.com/config/sail/bigdata#properties</tt> */
-	public final static URI PROPERTIES;
+	public final static IRI PROPERTIES;
 
 	static {
-		ValueFactory factory = ValueFactoryImpl.getInstance();
-		PROPERTIES = factory.createURI(NAMESPACE, "properties");
+		ValueFactory factory = SimpleValueFactory.getInstance();
+		PROPERTIES = factory.createIRI(NAMESPACE, "properties");
 	}
 }

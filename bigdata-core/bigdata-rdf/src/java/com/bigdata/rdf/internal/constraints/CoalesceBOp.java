@@ -26,8 +26,9 @@ package com.bigdata.rdf.internal.constraints;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.bop.IValueExpression;
@@ -44,7 +45,7 @@ public class CoalesceBOp extends IVValueExpression<IV> implements IPassesMateria
 
     private static final long             serialVersionUID = 7391999162162545704L;
 
-    private static final transient Logger log              = Logger.getLogger(CoalesceBOp.class);
+    private static final transient Logger log              = LogManager.getLogger(CoalesceBOp.class);
 
     public CoalesceBOp(final GlobalAnnotations globals, final IValueExpression<? extends IV>... expressions) {
 

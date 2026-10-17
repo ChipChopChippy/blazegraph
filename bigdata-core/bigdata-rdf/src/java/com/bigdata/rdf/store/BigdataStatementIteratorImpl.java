@@ -6,13 +6,14 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Value;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.rdf.internal.IV;
 import com.bigdata.rdf.internal.impl.bnode.SidIV;
 import com.bigdata.rdf.model.BigdataBNode;
-import com.bigdata.rdf.model.BigdataBNodeImpl;
+import com.bigdata.rdf.model.BigdataSimpleBNode;
 import com.bigdata.rdf.model.BigdataResource;
 import com.bigdata.rdf.model.BigdataStatement;
 import com.bigdata.rdf.model.BigdataURI;
@@ -35,12 +36,12 @@ public class BigdataStatementIteratorImpl
         AbstractChunkedResolverator<ISPO, BigdataStatement, AbstractTripleStore>
         implements BigdataStatementIterator {
 
-    final private static Logger log = Logger
+    final private static Logger log = LogManager
             .getLogger(BigdataStatementIteratorImpl.class);
 
     /**
      * An optional map of known blank node term identifiers and the
-     * corresponding {@link BigdataBNodeImpl} objects. This map may be used to
+     * corresponding {@link BigdataSimpleBNode} objects. This map may be used to
      * resolve term identifiers to the corresponding blank node objects across a
      * "connection" context.
      */
@@ -67,7 +68,7 @@ public class BigdataStatementIteratorImpl
      *            Used to resolve term identifiers to {@link Value} objects.
      * @param bnodes
      *            An optional map of known blank node term identifiers and the
-     *            corresponding {@link BigdataBNodeImpl} objects. This map may
+     *            corresponding {@link BigdataSimpleBNode} objects. This map may
      *            be used to resolve blank node term identifiers to blank node
      *            objects across a "connection" context.
      * @param src

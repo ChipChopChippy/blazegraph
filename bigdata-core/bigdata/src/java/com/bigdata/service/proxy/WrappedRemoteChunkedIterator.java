@@ -32,8 +32,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.striterator.IChunkedOrderedIterator;
 import com.bigdata.striterator.IKeyOrder;
 
@@ -47,7 +48,7 @@ import com.bigdata.striterator.IKeyOrder;
 public class WrappedRemoteChunkedIterator<E> implements
         IChunkedOrderedIterator<E> {
 
-    protected static final Logger log = Logger
+    protected static final Logger log = LogManager
             .getLogger(WrappedRemoteChunkedIterator.class);
     
     /** The source - the reference is cleared when the iterator is closed. */

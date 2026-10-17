@@ -24,7 +24,7 @@ package com.bigdata.rdf.internal;
 
 import java.util.UUID;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.rdf.internal.impl.extensions.CompressedTimestampExtension;
 import com.bigdata.rdf.internal.impl.literal.AbstractLiteralIV;
@@ -34,7 +34,7 @@ import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataURI;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 
 /**
  * Unit tests for {@link PackedLongIV} and its associated 
@@ -122,15 +122,15 @@ public class TestEncodeDecodePackedLongIVs extends
     public void testRoundTripAndCompareCompressedTimestamp() throws Exception {
         
         // namespaces should never be reused in test suites.
-        final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance(getName() + UUID.randomUUID());
+        final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance(getName() + UUID.randomUUID());
 
         final CompressedTimestampExtension<BigdataValue> ext = 
             new CompressedTimestampExtension<BigdataValue>(
                 new IDatatypeURIResolver() {
                       @Override
-                      public BigdataURI resolve(final URI uri) {
-                         final BigdataURI buri = vf.createURI(uri.stringValue());
-                         buri.setIV(newTermId(VTE.URI));
+                      public BigdataURI resolve(final IRI uri) {
+                         final BigdataURI buri = vf.createIRI(uri.stringValue());
+                         buri.setIV(newTermId(VTE.IRI));
                          return buri;
                       }
                 });

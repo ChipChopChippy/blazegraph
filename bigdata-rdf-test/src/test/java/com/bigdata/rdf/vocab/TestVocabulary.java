@@ -33,10 +33,10 @@ import java.util.Iterator;
 
 import junit.framework.TestCase2;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.io.SerializerUtil;
 import com.bigdata.rdf.internal.IV;
@@ -80,7 +80,7 @@ public class TestVocabulary extends TestCase2 {
         assertEquals(RDF.TYPE, vocab.asValue(vocab.get(RDF.TYPE)));
 
         // point test for an unknown value.
-        assertNull(vocab.get(new URIImpl("http://www.bigdata.com/unknown-uri")));
+        assertNull(vocab.get(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/unknown-uri")));
 
         /*
          * Verify self-consistent for all declared values.
@@ -152,7 +152,7 @@ public class TestVocabulary extends TestCase2 {
         doRoundTripTest(vocab);
 
         // point test for an unknown value.
-        assertNull(vocab.get(new URIImpl("http://www.bigdata.com/unknown-uri")));
+        assertNull(vocab.get(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/unknown-uri")));
 
     }
 
@@ -176,7 +176,7 @@ public class TestVocabulary extends TestCase2 {
         assertEquals(RDF.TYPE, vocab.asValue(vocab.get(RDF.TYPE)));
 
         // point test for an unknown value.
-        assertNull(vocab.get(new URIImpl("http://www.bigdata.com/unknown-uri")));
+        assertNull(vocab.get(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/unknown-uri")));
 
         /*
          * Verify self-consistent for all declared values.
@@ -319,19 +319,19 @@ public class TestVocabulary extends TestCase2 {
              */
             private static final String NAMESPACE = "http://sample.com/rdf#";
 
-            private final URI[] uris;
+            private final IRI[] uris;
 
             public SampleDecl() {
 
-                uris = new URI[20000];
+                uris = new IRI[20000];
 
                 for (int i = 0; i < uris.length; i++) {
-                    uris[i] = new URIImpl(NAMESPACE + i);
+                    uris[i] = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + i);
                 }
 
             }
 
-            public Iterator<URI> values() {
+            public Iterator<IRI> values() {
 
                 return Collections.unmodifiableList(Arrays.asList(uris))
                         .iterator();

@@ -16,25 +16,26 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.apache.commons.io.input.BOMInputStream;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.ValueFactoryImpl;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParseException;
-import org.openrdf.rio.RioSetting;
-import org.openrdf.rio.helpers.NTriplesParserSettings;
-import org.openrdf.rio.helpers.RDFParserBase;
-import org.openrdf.rio.ntriples.NTriplesUtil;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFParseException;
+import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.RioSetting;
+import org.eclipse.rdf4j.rio.helpers.AbstractRDFParser;
+import org.eclipse.rdf4j.rio.helpers.BasicParserSettings;
+import org.eclipse.rdf4j.rio.helpers.NTriplesUtil;
 
 import com.bigdata.rdf.model.BigdataBNode;
 import com.bigdata.rdf.model.BigdataStatement;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 
 /**
  * RDF parser for N-Triples files. A specification of NTriples can be found in
@@ -58,13 +59,13 @@ import com.bigdata.rdf.model.BigdataValueFactoryImpl;
  * @author Bryan Thompson
  * @openrdf
  */
-public class BigdataNTriplesParser extends RDFParserBase {
+public class BigdataNTriplesParser extends AbstractRDFParser {
 
 	/*-----------*
 	 * Variables *
 	 *-----------*/
 
-	private PushbackReader reader;
+	protected PushbackReader reader;
 
 	private int lineNo;
 
@@ -92,7 +93,7 @@ public class BigdataNTriplesParser extends RDFParserBase {
 
 		private Resource subject;
 
-		private URI predicate;
+		private IRI predicate;
 
 		private Value object;
 		
@@ -104,6 +105,22 @@ public class BigdataNTriplesParser extends RDFParserBase {
 	};
 	
 	private final Stack<State> stack = new Stack<State>();
+
+	protected int readChar() throws IOException {
+		return reader.read();
+	}
+
+	protected int peekChar() throws IOException {
+		int c = readChar();
+		unreadChar(c);
+		return c;
+	}
+
+	protected void unreadChar(final int c) throws IOException {
+		if (c != -1) {
+			reader.unread(c);
+		}
+	}
 
 	private void push(final State state) {
 		stack.add(state);
@@ -151,14 +168,14 @@ public class BigdataNTriplesParser extends RDFParserBase {
 	 *--------------*/
 
 	/**
-	 * Creates a new NTriplesParser that will use a {@link ValueFactoryImpl} to
+	 * Creates a new NTriplesParser that will use a {@link SimpleValueFactory} to
 	 * create object for resources, bNodes and literals.
 	 */
 	public BigdataNTriplesParser() {
 		// We are providing Bigdata-specific value factory to support parsing of RDR,
 		// which require BigdataValueFactory instead of default Sesame implementation
 		// See https://jira.blazegraph.com/browse/BLZG-1322
-		super(BigdataValueFactoryImpl.getInstance(""));
+		super(BigdataSimpleValueFactory.getInstance(""));
 	}
 
 	/**
@@ -172,9 +189,10 @@ public class BigdataNTriplesParser extends RDFParserBase {
 		super(valueFactory);
 	}
 
-	public void setValueFactory(final ValueFactory valueFactory) {
+	public RDFParser setValueFactory(final ValueFactory valueFactory) {
 		super.setValueFactory(valueFactory);
 		this.valueFactory = valueFactory;
+		return this;
 	}
 
 	/**
@@ -205,7 +223,7 @@ public class BigdataNTriplesParser extends RDFParserBase {
      *        <tt>null</tt>. The InputStream is supposed to contain 7-bit
      *        US-ASCII characters, as per the N-Triples specification.
      * @param baseURI
-     *        The URI associated with the data in the InputStream, must not be
+     *        The IRI associated with the data in the InputStream, must not be
      *        <tt>null</tt>.
      * @throws IOException
      *         If an I/O error occurred while data was read from the InputStream.
@@ -215,7 +233,7 @@ public class BigdataNTriplesParser extends RDFParserBase {
      *         If the configured statement handler encountered an unrecoverable
      *         error.
      * @throws IllegalArgumentException
-     *         If the supplied input stream or base URI is <tt>null</tt>.
+     *         If the supplied input stream or base IRI is <tt>null</tt>.
      */
     @Override
     public synchronized void parse(InputStream in, String baseURI)
@@ -242,7 +260,7 @@ public class BigdataNTriplesParser extends RDFParserBase {
      * @param reader
      *        The Reader from which to read the data, must not be <tt>null</tt>.
      * @param baseURI
-     *        The URI associated with the data in the Reader, must not be
+     *        The IRI associated with the data in the Reader, must not be
      *        <tt>null</tt>.
      * @throws IOException
      *         If an I/O error occurred while data was read from the InputStream.
@@ -252,7 +270,7 @@ public class BigdataNTriplesParser extends RDFParserBase {
      *         If the configured statement handler encountered an unrecoverable
      *         error.
      * @throws IllegalArgumentException
-     *         If the supplied reader or base URI is <tt>null</tt>.
+     *         If the supplied reader or base IRI is <tt>null</tt>.
      */
     public synchronized void parse(final Reader reader, final String baseURI)
         throws IOException, RDFParseException, RDFHandlerException
@@ -261,7 +279,7 @@ public class BigdataNTriplesParser extends RDFParserBase {
             throw new IllegalArgumentException("Reader can not be 'null'");
         }
         if (baseURI == null) {
-            throw new IllegalArgumentException("base URI can not be 'null'");
+            throw new IllegalArgumentException("base IRI can not be 'null'");
         }
 
         rdfHandler.startRDF();
@@ -436,7 +454,7 @@ public class BigdataNTriplesParser extends RDFParserBase {
 //				sids.put(st,sid);
 //				// mark this blank node as a "sid".
 //				// st.setStatementIdentifier(true);
-//				((BigdataBNodeImpl) sid).setStatement(st);
+//				((BigdataSimpleBNode) sid).setStatement(st);
 //				// new statement so pass to the call back interface.
 //				rdfHandler.handleStatement(st);
 //			}
@@ -459,7 +477,7 @@ public class BigdataNTriplesParser extends RDFParserBase {
 	/**
 	 * Return <code>true</code> if the next character is &lt;. This should only
 	 * be invoked when the current character is known to be &lt;. It provides
-	 * one character lookahead to differentiate between a URI and a Statement.
+	 * one character lookahead to differentiate between a IRI and a Statement.
 	 * For example, an embedded Statement in the subject position of another
 	 * statement looks like this:
 	 * 
@@ -620,7 +638,7 @@ public class BigdataNTriplesParser extends RDFParserBase {
 			throwEOFException();
 		}
 		else if (c != ':') {
-			reportError("Expected ':', found: " + (char)c, NTriplesParserSettings.FAIL_ON_NTRIPLES_INVALID_LINES);
+			reportError("Expected ':', found: " + (char)c, BasicParserSettings.VERIFY_DATATYPE_VALUES);
 		}
 
 		c = reader.read();
@@ -720,7 +738,7 @@ public class BigdataNTriplesParser extends RDFParserBase {
 			}
 			else if (c != '^') {
 				reportError("Expected '^', found: " + (char)c,
-				        NTriplesParserSettings.FAIL_ON_NTRIPLES_INVALID_LINES);
+				        BasicParserSettings.VERIFY_DATATYPE_VALUES);
 			}
 
 			c = reader.read();
@@ -731,7 +749,7 @@ public class BigdataNTriplesParser extends RDFParserBase {
 			}
 			else if (c != '<') {
 				reportError("Expected '<', found: " + (char)c,
-				        NTriplesParserSettings.FAIL_ON_NTRIPLES_INVALID_LINES);
+				        BasicParserSettings.VERIFY_DATATYPE_VALUES);
 			}
 
 			c = parseUriRef(c, datatype);
@@ -741,17 +759,17 @@ public class BigdataNTriplesParser extends RDFParserBase {
 	}
 
 	@Override
-	protected URI createURI(String uri)
+	protected IRI createURI(String uri)
 		throws RDFParseException
 	{
 		try {
 			uri = NTriplesUtil.unescapeString(uri);
 		}
 		catch (IllegalArgumentException e) {
-			reportError(e.getMessage(),  NTriplesParserSettings.FAIL_ON_NTRIPLES_INVALID_LINES);
+			reportError(e.getMessage(),  BasicParserSettings.VERIFY_DATATYPE_VALUES);
 		}
 
-		return super.createURI(uri);
+		return valueFactory.createIRI(uri);
 	}
 
 	protected Literal createLiteral(String label, String lang, String datatype)
@@ -772,7 +790,7 @@ public class BigdataNTriplesParser extends RDFParserBase {
 			datatype = null;
 		}
 
-		URI dtURI = null;
+		IRI dtURI = null;
 		if (datatype != null) {
 			dtURI = createURI(datatype);
 		}
@@ -781,7 +799,7 @@ public class BigdataNTriplesParser extends RDFParserBase {
 	}
 
 	/**
-	 * Overrides {@link RDFParserBase#reportWarning(String)}, adding line number
+	 * Overrides {@link AbstractRDFParser#reportWarning(String)}, adding line number
 	 * information to the error.
 	 */
 	@Override
@@ -791,7 +809,7 @@ public class BigdataNTriplesParser extends RDFParserBase {
 	}
 
     /**
-     * Overrides {@link RDFParserBase#reportError(String)}, adding line number
+     * Overrides {@link AbstractRDFParser#reportError(String)}, adding line number
      * information to the error.
      */
     @Override
@@ -808,7 +826,7 @@ public class BigdataNTriplesParser extends RDFParserBase {
     }
 
 	/**
-	 * Overrides {@link RDFParserBase#reportFatalError(String)}, adding line
+	 * Overrides {@link AbstractRDFParser#reportFatalError(String)}, adding line
 	 * number information to the error.
 	 */
 	@Override
@@ -819,7 +837,7 @@ public class BigdataNTriplesParser extends RDFParserBase {
 	}
 
 	/**
-	 * Overrides {@link RDFParserBase#reportFatalError(Exception)}, adding line
+	 * Overrides {@link AbstractRDFParser#reportFatalError(Exception)}, adding line
 	 * number information to the error.
 	 */
 	@Override

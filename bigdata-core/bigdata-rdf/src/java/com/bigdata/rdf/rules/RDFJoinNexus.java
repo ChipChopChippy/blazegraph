@@ -35,8 +35,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.Constant;
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.bop.IConstant;
@@ -125,7 +126,7 @@ import com.bigdata.striterator.IKeyOrder;
  */
 public class RDFJoinNexus extends AbstractJoinNexus implements IJoinNexus {
 
-    protected final static transient Logger log = Logger.getLogger(RDFJoinNexus.class);
+    protected final static transient Logger log = LogManager.getLogger(RDFJoinNexus.class);
     
     private final RDFJoinNexusFactory joinNexusFactory;
 
@@ -471,7 +472,7 @@ public class RDFJoinNexus extends AbstractJoinNexus implements IJoinNexus {
     }
 
     final private static transient IConstant<IV> fakeTermId =
-        new Constant<IV>(TermId.mockIV(VTE.URI));
+        new Constant<IV>(TermId.mockIV(VTE.IRI));
 
     /**
      * FIXME unit tests for DISTINCT with a head and ELEMENT, with bindings and

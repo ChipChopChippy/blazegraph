@@ -32,8 +32,9 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.ICounter;
 import com.bigdata.btree.IIndex;
 import com.bigdata.btree.keys.KeyBuilder;
@@ -117,7 +118,7 @@ import com.bigdata.util.BytesUtil;
 public class Term2IdWriteProc extends AbstractKeyArrayIndexProcedure<Result> implements
         IParallelizableIndexProcedure<Result>, IMutableRelationIndexWriteProcedure<Result> {
     
-    private static final Logger log = Logger.getLogger(Term2IdWriteProc.class);
+    private static final Logger log = LogManager.getLogger(Term2IdWriteProc.class);
     
 //    static {
 //        if(DEBUG) {
@@ -564,7 +565,7 @@ public class Term2IdWriteProc extends AbstractKeyArrayIndexProcedure<Result> imp
         
         switch(code) {
         case ITermIndexCodes.TERM_CODE_URI:
-            return VTE.URI;
+            return VTE.IRI;
         case ITermIndexCodes.TERM_CODE_BND:
             return VTE.BNODE;
 //        case ITermIndexCodes.TERM_CODE_STMT:

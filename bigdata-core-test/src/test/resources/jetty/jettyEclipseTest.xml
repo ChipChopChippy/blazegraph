@@ -21,7 +21,6 @@
     <!-- Consult the javadoc of o.e.j.util.thread.QueuedThreadPool   -->
     <!-- for all configuration that may be set here.                 -->
     <!-- =========================================================== -->
-    <Arg name="threadpool"><New id="threadpool" class="org.eclipse.jetty.util.thread.QueuedThreadPool"/></Arg>
     <Get name="ThreadPool">
       <Set name="minThreads" type="int"><Property name="jetty.threads.min" default="10"/></Set>
       <Set name="maxThreads" type="int"><Property name="jetty.threads.max" default="64"/></Set>
@@ -121,37 +120,34 @@
     <!-- Set handler Collection Structure                            --> 
     <!-- =========================================================== -->
     <Set name="handler">
-      <New id="Handlers" class="org.eclipse.jetty.server.handler.HandlerCollection">
+      <New id="Handlers" class="org.eclipse.jetty.server.Handler$Sequence">
         <Set name="handlers">
          <Array type="org.eclipse.jetty.server.Handler">
            <Item>
              <New id="Contexts" class="org.eclipse.jetty.server.handler.ContextHandlerCollection">
-                   <Call name="addHandler">
-                      <Arg>
-                        <!-- This is the redirect from root to /bigdata -->
-                        <New id="moved" class="org.eclipse.jetty.server.handler.MovedContextHandler">
-              <Set name="contextPath">/</Set>
-              <Set name="newContextURL">/bigdata</Set>
-              <Set name="permanent">true</Set>
-              <Set name="discardPathInfo">false</Set>
-              <Set name="discardQuery">false</Set>
-                        </New>
-                    </Arg>
-                  </Call>
-                  <Call name="addHandler">
-                    <Arg>
-                        <!-- This is the bigdata web application. -->
-                        <New id="WebAppContext" class="org.eclipse.jetty.webapp.WebAppContext">
-                         <Set name="war"><SystemProperty name="jetty.resourceBase" default="../bigdata-war-html/src/main/webapp/"/></Set>
-                         <Set name="contextPath">/bigdata</Set>
-                         <Set name="descriptor">WEB-INF/web.xml</Set>
-                         <Set name="parentLoaderPriority">true</Set>
-                         <Set name="extractWAR">false</Set>
-                         <Set name="overrideDescriptor"><SystemProperty name="jetty.overrideWebXml" default="../bigdata-war-html/src/main/webapp/WEB-INF/override-web.xml"/></Set>
-                         <Set name="maxFormContentSize">10485760</Set>
-                        </New>
-                    </Arg>
-                  </Call>
+               <Set name="handlers">
+                 <Array type="org.eclipse.jetty.server.Handler">
+                   <Item>
+                     <New id="moved" class="org.eclipse.jetty.server.handler.MovedContextHandler">
+                       <Set name="contextPath">/</Set>
+                       <Set name="redirectURI">/bigdata</Set>
+                       <Set name="statusCode">301</Set>
+                       <Set name="discardPathInContext">false</Set>
+                       <Set name="discardQuery">false</Set>
+                     </New>
+                   </Item>
+                   <Item>
+                     <New id="WebAppContext" class="org.eclipse.jetty.ee11.webapp.WebAppContext">
+                       <Set name="war"><SystemProperty name="jetty.resourceBase" default="../bigdata-war-html/src/main/webapp/"/></Set>
+                       <Set name="contextPath">/bigdata</Set>
+                       <Set name="parentLoaderPriority">true</Set>
+                       <Set name="extractWAR">false</Set>
+                       <Set name="overrideDescriptor"><SystemProperty name="jetty.overrideWebXml" default="../bigdata-war-html/src/main/webapp/WEB-INF/override-web.xml"/></Set>
+                       <Set name="maxFormContentSize">10485760</Set>
+                     </New>
+                   </Item>
+                 </Array>
+               </Set>
              </New>
            </Item>
          </Array>

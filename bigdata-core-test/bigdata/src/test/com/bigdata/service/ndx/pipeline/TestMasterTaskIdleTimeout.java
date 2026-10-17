@@ -380,13 +380,6 @@ public class TestMasterTaskIdleTimeout extends AbstractMasterTestCase {
          */
         final long scheduledDelayNanos = (long) (sinkIdleTimeoutNanos / O);
 
-        /*
-         * The expected sink output chunk size (assuming that the sink can
-         * combine elements together into chunks of this size without reaching
-         * its chunkSize limit).
-         */
-        final double expectedAverageOutputChunkSize = N * O;
-
         final H masterStats = new H();
 
         /*
@@ -460,6 +453,8 @@ public class TestMasterTaskIdleTimeout extends AbstractMasterTestCase {
              */ 
             final AtomicBoolean halt = new AtomicBoolean(false);
             
+            final long startNanos = System.nanoTime();
+
             // start scheduled task.
             final ScheduledFuture<?> f = scheduledExecutorService
                     .scheduleWithFixedDelay(
@@ -550,6 +545,8 @@ public class TestMasterTaskIdleTimeout extends AbstractMasterTestCase {
                     log.info("Ignoring expected exception: " + ex);
             }
 
+            final long elapsedNanos = System.nanoTime() - startNanos;
+
             // close the master
             masterBuffer.close();
 
@@ -598,6 +595,12 @@ public class TestMasterTaskIdleTimeout extends AbstractMasterTestCase {
             final double actualAverageOutputChunkSize = (double) masterStats.elementsOut
                     .get() / (double) masterStats.chunksOut.get();
 
+            /*
+             * Account for scheduling delays when estimating how many input
+             * elements arrived during a chunk timeout.
+             */
+            final double expectedAverageOutputChunkSize = Math.max(1d,
+                    (double) counter.get() * sinkChunkTimeoutNanos / elapsedNanos);
             final double r = actualAverageOutputChunkSize
                     / expectedAverageOutputChunkSize;
 

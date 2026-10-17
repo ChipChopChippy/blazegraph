@@ -25,8 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package com.bigdata.rdf.sail.sparql;
 
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.rdf.internal.IV;
 import com.bigdata.rdf.internal.XSD;
@@ -109,9 +109,9 @@ public class TestUpdateExprBuilder2 extends AbstractBigdataExprBuilderTestCase {
                 + "          ?book ?p ?v\n"//
                 + "} }";
         
-        final IV dcDate = makeIV(valueFactory.createURI("http://purl.org/dc/elements/1.1/date"));
+        final IV dcDate = makeIV(valueFactory.createIRI("http://purl.org/dc/elements/1.1/date"));
         final IV dateTime = makeIV(valueFactory.createLiteral("1970-01-01T00:00:00-02:00",XSD.DATETIME));
-        final IV bookstore = makeIV(valueFactory.createURI("http://example/bookStore"));
+        final IV bookstore = makeIV(valueFactory.createIRI("http://example/bookStore"));
 
         final UpdateRoot expected = new UpdateRoot();
         {
@@ -206,9 +206,9 @@ public class TestUpdateExprBuilder2 extends AbstractBigdataExprBuilderTestCase {
                 + "          ?book ?p ?v\n"//
                 + "} }";
         
-        final IV dcDate = makeIV(valueFactory.createURI("http://purl.org/dc/elements/1.1/date"));
+        final IV dcDate = makeIV(valueFactory.createIRI("http://purl.org/dc/elements/1.1/date"));
         final IV dateTime = makeIV(valueFactory.createLiteral("1970-01-01T00:00:00-02:00",XSD.DATETIME));
-        final IV bookstore = makeIV(valueFactory.createURI("http://example/bookStore"));
+        final IV bookstore = makeIV(valueFactory.createIRI("http://example/bookStore"));
 
         final UpdateRoot expected = new UpdateRoot();
         {
@@ -364,9 +364,9 @@ public class TestUpdateExprBuilder2 extends AbstractBigdataExprBuilderTestCase {
 
             op.setSilent(true);
             
-//          final IV hintQuery = makeIV(valueFactory.createURI(QueryHints.NAMESPACE+QueryHintScope.Query));
-//          final IV hintEngine = makeIV(valueFactory.createURI(QueryHints.NAMESPACE+"engine"));
-//          final IV hintExpireAge = makeIV(valueFactory.createURI(QueryHints.NAMESPACE+"expireAge"));
+//          final IV hintQuery = makeIV(valueFactory.createIRI(QueryHints.NAMESPACE+QueryHintScope.Query));
+//          final IV hintEngine = makeIV(valueFactory.createIRI(QueryHints.NAMESPACE+"engine"));
+//          final IV hintExpireAge = makeIV(valueFactory.createIRI(QueryHints.NAMESPACE+"expireAge"));
 //          final IV cache = makeIV(valueFactory.createLiteral("cache"));
 //          final IV millis = makeIV(valueFactory.createLiteral("100000",XSD.LONG));
 
@@ -380,9 +380,9 @@ public class TestUpdateExprBuilder2 extends AbstractBigdataExprBuilderTestCase {
 //                    new ConstantNode(hintQuery), new ConstantNode(hintExpireAge),
 //                    new ConstantNode(millis)));
 
-          final BigdataURI hintQuery = valueFactory.createURI(QueryHints.NAMESPACE+QueryHintScope.Query);
-          final BigdataURI hintEngine = valueFactory.createURI(QueryHints.NAMESPACE+"engine");
-          final BigdataURI hintExpireAge = valueFactory.createURI(QueryHints.NAMESPACE+"expireAge");
+          final BigdataURI hintQuery = valueFactory.createIRI(QueryHints.NAMESPACE+QueryHintScope.Query);
+          final BigdataURI hintEngine = valueFactory.createIRI(QueryHints.NAMESPACE+"engine");
+          final BigdataURI hintExpireAge = valueFactory.createIRI(QueryHints.NAMESPACE+"expireAge");
           final BigdataLiteral cache = valueFactory.createLiteral("cache");
           final BigdataLiteral millis = valueFactory.createLiteral("100000",XSD.LONG);
 

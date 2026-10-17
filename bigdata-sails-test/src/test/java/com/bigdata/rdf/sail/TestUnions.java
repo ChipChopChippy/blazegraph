@@ -26,23 +26,24 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sail;
 
-import info.aduna.xml.XMLWriter;
+import org.eclipse.rdf4j.common.xml.XMLWriter;
 import java.io.StringWriter;
 import java.util.Collection;
 import java.util.LinkedList;
-import org.apache.log4j.Logger;
-import org.openrdf.model.BNode;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.BNodeImpl;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.impl.BindingImpl;
-import org.openrdf.query.resultio.sparqlxml.SPARQLResultsXMLWriter;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleBNode;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.impl.SimpleBinding;
+import org.eclipse.rdf4j.query.resultio.sparqlxml.SPARQLResultsXMLWriter;
 
 /**
  * Unit tests the UNION aspects of the {@link BigdataSail} implementation.
@@ -52,7 +53,7 @@ import org.openrdf.query.resultio.sparqlxml.SPARQLResultsXMLWriter;
  */
 public class TestUnions extends QuadsTestCase {
 
-    protected static final Logger log = Logger.getLogger(TestUnions.class);
+    protected static final Logger log = LogManager.getLogger(TestUnions.class);
     
     /**
      * 
@@ -80,22 +81,22 @@ public class TestUnions extends QuadsTestCase {
     /**
      * dc10:title
      */
-    final URI DC10_TITLE = new URIImpl(DC10+"title"); 
+    final IRI DC10_TITLE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(DC10+"title"); 
     
     /**
      * dc10:creator
      */
-    final URI DC10_CREATOR = new URIImpl(DC10+"creator"); 
+    final IRI DC10_CREATOR = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(DC10+"creator"); 
     
     /**
      * dc11:title
      */
-    final URI DC11_TITLE = new URIImpl(DC11+"title"); 
+    final IRI DC11_TITLE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(DC11+"title"); 
     
     /**
      * dc11:creator
      */
-    final URI DC11_CREATOR = new URIImpl(DC11+"creator"); 
+    final IRI DC11_CREATOR = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(DC11+"creator"); 
     
     /**
      * Tests mapping of UNIONS in SPARQL onto unions in bigdata rules.
@@ -105,7 +106,7 @@ public class TestUnions extends QuadsTestCase {
     public void testUnions() throws Exception {
 
         final BigdataSail sail = getSail();
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         final BigdataSailRepositoryConnection cxn = 
             (BigdataSailRepositoryConnection) repo.getConnection();
@@ -113,39 +114,39 @@ public class TestUnions extends QuadsTestCase {
         
         try {
     
-            final BNode a = new BNodeImpl("_:a");
-            final BNode b = new BNodeImpl("_:b");
-            final BNode c = new BNodeImpl("_:c");
+            final BNode a = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createBNode("_:a");
+            final BNode b = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createBNode("_:b");
+            final BNode c = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createBNode("_:c");
 /**/            
             cxn.add(
                     a,
                     DC10_TITLE,
-                    new LiteralImpl("A")
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("A")
                     );
             cxn.add(
                     a,
                     DC10_CREATOR,
-                    new LiteralImpl("A")
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("A")
                     );
             cxn.add(
                     b,
                     DC11_TITLE,
-                    new LiteralImpl("B")
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("B")
                     );
             cxn.add(
                     b,
                     DC11_CREATOR,
-                    new LiteralImpl("B")
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("B")
                     );
             cxn.add(
                     c,
                     DC10_TITLE,
-                    new LiteralImpl("C")
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("C")
                     );
             cxn.add(
                     c,
                     DC11_CREATOR,
-                    new LiteralImpl("C")
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("C")
                     );
 /**/
 
@@ -183,12 +184,12 @@ public class TestUnions extends QuadsTestCase {
     
                 Collection<BindingSet> answer = new LinkedList<BindingSet>();
                 answer.add(createBindingSet(
-                        new BindingImpl("title", new LiteralImpl("A")),
-                        new BindingImpl("creator", new LiteralImpl("A"))
+                        new SimpleBinding("title", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("A")),
+                        new SimpleBinding("creator", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("A"))
                         ));
                 answer.add(createBindingSet(
-                        new BindingImpl("title", new LiteralImpl("B")),
-                        new BindingImpl("creator", new LiteralImpl("B"))
+                        new SimpleBinding("title", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("B")),
+                        new SimpleBinding("creator", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("B"))
                         ));
                 
                 compare(result, answer);
@@ -210,7 +211,7 @@ public class TestUnions extends QuadsTestCase {
     public void testSesameFilters() throws Exception {
 
         final BigdataSail sail = getSail();
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         final BigdataSailRepositoryConnection cxn = 
             (BigdataSailRepositoryConnection) repo.getConnection();
@@ -218,11 +219,11 @@ public class TestUnions extends QuadsTestCase {
         
         try {
     
-            final URI jack = new URIImpl("_:Jack");
-            final URI jill = new URIImpl("_:Jill");
-            final URI person = new URIImpl("_:Person");
-            final URI age = new URIImpl("_:age");
-            final URI integer = new URIImpl("http://www.w3.org/2001/XMLSchema#integer");
+            final IRI jack = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("_:Jack");
+            final IRI jill = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("_:Jill");
+            final IRI person = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("_:Person");
+            final IRI age = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("_:age");
+            final IRI integer = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.w3.org/2001/XMLSchema#integer");
 /**/            
             cxn.add(
                     jack,
@@ -237,12 +238,12 @@ public class TestUnions extends QuadsTestCase {
             cxn.add(
                     jack,
                     age,
-                    new LiteralImpl("40", integer)
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("40", integer)
                     );
             cxn.add(
                     jill,
                     age,
-                    new LiteralImpl("30", integer)
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("30", integer)
                     );
 /**/
 

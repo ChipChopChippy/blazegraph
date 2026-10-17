@@ -29,8 +29,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.rdf.internal.DTE;
 import com.bigdata.rdf.internal.XSD;
@@ -54,9 +54,9 @@ public abstract class NumericIV<V extends BigdataLiteral, T> extends
      * 
      * See https://github.com/SYSTAP/bigdata-gpu/issues/257.
      */
-    public static final Set<URI> numericalDatatypes =
+    public static final Set<IRI> numericalDatatypes =
         Collections.unmodifiableSet(
-            new HashSet<URI>(Arrays.asList(
+            new HashSet<IRI>(Arrays.asList(
                 // basic numeric data types
                 XSD.INTEGER, XSD.DECIMAL, XSD.FLOAT, XSD.DOUBLE,
                 // derived numeric data types

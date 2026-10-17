@@ -1,9 +1,9 @@
 package com.bigdata.rdf.rules;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IConstant;
@@ -23,7 +23,7 @@ import com.bigdata.relation.accesspath.ElementFilter;
 import com.bigdata.relation.rule.Rule;
 
 /**
- * Rule supporting {@link LocalTripleStore#match(Literal[], URI[], URI)}.
+ * Rule supporting {@link LocalTripleStore#match(Literal[], IRI[], IRI)}.
  * 
  * @author <a href="mailto:thompsonbry@users.sourceforge.net">Bryan Thompson</a>
  * @version $Id$

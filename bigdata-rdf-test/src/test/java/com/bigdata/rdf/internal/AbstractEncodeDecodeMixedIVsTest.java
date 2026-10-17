@@ -39,10 +39,10 @@ import java.util.UUID;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.rdf.internal.ColorsEnumExtension.Color;
 import com.bigdata.rdf.internal.impl.BlobIV;
@@ -74,7 +74,7 @@ import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataURI;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.model.StatementEnum;
 import com.bigdata.rdf.spo.SPO;
 import com.bigdata.rdf.store.AbstractTripleStore;
@@ -113,23 +113,23 @@ public abstract class AbstractEncodeDecodeMixedIVsTest extends AbstractEncodeDec
         
         final Random r = new Random();
 
-        final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance(getName());
+        final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance(getName());
         
-        final URI datatype = new URIImpl("http://www.bigdata.com");
-        final URI dt1 = new URIImpl("http://www.bigdata.com/mock-datatype-1");
-        final URI dt2 = new URIImpl("http://www.bigdata.com/mock-datatype-2");
+        final IRI datatype = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com");
+        final IRI dt1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/mock-datatype-1");
+        final IRI dt2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/mock-datatype-2");
 
-        final IV<?, ?> namespaceIV = newTermId(VTE.URI);
-        final IV<?, ?> datatypeIV = newTermId(VTE.URI);
-        final IV<?, ?> datatypeIV2 = newTermId(VTE.URI);
+        final IV<?, ?> namespaceIV = newTermId(VTE.IRI);
+        final IV<?, ?> datatypeIV = newTermId(VTE.IRI);
+        final IV<?, ?> datatypeIV2 = newTermId(VTE.IRI);
 
-        final IV<?, ?> colorIV = newTermId(VTE.URI);// ColorsEnumExtension.COLOR;
-        final IV<?, ?> xsdStringIV = newTermId(VTE.URI);// XSD.STRING;
-        final IV<?, ?> xsdDateTimeIV = newTermId(VTE.URI);// XSD.DATETIME;
+        final IV<?, ?> colorIV = newTermId(VTE.IRI);// ColorsEnumExtension.COLOR;
+        final IV<?, ?> xsdStringIV = newTermId(VTE.IRI);// XSD.STRING;
+        final IV<?, ?> xsdDateTimeIV = newTermId(VTE.IRI);// XSD.DATETIME;
 
         final IDatatypeURIResolver resolver = new IDatatypeURIResolver() {
-            public BigdataURI resolve(final URI uri) {
-                final BigdataURI buri = vf.createURI(uri.stringValue());
+            public BigdataURI resolve(final IRI uri) {
+                final BigdataURI buri = vf.createIRI(uri.stringValue());
                 if (ColorsEnumExtension.COLOR.equals(uri)) {
                     buri.setIV(colorIV);
                 } else if (XSD.STRING.equals(uri)) {
@@ -137,27 +137,27 @@ public abstract class AbstractEncodeDecodeMixedIVsTest extends AbstractEncodeDec
                 } else if (XSD.DATETIME.equals(uri)) {
                     buri.setIV(xsdDateTimeIV);
                 } else if (XSD.DATE.equals(uri)) {
-                    buri.setIV(newTermId(VTE.URI));
+                    buri.setIV(newTermId(VTE.IRI));
                 } else if (XSD.TIME.equals(uri)) {
-                    buri.setIV(newTermId(VTE.URI));
+                    buri.setIV(newTermId(VTE.IRI));
                 } else if (XSD.GDAY.equals(uri)) {
-                    buri.setIV(newTermId(VTE.URI));
+                    buri.setIV(newTermId(VTE.IRI));
                 } else if (XSD.GMONTH.equals(uri)) {
-                    buri.setIV(newTermId(VTE.URI));
+                    buri.setIV(newTermId(VTE.IRI));
                 } else if (XSD.GMONTHDAY.equals(uri)) {
-                    buri.setIV(newTermId(VTE.URI));
+                    buri.setIV(newTermId(VTE.IRI));
                 } else if (XSD.GYEAR.equals(uri)) {
-                    buri.setIV(newTermId(VTE.URI));
+                    buri.setIV(newTermId(VTE.IRI));
                 } else if (XSD.GYEARMONTH.equals(uri)) {
-                    buri.setIV(newTermId(VTE.URI));
+                    buri.setIV(newTermId(VTE.IRI));
                 } else if (XSD.POSITIVE_INTEGER.equals(uri)) {
-                    buri.setIV(newTermId(VTE.URI));
+                    buri.setIV(newTermId(VTE.IRI));
                 } else if (XSD.NEGATIVE_INTEGER.equals(uri)) {
-                    buri.setIV(newTermId(VTE.URI));
+                    buri.setIV(newTermId(VTE.IRI));
                 } else if (XSD.NON_POSITIVE_INTEGER.equals(uri)) {
-                    buri.setIV(newTermId(VTE.URI));
+                    buri.setIV(newTermId(VTE.IRI));
                 } else if (XSD.NON_NEGATIVE_INTEGER.equals(uri)) {
-                    buri.setIV(newTermId(VTE.URI));
+                    buri.setIV(newTermId(VTE.IRI));
                 } else
                     throw new UnsupportedOperationException();
                 return buri;
@@ -204,11 +204,11 @@ public abstract class AbstractEncodeDecodeMixedIVsTest extends AbstractEncodeDec
                 /*
                  * URIs
                  */
-                ivs.add(new FullyInlineURIIV<BigdataURI>(new URIImpl("http://www.bigdata.com")));
-                ivs.add(new FullyInlineURIIV<BigdataURI>(new URIImpl("http://www.bigdata.com/")));
-                ivs.add(new FullyInlineURIIV<BigdataURI>(new URIImpl("http://www.bigdata.com/foo")));
-                ivs.add(new FullyInlineURIIV<BigdataURI>(new URIImpl("http://www.bigdata.com:80/foo")));
-                ivs.add(new FullyInlineURIIV<BigdataURI>(new URIImpl("http://www.bigdata.com")));
+                ivs.add(new FullyInlineURIIV<BigdataURI>(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com")));
+                ivs.add(new FullyInlineURIIV<BigdataURI>(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/")));
+                ivs.add(new FullyInlineURIIV<BigdataURI>(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/foo")));
+                ivs.add(new FullyInlineURIIV<BigdataURI>(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com:80/foo")));
+                ivs.add(new FullyInlineURIIV<BigdataURI>(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com")));
                 if (fullyInlineUnicode) {
                     ivs.add(new FullyInlineURIIV<BigdataURI>(RDF.TYPE));
                     ivs.add(new FullyInlineURIIV<BigdataURI>(RDF.SUBJECT));
@@ -507,11 +507,11 @@ public abstract class AbstractEncodeDecodeMixedIVsTest extends AbstractEncodeDec
                 // SIDs
                 {
                     
-                    final IV<?,?> s1 = newTermId(VTE.URI);
-                    final IV<?,?> s2 = newTermId(VTE.URI);
-                    final IV<?,?> p1 = newTermId(VTE.URI);
-                    final IV<?,?> p2 = newTermId(VTE.URI);
-                    final IV<?,?> o1 = newTermId(VTE.URI);
+                    final IV<?,?> s1 = newTermId(VTE.IRI);
+                    final IV<?,?> s2 = newTermId(VTE.IRI);
+                    final IV<?,?> p1 = newTermId(VTE.IRI);
+                    final IV<?,?> p2 = newTermId(VTE.IRI);
+                    final IV<?,?> o1 = newTermId(VTE.IRI);
                     final IV<?,?> o2 = newTermId(VTE.BNODE);
                     final IV<?,?> o3 = newTermId(VTE.LITERAL);
 
@@ -869,18 +869,18 @@ public abstract class AbstractEncodeDecodeMixedIVsTest extends AbstractEncodeDec
                             resolver, maxInlineStringLength);
 
                     final IV<?, ?>[] e = {//
-                    ext.createIV(new LiteralImpl("", XSD.STRING)), //
-                            ext.createIV(new LiteralImpl(" ", XSD.STRING)), //
-                            ext.createIV(new LiteralImpl("  ", XSD.STRING)), //
-                            ext.createIV(new LiteralImpl("1", XSD.STRING)), //
-                            ext.createIV(new LiteralImpl("12", XSD.STRING)), //
-                            ext.createIV(new LiteralImpl("123", XSD.STRING)), //
-                            ext.createIV(new LiteralImpl("234", XSD.STRING)), //
-                            ext.createIV(new LiteralImpl("34", XSD.STRING)), //
-                            ext.createIV(new LiteralImpl("4", XSD.STRING)), //
-                            ext.createIV(new LiteralImpl("a", XSD.STRING)), //
-                            ext.createIV(new LiteralImpl("ab", XSD.STRING)), //
-                            ext.createIV(new LiteralImpl("abc", XSD.STRING)), //
+                    ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("", XSD.STRING)), //
+                            ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral(" ", XSD.STRING)), //
+                            ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("  ", XSD.STRING)), //
+                            ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("1", XSD.STRING)), //
+                            ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("12", XSD.STRING)), //
+                            ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("123", XSD.STRING)), //
+                            ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("234", XSD.STRING)), //
+                            ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("34", XSD.STRING)), //
+                            ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("4", XSD.STRING)), //
+                            ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("a", XSD.STRING)), //
+                            ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("ab", XSD.STRING)), //
+                            ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc", XSD.STRING)), //
                     };
                     ivs.addAll(Arrays.asList(e));
                 }
@@ -893,7 +893,7 @@ public abstract class AbstractEncodeDecodeMixedIVsTest extends AbstractEncodeDec
 
                     for (Color c : ColorsEnumExtension.Color.values()) {
                      
-                        ivs.add(ext.createIV(new LiteralImpl(c.name(),
+                        ivs.add(ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral(c.name(),
                                 ColorsEnumExtension.COLOR)));
                     }
 

@@ -9,16 +9,8 @@ package com.bigdata.jsr166;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
-import java.security.CodeSource;
-import java.security.Permission;
-import java.security.PermissionCollection;
-import java.security.Permissions;
-import java.security.Policy;
-import java.security.ProtectionDomain;
-import java.security.SecurityPermission;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
-import java.util.PropertyPermission;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
@@ -109,9 +101,6 @@ import junit.framework.TestSuite;
  * </ul>
  */
 public class JSR166TestCase extends TestCase {
-    private static final boolean useSecurityManager =
-        Boolean.getBoolean("jsr166.useSecurityManager");
-
     protected static final boolean expensiveTests =
         Boolean.getBoolean("jsr166.expensiveTests");
 
@@ -152,11 +141,6 @@ public class JSR166TestCase extends TestCase {
      * Runs all JSR166 unit tests using junit.textui.TestRunner
      */
     public static void main(String[] args) {
-        if (useSecurityManager) {
-            System.err.println("Setting a permissive security manager");
-            Policy.setPolicy(permissivePolicy());
-            System.setSecurityManager(new SecurityManager());
-        }
         int iters = (args.length == 0) ? 1 : Integer.parseInt(args[0]);
 
         Test s = suite();
@@ -511,90 +495,6 @@ public class JSR166TestCase extends TestCase {
     public static final Integer m6  = new Integer(-6);
     public static final Integer m10 = new Integer(-10);
 
-
-    /**
-     * Runs Runnable r with a security policy that permits precisely
-     * the specified permissions.  If there is no current security
-     * manager, the runnable is run twice, both with and without a
-     * security manager.  We require that any security manager permit
-     * getPolicy/setPolicy.
-     */
-    public void runWithPermissions(Runnable r, Permission... permissions) {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm == null) {
-            r.run();
-            Policy savedPolicy = Policy.getPolicy();
-            try {
-                Policy.setPolicy(permissivePolicy());
-                System.setSecurityManager(new SecurityManager());
-                runWithPermissions(r, permissions);
-            } finally {
-                System.setSecurityManager(null);
-                Policy.setPolicy(savedPolicy);
-            }
-        } else {
-            Policy savedPolicy = Policy.getPolicy();
-            AdjustablePolicy policy = new AdjustablePolicy(permissions);
-            Policy.setPolicy(policy);
-
-            try {
-                r.run();
-            } finally {
-                policy.addPermission(new SecurityPermission("setPolicy"));
-                Policy.setPolicy(savedPolicy);
-            }
-        }
-    }
-
-    /**
-     * Runs a runnable without any permissions.
-     */
-    public void runWithoutPermissions(Runnable r) {
-        runWithPermissions(r);
-    }
-
-    /**
-     * A security policy where new permissions can be dynamically added
-     * or all cleared.
-     */
-    public static class AdjustablePolicy extends java.security.Policy {
-        Permissions perms = new Permissions();
-        AdjustablePolicy(Permission... permissions) {
-            for (Permission permission : permissions)
-                perms.add(permission);
-        }
-        void addPermission(Permission perm) { perms.add(perm); }
-        void clearPermissions() { perms = new Permissions(); }
-        public PermissionCollection getPermissions(CodeSource cs) {
-            return perms;
-        }
-        public PermissionCollection getPermissions(ProtectionDomain pd) {
-            return perms;
-        }
-        public boolean implies(ProtectionDomain pd, Permission p) {
-            return perms.implies(p);
-        }
-        public void refresh() {}
-    }
-
-    /**
-     * Returns a policy containing all the permissions we ever need.
-     */
-    public static Policy permissivePolicy() {
-        return new AdjustablePolicy
-            // Permissions j.u.c. needs directly
-            (new RuntimePermission("modifyThread"),
-             new RuntimePermission("getClassLoader"),
-             new RuntimePermission("setContextClassLoader"),
-             // Permissions needed to change permissions!
-             new SecurityPermission("getPolicy"),
-             new SecurityPermission("setPolicy"),
-             new RuntimePermission("setSecurityManager"),
-             // Permissions needed by the junit test harness
-             new RuntimePermission("accessDeclaredMembers"),
-             new PropertyPermission("*", "read"),
-             new java.io.FilePermission("<<ALL FILES>>", "read"));
-    }
 
     /**
      * Sleeps until the given time has elapsed.

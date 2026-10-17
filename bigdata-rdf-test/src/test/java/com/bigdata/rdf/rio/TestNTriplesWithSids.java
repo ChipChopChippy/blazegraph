@@ -4,12 +4,13 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParseException;
-import org.openrdf.rio.RDFParserRegistry;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFParseException;
+import org.eclipse.rdf4j.rio.RDFParserRegistry;
 
 import com.bigdata.rdf.ServiceProviderHook;
 import com.bigdata.rdf.axioms.NoAxioms;
@@ -28,7 +29,7 @@ import com.bigdata.rdf.store.DataLoader;
  */
 public class TestNTriplesWithSids extends AbstractTripleStoreTestCase {
 
-	protected static final transient Logger log = Logger.getLogger(TestNTriplesWithSids.class);
+	protected static final transient Logger log = LogManager.getLogger(TestNTriplesWithSids.class);
 	
 	public TestNTriplesWithSids() {
 	}
@@ -99,7 +100,7 @@ public class TestNTriplesWithSids extends AbstractTripleStoreTestCase {
 			// Verify that the correct parser will be used.
 			assertEquals("NTriplesParserClass",
 					BigdataNTriplesParser.class.getName(), RDFParserRegistry
-							.getInstance().get(ServiceProviderHook.NTRIPLES_RDR).getParser()
+							.getInstance().get(ServiceProviderHook.NTRIPLES_RDR).get().getParser()
 							.getClass().getName());
 
 			final DataLoader dataLoader = store.getDataLoader();
@@ -116,13 +117,13 @@ public class TestNTriplesWithSids extends AbstractTripleStoreTestCase {
 			while (it.hasNext())
 				System.err.println(it.next());
 
-			final BigdataURI dcSource = store.getValueFactory().createURI(
+			final BigdataURI dcSource = store.getValueFactory().createIRI(
 					"http://purl.org/dc/terms/source");
 
-			final BigdataURI dcCreated = store.getValueFactory().createURI(
+			final BigdataURI dcCreated = store.getValueFactory().createIRI(
 					"http://purl.org/dc/terms/created");
 			
-			final BigdataURI bobSource = store.getValueFactory().createURI(
+			final BigdataURI bobSource = store.getValueFactory().createIRI(
 					"http://hr.example.com/employees#bob");
 			
 			assertEquals(1,
@@ -250,7 +251,7 @@ public class TestNTriplesWithSids extends AbstractTripleStoreTestCase {
 			// Verify that the correct parser will be used.
 			assertEquals("NTriplesParserClass",
 					BigdataNTriplesParser.class.getName(), RDFParserRegistry
-							.getInstance().get(ServiceProviderHook.NTRIPLES_RDR).getParser()
+							.getInstance().get(ServiceProviderHook.NTRIPLES_RDR).get().getParser()
 							.getClass().getName());
 
 			final DataLoader dataLoader = store.getDataLoader();
@@ -263,13 +264,13 @@ public class TestNTriplesWithSids extends AbstractTripleStoreTestCase {
 
 			assertEquals("toldTriples", 3L, store.getStatementCount());//loadStats.toldTriples.get());
 			
-			final BigdataURI dcSource = store.getValueFactory().createURI(
+			final BigdataURI dcSource = store.getValueFactory().createIRI(
 					"http://purl.org/dc/terms/source");
 
-			final BigdataURI dcCreated = store.getValueFactory().createURI(
+			final BigdataURI dcCreated = store.getValueFactory().createIRI(
 					"http://purl.org/dc/terms/created");
 			
-			final BigdataURI bobSource = store.getValueFactory().createURI(
+			final BigdataURI bobSource = store.getValueFactory().createIRI(
 					"http://hr.example.com/employees#bob");
 			
 			assertEquals(1,

@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sparql.ast.eval;
 
-import info.aduna.iteration.CloseableIteration;
+import org.eclipse.rdf4j.common.iteration.CloseableIteration;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -36,15 +36,16 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.algebra.StatementPattern.Scope;
-import org.openrdf.query.impl.EmptyBindingSet;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.query.impl.EmptyBindingSet;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IPredicate;
@@ -87,9 +88,9 @@ import cutthecrap.utils.striterators.IFilterTest;
  *          $
  */
 public class ASTConstructIterator implements
-        CloseableIteration<BigdataStatement, QueryEvaluationException> {
+        CloseableIteration<BigdataStatement> {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(ASTConstructIterator.class);
     
     private static final boolean DEBUG = log.isDebugEnabled();
@@ -154,7 +155,7 @@ public class ASTConstructIterator implements
      */
     private final List<BigdataStatement> groundTriples;
 
-    private final CloseableIteration<BindingSet, QueryEvaluationException> src;
+    private final CloseableIteration<BindingSet> src;
 
     /**
      * A list of {@link Statement}s constructed from the most recently visited
@@ -237,7 +238,7 @@ public class ASTConstructIterator implements
             final ConstructNode construct,//
             final GraphPatternGroup<?> whereClause,//
             final Map<String, BigdataBNode> bnodesIn,//
-            final CloseableIteration<BindingSet, QueryEvaluationException> src) {
+            final CloseableIteration<BindingSet> src) {
 
         this.constructDistinctSPO = context.constructDistinctSPO;
         
@@ -270,7 +271,7 @@ public class ASTConstructIterator implements
                 
 //                final BigdataStatement stmt = f.createStatement(//
 //                        (Resource) pat.s().getValue(),//
-//                        (URI) pat.p().getValue(),//
+//                        (IRI) pat.p().getValue(),//
 //                        (Value) pat.o().getValue(),//
 //                        pat.c() == null ? null : (Resource) pat.c().getValue()//
 //                        );
@@ -839,7 +840,7 @@ public class ASTConstructIterator implements
         // filter out bindings which do not produce legal statements.
         if (!(s instanceof Resource))
             return null;
-        if (!(p instanceof URI))
+        if (!(p instanceof IRI))
             return null;
         if (!(o instanceof Value))
             return null;
@@ -847,7 +848,7 @@ public class ASTConstructIterator implements
             return null;
 
         // return the statement
-        return f.createStatement((Resource) s, (URI) p, (Value) o, (Resource) c);
+        return f.createStatement((Resource) s, (IRI) p, (Value) o, (Resource) c);
         
     }
 

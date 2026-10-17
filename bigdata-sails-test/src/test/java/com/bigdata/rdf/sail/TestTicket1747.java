@@ -25,11 +25,11 @@ package com.bigdata.rdf.sail;
 
 import java.io.IOException;
 import java.util.List;
-import org.openrdf.model.vocabulary.XMLSchema;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.rio.RDFParseException;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.rio.RDFParseException;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.rdf.internal.IV;
@@ -77,13 +77,13 @@ public class TestTicket1747 extends QuadsTestCase {
 			throws RepositoryException, MalformedQueryException,
 			QueryEvaluationException, RDFParseException, IOException, VisitorException {
 		try {
-			repo.initialize();
+			repo.init();
 			final BigdataSailRepositoryConnection conn = repo.getConnection();
 			try {
 				BigdataValueFactory vf = conn.getValueFactory();
 			
 				//				Verify that you can resolve xsd:dateTime to a non-mock IV.
-				IV xsdDateTimeIV = conn.getTripleStore().getLexiconRelation().resolve(vf.createURI(XMLSchema.DATETIME.stringValue())).getIV();
+				IV xsdDateTimeIV = conn.getTripleStore().getLexiconRelation().resolve(vf.createIRI(XSD.DATETIME.stringValue())).getIV();
 				assertFalse(xsdDateTimeIV.isNullIV());
 				assertTrue(xsdDateTimeIV.isVocabulary());
 
@@ -110,7 +110,7 @@ public class TestTicket1747 extends QuadsTestCase {
 		        final ASTContainer astContainer = new Bigdata2ASTSPARQLParser().parseQuery2(query, null);
 
 //				Verify that re-resolution of xsd:dateTime does not return a MockIV.
-		        xsdDateTimeIV = conn.getTripleStore().getLexiconRelation().resolve(XMLSchema.DATETIME).getIV();
+		        xsdDateTimeIV = conn.getTripleStore().getLexiconRelation().resolve(XSD.DATETIME).getIV();
 		        assertFalse(xsdDateTimeIV.isNullIV());
 		        assertTrue(xsdDateTimeIV.isVocabulary());
 
@@ -119,7 +119,7 @@ public class TestTicket1747 extends QuadsTestCase {
 		        // astContainer instance is updated with resolved IVs at this point
 	        
 //				Verify that re-resolution of xsd:dateTime does not return a MockIV.
-		        xsdDateTimeIV = conn.getTripleStore().getLexiconRelation().resolve(XMLSchema.DATETIME).getIV();
+		        xsdDateTimeIV = conn.getTripleStore().getLexiconRelation().resolve(XSD.DATETIME).getIV();
 		        assertFalse(xsdDateTimeIV.isNullIV());
 		        assertTrue(xsdDateTimeIV.isVocabulary());
 //				Verify that the parsed query does not contain a MockIV for xsd:dateTime
@@ -140,7 +140,7 @@ public class TestTicket1747 extends QuadsTestCase {
 	private void checkNode(BOp bop) {
 		if (bop instanceof ConstantNode) {
 			BigdataValue value = ((ConstantNode)bop).getValue();
-			if (XMLSchema.DATETIME.equals(value)) {
+			if (XSD.DATETIME.equals(value)) {
 				IV xsdDateTimeIV = value.getIV();
 		        assertFalse(xsdDateTimeIV.isNullIV());
 				assertTrue(xsdDateTimeIV.isVocabulary());

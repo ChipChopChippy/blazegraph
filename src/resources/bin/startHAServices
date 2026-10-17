@@ -125,7 +125,7 @@ export JAVA_OPTS="\
  ${HA_OPTS}\
  -Djava.security.policy=${POLICY_FILE}\
  -Djava.util.logging.config.file=${LOGGING_CONFIG}\
- -Dlog4j.configuration=${LOG4J_CONFIG}\
+ -Dlog4j2.configurationFile=${LOG4J_CONFIG}\
  -DLIB_DIR=${INSTALL_DIR}/lib\
  -DLIBDL_DIR=${INSTALL_DIR}/lib-dl\
  -DCONFIG_DIR=${CONFIG_DIR}\

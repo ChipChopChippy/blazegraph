@@ -28,8 +28,8 @@ import java.util.Collections;
 import java.util.Properties;
 import java.util.UUID;
 
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQueryResult;
 
 import junit.framework.Test;
 
@@ -78,7 +78,7 @@ public class TestDataLoaderServlet<S extends IIndexManager> extends
 
 		final PropertiesFormat format = PropertiesFormat.XML;
 		final PropertiesParserFactory parserFactory = PropertiesParserRegistry
-				.getInstance().get(format);
+				.getInstance().get(format).orElse(null);
 
 		final Properties loaderProps = parserFactory.getParser().parse(
 				this.getClass().getResourceAsStream("dataloader.xml"));
@@ -118,7 +118,7 @@ public class TestDataLoaderServlet<S extends IIndexManager> extends
 
 		try {
 			String queryStr = "select * where { ?s ?p ?o }";
-			final org.openrdf.query.TupleQuery tq = cxn.prepareTupleQuery(
+			final org.eclipse.rdf4j.query.TupleQuery tq = cxn.prepareTupleQuery(
 					QueryLanguage.SPARQL, queryStr);
 			final TupleQueryResult tqr = tq.evaluate();
 			try {

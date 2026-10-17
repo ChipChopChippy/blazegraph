@@ -5,10 +5,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.query.BindingSet;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.BindingSet;
 
 import com.bigdata.gom.om.IObjectManager;
 import com.bigdata.gom.om.ObjectMgrModel;
@@ -39,7 +39,7 @@ public class LinkSet implements ILinkSet {
     /**
      * The predicate that collects this link set.
      */
-	private final URI m_linkProperty;
+	private final IRI m_linkProperty;
 	/**
 	 * <code>true</code> iff this is a reverse link set.
 	 */
@@ -54,7 +54,7 @@ public class LinkSet implements ILinkSet {
      * @param linksIn
      *            <code>true</code> iff this is a reverse link set.
      */
-    public LinkSet(final IGPO owner, final URI linkProperty,
+    public LinkSet(final IGPO owner, final IRI linkProperty,
             final boolean linksIn) {
         if (owner == null)
             throw new IllegalArgumentException();
@@ -66,7 +66,7 @@ public class LinkSet implements ILinkSet {
 	}
 	
 	@Override
-	public URI getLinkProperty() {
+	public IRI getLinkProperty() {
 		return m_linkProperty;
 	}
 

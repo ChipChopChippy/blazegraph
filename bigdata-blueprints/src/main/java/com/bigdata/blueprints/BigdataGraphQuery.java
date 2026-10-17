@@ -27,9 +27,10 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Predicate;
@@ -45,7 +46,7 @@ import com.tinkerpop.blueprints.Vertex;
  */
 public class BigdataGraphQuery implements GraphQuery {
 
-    protected final static transient Logger log = Logger.getLogger(BigdataGraphQuery.class);
+    protected final static transient Logger log = LogManager.getLogger(BigdataGraphQuery.class);
     
     /**
      * These are the only Predicate implementations we handle currently.
@@ -63,24 +64,24 @@ public class BigdataGraphQuery implements GraphQuery {
     private final BigdataGraph graph;
     
     /**
-     * URI used for typing elements.
+     * IRI used for typing elements.
      */
-    protected final URI TYPE;
+    protected final IRI TYPE;
     
     /**
-     * URI used to represent a Vertex.
+     * IRI used to represent a Vertex.
      */
-    protected final URI VERTEX;
+    protected final IRI VERTEX;
     
     /**
-     * URI used to represent a Edge.
+     * IRI used to represent a Edge.
      */
-    protected final URI EDGE;
+    protected final IRI EDGE;
 
     /**
-     * URI used for labeling edges.
+     * IRI used for labeling edges.
      */
-    protected final URI LABEL;
+    protected final IRI LABEL;
 
     /**
      * The list of criteria.  Bigdata's query optimizer will re-order the
@@ -258,7 +259,7 @@ public class BigdataGraphQuery implements GraphQuery {
     /**
      * Generate the SPARQL query.
      */
-    protected String toQueryStr(final URI type) {
+    protected String toQueryStr(final IRI type) {
         
         final StringBuilder sb = new StringBuilder();
 

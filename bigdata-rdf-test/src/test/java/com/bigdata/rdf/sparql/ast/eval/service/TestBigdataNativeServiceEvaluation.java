@@ -30,8 +30,8 @@ package com.bigdata.rdf.sparql.ast.eval.service;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.bop.Constant;
 import com.bigdata.bop.IBindingSet;
@@ -102,7 +102,7 @@ public class TestBigdataNativeServiceEvaluation extends
          * data are loaded, the data will use the same IV and the join will
          * succeed.
          */
-        final IV<?, ?> book1 = store.addTerm(store.getValueFactory().createURI(
+        final IV<?, ?> book1 = store.addTerm(store.getValueFactory().createIRI(
                 "http://example.org/book/book1"));
         
 //        final IV<?,?> fourtyTwo;
@@ -116,7 +116,7 @@ public class TestBigdataNativeServiceEvaluation extends
             serviceSolutions.add(bset);
         }
    
-        final URI serviceURI = new URIImpl(
+        final IRI serviceURI = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://www.bigdata.com/mockService/" + getName());
 
         ServiceRegistry.getInstance().add(serviceURI,
@@ -172,9 +172,9 @@ public class TestBigdataNativeServiceEvaluation extends
          * data are loaded, the data will use the same IV and the join will
          * succeed.
          */
-        final IV<?, ?> book1 = store.addTerm(store.getValueFactory().createURI(
+        final IV<?, ?> book1 = store.addTerm(store.getValueFactory().createIRI(
                 "http://example.org/book/book1"));
-        final IV<?, ?> book2 = store.addTerm(store.getValueFactory().createURI(
+        final IV<?, ?> book2 = store.addTerm(store.getValueFactory().createIRI(
                 "http://example.org/book/book2"));
 
         final List<IBindingSet> serviceSolutions = new LinkedList<IBindingSet>();
@@ -193,7 +193,7 @@ public class TestBigdataNativeServiceEvaluation extends
             serviceSolutions.add(bset);
         }
    
-        final URI serviceURI = new URIImpl(
+        final IRI serviceURI = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://www.bigdata.com/mockService/" + getName());
 
         ServiceRegistry.getInstance().add(serviceURI,

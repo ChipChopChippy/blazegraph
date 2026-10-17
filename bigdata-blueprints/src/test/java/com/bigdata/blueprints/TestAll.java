@@ -27,9 +27,11 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 /**
  * Aggregates test suites in increase dependency order.
  * 
@@ -69,11 +71,11 @@ public class TestAll extends TestCase {
          */
         {
 
-            final Logger log = Logger.getRootLogger();
+            final Logger log = LogManager.getRootLogger();
 
             if (log.getLevel().equals(Level.DEBUG)) {
 
-                log.setLevel(Level.WARN);
+                Configurator.setLevel(log.getName(), Level.WARN);
 
                 log.warn("Defaulting debugging level to WARN for the unit tests");
 

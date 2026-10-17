@@ -63,9 +63,9 @@ public class TestSPO extends TestCase2 {
 
     public void test_serializable() {
 
-    	final IV<?,?> s = new TermId<BigdataURI>(VTE.URI, 1);
-    	final IV<?,?> p = new TermId<BigdataURI>(VTE.URI, 2);
-    	final IV<?,?> o = new TermId<BigdataURI>(VTE.URI, 3);
+    	final IV<?,?> s = new TermId<BigdataURI>(VTE.IRI, 1);
+    	final IV<?,?> p = new TermId<BigdataURI>(VTE.IRI, 2);
+    	final IV<?,?> o = new TermId<BigdataURI>(VTE.IRI, 3);
     	
     	final SPO expected = new SPO(s, p, o);
     	
@@ -75,9 +75,9 @@ public class TestSPO extends TestCase2 {
     
     public void test_serializable_sidIV() {
 
-    	final IV<?,?> s = new TermId<BigdataURI>(VTE.URI, 1);
-    	final IV<?,?> p = new TermId<BigdataURI>(VTE.URI, 2);
-    	final IV<?,?> o = new TermId<BigdataURI>(VTE.URI, 3);
+    	final IV<?,?> s = new TermId<BigdataURI>(VTE.IRI, 1);
+    	final IV<?,?> p = new TermId<BigdataURI>(VTE.IRI, 2);
+    	final IV<?,?> o = new TermId<BigdataURI>(VTE.IRI, 3);
     	
     	final SPO expected = new SPO(s, p, o, StatementEnum.Explicit);
     	
@@ -87,8 +87,8 @@ public class TestSPO extends TestCase2 {
     	
     	doRoundTripTest(expected);
 
-    	final IV<?,?> p1 = new TermId<BigdataURI>(VTE.URI, 4);
-    	final IV<?,?> o1 = new TermId<BigdataURI>(VTE.URI, 5);
+    	final IV<?,?> p1 = new TermId<BigdataURI>(VTE.IRI, 4);
+    	final IV<?,?> o1 = new TermId<BigdataURI>(VTE.IRI, 5);
     	
 		final SPO expected2 = new SPO(expected.c(), p1, o1,
 				StatementEnum.Explicit);

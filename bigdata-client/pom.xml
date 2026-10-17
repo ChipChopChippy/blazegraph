@@ -109,9 +109,16 @@ ga('send', 'pageview');
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.openrdf.sesame</groupId>
-      <artifactId>sesame-runtime</artifactId>
-      <version>${sesame.version}</version>
+      <groupId>org.eclipse.rdf4j</groupId>
+      <artifactId>rdf4j-runtime</artifactId>
+      <type>pom</type>
+      <version>${rdf4j.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.eclipse.rdf4j</groupId>
+          <artifactId>rdf4j-sail-solr</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
@@ -119,8 +126,8 @@ ga('send', 'pageview');
       <version>${jetty.version}</version>
     </dependency>
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
       <version>${log4j.version}</version>
     </dependency>
     <dependency>

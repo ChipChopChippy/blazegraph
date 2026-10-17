@@ -28,17 +28,17 @@ package com.bigdata.rdf.sail;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import org.openrdf.model.BNode;
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.BNodeImpl;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.impl.BindingImpl;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleBNode;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.impl.SimpleBinding;
 
 /**
  * Unit tests the quads aspects of the {@link BigdataSail} implementation.
@@ -72,27 +72,27 @@ public class TestQuadsAPI extends QuadsTestCase {
     /**
      * foaf:name
      */
-    final URI FOAF_NAME = new URIImpl(FOAF+"name"); 
+    final IRI FOAF_NAME = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(FOAF+"name"); 
     
     /**
      * foaf:mbox
      */
-    final URI FOAF_MBOX = new URIImpl(FOAF+"mbox"); 
+    final IRI FOAF_MBOX = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(FOAF+"mbox"); 
     
     /**
      * foaf:nick
      */
-    final URI FOAF_NICK = new URIImpl(FOAF+"nick"); 
+    final IRI FOAF_NICK = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(FOAF+"nick"); 
     
     /**
      * foaf:PersonalProfileDocument
      */
-    final URI FOAF_PPD = new URIImpl(FOAF+"PersonalProfileDocument"); 
+    final IRI FOAF_PPD = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(FOAF+"PersonalProfileDocument"); 
     
     /**
      * foaf:knows
      */
-    final URI FOAF_KNOWS = new URIImpl(FOAF+"knows"); 
+    final IRI FOAF_KNOWS = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(FOAF+"knows"); 
     
     /**
      * The dc: namespace.
@@ -102,7 +102,7 @@ public class TestQuadsAPI extends QuadsTestCase {
     /**
      * dc:publisher
      */
-    final URI DC_PUBLISHER = new URIImpl(DC+"publisher"); 
+    final IRI DC_PUBLISHER = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(DC+"publisher"); 
     
     
     /**
@@ -113,7 +113,7 @@ public class TestQuadsAPI extends QuadsTestCase {
     public void test_2graphs() throws Exception {
 
         final BigdataSail sail = getSail();
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         final BigdataSailRepositoryConnection cxn = 
             (BigdataSailRepositoryConnection) repo.getConnection();
@@ -125,21 +125,21 @@ public class TestQuadsAPI extends QuadsTestCase {
             
             assertFalse(cxn.getContextIDs().hasNext());
             
-            final BNode a = new BNodeImpl("_:a");
-            final BNode b = new BNodeImpl("_:b");
-            final URI graphA = new URIImpl("http://www.bigdata.com/graphA");
-            final URI graphB = new URIImpl("http://www.bigdata.com/graphB");
+            final BNode a = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createBNode("_:a");
+            final BNode b = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createBNode("_:b");
+            final IRI graphA = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/graphA");
+            final IRI graphB = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/graphB");
 /**/            
             cxn.add(
                     a,
-                    new URIImpl(FOAF+"name"),
-                    new LiteralImpl("Alice"),
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(FOAF+"name"),
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Alice"),
                     graphA
                     );
             cxn.add(
                     a,
-                    new URIImpl(FOAF+"mbox"),
-                    new URIImpl("mailto:alice@work.example"),
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(FOAF+"mbox"),
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("mailto:alice@work.example"),
                     graphA
                     );
             /*
@@ -147,14 +147,14 @@ public class TestQuadsAPI extends QuadsTestCase {
              */
             cxn.add(
                     b,
-                    new URIImpl(FOAF+"name"),
-                    new LiteralImpl("Bob"),
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(FOAF+"name"),
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Bob"),
                     graphB
                     );
             cxn.add(
                     b,
-                    new URIImpl(FOAF+"mbox"),
-                    new URIImpl("mailto:bob@work.example"),
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(FOAF+"mbox"),
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("mailto:bob@work.example"),
                     graphB
                     );
 /**/
@@ -195,7 +195,7 @@ public class TestQuadsAPI extends QuadsTestCase {
     public void testSCequality() throws Exception {
 
         final BigdataSail sail = getSail();
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         final BigdataSailRepositoryConnection cxn = 
             (BigdataSailRepositoryConnection) repo.getConnection();
@@ -207,15 +207,15 @@ public class TestQuadsAPI extends QuadsTestCase {
             
             assertFalse(cxn.getContextIDs().hasNext());
             
-//            final BNode a = new BNodeImpl("_:a");
-//            final BNode b = new BNodeImpl("_:b");
-            final URI graphA = new URIImpl("http://www.bigdata.com/rdf#graphA");
-            final URI graphB = new URIImpl("http://www.bigdata.com/rdf#graphB");
-            final URI s = new URIImpl("http://www.bigdata.com/rdf#s");
-            final URI p1 = new URIImpl("http://www.bigdata.com/rdf#p1");
-            final URI o1 = new URIImpl("http://www.bigdata.com/rdf#o1");
-            final URI p2 = new URIImpl("http://www.bigdata.com/rdf#p2");
-            final URI o2 = new URIImpl("http://www.bigdata.com/rdf#o2");
+//            final BNode a = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createBNode("_:a");
+//            final BNode b = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createBNode("_:b");
+            final IRI graphA = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf#graphA");
+            final IRI graphB = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf#graphB");
+            final IRI s = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf#s");
+            final IRI p1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf#p1");
+            final IRI o1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf#o1");
+            final IRI p2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf#p2");
+            final IRI o2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf#o2");
 
             cxn.add(graphA, p1, o1, graphA);
 
@@ -262,7 +262,7 @@ public class TestQuadsAPI extends QuadsTestCase {
             final Collection<BindingSet> answer = new LinkedList<BindingSet>();
             
             answer.add(createBindingSet(
-                    new BindingImpl("g", graphA)));
+                    new SimpleBinding("g", graphA)));
             
             compare(result, answer);
             

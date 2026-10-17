@@ -109,11 +109,6 @@ ga('send', 'pageview');
     <!-- External and third party dependencies -->
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-continuation</artifactId>
-      <version>${jetty.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-http</artifactId>
       <version>${jetty.version}</version>
     </dependency>
@@ -138,13 +133,13 @@ ga('send', 'pageview');
       <version>${jetty.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-webapp</artifactId>
+      <groupId>org.eclipse.jetty.ee11</groupId>
+      <artifactId>jetty-ee11-webapp</artifactId>
       <version>${jetty.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-servlet</artifactId>
+      <groupId>org.eclipse.jetty.ee11</groupId>
+      <artifactId>jetty-ee11-servlet</artifactId>
       <version>${jetty.version}</version>
     </dependency>
     <dependency>
@@ -157,8 +152,8 @@ ga('send', 'pageview');
           <artifactId>jetty-server</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>javax.servlet</groupId>
-          <artifactId>javax.servlet-api</artifactId>
+          <groupId>jakarta.servlet</groupId>
+          <artifactId>jakarta.servlet-api</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -173,8 +168,8 @@ ga('send', 'pageview');
       <version>${jetty.version}</version>
       <exclusions>
         <exclusion>
-          <groupId>javax.servlet</groupId>
-          <artifactId>javax.servlet-api</artifactId>
+          <groupId>jakarta.servlet</groupId>
+          <artifactId>jakarta.servlet-api</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -184,8 +179,8 @@ ga('send', 'pageview');
       <version>${jetty.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-proxy</artifactId>
+      <groupId>org.eclipse.jetty.ee11</groupId>
+      <artifactId>jetty-ee11-proxy</artifactId>
       <version>${jetty.version}</version>
     </dependency>
     <dependency>
@@ -205,12 +200,12 @@ ga('send', 'pageview');
     </dependency>
     <dependency>
       <groupId>org.apache.lucene</groupId>
-      <artifactId>lucene-analyzers-common</artifactId>
+      <artifactId>lucene-analysis-common</artifactId>
       <version>${lucene.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.lucene</groupId>
-      <artifactId>lucene-analyzers-smartcn</artifactId>
+      <artifactId>lucene-analysis-smartcn</artifactId>
       <version>${lucene.version}</version>
     </dependency>
     <dependency>
@@ -220,8 +215,8 @@ ga('send', 'pageview');
     </dependency>
     <dependency>
       <!-- log4j is the primary logger for bigdata. -->
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
       <version>${log4j.version}</version>
       <!-- There is a bug with log4j 1.2.15 where it has a lot  -->
       <!-- of dependencies that we do not need in its POM. The  -->
@@ -249,9 +244,9 @@ ga('send', 'pageview');
       <version>${slf4j.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>${slf4j.version}</version>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+      <version>${log4j.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
@@ -279,8 +274,8 @@ ga('send', 'pageview');
       <version>${apache.commons_codec.version}</version>
     </dependency>
     <dependency>
-      <groupId>commons-fileupload</groupId>
-      <artifactId>commons-fileupload</artifactId>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-fileupload2-jakarta-servlet6</artifactId>
       <version>${apache.commons_fileupload.version}</version>
     </dependency>
     <dependency>
@@ -309,19 +304,26 @@ ga('send', 'pageview');
       <version>${jackson.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.openrdf.sesame</groupId>
-      <artifactId>sesame-runtime</artifactId>
-      <version>${sesame.version}</version>
+      <groupId>org.eclipse.rdf4j</groupId>
+      <artifactId>rdf4j-runtime</artifactId>
+      <type>pom</type>
+      <version>${rdf4j.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.eclipse.rdf4j</groupId>
+          <artifactId>rdf4j-sail-solr</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.openrdf.sesame</groupId>
-      <artifactId>sesame-rio-rdfxml</artifactId>
-      <version>${sesame.version}</version>
+      <groupId>org.eclipse.rdf4j</groupId>
+      <artifactId>rdf4j-rio-rdfxml</artifactId>
+      <version>${rdf4j.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.openrdf.sesame</groupId>
-      <artifactId>sesame-queryresultio-sparqljson</artifactId>
-      <version>${sesame.version}</version>
+      <groupId>org.eclipse.rdf4j</groupId>
+      <artifactId>rdf4j-queryresultio-sparqljson</artifactId>
+      <version>${rdf4j.version}</version>
     </dependency>
     <dependency>
       <groupId>com.tinkerpop.blueprints</groupId>
@@ -334,8 +336,8 @@ ga('send', 'pageview');
       <version>${rexster.version}</version>
       <exclusions>
         <exclusion>
-          <groupId>javax.servlet</groupId>
-          <artifactId>javax.servlet-api</artifactId>
+          <groupId>jakarta.servlet</groupId>
+          <artifactId>jakarta.servlet-api</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -356,12 +358,12 @@ ga('send', 'pageview');
     </dependency>
     <!-- jsonld -->
     <dependency>
-      <groupId>com.github.jsonld-java</groupId>
-      <artifactId>jsonld-java-sesame</artifactId>
-      <version>${jsonld.version}</version>
+      <groupId>org.eclipse.rdf4j</groupId>
+      <artifactId>rdf4j-rio-jsonld</artifactId>
+      <version>${rdf4j.version}</version>
       <exclusions>
         <exclusion>
-          <groupId>org.openrdf.sesame</groupId>
+          <groupId>org.eclipse.rdf4j</groupId>
           <artifactId>*</artifactId>
         </exclusion>
       </exclusions>
@@ -369,7 +371,7 @@ ga('send', 'pageview');
     <!-- Included for RDFa support -->
     <dependency>
       <groupId>org.semarglproject</groupId>
-      <artifactId>semargl-sesame</artifactId>
+      <artifactId>semargl-rdf4j</artifactId>
       <version>${semargl.version}</version>
     </dependency>
   </dependencies>

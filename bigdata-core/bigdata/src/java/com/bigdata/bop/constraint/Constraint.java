@@ -24,6 +24,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.bop.constraint;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.Map;
 
 import com.bigdata.bop.BOp;
@@ -44,7 +46,7 @@ public class Constraint<X> extends BOpBase implements
 	 */
 	private static final long serialVersionUID = -9144690224260823279L;
 
-//	protected static final Logger log = Logger.getLogger(Constraint.class);
+//	protected static final Logger log = LogManager.getLogger(Constraint.class);
 	
 	/**
 	 * Convenience method to generate a constraint from a value expression.

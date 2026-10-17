@@ -51,8 +51,9 @@ import java.util.concurrent.TimeoutException;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.counters.CounterSet;
 import com.bigdata.service.DataService;
 import com.bigdata.testutil.ExperimentDriver;
@@ -91,7 +92,7 @@ import com.bigdata.util.concurrent.ThreadPoolExecutorStatisticsTask;
  */
 public abstract class AbstractStressTestNonBlockingLockManager extends TestCase {
 
-    protected static final Logger log = Logger
+    protected static final Logger log = LogManager
             .getLogger(StressTestNonBlockingLockManagerWithPredeclaredLocks.class);
 
     protected static final boolean INFO = log.isInfoEnabled();

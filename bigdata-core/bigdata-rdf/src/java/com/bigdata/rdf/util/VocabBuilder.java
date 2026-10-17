@@ -40,17 +40,18 @@ import java.util.Map;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipInputStream;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.RDFParserFactory;
-import org.openrdf.rio.RDFParserRegistry;
-import org.openrdf.rio.helpers.RDFHandlerBase;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.RDFParserFactory;
+import org.eclipse.rdf4j.rio.RDFParserRegistry;
+import org.eclipse.rdf4j.rio.helpers.AbstractRDFHandler;
 
 import com.bigdata.rdf.ServiceProviderHook;
 import com.bigdata.rdf.rio.IRDFParserOptions;
@@ -69,15 +70,15 @@ import com.bigdata.rdf.vocab.VocabularyDecl;
  */
 public class VocabBuilder {
 
-	private static final Logger log = Logger.getLogger(VocabBuilder.class);
+	private static final Logger log = LogManager.getLogger(VocabBuilder.class);
 	
     private final IRDFParserOptions parserOptions;
 	
     // map reporting predicate frequency
-	private final Map<URI, UriFrequency> preds = new LinkedHashMap<URI, UriFrequency>();
+	private final Map<IRI, UriFrequency> preds = new LinkedHashMap<IRI, UriFrequency>();
 
 	// map reporting type frequency
-	private final Map<URI, UriFrequency> types = new LinkedHashMap<URI, UriFrequency>();
+	private final Map<IRI, UriFrequency> types = new LinkedHashMap<IRI, UriFrequency>();
 	
 	
 	private VocabBuilder() {
@@ -117,21 +118,21 @@ public class VocabBuilder {
         
         final String n = file.getName();
         
-        RDFFormat fmt = RDFFormat.forFileName(n);
+        RDFFormat fmt = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(n);
 
         if (fmt == null && n.endsWith(".zip")) {
-            fmt = RDFFormat.forFileName(n.substring(0, n.length() - 4));
+            fmt = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(n.substring(0, n.length() - 4));
         }
 
         if (fmt == null && n.endsWith(".gz")) {
-            fmt = RDFFormat.forFileName(n.substring(0, n.length() - 3));
+            fmt = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(n.substring(0, n.length() - 3));
         }
 
         if (fmt == null) // fallback
             fmt = rdfFormat;
 
 		final RDFParserFactory rdfParserFactory = RDFParserRegistry
-				.getInstance().get(fmt);
+				.getInstance().get(fmt).orElse(null);
 
 		if (rdfParserFactory == null) {
 
@@ -141,10 +142,10 @@ public class VocabBuilder {
 		}
 
 		final RDFParser rdfParser = rdfParserFactory.getParser();
-		rdfParser.setVerifyData(parserOptions.getVerifyData());
-		rdfParser.setStopAtFirstError(parserOptions.getStopAtFirstError());
-		rdfParser.setDatatypeHandling(parserOptions.getDatatypeHandling());
-		rdfParser.setPreserveBNodeIDs(parserOptions.getPreserveBNodeIDs());
+		com.bigdata.rdf.rio.RDFParserOptions.setVerifyData(rdfParser, parserOptions.getVerifyData());
+		
+		com.bigdata.rdf.rio.RDFParserOptions.setDatatypeHandling(rdfParser, parserOptions.getDatatypeHandling());
+		com.bigdata.rdf.rio.RDFParserOptions.setPreserveBNodeIDs(rdfParser, parserOptions.getPreserveBNodeIDs());
 
 		rdfParser.setRDFHandler(new AddStatementHandler());
 
@@ -200,7 +201,7 @@ public class VocabBuilder {
 
     }
 
-    private class AddStatementHandler extends RDFHandlerBase {
+    private class AddStatementHandler extends AbstractRDFHandler {
 
 		public AddStatementHandler() {
             
@@ -209,7 +210,7 @@ public class VocabBuilder {
         public void handleStatement(final Statement stmt)
 				throws RDFHandlerException {
 
-			final URI p = stmt.getPredicate();
+			final IRI p = stmt.getPredicate();
 
 			// A. Count number of occurrences for predicate at hand
 			UriFrequency predFrequency = preds.get(p);
@@ -231,16 +232,16 @@ public class VocabBuilder {
 				
 				final Value o = stmt.getObject();
 
-				if (o instanceof URI) {
+				if (o instanceof IRI) {
 				
-					UriFrequency typeFrequency = types.get((URI)o);
+					UriFrequency typeFrequency = types.get((IRI)o);
 	
 					if (typeFrequency == null) {
 	
-						types.put((URI)o, typeFrequency = new UriFrequency((URI)o));
+						types.put((IRI)o, typeFrequency = new UriFrequency((IRI)o));
 	
 						if (log.isDebugEnabled())
-							log.debug("New " + (URI)o + " : total=" + types.size());
+							log.debug("New " + (IRI)o + " : total=" + types.size());
 	
 					}
 					
@@ -342,13 +343,13 @@ public class VocabBuilder {
 			System.out.println("import java.util.Arrays;");
 			System.out.println("import java.util.Collections;");
 			System.out.println("import java.util.Iterator;");
-			System.out.println("import org.openrdf.model.URI;");
-			System.out.println("import org.openrdf.model.impl.URIImpl;");
+			System.out.println("import org.eclipse.rdf4j.model.IRI;");
+			System.out.println("import org.eclipse.rdf4j.model.impl.SimpleIRI;");
 			System.out.println("import com.bigdata.rdf.vocab.VocabularyDecl;");
 
 			System.out.println("public class "+className+" implements VocabularyDecl {");
 			
-			System.out.println("static private final URI[] uris = new URI[] {");
+			System.out.println("static private final IRI[] uris = new IRI[] {");
 			
 			System.out.println("// frequencies of predicates in dataset");
 			for (int i = 0; i < predsFrequencySize; i++) {
@@ -358,7 +359,7 @@ public class VocabBuilder {
 				if (predFrequency.cnt < minFreq)
 					break;
 
-				System.out.println("new URIImpl(\"" + predFrequency.uri + "\"), // rank="
+				System.out.println("org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(\"" + predFrequency.uri + "\"), // rank="
 						+ i + ", count=" + predFrequency.cnt);
 
 			}
@@ -371,7 +372,7 @@ public class VocabBuilder {
 				if (typeFrequency.cnt < minFreq)
 					break;
 
-				System.out.println("new URIImpl(\"" + typeFrequency.uri + "\"), // rank="
+				System.out.println("org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(\"" + typeFrequency.uri + "\"), // rank="
 						+ i + ", count=" + typeFrequency.cnt);
 
 			}
@@ -382,7 +383,7 @@ public class VocabBuilder {
 			System.out.println("public " + className + "() {}");
 
 			System.out
-					.println("public Iterator<URI> values() {\n"
+					.println("public Iterator<IRI> values() {\n"
 							+ "return Collections.unmodifiableList(Arrays.asList(uris)).iterator();\n"
 							+ "}");
 
@@ -401,14 +402,14 @@ public class VocabBuilder {
 		/**
 		 * The uri.
 		 */
-		final URI uri;
+		final IRI uri;
 		
 		/**
 		 * The #of instances of that predicate.
 		 */
 		int cnt;
 		
-		public UriFrequency(final URI uri) {
+		public UriFrequency(final IRI uri) {
 
 			this.uri = uri;
 			
@@ -457,10 +458,10 @@ public class VocabBuilder {
             }
 
             // if recognizable as RDF.
-            boolean isRDF = RDFFormat.forFileName(name) != null
-                    || (name.endsWith(".zip") && RDFFormat.forFileName(name
+            boolean isRDF = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(name) != null
+                    || (name.endsWith(".zip") && com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(name
                             .substring(0, name.length() - 4)) != null)
-                    || (name.endsWith(".gz") && RDFFormat.forFileName(name
+                    || (name.endsWith(".gz") && com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(name
                             .substring(0, name.length() - 3)) != null);
 
 			if (log.isDebugEnabled())

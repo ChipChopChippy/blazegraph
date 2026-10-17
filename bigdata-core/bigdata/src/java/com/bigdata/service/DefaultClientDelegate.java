@@ -3,8 +3,9 @@ package com.bigdata.service;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.counters.AbstractStatisticsCollector;
 import com.bigdata.counters.ICounterSetAccess;
 import com.bigdata.counters.httpd.CounterSetHTTPD;
@@ -20,7 +21,7 @@ import com.bigdata.util.httpd.AbstractHTTPD;
  */
 public class DefaultClientDelegate<T> implements IFederationDelegate<T> {
 
-    private static final Logger log = Logger.getLogger(DefaultClientDelegate.class);
+    private static final Logger log = LogManager.getLogger(DefaultClientDelegate.class);
     
     private final UUID uuid = UUID.randomUUID();
 

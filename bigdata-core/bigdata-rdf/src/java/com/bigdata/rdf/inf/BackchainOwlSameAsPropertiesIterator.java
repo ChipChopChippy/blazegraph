@@ -29,8 +29,9 @@ package com.bigdata.rdf.inf;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.rdf.internal.IV;
 import com.bigdata.rdf.rules.InferenceEngine;
 import com.bigdata.rdf.spo.ISPO;
@@ -64,7 +65,7 @@ public class BackchainOwlSameAsPropertiesIterator implements IChunkedOrderedIter
     private static final boolean RECORD_STACK_TRACES = false;
     
     private static final Logger log =
-            Logger.getLogger(BackchainOwlSameAsPropertiesIterator.class);
+            LogManager.getLogger(BackchainOwlSameAsPropertiesIterator.class);
 
     private boolean closed = false;
     

@@ -41,8 +41,10 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.system.SystemUtil;
 
 import com.bigdata.util.Depends;
@@ -63,7 +65,7 @@ public class Banner {
     /**
      * The logger for <em>this</em> class.
      */
-    private static final Logger log = Logger.getLogger("com.bigdata.Banner");
+    private static final Logger log = LogManager.getLogger("com.bigdata.Banner");
 
     private final static AtomicBoolean didBanner = new AtomicBoolean(false);
     
@@ -249,7 +251,7 @@ public class Banner {
 
         final Logger defaultLog = 
                 LogUtil.getLog4jLogger("com.bigdata");
-//                Logger.getLogger("com.bigdata");
+//                LogManager.getLogger("com.bigdata");
 
         if (defaultLog.getLevel() == null) {
 
@@ -258,7 +260,7 @@ public class Banner {
              */
             try {
 
-                defaultLog.setLevel(Level.WARN);
+                Configurator.setLevel(defaultLog.getName(), Level.WARN);
 
                 if (!quiet)
                     log.warn("Defaulting log level to WARN: "

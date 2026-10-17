@@ -5,21 +5,23 @@
  */
 package com.bigdata.rdf.rio.turtle;
 
-import info.aduna.text.ASCIIUtil;
+import org.eclipse.rdf4j.common.text.ASCIIUtil;
 
 import java.io.IOException;
 
-import org.openrdf.model.BNode;
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParseException;
-import org.openrdf.rio.turtle.TurtleParser;
-import org.openrdf.rio.turtle.TurtleUtil;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFParseException;
+import org.eclipse.rdf4j.rio.turtle.TurtleParser;
+import org.eclipse.rdf4j.rio.turtle.TurtleUtil;
 
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.rio.RDFParser;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 
 /**
  * RDF parser for <a href="http://www.dajobe.org/2004/01/turtle/">Turtle</a>
@@ -48,7 +50,19 @@ public class BigdataTurtleParser extends TurtleParser {
 	 * when connection is not available.
 	 */
 	public BigdataTurtleParser() {
-		super(BigdataValueFactoryImpl.getInstance(""));
+		super(BigdataSimpleValueFactory.getInstance(""));
+	}
+
+	/*
+	 * The base class replaces its value factory with a wrapper while parsing, so
+	 * the factory supplied by the caller is retained here.
+	 */
+	private ValueFactory bigdataValueFactory;
+
+	@Override
+	public RDFParser setValueFactory(final ValueFactory valueFactory) {
+		this.bigdataValueFactory = valueFactory;
+		return super.setValueFactory(valueFactory);
 	}
 	
     /**
@@ -58,7 +72,7 @@ public class BigdataTurtleParser extends TurtleParser {
     protected Value parseValue()
         throws IOException, RDFParseException
     {
-        int c = peek();
+        int c = peekCodePoint();
 
         if (c == '<') {
             // uriref, e.g. <foo://bar>
@@ -95,13 +109,13 @@ public class BigdataTurtleParser extends TurtleParser {
         throws IOException, RDFParseException
     {
         // First character should be '<'
-        int c = read();
+        int c = readCodePoint();
         verifyCharacterOrFail(c, "<");
         
-        int n = peek();
+        int n = peekCodePoint();
         if (n == '<') {
-            read();
-            if (this.valueFactory == null) {
+            readCodePoint();
+            if (bigdataValueFactory == null) {
                 reportFatalError("must use a BigdataValueFactory to use the RDR syntax");
             }
             return parseSid();
@@ -117,19 +131,18 @@ public class BigdataTurtleParser extends TurtleParser {
         Resource s = (Resource) parseValue();
         
         skipWS();
-        URI p = (URI) parseValue();
+        IRI p = (IRI) parseValue();
         
         skipWS();
         Value o = parseValue();
 
-        int i = read();
+        int i = readCodePoint();
         while (TurtleUtil.isWhitespace(i)) {
-            i = read();
+            i = readCodePoint();
         }
         
-        if (i == '>' && read() == '>') {
-            if (valueFactory == null || 
-                    valueFactory instanceof BigdataValueFactory == false) {
+        if (i == '>' && readCodePoint() == '>') {
+            if (bigdataValueFactory instanceof BigdataValueFactory == false) {
                 /*
                  * The BigdataValueFactory has an extension to create a BNode
                  * from a Statement.  You need to specify that value factory
@@ -147,7 +160,7 @@ public class BigdataTurtleParser extends TurtleParser {
             }
             
             final BigdataValueFactory valueFactory = (BigdataValueFactory)
-                    super.valueFactory;
+                    bigdataValueFactory;
             
             return valueFactory.createBNode(
                     valueFactory.createStatement(s, p, o));
@@ -170,9 +183,9 @@ public class BigdataTurtleParser extends TurtleParser {
     protected int skipWS()
         throws IOException
     {
-        int c = read();
+        int c = readCodePoint();
         while (TurtleUtil.isWhitespace(c)) {
-            c = read();
+            c = readCodePoint();
         }
 
         unread(c);
@@ -187,11 +200,11 @@ public class BigdataTurtleParser extends TurtleParser {
         throws IOException, RDFParseException
     {
         // Node ID should start with "_:"
-        verifyCharacterOrFail(read(), "_");
-        verifyCharacterOrFail(read(), ":");
+        verifyCharacterOrFail(readCodePoint(), "_");
+        verifyCharacterOrFail(readCodePoint(), ":");
 
         // Read the node ID
-        int c = read();
+        int c = readCodePoint();
         if (c == -1) {
             throwEOFException();
         }
@@ -204,7 +217,7 @@ public class BigdataTurtleParser extends TurtleParser {
         name.append((char)c);
 
         // Read all following letter and numbers, they are part of the name
-        c = read();
+        c = readCodePoint();
 
         // If we would never go into the loop we must unread now
         if (!TurtleUtil.isNameChar(c)) {
@@ -213,7 +226,7 @@ public class BigdataTurtleParser extends TurtleParser {
 
         while (TurtleUtil.isNameChar(c)) {
             int previous = c;
-            c = read();
+            c = readCodePoint();
             
             if (previous == '.' && (c == -1 || TurtleUtil.isWhitespace(c) || c == '<' || c == '_')) {
                 unread(c);

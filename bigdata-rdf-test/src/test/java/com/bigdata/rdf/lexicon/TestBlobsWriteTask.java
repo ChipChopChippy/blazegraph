@@ -29,11 +29,9 @@ package com.bigdata.rdf.lexicon;
 
 import junit.framework.TestCase2;
 
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.BNodeImpl;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
 
 import com.bigdata.btree.BTree;
 import com.bigdata.btree.IIndex;
@@ -45,7 +43,7 @@ import com.bigdata.rdf.internal.VTE;
 import com.bigdata.rdf.internal.impl.BlobIV;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 
 /**
  * Test suite for the {@link BlobsWriteTask}.
@@ -73,7 +71,7 @@ public class TestBlobsWriteTask extends TestCase2 {
         // The values that we will be testing with.
         final Value[] valuesIn = new Value[] {//
           
-                new LiteralImpl("abc") //
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc") //
                 
         };
 
@@ -86,7 +84,7 @@ public class TestBlobsWriteTask extends TestCase2 {
         // The values that we will be testing with.
         final Value[] valuesIn = new Value[] {//
           
-                new LiteralImpl("") //
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("") //
                 
         };
 
@@ -99,18 +97,18 @@ public class TestBlobsWriteTask extends TestCase2 {
         // The values that we will be testing with.
         final Value[] valuesIn = new Value[] {//
           
-                new LiteralImpl("abc"), //
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc"), //
                 RDF.TYPE,//
                 RDF.PROPERTY,//
-                new LiteralImpl("test"),//
-                new LiteralImpl("test", "en"),//
-                new LiteralImpl("10", new URIImpl("http://www.w3.org/2001/XMLSchema#int")),
-                new LiteralImpl("12", new URIImpl("http://www.w3.org/2001/XMLSchema#float")),
-                new LiteralImpl("12.", new URIImpl("http://www.w3.org/2001/XMLSchema#float")),
-                new LiteralImpl("12.0", new URIImpl("http://www.w3.org/2001/XMLSchema#float")),
-                new LiteralImpl("12.00", new URIImpl("http://www.w3.org/2001/XMLSchema#float")),
-                new BNodeImpl("a"),//
-                new BNodeImpl("12"),//
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("test"),//
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("test", "en"),//
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("10", XSD.INT),
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("12", XSD.FLOAT),
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("12.", XSD.FLOAT),
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("12.0", XSD.FLOAT),
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("12.00", XSD.FLOAT),
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createBNode("a"),//
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createBNode("12"),//
         };
 
         doAddTermsTest(valuesIn, true/* toldBNodes */);
@@ -129,18 +127,16 @@ public class TestBlobsWriteTask extends TestCase2 {
          */
         final Value[] valuesIn = new Value[] {//
           
-                new LiteralImpl("abc"), //
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc"), //
                 RDF.TYPE,//
                 RDF.PROPERTY,//
-                new LiteralImpl("test"),//
-                new LiteralImpl("test", "en"),//
-                new LiteralImpl("10", new URIImpl("http://www.w3.org/2001/XMLSchema#int")),
-                new LiteralImpl("12", new URIImpl("http://www.w3.org/2001/XMLSchema#float")),
-                new LiteralImpl("12.", new URIImpl("http://www.w3.org/2001/XMLSchema#float")),
-                new LiteralImpl("12.0", new URIImpl("http://www.w3.org/2001/XMLSchema#float")),
-                new LiteralImpl("12.00", new URIImpl("http://www.w3.org/2001/XMLSchema#float")),
-//                new BNodeImpl("a"),//
-//                new BNodeImpl("12"),//
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("test"),//
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("test", "en"),//
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("10", XSD.INT),
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("12", XSD.FLOAT),
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("12.", XSD.FLOAT),
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("12.0", XSD.FLOAT),
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("12.00", XSD.FLOAT),
         };
 
         doAddTermsTest(valuesIn, false/* toldBNodes */);
@@ -163,7 +159,7 @@ public class TestBlobsWriteTask extends TestCase2 {
         
         final BlobsIndexHelper h = new BlobsIndexHelper();
 
-        final BigdataValueFactory vf = BigdataValueFactoryImpl
+        final BigdataValueFactory vf = BigdataSimpleValueFactory
                 .getInstance(getName());
 
         final IRawStore store = new SimpleMemoryRawStore();

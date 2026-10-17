@@ -49,17 +49,18 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Graph;
-import org.openrdf.model.impl.GraphImpl;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.TupleQueryResultHandlerBase;
-import org.openrdf.query.resultio.TupleQueryResultParser;
-import org.openrdf.query.resultio.sparqlxml.SPARQLResultsXMLParserFactory;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.RDFParserRegistry;
-import org.openrdf.rio.helpers.StatementCollector;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.impl.LinkedHashModel;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.AbstractTupleQueryResultHandler;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultParser;
+import org.eclipse.rdf4j.query.resultio.sparqlxml.SPARQLResultsXMLParserFactory;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.RDFParserRegistry;
+import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 
 import com.bigdata.counters.CAT;
 import com.bigdata.journal.TemporaryStore;
@@ -79,7 +80,7 @@ import com.bigdata.rdf.store.AbstractTripleStore.Options;
  */
 public class NanoSparqlClient {
 
-	private static final Logger log = Logger.getLogger(NanoSparqlClient.class);
+	private static final Logger log = LogManager.getLogger(NanoSparqlClient.class);
 	
 	/**
 	 * A SPARQL results set in XML.
@@ -455,7 +456,7 @@ public class NanoSparqlClient {
 	                    .getParser();
 
 	            parser
-	                    .setTupleQueryResultHandler(new TupleQueryResultHandlerBase() {
+	                    .setTupleQueryResultHandler(new AbstractTupleQueryResultHandler() {
 	                        // Indicates the end of a sequence of solutions.
 	                        @Override
 	                        public void endQueryResult() {
@@ -504,23 +505,23 @@ public class NanoSparqlClient {
 	     * @throws Exception
 	     *             If anything goes wrong.
 	     */
-	    protected Graph buildGraph(final HttpURLConnection conn) throws Exception {
+	    protected Model buildGraph(final HttpURLConnection conn) throws Exception {
 
-	        final Graph g = new GraphImpl();
+	        final Model g = new LinkedHashModel();
 
 	        try {
 
 	            final String baseURI = "";
 	            
                 final RDFParser rdfParser = RDFParserRegistry.getInstance()
-                        .get(RDFFormat.RDFXML)
+                        .get(RDFFormat.RDFXML).orElseThrow()
                         .getParser();
 
-	            rdfParser.setVerifyData(true);
+	            com.bigdata.rdf.rio.RDFParserOptions.setVerifyData(rdfParser, true);
 	            
-	            rdfParser.setStopAtFirstError(true);
 	            
-	            rdfParser.setDatatypeHandling(RDFParser.DatatypeHandling.IGNORE);
+	            
+	            com.bigdata.rdf.rio.RDFParserOptions.setDatatypeHandling(rdfParser, com.bigdata.rdf.rio.DatatypeHandling.IGNORE);
 	            
 	            rdfParser.setRDFHandler(new StatementCollector(g));
 	            

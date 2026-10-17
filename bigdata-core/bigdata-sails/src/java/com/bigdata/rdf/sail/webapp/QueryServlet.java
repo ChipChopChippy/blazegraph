@@ -43,20 +43,21 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Graph;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.LinkedHashModel;
-import org.openrdf.repository.RepositoryResult;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFWriter;
-import org.openrdf.rio.RDFWriterRegistry;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.LinkedHashModel;
+import org.eclipse.rdf4j.repository.RepositoryResult;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFWriter;
+import org.eclipse.rdf4j.rio.RDFWriterRegistry;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpUtility;
@@ -110,7 +111,7 @@ public class QueryServlet extends BigdataRDFServlet {
      */
     private static final long serialVersionUID = 1L;
     
-    static private final transient Logger log = Logger.getLogger(QueryServlet.class); 
+    static private final transient Logger log = LogManager.getLogger(QueryServlet.class);
 
     /**
      * The name of the parameter/attribute that contains the SPARQL query.
@@ -375,7 +376,7 @@ public class QueryServlet extends BigdataRDFServlet {
              * TODO Resolve the SD class name and ctor via a configuration
              * property for extensible descriptions.
              */
-            final Graph g = new LinkedHashModel();
+            final Model g = new LinkedHashModel();
             {
 
                 final SD sd = new SD(g, tripleStore, serviceURI);
@@ -1421,7 +1422,7 @@ public class QueryServlet extends BigdataRDFServlet {
         
         final boolean exact = getBooleanValue(req, "exact", false/* default */);
         final Resource s;
-        final URI p;
+        final IRI p;
         final Value o;
         final Resource[] c;
         try {
@@ -1467,14 +1468,14 @@ public class QueryServlet extends BigdataRDFServlet {
 
         private final boolean exact;
         private final Resource s;
-        private final URI p;
+        private final IRI p;
         private final Value o;
         private final Resource[] c;
         
         public EstCardTask(final HttpServletRequest req,
                 final HttpServletResponse resp, final String namespace,
                 final long timestamp, final boolean exact, 
-                final Resource s, final URI p,
+                final Resource s, final IRI p,
                 final Value o, final Resource[] c) {
 
             super(req, resp, namespace, timestamp);
@@ -1556,7 +1557,7 @@ public class QueryServlet extends BigdataRDFServlet {
       final boolean includeInferred = getBooleanValue(req, INCLUDE_INFERRED,
             true/* default */);
       final Resource s;
-      final URI p;
+      final IRI p;
       final Value o;
       final Resource[] c;
       try {
@@ -1603,14 +1604,14 @@ public class QueryServlet extends BigdataRDFServlet {
 
       private final boolean includeInferred;
       private final Resource s;
-      private final URI p;
+      private final IRI p;
       private final Value o;
       private final Resource[] c;
 
       public HasStmtTask(final HttpServletRequest req,
             final HttpServletResponse resp, final String namespace,
             final long timestamp, final boolean includeInferred,
-            final Resource s, final URI p, final Value o, final Resource[] c) {
+            final Resource s, final IRI p, final Value o, final Resource[] c) {
 
          super(req, resp, namespace, timestamp);
 
@@ -1679,7 +1680,7 @@ public class QueryServlet extends BigdataRDFServlet {
       final boolean includeInferred = getBooleanValue(req, INCLUDE_INFERRED,
             true/* default */);
       final Resource s;
-      final URI p;
+      final IRI p;
       final Value o;
       final Resource[] c;
       final Enumeration<String> mimeTypes;
@@ -1726,14 +1727,14 @@ public class QueryServlet extends BigdataRDFServlet {
 	  private final Enumeration<String> mimeTypes;
 	  private final boolean includeInferred;
       private final Resource s;
-      private final URI p;
+      private final IRI p;
       private final Value o;
       private final Resource[] c;
 
       public GetStmtsTask(final HttpServletRequest req,
             final HttpServletResponse resp, final String namespace,
             final long timestamp, final boolean includeInferred,
-            final Resource s, final URI p, final Value o, final Resource[] c, Enumeration<String> mimeTypes) {
+            final Resource s, final IRI p, final Value o, final Resource[] c, Enumeration<String> mimeTypes) {
 
          super(req, resp, namespace, timestamp);
 
@@ -1768,7 +1769,7 @@ public class QueryServlet extends BigdataRDFServlet {
                 	for (String mt:mimeTypes.nextElement().split(",")) {
                 		mt = mt.trim();
 	                    RDFFormat fmt = RDFWriterRegistry.getInstance()
-	                        .getFileFormatForMIMEType(mt);
+	                        .getFileFormatForMIMEType(mt).orElse(null);
 	                    if (conn.getTripleStore().isQuads() && (mt.equals(RDFFormat.NQUADS.getDefaultMIMEType()) || mt.equals(RDFFormat.TURTLE.getDefaultMIMEType())) || !conn.getTripleStore().isQuads() && fmt != null) {
 	                        mimeType = mt;
 	                        format = fmt;
@@ -1784,14 +1785,14 @@ public class QueryServlet extends BigdataRDFServlet {
                     mimeType = RDFFormat.NTRIPLES.getDefaultMIMEType();
                 }
                 format = RDFWriterRegistry.getInstance()
-                    .getFileFormatForMIMEType(mimeType);
+                    .getFileFormatForMIMEType(mimeType).orElse(null);
             }
             resp.setContentType(mimeType);
 
             final OutputStream os = resp.getOutputStream();
 
             final RDFWriter w = RDFWriterRegistry.getInstance().get(format)
-                .getWriter(os);
+                    .orElseThrow().getWriter(os);
 
             RepositoryResult<Statement> stmts = null;
 
@@ -1867,7 +1868,7 @@ public class QueryServlet extends BigdataRDFServlet {
         
 		final boolean doRangeCount = true;
         final Resource s;
-        final URI p;
+        final IRI p;
         final Value o;
         final Resource c;
         try {
@@ -1908,14 +1909,14 @@ public class QueryServlet extends BigdataRDFServlet {
     private static class ShardsTask extends AbstractRestApiTask<Void> {
 
         private final Resource s;
-        private final URI p;
+        private final IRI p;
         private final Value o;
         private final Resource c;
         private final boolean doRangeCount;
         
         public ShardsTask(final HttpServletRequest req,
                 final HttpServletResponse resp, final String namespace,
-                final long timestamp, final Resource s, final URI p,
+                final long timestamp, final Resource s, final IRI p,
                 final Value o, final Resource c, final boolean doRangeCount) {
 
             super(req, resp, namespace, timestamp);

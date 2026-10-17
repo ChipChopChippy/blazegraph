@@ -29,15 +29,16 @@ package com.bigdata.rdf.sail.webapp.client;
 
 import junit.framework.TestCase2;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.impl.ValueFactoryImpl;
-import org.openrdf.model.vocabulary.RDF;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 /**
  * Test suite for utility class to encode and decode RDF Values for interchange
@@ -49,7 +50,7 @@ import org.openrdf.model.vocabulary.RDF;
  */
 public class TestEncodeDecodeValue extends TestCase2 {
 
-   private static final Logger log = Logger.getLogger(TestEncodeDecodeValue.class);
+   private static final Logger log = LogManager.getLogger(TestEncodeDecodeValue.class);
    
     /**
      * 
@@ -75,25 +76,25 @@ public class TestEncodeDecodeValue extends TestCase2 {
     public void test_encodeDecode_URI() {
         
         doTest("<http://www.bigdata.com>",
-                new URIImpl("http://www.bigdata.com"));
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com"));
 
         doTest("<" + RDF.TYPE.stringValue() + ">", RDF.TYPE);
 
-        doTest("<http://xmlns.com/foaf/0.1/Person>", new URIImpl(
+        doTest("<http://xmlns.com/foaf/0.1/Person>", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://xmlns.com/foaf/0.1/Person"));
         
     }
 
     public void test_encodeDecode_Literal() {
         
-        doTest("\"abc\"", new LiteralImpl("abc"));
+        doTest("\"abc\"", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc"));
 
-        doTest("\"\"", new LiteralImpl(""));
+        doTest("\"\"", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral(""));
 
-        assertEquals(new LiteralImpl("ab\"c"),
+        assertEquals(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("ab\"c"),
                 EncodeDecodeValue.decodeValue("\"ab\"c\""));
 
-        assertEquals(new LiteralImpl("ab\"c"),
+        assertEquals(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("ab\"c"),
                 EncodeDecodeValue.decodeValue("\"ab\"c\""));
 
     }
@@ -104,47 +105,55 @@ public class TestEncodeDecodeValue extends TestCase2 {
      */
     public void test_encodeDecode_Literal_singleQuotes() {
         
-        assertEquals(new LiteralImpl("abc"),
+        assertEquals(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc"),
                 EncodeDecodeValue.decodeValue("'abc'"));
 
-        assertEquals(new LiteralImpl(""),
+        assertEquals(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral(""),
                 EncodeDecodeValue.decodeValue("''"));
 
-        LiteralImpl l3 = new LiteralImpl("ab\"c");
+        Literal l3 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("ab\"c");
         Value v3 = EncodeDecodeValue.decodeValue("'ab\"c'");
         assertEquals(l3, v3);
 
-        assertEquals(new LiteralImpl("ab'c"),
+        assertEquals(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("ab'c"),
                 EncodeDecodeValue.decodeValue("'ab\'c'"));
 
-        assertEquals(new LiteralImpl("ab'c"),
+        assertEquals(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("ab'c"),
                 EncodeDecodeValue.decodeValue("'ab'c'"));
 
-        doTest("\"'ab'c'\"", new LiteralImpl("'ab'c'"));
+        doTest("\"'ab'c'\"", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("'ab'c'"));
     }
 
     public void test_encodeDecode_Literal_languageCode() {
         
-        doTest("\"abc\"@en", new LiteralImpl("abc","en"));
+        doTest("\"abc\"@en", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc","en"));
         
-        doTest("\"'ab'c'\"@en", new LiteralImpl("'ab'c'","en"));
+        doTest("\"'ab'c'\"@en", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("'ab'c'","en"));
 
-        doTest("\"\"@en", new LiteralImpl("","en"));
+        doTest("\"\"@en", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("","en"));
 
-        doTest("\"\"@", new LiteralImpl("",""));
+        try {
+            EncodeDecodeValue.decodeValue("\"\"@");
+            fail("An empty language tag must be rejected");
+        } catch (IllegalArgumentException expected) {
+            // Empty language tags are not valid RDF 1.1 language tags.
+        }
 
     }
 
     public void test_encodeDecode_Literal_datatype() {
         
-        doTest("\"abc\"^^<http://www.bigdata.com/dt1>", new LiteralImpl("abc",
-                new URIImpl("http://www.bigdata.com/dt1")));
+        doTest("\"abc\"^^<http://www.bigdata.com/dt1>", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc",
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance()
+                        .createIRI("http://www.bigdata.com/dt1")));
 
-        doTest("\"\"^^<http://www.bigdata.com/dt1>", new LiteralImpl("",
-                new URIImpl("http://www.bigdata.com/dt1")));
+        doTest("\"\"^^<http://www.bigdata.com/dt1>", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("",
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance()
+                        .createIRI("http://www.bigdata.com/dt1")));
 
-        doTest("\"'ab'c'\"^^<http://www.bigdata.com/dt1>", new LiteralImpl("'ab\'c'",
-                new URIImpl("http://www.bigdata.com/dt1")));
+        doTest("\"'ab'c'\"^^<http://www.bigdata.com/dt1>", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("'ab\'c'",
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance()
+                        .createIRI("http://www.bigdata.com/dt1")));
 
     }
 
@@ -154,7 +163,7 @@ public class TestEncodeDecodeValue extends TestCase2 {
     public void test_encodeDecode_URI_escapeCodeSequence() {
         
         doTest("<http://www.bigdata.com/<>/foo>",
-                new URIImpl("http://www.bigdata.com/<>/foo"));
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/<>/foo"));
         
          
     }
@@ -167,10 +176,10 @@ public class TestEncodeDecodeValue extends TestCase2 {
      */
     public void test_encodeDecode_Literal_escapeCodeSequence() {
         
-        doTest("\"ab\"c\"", new LiteralImpl("ab\"c"));
-        doTest("\"ab'c\"", new LiteralImpl("ab'c"));
+        doTest("\"ab\"c\"", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("ab\"c"));
+        doTest("\"ab'c\"", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("ab'c"));
                
-        doTest("\"ab&c<>\"", new LiteralImpl("ab&c<>"));
+        doTest("\"ab&c<>\"", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("ab&c<>"));
                 
     }
 
@@ -316,15 +325,15 @@ public class TestEncodeDecodeValue extends TestCase2 {
     */
    public void test_encodeDecodeContexts_quads_context_x_y_z() {
 
-      final ValueFactory vf = new ValueFactoryImpl();
-      final URI x = vf.createURI(":x");
-      final URI y = vf.createURI(":y");
-      final URI z = vf.createURI(":z");
+      final ValueFactory vf = SimpleValueFactory.getInstance();
+      final IRI x = vf.createIRI(":x");
+      final IRI y = vf.createIRI(":y");
+      final IRI z = vf.createIRI(":z");
 
       final String[] encoded = EncodeDecodeValue.encodeContexts(new Resource[] {
             x, y, z });
 
-      // Note: Encoding wraps URI with <...>
+      // Note: Encoding wraps IRI with <...>
       assertEquals(new String[] { "<:x>", "<:y>", "<:z>" }, encoded);
 
       final Resource[] decoded = EncodeDecodeValue.decodeContexts(encoded);
@@ -344,14 +353,14 @@ public class TestEncodeDecodeValue extends TestCase2 {
     */
    public void test_encodeDecodeContexts_quads_context_x_null_z() {
 
-      final ValueFactory vf = new ValueFactoryImpl();
-      final URI x = vf.createURI(":x");
-      final URI z = vf.createURI(":z");
+      final ValueFactory vf = SimpleValueFactory.getInstance();
+      final IRI x = vf.createIRI(":x");
+      final IRI z = vf.createIRI(":z");
 
       final String[] encoded = EncodeDecodeValue.encodeContexts(new Resource[] {
             x, null, z });
 
-      // Note: Encoding wraps URI with <...>
+      // Note: Encoding wraps IRI with <...>
       assertEquals(new String[] { "<:x>", null, "<:z>" }, encoded);
 
       final Resource[] decoded = EncodeDecodeValue.decodeContexts(encoded);
@@ -377,11 +386,11 @@ public class TestEncodeDecodeValue extends TestCase2 {
     */
    public void test_encodeDecodeContexts_quads_context_x_null_z_2() {
 
-      final ValueFactory vf = new ValueFactoryImpl();
-      final URI x = vf.createURI(":x");
-      final URI z = vf.createURI(":z");
+      final ValueFactory vf = SimpleValueFactory.getInstance();
+      final IRI x = vf.createIRI(":x");
+      final IRI z = vf.createIRI(":z");
 
-      // Note: Encoding wraps URI with <...>
+      // Note: Encoding wraps IRI with <...>
       final String[] encoded = new String[] { "<:x>", "", "<:z>" };
 
       final Resource[] decoded = EncodeDecodeValue.decodeContexts(encoded);

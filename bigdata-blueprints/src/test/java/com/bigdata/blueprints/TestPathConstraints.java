@@ -4,8 +4,9 @@ import java.util.Properties;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
-import org.openrdf.query.QueryLanguage;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.query.QueryLanguage;
 
 import com.bigdata.rdf.sail.BigdataSailRepositoryConnection;
 import com.bigdata.rdf.sail.BigdataSailTupleQuery;
@@ -19,7 +20,7 @@ import cutthecrap.utils.striterators.ICloseableIterator;
 public class TestPathConstraints extends TestCase {
 
     private static final transient Logger log = 
-            Logger.getLogger(TestPathConstraints.class);
+            LogManager.getLogger(TestPathConstraints.class);
     
     public void testPathLength() throws Exception {
     

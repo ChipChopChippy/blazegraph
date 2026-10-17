@@ -23,6 +23,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.rdf.internal.constraints;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -53,7 +55,7 @@ final public class RangeBOp extends ModifiableBOpBase { // implements IVariable<
 	 */
     private static final long serialVersionUID = 3368581489737593349L;
 
-//	private static final Logger log = Logger.getLogger(RangeBOp.class);
+//	private static final Logger log = LogManager.getLogger(RangeBOp.class);
 	
     public interface Annotations extends ImmutableBOp.Annotations {
 

@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package com.bigdata.rdf.internal;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.rdf.internal.impl.literal.AbstractLiteralIV;
 import com.bigdata.rdf.internal.impl.uri.URIExtensionIV;
@@ -34,10 +34,10 @@ import com.bigdata.rdf.vocab.Vocabulary;
  * This factory will create {@link URIExtensionIV}s using 
  * {@link InlineURIHandler} delegates.  Handler delegates are registered with
  * a namespace prefix that they can handle. These namespace prefixes must
- * be defined in the vocabulary so that they can be properly inlined. The URI
+ * be defined in the vocabulary so that they can be properly inlined. The IRI
  * to be inlined will then be presented to each handler for conversion.  The
- * first registered handler to convert the URI wins.  If no handler can handle
- * the URI then no inline URI iv is created.
+ * first registered handler to convert the IRI wins.  If no handler can handle
+ * the IRI then no inline IRI iv is created.
  */
 public interface IInlineURIFactory {
 
@@ -48,17 +48,17 @@ public interface IInlineURIFactory {
     void init(final Vocabulary vocab);
     
     /**
-     * Create an inline URIExtensionIV for the supplied URI.
+     * Create an inline URIExtensionIV for the supplied IRI.
      */
-    URIExtensionIV<?> createInlineURIIV(final URI uri);
+    URIExtensionIV<?> createInlineURIIV(final IRI uri);
 
     /**
-     * Inflate the localName portion of an inline URI using its storage delegate.
+     * Inflate the localName portion of an inline IRI using its storage delegate.
      * @param namespace the uris's prefix
      * @param delegate the storage delegate
      * @return the inflated localName
      */
-    String getLocalNameFromDelegate(final URI namespace,
+    String getLocalNameFromDelegate(final IRI namespace,
             final AbstractLiteralIV<BigdataLiteral, ?> delegate);
     
 }

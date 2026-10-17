@@ -42,8 +42,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.IPredicate;
 import com.bigdata.journal.AbstractTask;
 import com.bigdata.journal.ConcurrencyManager;
@@ -69,7 +70,7 @@ import com.bigdata.service.ndx.IClientIndex;
 abstract public class AbstractStepTask extends DataServiceCallable<RuleStats>
         implements IStepTask, Cloneable {
 
-    protected static final transient Logger log = Logger.getLogger(AbstractStepTask.class);
+    protected static final transient Logger log = LogManager.getLogger(AbstractStepTask.class);
 
     protected final ActionEnum action;
     protected final IJoinNexusFactory joinNexusFactory;

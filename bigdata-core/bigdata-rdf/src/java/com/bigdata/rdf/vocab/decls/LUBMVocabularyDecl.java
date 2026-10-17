@@ -31,8 +31,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.rdf.vocab.VocabularyDecl;
 
@@ -48,92 +48,92 @@ public class LUBMVocabularyDecl implements VocabularyDecl {
 
     private static final String NAMESPACE = "http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#";
     
-    static private final URI[] uris = new URI[]{
+    static private final IRI[] uris = new IRI[]{
         // namespace
-        new URIImpl(NAMESPACE),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE),//
         // classes
-        new URIImpl(NAMESPACE + "AdministrativeStaff"),//
-        new URIImpl(NAMESPACE + "Article"),//
-        new URIImpl(NAMESPACE + "AssistantProfessor"),//
-        new URIImpl(NAMESPACE + "AssociateProfessor"),//
-        new URIImpl(NAMESPACE + "Book"),//
-        new URIImpl(NAMESPACE + "Chair"),//
-        new URIImpl(NAMESPACE + "ClericalStaff"),//
-        new URIImpl(NAMESPACE + "College"),//
-        new URIImpl(NAMESPACE + "ConferencePaper"),//
-        new URIImpl(NAMESPACE + "Course"),//
-        new URIImpl(NAMESPACE + "Dean"),//
-        new URIImpl(NAMESPACE + "Department"),//
-        new URIImpl(NAMESPACE + "Director"),//
-        new URIImpl(NAMESPACE + "Employee"),//
-        new URIImpl(NAMESPACE + "Faculty"),//
-        new URIImpl(NAMESPACE + "FullProfessor"),//
-        new URIImpl(NAMESPACE + "GraduateCourse"),//
-        new URIImpl(NAMESPACE + "GraduateStudent"),//
-        new URIImpl(NAMESPACE + "Institute"),//
-        new URIImpl(NAMESPACE + "JournalArticle"),//
-        new URIImpl(NAMESPACE + "Lecturer"),//
-        new URIImpl(NAMESPACE + "Manual"),//
-        new URIImpl(NAMESPACE + "Organization"),//
-        new URIImpl(NAMESPACE + "Person"),//
-        new URIImpl(NAMESPACE + "PostDoc"),//
-        new URIImpl(NAMESPACE + "Professor"),//
-        new URIImpl(NAMESPACE + "Program"),//
-        new URIImpl(NAMESPACE + "Publication"),//
-        new URIImpl(NAMESPACE + "Research"),//
-        new URIImpl(NAMESPACE + "ResearchAssistant"),//
-        new URIImpl(NAMESPACE + "ResearchGroup"),//
-        new URIImpl(NAMESPACE + "Schedule"),//
-        new URIImpl(NAMESPACE + "Software"),//
-        new URIImpl(NAMESPACE + "Specification"),//
-        new URIImpl(NAMESPACE + "Student"),//
-        new URIImpl(NAMESPACE + "SystemsStaff"),//
-        new URIImpl(NAMESPACE + "TeachingAssistant"),//
-        new URIImpl(NAMESPACE + "TechnicalReport"),//
-        new URIImpl(NAMESPACE + "UndergraduateStudent"),//
-        new URIImpl(NAMESPACE + "University"),//
-        new URIImpl(NAMESPACE + "UnofficialPublication"),//
-        new URIImpl(NAMESPACE + "VisitingProfessor"),//
-        new URIImpl(NAMESPACE + "Work"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "AdministrativeStaff"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Article"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "AssistantProfessor"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "AssociateProfessor"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Book"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Chair"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "ClericalStaff"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "College"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "ConferencePaper"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Course"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Dean"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Department"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Director"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Employee"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Faculty"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "FullProfessor"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "GraduateCourse"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "GraduateStudent"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Institute"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "JournalArticle"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Lecturer"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Manual"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Organization"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Person"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "PostDoc"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Professor"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Program"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Publication"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Research"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "ResearchAssistant"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "ResearchGroup"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Schedule"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Software"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Specification"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Student"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "SystemsStaff"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "TeachingAssistant"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "TechnicalReport"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "UndergraduateStudent"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "University"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "UnofficialPublication"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "VisitingProfessor"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Work"),//
         // predicates
-        new URIImpl(NAMESPACE + "advisor"),//
-        new URIImpl(NAMESPACE + "affiliatedOrganizationOf"),//
-        new URIImpl(NAMESPACE + "affiliateOf"),//
-        new URIImpl(NAMESPACE + "age"),//
-        new URIImpl(NAMESPACE + "degreeFrom"),//
-        new URIImpl(NAMESPACE + "doctoralDegreeFrom"),//
-        new URIImpl(NAMESPACE + "emailAddress"),//
-        new URIImpl(NAMESPACE + "hasAlumnus"),//
-        new URIImpl(NAMESPACE + "headOf"),//
-        new URIImpl(NAMESPACE + "listedCourse"),//
-        new URIImpl(NAMESPACE + "mastersDegreeFrom"),//
-        new URIImpl(NAMESPACE + "member"),//
-        new URIImpl(NAMESPACE + "memberOf"),//
-        new URIImpl(NAMESPACE + "name"),//
-        new URIImpl(NAMESPACE + "officeNumber"),//
-        new URIImpl(NAMESPACE + "orgPublication"),//
-        new URIImpl(NAMESPACE + "publicationAuthor"),//
-        new URIImpl(NAMESPACE + "publicationDate"),//
-        new URIImpl(NAMESPACE + "publicationResearch"),//
-        new URIImpl(NAMESPACE + "researchInterest"),//
-        new URIImpl(NAMESPACE + "researchProject"),//
-        new URIImpl(NAMESPACE + "softwareDocumentation"),//
-        new URIImpl(NAMESPACE + "softwareVersion"),//
-        new URIImpl(NAMESPACE + "subOrganizationOf"),//
-        new URIImpl(NAMESPACE + "takesCourse"),//
-        new URIImpl(NAMESPACE + "teacherOf"),//
-        new URIImpl(NAMESPACE + "teachingAssistantOf"),//
-        new URIImpl(NAMESPACE + "telephone"),//
-        new URIImpl(NAMESPACE + "tenured"),//
-        new URIImpl(NAMESPACE + "title"),//
-        new URIImpl(NAMESPACE + "undergraduateDegreeFrom"),//
-        new URIImpl(NAMESPACE + "worksFor"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "advisor"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "affiliatedOrganizationOf"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "affiliateOf"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "age"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "degreeFrom"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "doctoralDegreeFrom"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "emailAddress"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "hasAlumnus"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "headOf"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "listedCourse"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "mastersDegreeFrom"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "member"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "memberOf"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "name"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "officeNumber"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "orgPublication"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "publicationAuthor"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "publicationDate"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "publicationResearch"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "researchInterest"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "researchProject"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "softwareDocumentation"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "softwareVersion"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "subOrganizationOf"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "takesCourse"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "teacherOf"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "teachingAssistantOf"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "telephone"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "tenured"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "title"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "undergraduateDegreeFrom"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "worksFor"),//
     };
 
     public LUBMVocabularyDecl() {
     }
     
-    public Iterator<URI> values() {
+    public Iterator<IRI> values() {
 
         return Collections.unmodifiableList(Arrays.asList(uris)).iterator();
         

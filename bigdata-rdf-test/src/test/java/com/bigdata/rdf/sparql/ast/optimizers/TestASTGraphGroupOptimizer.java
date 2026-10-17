@@ -27,8 +27,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sparql.ast.optimizers;
 
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.bop.BOpUtility;
 import com.bigdata.bop.Constant;
@@ -111,9 +111,9 @@ public class TestASTGraphGroupOptimizer extends
          * the verify it using equals().
          */
         final BigdataValueFactory f = store.getValueFactory();
-        final BigdataURI p = f.createURI("http://example.org/p");
-        final BigdataURI p2= f.createURI("http://example.org/p2");
-        final BigdataURI o = f.createURI("http://example.org/o");
+        final BigdataURI p = f.createIRI("http://example.org/p");
+        final BigdataURI p2= f.createIRI("http://example.org/p2");
+        final BigdataURI o = f.createIRI("http://example.org/o");
         final BigdataValue[] values = new BigdataValue[] { p, p2, o };
         store.getLexiconRelation()
                 .addTerms(values, values.length, false/* readOnly */);
@@ -210,9 +210,9 @@ public class TestASTGraphGroupOptimizer extends
         * the verify it using equals().
         */
        final BigdataValueFactory f = store.getValueFactory();
-       final BigdataURI p = f.createURI("http://example.org/p");
-       final BigdataURI p2= f.createURI("http://example.org/p2");
-       final BigdataURI o = f.createURI("http://example.org/o");
+       final BigdataURI p = f.createIRI("http://example.org/p");
+       final BigdataURI p2= f.createIRI("http://example.org/p2");
+       final BigdataURI o = f.createIRI("http://example.org/o");
        final BigdataValue[] values = new BigdataValue[] { p, p2, o };
        store.getLexiconRelation()
                .addTerms(values, values.length, false/* readOnly */);
@@ -397,8 +397,8 @@ public class TestASTGraphGroupOptimizer extends
 //         */
 //        final IBindingSet[] bsets = new IBindingSet[]{};
 //
-//        final IV bdSearchIV = TermId.mockIV(VTE.URI);
-//        bdSearchIV.setValue(store.getValueFactory().createURI(
+//        final IV bdSearchIV = TermId.mockIV(VTE.IRI);
+//        bdSearchIV.setValue(store.getValueFactory().createIRI(
 //                BD.SEARCH.toString()));
 //
 //        final IV mikeIV = TermId.mockIV(VTE.LITERAL);
@@ -505,8 +505,8 @@ public class TestASTGraphGroupOptimizer extends
 //         */
 //        final IBindingSet[] bsets = new IBindingSet[]{};
 //
-//        final IV bdSearchIV = TermId.mockIV(VTE.URI);
-//        bdSearchIV.setValue(store.getValueFactory().createURI(
+//        final IV bdSearchIV = TermId.mockIV(VTE.IRI);
+//        bdSearchIV.setValue(store.getValueFactory().createIRI(
 //                BD.SEARCH.toString()));
 //
 //        final IV mikeIV = TermId.mockIV(VTE.LITERAL);
@@ -622,8 +622,8 @@ public class TestASTGraphGroupOptimizer extends
 //         */
 //        final IBindingSet[] bsets = new IBindingSet[]{};
 //
-//        final IV bdSearchIV = TermId.mockIV(VTE.URI);
-//        bdSearchIV.setValue(store.getValueFactory().createURI(
+//        final IV bdSearchIV = TermId.mockIV(VTE.IRI);
+//        bdSearchIV.setValue(store.getValueFactory().createIRI(
 //                BD.SEARCH.toString()));
 //
 //        final IV mikeIV = TermId.mockIV(VTE.LITERAL);
@@ -740,8 +740,8 @@ public class TestASTGraphGroupOptimizer extends
 //         */
 //        final IBindingSet[] bsets = new IBindingSet[]{};
 //
-//        final IV bdSearchIV = TermId.mockIV(VTE.URI);
-//        bdSearchIV.setValue(store.getValueFactory().createURI(
+//        final IV bdSearchIV = TermId.mockIV(VTE.IRI);
+//        bdSearchIV.setValue(store.getValueFactory().createIRI(
 //                BD.SEARCH.toString()));
 //
 //        final IV mikeIV = TermId.mockIV(VTE.LITERAL);
@@ -858,8 +858,8 @@ public class TestASTGraphGroupOptimizer extends
 //         */
 //        final IBindingSet[] bsets = new IBindingSet[]{};
 //
-//        final IV bdSearchIV = TermId.mockIV(VTE.URI);
-//        bdSearchIV.setValue(store.getValueFactory().createURI(
+//        final IV bdSearchIV = TermId.mockIV(VTE.IRI);
+//        bdSearchIV.setValue(store.getValueFactory().createIRI(
 //                BD.SEARCH.toString()));
 //
 //        final IV mikeIV = TermId.mockIV(VTE.LITERAL);
@@ -868,8 +868,8 @@ public class TestASTGraphGroupOptimizer extends
 //        final IV rdfIV = TermId.mockIV(VTE.LITERAL);
 //        rdfIV.setValue(store.getValueFactory().createLiteral("rdf"));
 //
-//        final IV uriIV = TermId.mockIV(VTE.URI);
-//        uriIV.setValue(store.getValueFactory().createURI("http://example.org/foo"));
+//        final IV uriIV = TermId.mockIV(VTE.IRI);
+//        uriIV.setValue(store.getValueFactory().createIRI("http://example.org/foo"));
 //
 //        // The source AST.
 //        final QueryRoot given = new QueryRoot(QueryType.SELECT);

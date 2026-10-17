@@ -31,20 +31,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.junit.Test;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.parser.sparql.ComplexSPARQLQueryTest;
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParseException;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.parser.sparql.ComplexSPARQLQueryTest;
+import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParseException;
 
 import com.bigdata.BigdataStatics;
 import com.bigdata.bop.BOpUtility;
@@ -64,7 +65,7 @@ import com.bigdata.rdf.sparql.ast.eval.AST2BOpUtility;
  */
 public class BigdataComplexSparqlQueryTest extends ComplexSPARQLQueryTest {
 
-    static private final Logger logger = Logger
+    static private final Logger logger = LogManager
             .getLogger(BigdataComplexSparqlQueryTest.class);
 
     /**
@@ -207,7 +208,7 @@ public class BigdataComplexSparqlQueryTest extends ComplexSPARQLQueryTest {
         InputStream dataset = ComplexSPARQLQueryTest.class.getResourceAsStream(dataFile);
         try {
             conn.setAutoCommit(false);
-            conn.add(dataset, "", RDFFormat.forFileName(dataFile), contexts);
+            conn.add(dataset, "", com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(dataFile), contexts);
             conn.commit();
         }
         finally {
@@ -345,7 +346,7 @@ public class BigdataComplexSparqlQueryTest extends ComplexSPARQLQueryTest {
             count++;
             BindingSet bs = result.next();
             System.out.println(bs);
-            URI a = (URI)bs.getValue("a");
+            IRI a = (IRI)bs.getValue("a");
             assertNotNull(a);
             Value isX = bs.getValue("isX");
             Literal name = (Literal)bs.getValue("name");

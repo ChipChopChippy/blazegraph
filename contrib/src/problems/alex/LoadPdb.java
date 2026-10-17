@@ -5,22 +5,23 @@ import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryResult;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.RDFParserRegistry;
-import org.openrdf.rio.helpers.StatementCollector;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryResult;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.RDFParserRegistry;
+import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 
 import com.bigdata.rdf.model.BigdataStatement;
 import com.bigdata.rdf.sail.BigdataSail;
@@ -31,7 +32,7 @@ import com.bigdata.rdf.sail.BigdataSailRepository;
 */
 public class LoadPdb {
 
-	private static final Logger LOG = Logger.getLogger(LoadPdb.class);
+	private static final Logger LOG = LogManager.getLogger(LoadPdb.class);
 
 	public static void main(String[] args) throws Exception {
 		File file = new File("tmp-1Y26.jnl");
@@ -105,7 +106,7 @@ public class LoadPdb {
 			while (stmts.hasNext()) {
 				Statement stmt = stmts.next();
 				Resource s = stmt.getSubject();
-				URI p = stmt.getPredicate();
+				IRI p = stmt.getPredicate();
 				Value o = stmt.getObject();
 				// do something with the statement
 				LOG.info(stmt);

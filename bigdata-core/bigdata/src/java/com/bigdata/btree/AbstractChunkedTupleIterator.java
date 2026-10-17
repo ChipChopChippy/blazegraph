@@ -32,8 +32,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.keys.SuccessorUtil;
 import com.bigdata.io.ByteArrayBuffer;
 import com.bigdata.io.DataInputBuffer;
@@ -57,7 +58,7 @@ import cutthecrap.utils.striterators.IFilter;
  */
 abstract public class AbstractChunkedTupleIterator<E> implements ITupleIterator<E> {
 
-    protected static final transient Logger log = Logger
+    protected static final transient Logger log = LogManager
             .getLogger(AbstractChunkedTupleIterator.class);
 
     protected static final transient boolean INFO = log.isInfoEnabled();

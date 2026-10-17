@@ -32,12 +32,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.URIImpl;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.bop.Constant;
 import com.bigdata.bop.IBindingSet;
@@ -145,18 +146,18 @@ public class GASService extends CustomServiceFactoryBase {
         /**
          * The URL at which the {@link GASService} will respond.
          */
-        URI SERVICE_KEY = new URIImpl(NAMESPACE + "service");
+        IRI SERVICE_KEY = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "service");
         
         /**
          * Used as the subject in the GAS SERVICE invocation pattern.
          */
-        URI PROGRAM = new URIImpl(NAMESPACE + "program");
+        IRI PROGRAM = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "program");
 
         /**
          * Magic predicate identifies the fully qualified class name of the
          * {@link IGASProgram} to be executed.
          */
-        URI GAS_CLASS = new URIImpl(NAMESPACE + "gasClass");
+        IRI GAS_CLASS = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "gasClass");
 
         /**
          * The #of threads that will be used to expand the frontier in each
@@ -165,7 +166,7 @@ public class GASService extends CustomServiceFactoryBase {
          * 
          * @see #DEFAULT_NTHREADS
          */
-        URI NTHREADS = new URIImpl(NAMESPACE + "nthreads");
+        IRI NTHREADS = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "nthreads");
         
         int DEFAULT_NTHREADS = 4;
 
@@ -180,7 +181,7 @@ public class GASService extends CustomServiceFactoryBase {
          * @see TraversalDirectionEnum
          * @see IGASContext#setTraversalDirection(TraversalDirectionEnum)
          */
-        URI TRAVERSAL_DIRECTION = new URIImpl(NAMESPACE + "traversalDirection");
+        IRI TRAVERSAL_DIRECTION = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "traversalDirection");
         
         TraversalDirectionEnum DEFAULT_DIRECTED_TRAVERSAL = TraversalDirectionEnum.Forward;
         
@@ -191,7 +192,7 @@ public class GASService extends CustomServiceFactoryBase {
          * @see #DEFAULT_MAX_ITERATIONS
          * @see IGASContext#setMaxIterations(int)
          */
-        URI MAX_ITERATIONS = new URIImpl(NAMESPACE + "maxIterations");
+        IRI MAX_ITERATIONS = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "maxIterations");
         
         int DEFAULT_MAX_ITERATIONS = Integer.MAX_VALUE;
 
@@ -204,7 +205,7 @@ public class GASService extends CustomServiceFactoryBase {
          * @see #DEFAULT_MAX_ITERATIONS_AFTER_TARGETS
          * @see IGASContext#setMaxIterationsAfterTargets(int)
          */
-        URI MAX_ITERATIONS_AFTER_TARGETS = new URIImpl(NAMESPACE + "maxIterationsAfterTargets");
+        IRI MAX_ITERATIONS_AFTER_TARGETS = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "maxIterationsAfterTargets");
         
         int DEFAULT_MAX_ITERATIONS_AFTER_TARGETS = Integer.MAX_VALUE;
 
@@ -215,7 +216,7 @@ public class GASService extends CustomServiceFactoryBase {
          * @see #DEFAULT_MAX_VISITED
          * @see IGASContext#setMaxVisited(int)
          */
-        URI MAX_VISITED = new URIImpl(NAMESPACE + "maxVisited");
+        IRI MAX_VISITED = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "maxVisited");
         
         int DEFAULT_MAX_VISITED = Integer.MAX_VALUE;
 
@@ -228,9 +229,9 @@ public class GASService extends CustomServiceFactoryBase {
          * it were an unattributed graph and only mined for the connectivity
          * data (which may include a link weight).
          * 
-         * @see IGASContext#setLinkType(URI)
+         * @see IGASContext#setLinkType(IRI)
          */
-        URI LINK_TYPE = new URIImpl(NAMESPACE + "linkType");
+        IRI LINK_TYPE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "linkType");
 
         /**
          * An optional constraint on the types of the link attributes that will
@@ -238,15 +239,15 @@ public class GASService extends CustomServiceFactoryBase {
          * you want to process some specific link weight rather than the simple
          * topology of the graph.
          * 
-         * @see IGASContext#setLinkAttributeType(URI)
+         * @see IGASContext#setLinkAttributeType(IRI)
          */
-        URI LINK_ATTR_TYPE = new URIImpl(NAMESPACE + "linkAttrType");
+        IRI LINK_ATTR_TYPE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "linkAttrType");
 
         /**
          * The {@link IGASScheduler} (default is {@link #DEFAULT_SCHEDULER}).
          * Class must implement {@link IGASSchedulerImpl}.
          */
-        URI SCHEDULER_CLASS = new URIImpl(NAMESPACE + "schedulerClass");
+        IRI SCHEDULER_CLASS = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "schedulerClass");
  
         Class<? extends IGASSchedulerImpl> DEFAULT_SCHEDULER = CHMScheduler.class;
 
@@ -258,7 +259,7 @@ public class GASService extends CustomServiceFactoryBase {
          * place all vertices into the initial frontier. For such algorithms,
          * you do not need to specify {@link #IN}.
          */
-        URI IN = new URIImpl(NAMESPACE + "in");
+        IRI IN = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "in");
 
         /**
          * Magic predicate used to specify one (or more) target vertices. This
@@ -284,7 +285,7 @@ public class GASService extends CustomServiceFactoryBase {
          * vertices into the initial frontier. The algorithm will then work from
          * both points which can accelerate convergence.
          */
-        URI TARGET = new URIImpl(NAMESPACE + "target");
+        IRI TARGET = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "target");
         
         /**
          * Magic predicate used to specify a variable that will become bound to
@@ -295,36 +296,36 @@ public class GASService extends CustomServiceFactoryBase {
          * 
          * @see IGASProgram#getBinderList()
          */
-        URI OUT = new URIImpl(NAMESPACE + "out");
+        IRI OUT = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "out");
 
-        URI OUT1 = new URIImpl(NAMESPACE + "out1");
+        IRI OUT1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "out1");
 
-        URI OUT2 = new URIImpl(NAMESPACE + "out2");
+        IRI OUT2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "out2");
 
-        URI OUT3 = new URIImpl(NAMESPACE + "out3");
+        IRI OUT3 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "out3");
 
-        URI OUT4 = new URIImpl(NAMESPACE + "out4");
+        IRI OUT4 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "out4");
 
-        URI OUT5 = new URIImpl(NAMESPACE + "out5");
+        IRI OUT5 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "out5");
 
-        URI OUT6 = new URIImpl(NAMESPACE + "out6");
+        IRI OUT6 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "out6");
 
-        URI OUT7 = new URIImpl(NAMESPACE + "out7");
+        IRI OUT7 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "out7");
 
-        URI OUT8 = new URIImpl(NAMESPACE + "out8");
+        IRI OUT8 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "out8");
 
-        URI OUT9 = new URIImpl(NAMESPACE + "out9");
+        IRI OUT9 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "out9");
         
     }
 
-    static private transient final Logger log = Logger
+    static private transient final Logger log = LogManager
             .getLogger(GASService.class);
 
     /**
      * The list of all out variables.
      */
-    static private List<URI> OUT_VARS = Collections.unmodifiableList(Arrays
-            .asList(new URI[] { Options.OUT, Options.OUT1, Options.OUT2,
+    static private List<IRI> OUT_VARS = Collections.unmodifiableList(Arrays
+            .asList(new IRI[] { Options.OUT, Options.OUT1, Options.OUT2,
                     Options.OUT3, Options.OUT4, Options.OUT5, Options.OUT6,
                     Options.OUT7, Options.OUT8, Options.OUT9 }));
 
@@ -352,11 +353,11 @@ public class GASService extends CustomServiceFactoryBase {
      * Note: We can recognize anything in {@link Options#NAMESPACE}, but the
      * predicate still has to be something that we know how to interpret.
      */
-    static final Set<URI> gasUris;
+    static final Set<IRI> gasUris;
     
     static {
         
-        final Set<URI> set = new LinkedHashSet<URI>();
+        final Set<IRI> set = new LinkedHashSet<IRI>();
     
         set.add(Options.PROGRAM);
         
@@ -423,7 +424,7 @@ public class GASService extends CustomServiceFactoryBase {
         private final int maxIterations;
         private final int maxIterationsAfterTargets;
         private final int maxVisited;
-        private final URI linkType, linkAttrType;
+        private final IRI linkType, linkAttrType;
         private final Class<IGASProgram<VS, ES, ST>> gasClass;
         private final Class<IGASSchedulerImpl> schedulerClass;
         private final Value[] initialFrontier;
@@ -479,10 +480,10 @@ public class GASService extends CustomServiceFactoryBase {
                     store.getValueFactory().createLiteral(
                             Options.DEFAULT_MAX_VISITED))).intValue();
 
-            this.linkType = (URI) getOnlyArg(Options.PROGRAM,
+            this.linkType = (IRI) getOnlyArg(Options.PROGRAM,
                     Options.LINK_TYPE, null/* default */);
 
-            this.linkAttrType = (URI) getOnlyArg(Options.PROGRAM,
+            this.linkAttrType = (IRI) getOnlyArg(Options.PROGRAM,
                     Options.LINK_ATTR_TYPE, null/* default */);
 
             // GASProgram (required)
@@ -565,7 +566,7 @@ public class GASService extends CustomServiceFactoryBase {
 
                 int i = 0;
 
-                for (URI uri : OUT_VARS) {
+                for (IRI uri : OUT_VARS) {
 
                     this.outVars[i++] = getVar(Options.PROGRAM, uri);
 
@@ -588,7 +589,7 @@ public class GASService extends CustomServiceFactoryBase {
          * @return The variable -or- <code>null</code> if the specified subject
          *         and predicate do not appear.
          */
-        private IVariable<?> getVar(final URI s, final URI p) {
+        private IVariable<?> getVar(final IRI s, final IRI p) {
 
             if (s == null)
                 throw new IllegalArgumentException();
@@ -647,7 +648,7 @@ public class GASService extends CustomServiceFactoryBase {
          *         <code>null</code> if the specified subject and predicate do
          *         not appear.
          */
-        private Value[] getArg(final URI s, final URI p) {
+        private Value[] getArg(final IRI s, final IRI p) {
 
             if (s == null)
                 throw new IllegalArgumentException();
@@ -717,7 +718,7 @@ public class GASService extends CustomServiceFactoryBase {
          * @throws RuntimeException
          *             if there are multiple values.
          */
-        private Value getOnlyArg(final URI s, final URI p) {
+        private Value getOnlyArg(final IRI s, final IRI p) {
 
             final Value[] tmp = getArg(s, p);
 
@@ -749,7 +750,7 @@ public class GASService extends CustomServiceFactoryBase {
          * @throws RuntimeException
          *             if there are multiple values.
          */
-        private Value getOnlyArg(final URI s, final URI p, final Value def) {
+        private Value getOnlyArg(final IRI s, final IRI p, final Value def) {
 
             final Value tmp = getOnlyArg(s, p);
 

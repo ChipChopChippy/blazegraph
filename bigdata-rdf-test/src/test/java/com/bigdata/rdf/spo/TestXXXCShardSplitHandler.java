@@ -142,16 +142,16 @@ public class TestXXXCShardSplitHandler extends AbstractTestSegSplitter {
 
         long v = 0;
         for (int i = 0; i < s.length; i++) {
-            s[i] = factory.newTermId(VTE.URI, (int)(v = v + r.nextInt(100)));
+            s[i] = factory.newTermId(VTE.IRI, (int)(v = v + r.nextInt(100)));
         }
         for (int i = 0; i < p.length; i++) {
-            p[i] = factory.newTermId(VTE.URI, (int)(v = v + r.nextInt(100)));
+            p[i] = factory.newTermId(VTE.IRI, (int)(v = v + r.nextInt(100)));
         }
         for (int i = 0; i < o.length; i++) {
-            o[i] = factory.newTermId(VTE.URI, (int)(v = v + r.nextInt(100)));
+            o[i] = factory.newTermId(VTE.IRI, (int)(v = v + r.nextInt(100)));
         }
         for (int i = 0; i < c.length; i++) {
-            c[i] = factory.newTermId(VTE.URI, (int)(v = v + r.nextInt(100)));
+            c[i] = factory.newTermId(VTE.IRI, (int)(v = v + r.nextInt(100)));
         }
 
         final IKeyBuilder keyBuilder = KeyBuilder.newInstance();

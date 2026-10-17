@@ -49,7 +49,7 @@ import com.bigdata.rdf.internal.IVCache;
 import com.bigdata.rdf.internal.IVUtility;
 import com.bigdata.rdf.internal.impl.TermId;
 import com.bigdata.rdf.model.BigdataValue;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.model.BigdataValueSerializer;
 import com.bigdata.util.BytesUtil;
 
@@ -270,7 +270,7 @@ public class IVSolutionSetDecoder implements IBindingSetDecoder {
                  * BigdataValue objects.
                  */
                 namespace = in.readUTF2();
-                valueSer = BigdataValueFactoryImpl.getInstance(namespace)
+                valueSer = BigdataSimpleValueFactory.getInstance(namespace)
                         .getValueSerializer();
             }
             

@@ -26,8 +26,8 @@ package com.bigdata.rdf.internal.constraints;
 
 import java.util.Map;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -129,7 +129,7 @@ public class StrBeforeBOp extends IVValueExpression<IV> implements INeedsMateria
             
         }
 
-    	final String lang = arg1.getLanguage();
+    	final String lang = arg1.getLanguage().orElse(null);
     	
     	if (lang != null) {
     		
@@ -139,7 +139,7 @@ public class StrBeforeBOp extends IVValueExpression<IV> implements INeedsMateria
     		
     	}
     	
-    	final URI dt = arg1.getDatatype();
+    	final IRI dt = arg1.getDatatype();
     	
     	if (dt != null) {
     		
@@ -167,9 +167,9 @@ public class StrBeforeBOp extends IVValueExpression<IV> implements INeedsMateria
     private void checkLanguage(final Literal arg1, final Literal arg2)
     		throws SparqlTypeErrorException {
 
-    	final String lang1 = arg1.getLanguage();
+    	final String lang1 = arg1.getLanguage().orElse(null);
     	
-    	final String lang2 = arg2.getLanguage();
+    	final String lang2 = arg2.getLanguage().orElse(null);
 
     	if (lang1 == null && lang2 == null)
     		return;
@@ -189,9 +189,9 @@ public class StrBeforeBOp extends IVValueExpression<IV> implements INeedsMateria
     private void checkDatatype(final Literal arg1, final Literal arg2)
     		throws SparqlTypeErrorException {
 
-		final URI dt1 = arg1.getDatatype();
+		final IRI dt1 = arg1.getDatatype();
 
-		final URI dt2 = arg2.getDatatype();
+		final IRI dt2 = arg2.getDatatype();
 
 		if (dt1 != null && !dt1.stringValue().equals(XSD.STRING.stringValue()))
 			throw new SparqlTypeErrorException();

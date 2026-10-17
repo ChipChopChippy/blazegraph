@@ -32,8 +32,9 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
-import org.apache.log4j.Logger;
-import org.apache.lucene.search.similarities.DefaultSimilarity;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.lucene.util.SmallFloat;
 
 import com.bigdata.btree.DefaultTupleSerializer;
 import com.bigdata.btree.ITuple;
@@ -72,7 +73,7 @@ import com.bigdata.util.BytesUtil;
 public class RDFFullTextIndexTupleSerializer extends
         DefaultTupleSerializer<ITermDocKey, ITermDocVal> {
 
-    final private static transient Logger log = Logger
+    final private static transient Logger log = LogManager
             .getLogger(RDFFullTextIndexTupleSerializer.class);
 
 //    private boolean doublePrecision;
@@ -136,13 +137,8 @@ public class RDFFullTextIndexTupleSerializer extends
         
         final double termWeight = entry.getLocalTermWeight();
         
-        /*
-         * See: http://lucene.apache.org/core/old_versioned_docs/versions/3_0_2/api/all/org/apache/lucene/search/Similarity.html
-         * 
-         * For more information on the round-trip of normalized term weight.
-         */
-        final DefaultSimilarity similarity = new DefaultSimilarity(); 
-        final long termWeightCompact = similarity.encodeNormValue((float) termWeight);
+        // Preserve the legacy 3-1-5 norm byte encoding in index keys.
+        final long termWeightCompact = SmallFloat.floatToByte315((float) termWeight) & 0xFFL;
         
         final IV docId = (IV)entry.getDocId();
 
@@ -252,15 +248,7 @@ public class RDFFullTextIndexTupleSerializer extends
         
         final byte termWeightCompact = kbuf.getByte(termWeightOffset);
         
-        /*
-         * See: http://lucene.apache.org/core/old_versioned_docs/versions/3_0_2/api/all/org/apache/lucene/search/Similarity.html
-         * 
-         * For more information on the round-trip of normalized term weight.
-         */
-        
-        final DefaultSimilarity similarity = new DefaultSimilarity(); 
-
-        final double termWeight = similarity.decodeNormValue(termWeightCompact);
+        final double termWeight = SmallFloat.byte315ToFloat((byte) termWeightCompact);
 
         if (keyOnly) {
 

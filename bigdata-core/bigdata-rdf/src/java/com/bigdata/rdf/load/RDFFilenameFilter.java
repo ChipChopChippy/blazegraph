@@ -4,8 +4,9 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.Serializable;
 
-import org.apache.log4j.Logger;
-import org.openrdf.rio.RDFFormat;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.rio.RDFFormat;
 
 import com.bigdata.rdf.ServiceProviderHook;
 
@@ -20,7 +21,7 @@ import com.bigdata.rdf.ServiceProviderHook;
  */
 public class RDFFilenameFilter implements FilenameFilter, Serializable {
 
-    final protected transient static Logger log = Logger
+    final protected transient static Logger log = LogManager
             .getLogger(RDFFilenameFilter.class);
 
     /**
@@ -58,14 +59,14 @@ public class RDFFilenameFilter implements FilenameFilter, Serializable {
 
         }
 
-        if (RDFFormat.forFileName(name) != null) {
+        if (com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(name) != null) {
             // recognizable as RDF.
             return true;
         }
         
         if (name.endsWith(".gz")) {
             final String s = name.substring(0, name.length() - 3);
-            if (RDFFormat.forFileName(s) != null) {
+            if (com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(s) != null) {
                 // recognizable as gzip'd RDF.
                 return true;
             }
@@ -73,7 +74,7 @@ public class RDFFilenameFilter implements FilenameFilter, Serializable {
         
         if (name.endsWith(".zip")) {
             final String s = name.substring(0, name.length() - 4);
-            if (RDFFormat.forFileName(s) != null) {
+            if (com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(s) != null) {
                 // recognizable as gzip'd RDF.
                 return true;
             }

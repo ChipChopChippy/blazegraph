@@ -31,8 +31,9 @@ import java.util.Enumeration;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 /**
  * This class provides set of utilities for encoding and decoding HTTP
  * headers and doubles as the base class for all classes that
@@ -49,7 +50,7 @@ public class HTTPHeaderUtility
      * this class.  It should be used by all derived classes.
      */
 
-    protected static final Logger log = Logger.getLogger
+    protected static final Logger log = LogManager.getLogger
 	( HTTPHeaderUtility.class
 	  );
 
@@ -471,7 +472,7 @@ TEXT = <any OCTET except CTLs, but including LWS>
      * order in which the header values were specified.
      *
      * @param values E.g., as returned by {@link
-     * javax.servlet.http#getHeaders( String name )}.
+     * jakarta.servlet.http#getHeaders( String name )}.
      *
      * @param defaultValue IFF <i>enum</i> is an empty enumeration,
      * then this value is returned to the caller.

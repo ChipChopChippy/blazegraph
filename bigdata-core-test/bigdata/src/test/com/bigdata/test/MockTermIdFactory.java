@@ -77,7 +77,7 @@ public class MockTermIdFactory {
         final VTE vte;
         switch (r.nextInt(3)) {
         case 0:
-            vte = VTE.URI;
+            vte = VTE.IRI;
             break;
         case 1:
             vte = VTE.BNODE;
@@ -104,7 +104,7 @@ public class MockTermIdFactory {
         final VTE vte;
         switch (r.nextInt(2)) {
         case 0:
-            vte = VTE.URI;
+            vte = VTE.IRI;
             break;
         case 1:
             vte = VTE.BNODE;

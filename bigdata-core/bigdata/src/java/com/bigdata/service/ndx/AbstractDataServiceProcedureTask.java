@@ -4,9 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.proc.IIndexProcedure;
 import com.bigdata.btree.proc.IKeyArrayIndexProcedure;
 import com.bigdata.btree.proc.IResultHandler;
@@ -48,14 +49,13 @@ abstract class AbstractDataServiceProcedureTask implements Callable<Void> {
      * Note: Invocations of the non-batch API are logged at the WARN level since
      * they result in an application that can not scale-out efficiently.
      */
-    protected static final transient Logger log = Logger
+    protected static final transient Logger log = LogManager
             .getLogger(AbstractDataServiceProcedureTask.class);
 
     /**
      * True iff the {@link #log} level is WARN or less.
      */
-    final protected boolean WARN = log.getEffectiveLevel().toInt() <= Level.WARN
-            .toInt();
+    final protected boolean WARN = log.isEnabled(Level.WARN);
 
     protected final IScaleOutClientIndex ndx;
 

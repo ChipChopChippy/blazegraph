@@ -30,8 +30,8 @@ package com.bigdata.rdf.internal.impl;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.btree.keys.IKeyBuilder;
 import com.bigdata.btree.keys.KeyBuilder;
@@ -490,7 +490,7 @@ public abstract class AbstractIV<V extends BigdataValue, T>
     @Override
     final public boolean isURI() {
 
-        return (flags & VTE_MASK) >>> VTE_SHIFT == VTE.URI.v();
+        return (flags & VTE_MASK) >>> VTE_SHIFT == VTE.IRI.v();
 
     }
     
@@ -887,9 +887,9 @@ public abstract class AbstractIV<V extends BigdataValue, T>
                 // append the term code.
                 keyBuilder.append((byte) iv.getTermCode());
                 // handle language code or datatype URI.
-                if (iv.getLanguage() != null) {
+                if (iv.getLanguage().isPresent()) {
                     // language code
-                    keyBuilder.append(IVUnicode.encode1(iv.getLanguage()));
+                    keyBuilder.append(IVUnicode.encode1(iv.getLanguage().get()));
                 } else if (iv.getDatatype() != null) {
                     // datatype URI
                     keyBuilder.append(IVUnicode.encode1(iv.getDatatype()

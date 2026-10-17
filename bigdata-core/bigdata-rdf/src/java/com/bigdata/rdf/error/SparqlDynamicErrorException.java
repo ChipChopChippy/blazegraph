@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.error;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.util.NV;
 
@@ -132,7 +132,7 @@ public class SparqlDynamicErrorException extends W3CQueryLanguageException {
      * @param params
      *            Additional parameters for the error message (optional and may
      *            be <code>null</code>). When non-<code>null</code> and
-     *            non-empty, the parameters are appended to the constructed URI
+     *            non-empty, the parameters are appended to the constructed IRI
      *            as query parameters.
      */
     protected SparqlDynamicErrorException(final int errorCode,
@@ -157,7 +157,7 @@ public class SparqlDynamicErrorException extends W3CQueryLanguageException {
 
         private static final long serialVersionUID = 1L;
 
-        public GraphExistsException(final URI graphUri) {
+        public GraphExistsException(final IRI graphUri) {
 
             super(0001/* errorCode */, SPARQL_DYNAMIC_ERROR_0001,
                     new NV[] { new NV("uri", graphUri.stringValue()) });
@@ -174,7 +174,7 @@ public class SparqlDynamicErrorException extends W3CQueryLanguageException {
 
         private static final long serialVersionUID = 1L;
 
-        public GraphEmptyException(final URI graphUri) {
+        public GraphEmptyException(final IRI graphUri) {
 
             super(0002/* errorCode */, SPARQL_DYNAMIC_ERROR_0002,
                     new NV[] { new NV("uri", graphUri.stringValue()) });

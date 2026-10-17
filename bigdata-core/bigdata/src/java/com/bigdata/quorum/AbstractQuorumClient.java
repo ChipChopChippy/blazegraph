@@ -31,8 +31,9 @@ import java.rmi.Remote;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 /**
  * Base class for {@link QuorumClient}s.
  * 
@@ -42,7 +43,7 @@ import org.apache.log4j.Logger;
 abstract public class AbstractQuorumClient<S extends Remote> implements
         QuorumClient<S> {
 
-    static protected final transient Logger log = Logger
+    static protected final transient Logger log = LogManager
             .getLogger(AbstractQuorumClient.class);
 
     private final AtomicReference<Quorum<?, ?>> quorum = new AtomicReference<Quorum<?, ?>>();

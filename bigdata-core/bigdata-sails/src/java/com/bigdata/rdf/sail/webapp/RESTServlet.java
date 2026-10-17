@@ -25,14 +25,15 @@ package com.bigdata.rdf.sail.webapp;
 import java.io.IOException;
 import java.util.Collections;
 
-import javax.servlet.Servlet;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.Servlet;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.rdf.sail.webapp.client.MiniMime;
 
@@ -43,7 +44,7 @@ import com.bigdata.rdf.sail.webapp.client.MiniMime;
  */
 public class RESTServlet extends BigdataRDFServlet {
 
-    private static final transient Logger log = Logger
+    private static final transient Logger log = LogManager
             .getLogger(RESTServlet.class);
 
     static {
@@ -199,7 +200,7 @@ public class RESTServlet extends BigdataRDFServlet {
 
         if (pathInfo != null && !pathInfo.endsWith("/sparql")) {
 
-            final URI uri = new URIImpl(req.getRequestURL().toString());
+            final IRI uri = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(req.getRequestURL().toString());
 
             if (m_describeServlet != null) {
 

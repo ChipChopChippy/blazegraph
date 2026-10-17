@@ -41,8 +41,9 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.AbstractBTree;
 import com.bigdata.btree.BaseIndexStats;
 import com.bigdata.btree.DumpIndex;
@@ -80,7 +81,7 @@ import com.bigdata.util.InnerCause;
  */
 public class DumpJournal {
 
-    private static final Logger log = Logger.getLogger(DumpJournal.class);
+    private static final Logger log = LogManager.getLogger(DumpJournal.class);
 
     /**
      * Dump out the Global Row Store.

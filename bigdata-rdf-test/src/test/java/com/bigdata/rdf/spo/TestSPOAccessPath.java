@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.spo;
 
-import org.openrdf.model.Statement;
+import org.eclipse.rdf4j.model.Statement;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.Constant;
@@ -104,11 +104,11 @@ public class TestSPOAccessPath extends AbstractTripleStoreTestCase {
         final AbstractTripleStore store = getStore();
 
         // constants used for s,p,o,c when bound. 0L used when unbound.
-        final IV<?,?> S = factory.newTermId(VTE.URI, 1);
-        final IV<?,?> P = factory.newTermId(VTE.URI, 2);
-        final IV<?,?> O = factory.newTermId(VTE.URI, 3);
-        final IV<?,?> C = factory.newTermId(VTE.URI, 4);
-        final IV<?,?> _ = factory.newTermId(VTE.URI, 0);
+        final IV<?,?> S = factory.newTermId(VTE.IRI, 1);
+        final IV<?,?> P = factory.newTermId(VTE.IRI, 2);
+        final IV<?,?> O = factory.newTermId(VTE.IRI, 3);
+        final IV<?,?> C = factory.newTermId(VTE.IRI, 4);
+        final IV<?,?> unbound = factory.newTermId(VTE.IRI, 0);
 
         try {
 
@@ -126,32 +126,32 @@ public class TestSPOAccessPath extends AbstractTripleStoreTestCase {
                  */
 
                 // SPOC
-                assertEquals(SPOKeyOrder.SPOC, r.getAccessPath(_, _, _, _).getKeyOrder());
-                assertEquals(SPOKeyOrder.SPOC, r.getAccessPath(S, _, _, _).getKeyOrder());
-                assertEquals(SPOKeyOrder.SPOC, r.getAccessPath(S, P, _, _).getKeyOrder());
-                assertEquals(SPOKeyOrder.SPOC, r.getAccessPath(S, P, O, _).getKeyOrder());
+                assertEquals(SPOKeyOrder.SPOC, r.getAccessPath(unbound, unbound, unbound, unbound).getKeyOrder());
+                assertEquals(SPOKeyOrder.SPOC, r.getAccessPath(S, unbound, unbound, unbound).getKeyOrder());
+                assertEquals(SPOKeyOrder.SPOC, r.getAccessPath(S, P, unbound, unbound).getKeyOrder());
+                assertEquals(SPOKeyOrder.SPOC, r.getAccessPath(S, P, O, unbound).getKeyOrder());
                 assertEquals(SPOKeyOrder.SPOC, r.getAccessPath(S, P, O, C).getKeyOrder());
                 
                 // POCS
-                assertEquals(SPOKeyOrder.POCS, r.getAccessPath(_, P, _, _).getKeyOrder());
-                assertEquals(SPOKeyOrder.POCS, r.getAccessPath(_, P, O, _).getKeyOrder());
-                assertEquals(SPOKeyOrder.POCS, r.getAccessPath(_, P, O, C).getKeyOrder());
+                assertEquals(SPOKeyOrder.POCS, r.getAccessPath(unbound, P, unbound, unbound).getKeyOrder());
+                assertEquals(SPOKeyOrder.POCS, r.getAccessPath(unbound, P, O, unbound).getKeyOrder());
+                assertEquals(SPOKeyOrder.POCS, r.getAccessPath(unbound, P, O, C).getKeyOrder());
                 
                 // OCSP
-                assertEquals(SPOKeyOrder.OCSP, r.getAccessPath(_, _, O, _).getKeyOrder());
-                assertEquals(SPOKeyOrder.OCSP, r.getAccessPath(_, _, O, C).getKeyOrder());
-                assertEquals(SPOKeyOrder.OCSP, r.getAccessPath(S, _, O, C).getKeyOrder());
+                assertEquals(SPOKeyOrder.OCSP, r.getAccessPath(unbound, unbound, O, unbound).getKeyOrder());
+                assertEquals(SPOKeyOrder.OCSP, r.getAccessPath(unbound, unbound, O, C).getKeyOrder());
+                assertEquals(SPOKeyOrder.OCSP, r.getAccessPath(S, unbound, O, C).getKeyOrder());
                 
                 // CSPO
-                assertEquals(SPOKeyOrder.CSPO, r.getAccessPath(_, _, _, C).getKeyOrder());
-                assertEquals(SPOKeyOrder.CSPO, r.getAccessPath(S, _, _, C).getKeyOrder());
-                assertEquals(SPOKeyOrder.CSPO, r.getAccessPath(S, P, _, C).getKeyOrder());
+                assertEquals(SPOKeyOrder.CSPO, r.getAccessPath(unbound, unbound, unbound, C).getKeyOrder());
+                assertEquals(SPOKeyOrder.CSPO, r.getAccessPath(S, unbound, unbound, C).getKeyOrder());
+                assertEquals(SPOKeyOrder.CSPO, r.getAccessPath(S, P, unbound, C).getKeyOrder());
                 
                 // PCSO
-                assertEquals(SPOKeyOrder.PCSO, r.getAccessPath(_, P, _, C).getKeyOrder());
+                assertEquals(SPOKeyOrder.PCSO, r.getAccessPath(unbound, P, unbound, C).getKeyOrder());
 
                 // SOPC
-                assertEquals(SPOKeyOrder.SOPC, r.getAccessPath(S, _, O, _).getKeyOrder());
+                assertEquals(SPOKeyOrder.SOPC, r.getAccessPath(S, unbound, O, unbound).getKeyOrder());
 
             } else {
                 
@@ -206,12 +206,12 @@ public class TestSPOAccessPath extends AbstractTripleStoreTestCase {
 
             final BigdataValueFactory f = store.getValueFactory();
             
-            final BigdataURI s1 = f.createURI("http://www.bigdata.com/rdf#s1");
-            final BigdataURI s2 = f.createURI("http://www.bigdata.com/rdf#s2");
-            final BigdataURI p1 = f.createURI("http://www.bigdata.com/rdf#p1");
-            final BigdataURI o1 = f.createURI("http://www.bigdata.com/rdf#o1");
-            final BigdataURI p2 = f.createURI("http://www.bigdata.com/rdf#p2");
-            final BigdataURI o2 = f.createURI("http://www.bigdata.com/rdf#o2");
+            final BigdataURI s1 = f.createIRI("http://www.bigdata.com/rdf#s1");
+            final BigdataURI s2 = f.createIRI("http://www.bigdata.com/rdf#s2");
+            final BigdataURI p1 = f.createIRI("http://www.bigdata.com/rdf#p1");
+            final BigdataURI o1 = f.createIRI("http://www.bigdata.com/rdf#o1");
+            final BigdataURI p2 = f.createIRI("http://www.bigdata.com/rdf#p2");
+            final BigdataURI o2 = f.createIRI("http://www.bigdata.com/rdf#o2");
 
             {
 
@@ -313,13 +313,13 @@ public class TestSPOAccessPath extends AbstractTripleStoreTestCase {
             
             final BigdataValueFactory f = store.getValueFactory();
             
-            final BigdataURI graphA = f.createURI("http://www.bigdata.com/graphA");
-            final BigdataURI graphB = f.createURI("http://www.bigdata.com/graphB");
-            final BigdataURI s = f.createURI("http://www.bigdata.com/rdf#s");
-            final BigdataURI p1 = f.createURI("http://www.bigdata.com/rdf#p1");
-            final BigdataURI o1 = f.createURI("http://www.bigdata.com/rdf#o1");
-            final BigdataURI p2 = f.createURI("http://www.bigdata.com/rdf#p2");
-            final BigdataURI o2 = f.createURI("http://www.bigdata.com/rdf#o2");
+            final BigdataURI graphA = f.createIRI("http://www.bigdata.com/graphA");
+            final BigdataURI graphB = f.createIRI("http://www.bigdata.com/graphB");
+            final BigdataURI s = f.createIRI("http://www.bigdata.com/rdf#s");
+            final BigdataURI p1 = f.createIRI("http://www.bigdata.com/rdf#p1");
+            final BigdataURI o1 = f.createIRI("http://www.bigdata.com/rdf#o1");
+            final BigdataURI p2 = f.createIRI("http://www.bigdata.com/rdf#p2");
+            final BigdataURI o2 = f.createIRI("http://www.bigdata.com/rdf#o2");
 
             {
 

@@ -91,7 +91,7 @@ export JAVA_OPTS="-server -ea \
     -showversion \
     -Dcom.sun.jini.jeri.tcp.useNIO=@USE_NIO@ \
     -Djava.security.policy=${BIGDATA_POLICY} \
-    -Dlog4j.configuration=${BIGDATA_LOG4J_CONFIG} \
+    -Dlog4j2.configurationFile=${BIGDATA_LOG4J_CONFIG} \
     -Djava.util.logging.config.file=${BIGDATA_LOGGING_CONFIG} \
     -Dcom.bigdata.counters.linux.sysstat.path=${SYSSTAT_HOME} \
 "
@@ -127,7 +127,7 @@ export configDir=@CONFIG_DIR@
 # makes it easy to aggregate log messages from all services in a cluster
 # onto a single host.
 #
-# Note: The log4j.configuration property is a URL.  If you are identifying
+# Note: The log4j2.configurationFile property is a URL. If you are identifying
 # a file resource use "file:" in front of the filename!
 # 
 # Note: The value is quoted since it may have a leading file: or httpd:

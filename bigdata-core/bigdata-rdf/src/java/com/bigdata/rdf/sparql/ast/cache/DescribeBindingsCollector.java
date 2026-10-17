@@ -26,14 +26,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package com.bigdata.rdf.sparql.ast.cache;
 
-import info.aduna.iteration.CloseableIteration;
+import org.eclipse.rdf4j.common.iteration.CloseableIteration;
 
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.openrdf.query.Binding;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryEvaluationException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.query.Binding;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
 
 import com.bigdata.bop.IVariable;
 import com.bigdata.rdf.model.BigdataValue;
@@ -44,14 +45,14 @@ import com.bigdata.rdf.model.BigdataValue;
  * @author <a href="mailto:thompsonbry@users.sourceforge.net">Bryan Thompson</a>
  */
 public class DescribeBindingsCollector implements
-        CloseableIteration<BindingSet, QueryEvaluationException> {
+        CloseableIteration<BindingSet> {
 
-    private static final transient Logger log = Logger
+    private static final transient Logger log = LogManager
             .getLogger(DescribeBindingsCollector.class);
     
     private final IVariable<?>[] originalVars;
     private final Set<BigdataValue> describedResources;
-    private final CloseableIteration<BindingSet, QueryEvaluationException> src;
+    private final CloseableIteration<BindingSet> src;
     private boolean open = true;
 
     /**
@@ -67,7 +68,7 @@ public class DescribeBindingsCollector implements
      */
     public DescribeBindingsCollector(final Set<IVariable<?>> originalVars,
             final Set<BigdataValue> describedResources,
-            final CloseableIteration<BindingSet, QueryEvaluationException> src) {
+            final CloseableIteration<BindingSet> src) {
 
         if (originalVars == null)
             throw new IllegalArgumentException();

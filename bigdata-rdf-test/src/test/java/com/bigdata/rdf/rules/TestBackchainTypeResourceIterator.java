@@ -28,8 +28,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 package com.bigdata.rdf.rules;
 
 import java.util.Properties;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.inf.BackchainTypeResourceIterator;
 import com.bigdata.rdf.internal.IV;
@@ -94,9 +94,9 @@ public class TestBackchainTypeResourceIterator extends AbstractRuleTestCase {
 
             final BigdataValueFactory f = store.getValueFactory();
             
-            final BigdataURI A = f.createURI("http://www.foo.org/A");
-            final BigdataURI B = f.createURI("http://www.foo.org/B");
-            final BigdataURI C = f.createURI("http://www.foo.org/C");
+            final BigdataURI A = f.createIRI("http://www.foo.org/A");
+            final BigdataURI B = f.createIRI("http://www.foo.org/B");
+            final BigdataURI C = f.createIRI("http://www.foo.org/C");
 
             /*
              * add statements to the store.
@@ -181,9 +181,9 @@ public class TestBackchainTypeResourceIterator extends AbstractRuleTestCase {
 
             final BigdataValueFactory f = store.getValueFactory();
             
-            final BigdataURI A = f.createURI("http://www.foo.org/A");
-            final BigdataURI B = f.createURI("http://www.foo.org/B");
-            final BigdataURI C = f.createURI("http://www.foo.org/C");
+            final BigdataURI A = f.createIRI("http://www.foo.org/A");
+            final BigdataURI B = f.createIRI("http://www.foo.org/B");
+            final BigdataURI C = f.createIRI("http://www.foo.org/C");
 
             /*
              * add statements to the store.
@@ -270,9 +270,9 @@ public class TestBackchainTypeResourceIterator extends AbstractRuleTestCase {
 
             final BigdataValueFactory f = store.getValueFactory();
             
-            final BigdataURI A = f.createURI("http://www.foo.org/A");
-            final BigdataURI B = f.createURI("http://www.foo.org/B");
-            final BigdataURI C = f.createURI("http://www.foo.org/C");
+            final BigdataURI A = f.createIRI("http://www.foo.org/A");
+            final BigdataURI B = f.createIRI("http://www.foo.org/B");
+            final BigdataURI C = f.createIRI("http://www.foo.org/C");
 
             /*
              * add statements to the store.
@@ -382,9 +382,9 @@ public class TestBackchainTypeResourceIterator extends AbstractRuleTestCase {
 
             final BigdataValueFactory f = store.getValueFactory();
             
-            final BigdataURI A = f.createURI("http://www.foo.org/A");
-            final BigdataURI B = f.createURI("http://www.foo.org/B");
-            final BigdataURI C = f.createURI("http://www.foo.org/C");
+            final BigdataURI A = f.createIRI("http://www.foo.org/A");
+            final BigdataURI B = f.createIRI("http://www.foo.org/B");
+            final BigdataURI C = f.createIRI("http://www.foo.org/C");
 
             /*
              * add statements to the store.
@@ -466,9 +466,9 @@ public class TestBackchainTypeResourceIterator extends AbstractRuleTestCase {
             
             final BigdataValueFactory f = store.getValueFactory();
             
-            final BigdataURI S = f.createURI("http://www.bigdata.com/s");
-            final BigdataURI P = f.createURI("http://www.bigdata.com/p");
-            final BigdataURI O = f.createURI("http://www.bigdata.com/o");
+            final BigdataURI S = f.createIRI("http://www.bigdata.com/s");
+            final BigdataURI P = f.createIRI("http://www.bigdata.com/p");
+            final BigdataURI O = f.createIRI("http://www.bigdata.com/o");
             
             final IV s = store.addTerm(S);
             final IV p = store.addTerm(P);

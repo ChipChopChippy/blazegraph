@@ -35,9 +35,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.bop.Constant;
 import com.bigdata.bop.IBindingSet;
@@ -101,13 +102,13 @@ import cutthecrap.utils.striterators.ICloseableIterator;
  */
 public class SliceServiceFactory extends AbstractServiceFactory {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(SliceServiceFactory.class);
 
     /**
-     * The URI service key.
+     * The IRI service key.
      */
-    public static final URI SERVICE_KEY = new URIImpl(BD.NAMESPACE+"slice");
+    public static final IRI SERVICE_KEY = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE+"slice");
     
     /**
      * The service params for this service.
@@ -117,7 +118,7 @@ public class SliceServiceFactory extends AbstractServiceFactory {
     	/**
     	 * The offset into the range.
     	 */
-    	URI OFFSET = new URIImpl(SERVICE_KEY.stringValue() + ".offset");
+    	IRI OFFSET = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SERVICE_KEY.stringValue() + ".offset");
     	
     	/**
     	 * Default = 0.
@@ -127,7 +128,7 @@ public class SliceServiceFactory extends AbstractServiceFactory {
     	/**
     	 * The limit on the slice.
     	 */
-    	URI LIMIT = new URIImpl(SERVICE_KEY.stringValue() + ".limit");
+    	IRI LIMIT = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SERVICE_KEY.stringValue() + ".limit");
     	
     	/**
     	 * Default = 1000.
@@ -138,7 +139,7 @@ public class SliceServiceFactory extends AbstractServiceFactory {
     	 * A range request - object will be the variable to bind to the range
     	 * count.
     	 */
-    	URI RANGE = new URIImpl(SERVICE_KEY.stringValue() + ".range");
+    	IRI RANGE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SERVICE_KEY.stringValue() + ".range");
     	
     }
     
@@ -219,11 +220,11 @@ public class SliceServiceFactory extends AbstractServiceFactory {
             final GroupNodeBase<IGroupMemberNode> group,
             final ServiceParams params) {
 
-    	final Iterator<Map.Entry<URI, List<TermNode>>> it = params.iterator();
+    	final Iterator<Map.Entry<IRI, List<TermNode>>> it = params.iterator();
     	
     	while (it.hasNext()) {
     	
-    		final URI param = it.next().getKey();
+    		final IRI param = it.next().getKey();
     		
     		if (SliceParams.OFFSET.equals(param)) {
     			

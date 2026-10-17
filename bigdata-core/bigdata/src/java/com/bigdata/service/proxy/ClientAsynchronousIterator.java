@@ -39,8 +39,9 @@ import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.relation.accesspath.BlockingBuffer;
 import com.bigdata.relation.accesspath.BufferClosedException;
 import com.bigdata.relation.accesspath.IAsynchronousIterator;
@@ -87,7 +88,7 @@ public class ClientAsynchronousIterator<E> implements IAsynchronousIterator<E>,
      */
     private static final long serialVersionUID = -6809878299983373766L;
 
-    protected transient static final Logger log = Logger
+    protected transient static final Logger log = LogManager
             .getLogger(ClientAsynchronousIterator.class);
     
     protected transient static final boolean INFO = log.isInfoEnabled();

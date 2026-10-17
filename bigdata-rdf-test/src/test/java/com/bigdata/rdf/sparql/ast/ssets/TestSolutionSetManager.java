@@ -57,7 +57,7 @@ import com.bigdata.rdf.internal.impl.literal.XSDIntegerIV;
 import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.sparql.ast.cache.CacheConnectionImpl;
 import com.bigdata.rdf.sparql.ast.eval.IEvaluationContext;
 import com.bigdata.striterator.CloseableIteratorWrapper;
@@ -99,7 +99,7 @@ public class TestSolutionSetManager extends TestCase2 {
     /**
      * The value factory for that namespace.
      */
-    protected BigdataValueFactory valueFactory = BigdataValueFactoryImpl
+    protected BigdataValueFactory valueFactory = BigdataSimpleValueFactory
             .getInstance(namespace);
 
     /**

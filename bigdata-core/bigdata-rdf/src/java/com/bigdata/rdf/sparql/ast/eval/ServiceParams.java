@@ -30,10 +30,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.bop.IVariable;
 import com.bigdata.rdf.internal.IV;
@@ -64,24 +65,24 @@ import com.bigdata.rdf.store.BD;
  */
 public class ServiceParams {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(AbstractServiceFactory.class);
 
     /**
      * The map of service params.
      */
-    private final Map<URI, List<TermNode>> params;
+    private final Map<IRI, List<TermNode>> params;
 
     public ServiceParams() {
 
-        this.params = new LinkedHashMap<URI, List<TermNode>>();
+        this.params = new LinkedHashMap<IRI, List<TermNode>>();
 
     }
 
     /**
      * Add.
      */
-    public void add(final URI param, final TermNode value) {
+    public void add(final IRI param, final TermNode value) {
 
         if (!params.containsKey(param)) {
 
@@ -96,7 +97,7 @@ public class ServiceParams {
     /**
      * Set (clear and add).
      */
-    public void set(final URI param, final TermNode value) {
+    public void set(final IRI param, final TermNode value) {
 
         clear(param);
 
@@ -107,7 +108,7 @@ public class ServiceParams {
     /**
      * Clear.
      */
-    public void clear(final URI param) {
+    public void clear(final IRI param) {
 
         params.remove(param);
 
@@ -116,7 +117,7 @@ public class ServiceParams {
     /**
      * Check for existence.
      */
-    public boolean contains(final URI param) {
+    public boolean contains(final IRI param) {
 
         return params.containsKey(param);
 
@@ -125,7 +126,7 @@ public class ServiceParams {
     /**
      * Get a singleton value for the specified param.
      */
-    public TermNode get(final URI param, final TermNode defaultValue) {
+    public TermNode get(final IRI param, final TermNode defaultValue) {
 
         if (params.containsKey(param)) {
 
@@ -148,7 +149,7 @@ public class ServiceParams {
     /**
      * Helper.
      */
-    public Boolean getAsBoolean(final URI param) {
+    public Boolean getAsBoolean(final IRI param) {
 
         return getAsBoolean(param, null);
 
@@ -157,7 +158,7 @@ public class ServiceParams {
     /**
      * Helper.
      */
-    public Boolean getAsBoolean(final URI param, final Boolean defaultValue) {
+    public Boolean getAsBoolean(final IRI param, final Boolean defaultValue) {
 
         final Literal term = getAsLiteral(param, null);
 
@@ -174,7 +175,7 @@ public class ServiceParams {
     /**
      * Helper.
      */
-    public Integer getAsInt(final URI param) {
+    public Integer getAsInt(final IRI param) {
 
         return getAsInt(param, null);
 
@@ -183,7 +184,7 @@ public class ServiceParams {
     /**
      * Helper.
      */
-    public Integer getAsInt(final URI param, final Integer defaultValue) {
+    public Integer getAsInt(final IRI param, final Integer defaultValue) {
 
         final Literal term = getAsLiteral(param, null);
 
@@ -200,7 +201,7 @@ public class ServiceParams {
     /**
      * Helper.
      */
-    public Long getAsLong(final URI param) {
+    public Long getAsLong(final IRI param) {
 
         return getAsLong(param, null);
 
@@ -209,7 +210,7 @@ public class ServiceParams {
     /**
      * Helper.
      */
-    public Long getAsLong(final URI param, final Long defaultValue) {
+    public Long getAsLong(final IRI param, final Long defaultValue) {
 
         final Literal term = getAsLiteral(param, null);
 
@@ -226,7 +227,7 @@ public class ServiceParams {
     /**
      * Helper.
      */
-    public String getAsString(final URI param) {
+    public String getAsString(final IRI param) {
 
         return getAsString(param, null);
 
@@ -235,7 +236,7 @@ public class ServiceParams {
     /**
      * Helper.
      */
-    public String getAsString(final URI param, final String defaultValue) {
+    public String getAsString(final IRI param, final String defaultValue) {
 
         final Literal term = getAsLiteral(param, null);
 
@@ -252,7 +253,7 @@ public class ServiceParams {
     /**
      * Helper.
      */
-    public Literal getAsLiteral(final URI param) {
+    public Literal getAsLiteral(final IRI param) {
 
         return getAsLiteral(param, null);
 
@@ -261,7 +262,7 @@ public class ServiceParams {
     /**
      * Helper.
      */
-    public Literal getAsLiteral(final URI param, final Literal defaultValue) {
+    public Literal getAsLiteral(final IRI param, final Literal defaultValue) {
 
         final TermNode term = get(param, null);
 
@@ -292,7 +293,7 @@ public class ServiceParams {
     /**
      * Helper.
      */
-    public URI getAsURI(final URI param) {
+    public IRI getAsURI(final IRI param) {
 
         return getAsURI(param, null);
 
@@ -301,7 +302,7 @@ public class ServiceParams {
     /**
      * Helper.
      */
-    public URI getAsURI(final URI param, final URI defaultValue) {
+    public IRI getAsURI(final IRI param, final IRI defaultValue) {
 
         final TermNode term = get(param, null);
 
@@ -315,13 +316,13 @@ public class ServiceParams {
 
             final Value v = term.getValue();
 
-            if (!(v instanceof URI)) {
+            if (!(v instanceof IRI)) {
 
                 throw new IllegalArgumentException("not a uri");
 
             }
 
-            return ((URI) v);
+            return ((IRI) v);
 
         }
 
@@ -333,7 +334,7 @@ public class ServiceParams {
      * Helper.
      */
     @SuppressWarnings("rawtypes")
-    public IVariable<IV> getAsVar(final URI param) {
+    public IVariable<IV> getAsVar(final IRI param) {
 
         return getAsVar(param, null);
 
@@ -343,7 +344,7 @@ public class ServiceParams {
      * Helper.
      */
     @SuppressWarnings("rawtypes")
-    public IVariable<IV> getAsVar(final URI param,
+    public IVariable<IV> getAsVar(final IRI param,
             final IVariable<IV> defaultValue) {
 
         final TermNode term = get(param, null);
@@ -367,7 +368,7 @@ public class ServiceParams {
     /**
      * Helper.
      */
-    public List<TermNode> get(final URI param) {
+    public List<TermNode> get(final IRI param) {
 
         if (params.containsKey(param)) {
 
@@ -382,7 +383,7 @@ public class ServiceParams {
     /**
      * Iterator.
      */
-    public Iterator<Map.Entry<URI, List<TermNode>>> iterator() {
+    public Iterator<Map.Entry<IRI, List<TermNode>>> iterator() {
 
         return params.entrySet().iterator();
 
@@ -395,9 +396,9 @@ public class ServiceParams {
 
         sb.append("[");
 
-        for (Map.Entry<URI, List<TermNode>> e : params.entrySet()) {
+        for (Map.Entry<IRI, List<TermNode>> e : params.entrySet()) {
 
-            final URI param = e.getKey();
+            final IRI param = e.getKey();
 
             final List<TermNode> terms = e.getValue();
 
@@ -482,7 +483,7 @@ public class ServiceParams {
 
                     }
 
-                    final URI param = (URI) sp.p().getValue();
+                    final IRI param = (IRI) sp.p().getValue();
 
                     serviceParams.add(param, sp.o());
 

@@ -26,10 +26,11 @@ package com.bigdata.rdf.sparql.ast.service.storedquery;
 import java.util.Arrays;
 import java.util.concurrent.Future;
 
-import org.apache.log4j.Logger;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.TupleQueryResult;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.TupleQueryResult;
 
 import com.bigdata.rdf.internal.IV;
 import com.bigdata.rdf.sail.BigdataSailRepositoryConnection;
@@ -62,7 +63,7 @@ import cutthecrap.utils.striterators.ICloseableIterator;
  * evaluation will be the SERVICE URI.
  * 
  * <pre>
- * final URI serviceURI = new URIImpl(
+ * final URI serviceURI = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
  *         &quot;http://www.bigdata.com/rdf/stored-query#my-stored-query&quot;);
  * 
  * ServiceRegistry.getInstance().add(serviceURI, new MyStoredQueryService());
@@ -123,7 +124,7 @@ abstract public class StoredQueryService extends AbstractServiceFactoryBase {
 
     }
 
-    static private transient final Logger log = Logger
+    static private transient final Logger log = LogManager
             .getLogger(StoredQueryService.class);
 
     private final OpenrdfNativeServiceOptions serviceOptions;

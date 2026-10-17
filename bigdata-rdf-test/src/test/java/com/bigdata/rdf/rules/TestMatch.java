@@ -50,13 +50,13 @@ package com.bigdata.rdf.rules;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
 
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.bop.Var;
@@ -67,7 +67,7 @@ import com.bigdata.rdf.store.AbstractTripleStoreTestCase;
 import cutthecrap.utils.striterators.ICloseableIterator;
 
 /**
- * Unit tests for {@link AbstractTripleStore#match(Literal[], URI[], URI)}.
+ * Unit tests for {@link AbstractTripleStore#match(Literal[], IRI[], IRI)}.
  * 
  * @author <a href="mailto:thompsonbry@users.sourceforge.net">Bryan Thompson</a>
  * @version $Id$
@@ -88,23 +88,23 @@ public class TestMatch extends AbstractTripleStoreTestCase {
     }
 
     /**
-     * Unit test for {@link AbstractTripleStore#match(Literal[], URI[], URI)}
+     * Unit test for {@link AbstractTripleStore#match(Literal[], IRI[], IRI)}
      */
     public void test_match() {
 
 //        LocalTripleStore store = new LocalTripleStore(getProperties());
 
-        final URI bryan = new URIImpl("http://www.bigdata.com/bryan");
+        final IRI bryan = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/bryan");
         
-        final URI mike = new URIImpl("http://www.bigdata.com/mike");
+        final IRI mike = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/mike");
 
-        final URI paul = new URIImpl("http://www.bigdata.com/paul");
+        final IRI paul = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/paul");
 
-        final URI person = new URIImpl("http://www.bigdata.com/person");
+        final IRI person = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/person");
 
-        final URI chiefScientist = new URIImpl("http://www.bigdata.com/chiefScientist");
+        final IRI chiefScientist = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/chiefScientist");
 
-        final URI chiefEngineer = new URIImpl("http://www.bigdata.com/chiefEngineer");
+        final IRI chiefEngineer = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/chiefEngineer");
 
         final AbstractTripleStore store = getStore();
 
@@ -128,20 +128,20 @@ public class TestMatch extends AbstractTripleStoreTestCase {
                  */
                 
 
-                sb.add(bryan, RDFS.LABEL, new LiteralImpl("bryan"));
+                sb.add(bryan, RDFS.LABEL, org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("bryan"));
 
-                sb.add(bryan, RDFS.LABEL, new LiteralImpl("bryan thompson"));
+                sb.add(bryan, RDFS.LABEL, org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("bryan thompson"));
 
                 sb.add(bryan, RDF.TYPE, chiefScientist);
 
-                sb.add(mike, RDFS.LABEL, new LiteralImpl("mike"));
+                sb.add(mike, RDFS.LABEL, org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("mike"));
 
-                sb.add(mike, RDFS.LABEL, new LiteralImpl("mike personick"));
+                sb.add(mike, RDFS.LABEL, org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("mike personick"));
 
                 sb.add(mike, RDF.TYPE, chiefEngineer);
 
                 // Note: will not be matched since no explicit type that is subClassOf person.
-                sb.add(paul, RDFS.LABEL, new LiteralImpl("paul"));
+                sb.add(paul, RDFS.LABEL, org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("paul"));
 
                 sb.add(chiefScientist, RDFS.SUBCLASSOF, person);
 
@@ -177,9 +177,9 @@ public class TestMatch extends AbstractTripleStoreTestCase {
 
                     bindingSet.put("p", RDFS.LABEL);
 
-                    bindingSet.put("lit", new LiteralImpl("bryan"));
+                    bindingSet.put("lit", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("bryan"));
                     
-                    expected.put(new LiteralImpl("bryan"), bindingSet);
+                    expected.put(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("bryan"), bindingSet);
                     
                 }
  
@@ -192,15 +192,15 @@ public class TestMatch extends AbstractTripleStoreTestCase {
 
                     bindingSet.put("p", RDFS.LABEL);
 
-                    bindingSet.put("lit", new LiteralImpl("bryan thompson"));
+                    bindingSet.put("lit", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("bryan thompson"));
                     
-                    expected.put(new LiteralImpl("bryan thompson"), bindingSet);
+                    expected.put(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("bryan thompson"), bindingSet);
                     
                 }
                 
                 final ICloseableIterator<IBindingSet> itr = store.match(//
-                        new Literal[] { new LiteralImpl("bryan") },//
-                        new URI[] { RDFS.LABEL },//
+                        new Literal[] { org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("bryan") },//
+                        new IRI[] { RDFS.LABEL },//
                         person//
                         );
 
@@ -267,8 +267,8 @@ public class TestMatch extends AbstractTripleStoreTestCase {
             {
                 
                 final ICloseableIterator<IBindingSet> itr = store.match(//
-                        new Literal[] { new LiteralImpl("paul") },//
-                        new URI[] { RDFS.LABEL },//
+                        new Literal[] { org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("paul") },//
+                        new IRI[] { RDFS.LABEL },//
                         person//
                         );
 

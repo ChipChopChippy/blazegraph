@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.internal;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.rdf.lexicon.LexiconRelation;
 import com.bigdata.rdf.model.BigdataURI;
@@ -43,12 +43,12 @@ import com.bigdata.rdf.vocab.Vocabulary;
 public interface IDatatypeURIResolver {
 
     /**
-     * Returns a fully resolved datatype URI with the {@link IV} set.
+     * Returns a fully resolved datatype IRI with the {@link IV} set.
      * <p>
      * {@link IExtension}s handle encoding and decoding of inline literals for
      * custom datatypes, however to do so they need the {@link IV} for the
      * custom datatype. By passing an instance of this interface to the
-     * {@link IExtension}, it will be able to resolve its datatype URI(s) and
+     * {@link IExtension}, it will be able to resolve its datatype IRI(s) and
      * cache them for future use.
      * <p>
      * The URIs used by {@link IExtension}s MUST be pre-declared by the
@@ -67,6 +67,6 @@ public interface IDatatypeURIResolver {
      *             if the argument is not part of the pre-declared
      *             {@link Vocabulary}.
      */
-    BigdataURI resolve(final URI datatypeURI);
+    BigdataURI resolve(final IRI datatypeURI);
     
 }

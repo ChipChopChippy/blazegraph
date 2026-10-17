@@ -34,8 +34,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpEvaluationContext;
 import com.bigdata.bop.IBindingSet;
@@ -80,7 +81,7 @@ import com.bigdata.relation.rule.eval.pipeline.DistributedJoinTask;
  */
 public class FederationChunkHandler<E> extends StandaloneChunkHandler {
 
-    private final static Logger log = Logger
+    private final static Logger log = LogManager
             .getLogger(FederationChunkHandler.class); 
     
     /**

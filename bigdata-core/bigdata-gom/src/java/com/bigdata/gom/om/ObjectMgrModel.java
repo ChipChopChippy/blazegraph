@@ -39,12 +39,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.query.BindingSet;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.BindingSet;
 
 import com.bigdata.cache.ConcurrentWeakValueCache;
 import com.bigdata.gom.gpo.GPO;
@@ -68,7 +69,7 @@ import cutthecrap.utils.striterators.ICloseableIterator;
  */
 public abstract class ObjectMgrModel implements IObjectManager {
 
-    private static final Logger log = Logger.getLogger(ObjectMgrModel.class);
+    private static final Logger log = LogManager.getLogger(ObjectMgrModel.class);
 
     /**
      * The {@link UUID} for this object manager instance.
@@ -103,7 +104,7 @@ public abstract class ObjectMgrModel implements IObjectManager {
     // Sample code indicates that an ArrayList is less overhead than a LinkedList
     private final List<GPO> m_dirtyGPOs = new ArrayList<GPO>();
 
-	private final URI s_nmeMgr;
+	private final IRI s_nmeMgr;
 
     /**
      * A lock for things which need to be serialized, initially just the native
@@ -148,10 +149,10 @@ public abstract class ObjectMgrModel implements IObjectManager {
         /*
          * FIXME UUIG COINING. Plus this needs to be global if we have a
          * "name manager" object. Frankly, I do not see any reason to have
-         * "named roots" in RDF GOM. Any URI can be a named root - you just need
-         * to use the URI!
+         * "named roots" in RDF GOM. Any IRI can be a named root - you just need
+         * to use the IRI!
          */
-		s_nmeMgr = m_valueFactory.createURI("gpo:nmeMgr/"+m_uuid);
+		s_nmeMgr = m_valueFactory.createIRI("gpo:nmeMgr/"+m_uuid);
 
 		/*
 		 * Note: This sets the hard reference queue capacity.
@@ -189,12 +190,12 @@ public abstract class ObjectMgrModel implements IObjectManager {
      * 
      * @return The interned version of the predicate.
      */
-    public BigdataURI internKey(final URI aKey) {
+    public BigdataURI internKey(final IRI aKey) {
 
-        // Ensure URI is for the namespace associated with this OM.
+        // Ensure IRI is for the namespace associated with this OM.
         final BigdataURI key = m_valueFactory.asValue(aKey);
         
-        // Internal the URI.
+        // Internal the IRI.
         final BigdataURI old = m_internedKeys.putIfAbsent(key, key);
 
         // Resolve data race.
@@ -470,7 +471,7 @@ public abstract class ObjectMgrModel implements IObjectManager {
 
             final BindingSet bs = res.next();
 
-            ((GPO) gpo).initValue((URI) bs.getValue("p"), bs.getValue("v"));
+            ((GPO) gpo).initValue((IRI) bs.getValue("p"), bs.getValue("v"));
 
         }
 
@@ -524,7 +525,7 @@ public abstract class ObjectMgrModel implements IObjectManager {
 
                 final Statement stmt = stmts.next();
                 final Resource subject = stmt.getSubject();
-                final URI predicate = stmt.getPredicate();
+                final IRI predicate = stmt.getPredicate();
                 final Value value = stmt.getObject();
 
                 if (id != null) {
@@ -696,7 +697,7 @@ public abstract class ObjectMgrModel implements IObjectManager {
 	 * other pattern implementations.  Internally it uses a NameManager GPO
 	 */
     @Deprecated // no need for explicit save/recall.
-	public void save(final URI key, Value value) {
+	public void save(final IRI key, Value value) {
 
         getGPO(s_nmeMgr).setValue(key, value);
         
@@ -707,12 +708,12 @@ public abstract class ObjectMgrModel implements IObjectManager {
 	 * other pattern implementations.  Internally it uses a NameManager GPO
 	 */
     @Deprecated // no need for explicit recall.
-	public Value recall(final URI key) {	
+	public Value recall(final IRI key) {	
 		return getGPO(s_nmeMgr).getValue(key);
 	}
 	
 	@Deprecated // no need for explicit recall.
-	public IGPO recallAsGPO(final URI key) {
+	public IGPO recallAsGPO(final IRI key) {
 		
 	    final Value val = recall(key);
 		
@@ -727,7 +728,7 @@ public abstract class ObjectMgrModel implements IObjectManager {
 	 * Return the list of names that have been used to save references. These
 	 * are the properties of the internal NameManager.
 	 */
-	public Iterator<URI> getNames() {
+	public Iterator<IRI> getNames() {
 
 	    final GPO nmgr = (GPO) getGPO(s_nmeMgr);
 		

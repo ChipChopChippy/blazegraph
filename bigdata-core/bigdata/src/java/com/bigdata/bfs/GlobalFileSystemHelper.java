@@ -30,8 +30,9 @@ package com.bigdata.bfs;
 
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.journal.IIndexManager;
 import com.bigdata.journal.ITx;
 
@@ -47,7 +48,7 @@ public class GlobalFileSystemHelper {
 
     private final IIndexManager indexManager;
     
-    protected static final transient Logger log = Logger.getLogger(GlobalFileSystemHelper.class);
+    protected static final transient Logger log = LogManager.getLogger(GlobalFileSystemHelper.class);
 
     protected static final boolean INFO = log.isInfoEnabled();
     

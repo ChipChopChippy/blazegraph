@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sparql.ast.eval.service;
 
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.rdf.store.AbstractTripleStore;
 import com.bigdata.rdf.vocab.BaseVocabularyDecl;
@@ -62,22 +62,22 @@ public class GeoSpatialTestVocabulary extends BigdataCoreVocabulary_v20160317 {
         super.addValues();
         addDecl(
             new BaseVocabularyDecl(
-                new URIImpl("http://my.custom.datatype/lat-lon-time"),
-                new URIImpl("http://my.custom.datatype/time-lat-lon"),
-                new URIImpl("http://my.custom.datatype/lat-time-lon"),
-                new URIImpl("http://my.custom.datatype/lat-lon"),
-                new URIImpl("http://my.custom.datatype/lat-lon-coord"),
-                new URIImpl("http://my.custom.datatype/time-coord"),
-                new URIImpl("http://my.custom.datatype/lat-lon-time-coordsystem"),
-                new URIImpl("http://my.custom.datatype/lat-lon-coordsystem"),                
-                new URIImpl("http://www.opengis.net/ont/geosparql#wktLiteral"),
-                new URIImpl("http://my.custom.datatype/x-y-z"),
-                new URIImpl("http://my.custom.datatype/x-y-z-lat-lon"),
-                new URIImpl("http://my.custom.datatype/x-y-z-lat-lon-time"),
-                new URIImpl("http://my.custom.datatype/time-x-y-z"),
-                new URIImpl("http://my.custom.datatype/x-y-z-lat-lon-time-coord"),
-                new URIImpl("http://my-lat-lon-starttime-endtime-dt"),
-                new URIImpl("http://width-height-length-dt")
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://my.custom.datatype/lat-lon-time"),
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://my.custom.datatype/time-lat-lon"),
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://my.custom.datatype/lat-time-lon"),
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://my.custom.datatype/lat-lon"),
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://my.custom.datatype/lat-lon-coord"),
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://my.custom.datatype/time-coord"),
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://my.custom.datatype/lat-lon-time-coordsystem"),
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://my.custom.datatype/lat-lon-coordsystem"),                
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.opengis.net/ont/geosparql#wktLiteral"),
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://my.custom.datatype/x-y-z"),
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://my.custom.datatype/x-y-z-lat-lon"),
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://my.custom.datatype/x-y-z-lat-lon-time"),
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://my.custom.datatype/time-x-y-z"),
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://my.custom.datatype/x-y-z-lat-lon-time-coord"),
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://my-lat-lon-starttime-endtime-dt"),
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://width-height-length-dt")
             )
         );
     }

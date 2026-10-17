@@ -1,34 +1,34 @@
 package com.bigdata.samples;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 public class LUBM {
     
     final static String NS =
         "http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#";
 
-    final static URI FULL_PROFESSOR = new URIImpl(NS + 
+    final static IRI FULL_PROFESSOR = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + 
         "FullProfessor"
         );
     
-    final static URI PROFESSOR = new URIImpl(NS + 
+    final static IRI PROFESSOR = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + 
             "Professor"
             );
         
-    final static URI WORKS_FOR = new URIImpl(NS + 
+    final static IRI WORKS_FOR = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + 
             "worksFor"
             );
         
-    final static URI NAME = new URIImpl(NS + 
+    final static IRI NAME = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + 
             "name"
             );
         
-    final static URI EMAIL_ADDRESS = new URIImpl(NS + 
+    final static IRI EMAIL_ADDRESS = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + 
             "emailAddress"
             );
         
-    final static URI TELEPHONE = new URIImpl(NS + 
+    final static IRI TELEPHONE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NS + 
             "telephone"
             );
         

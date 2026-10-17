@@ -2,8 +2,9 @@ package com.bigdata.bop.fed.shards;
 
 import java.util.LinkedList;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.mdi.PartitionLocator;
 import com.bigdata.relation.accesspath.IBuffer;
@@ -19,7 +20,7 @@ import com.bigdata.striterator.IKeyOrder;
 class Algorithm_FullyBoundPredicate<E extends IBindingSet, F> implements
         IShardMapper<E, F> {
 
-    static transient private final Logger log = Logger
+    static transient private final Logger log = LogManager
             .getLogger(Algorithm_FullyBoundPredicate.class);
 
     private final MapBindingSetsOverShardsBuffer<E, F> op;

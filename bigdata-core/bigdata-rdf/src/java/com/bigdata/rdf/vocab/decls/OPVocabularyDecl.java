@@ -4,23 +4,23 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.rdf.vocab.VocabularyDecl;
 
 public class OPVocabularyDecl implements VocabularyDecl {
 
-    static private final URI[] uris = new URI[]{//
+    static private final IRI[] uris = new IRI[]{//
     	// two named graphs
-        new URIImpl("file:///home/OPS/develop/openphacts/datasets/chem2bio2rdf/chembl.nt"),//
-        new URIImpl("http://linkedlifedata.com/resource/drugbank"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("file:///home/OPS/develop/openphacts/datasets/chem2bio2rdf/chembl.nt"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://linkedlifedata.com/resource/drugbank"),//
     };
 
     public OPVocabularyDecl() {
     }
     
-    public Iterator<URI> values() {
+    public Iterator<IRI> values() {
 
         return Collections.unmodifiableList(Arrays.asList(uris)).iterator();
         

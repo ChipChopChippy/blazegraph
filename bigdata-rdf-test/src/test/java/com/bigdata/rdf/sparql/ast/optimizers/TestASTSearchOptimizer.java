@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sparql.ast.optimizers;
 
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.bop.bindingSet.ListBindingSet;
@@ -114,7 +114,7 @@ public class TestASTSearchOptimizer extends AbstractASTEvaluationTestCase {
 //        final VarNode p = new VarNode("p");
 //        final VarNode o = new VarNode("o");
 //        
-//        final IConstant const1 = new Constant<IV>(TermId.mockIV(VTE.URI));
+//        final IConstant const1 = new Constant<IV>(TermId.mockIV(VTE.IRI));
 
         @SuppressWarnings("rawtypes")
         final IV searchIV = makeIV(BDS.SEARCH);

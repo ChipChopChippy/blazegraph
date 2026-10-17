@@ -28,10 +28,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
 
 import com.bigdata.rdf.rio.StatementBuffer;
 import com.bigdata.util.BytesUtil.UnsignedByteArrayComparator;
@@ -127,7 +127,7 @@ public class TestInsertRate extends AbstractTripleStoreTestCase {
      * specification.
      */
 
-    static public class XMLSchema {
+    static public class XSD {
 
         /**
          * The namespace name, commonly associated with the prefix "rdf", whose
@@ -144,7 +144,7 @@ public class TestInsertRate extends AbstractTripleStoreTestCase {
         public static final String NAMESPACE_RDFS = "http://www.w3.org/2000/01/rdf-schema#";
 
         /**
-         * The URI,commonly written as rdf:XMLLiteral, whose value is
+         * The IRI,commonly written as rdf:XMLLiteral, whose value is
          * "http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral".
          */
 
@@ -161,49 +161,49 @@ public class TestInsertRate extends AbstractTripleStoreTestCase {
         public static final String NAMESPACE_XSD = "http://www.w3.org/2001/XMLSchema#";
 
         /**
-         * The XSDatatype URI for "boolean".
+         * The XSDatatype IRI for "boolean".
          */
 
         public static final String xsBoolean = NAMESPACE_XSD + "boolean";
 
         /**
-         * The XSDatatype URI for "byte".
+         * The XSDatatype IRI for "byte".
          */
 
         public static final String xsByte = NAMESPACE_XSD + "byte";
 
         /**
-         * The XSDatatype URI for "short".
+         * The XSDatatype IRI for "short".
          */
 
         public static final String xsShort = NAMESPACE_XSD + "short";
 
         /**
-         * The XSDatatype URI for "int".
+         * The XSDatatype IRI for "int".
          */
 
         public static final String xsInt = NAMESPACE_XSD + "int";
 
         /**
-         * The XSDatatype URI for "lomg".
+         * The XSDatatype IRI for "lomg".
          */
 
         public static final String xsLong = NAMESPACE_XSD + "long";
 
         /**
-         * The XSDatatype URI for "float".
+         * The XSDatatype IRI for "float".
          */
 
         public static final String xsFloat = NAMESPACE_XSD + "float";
 
         /**
-         * The XSDatatype URI for "double".
+         * The XSDatatype IRI for "double".
          */
 
         public static final String xsDouble = NAMESPACE_XSD + "double";
 
         /**
-         * The XSDatatype URI for "integer" - used for {@link
+         * The XSDatatype IRI for "integer" - used for {@link
          * java.math.BigInteger} and natively by the XSD library for
          * {@link com.sun.msv.datatype.xsd.IntegerValueType}.
          */
@@ -211,20 +211,20 @@ public class TestInsertRate extends AbstractTripleStoreTestCase {
         public static final String xsInteger = NAMESPACE_XSD + "integer";
 
         /**
-         * The XSDatatype URI for "decimal" - used for {@link
+         * The XSDatatype IRI for "decimal" - used for {@link
          * java.math.BigDecimal}
          */
 
         public static final String xsDecimal = NAMESPACE_XSD + "decimal";
 
         /**
-         * The XSDatatype URI for "string".
+         * The XSDatatype IRI for "string".
          */
 
         public static final String xsString = NAMESPACE_XSD + "string";
 
         /**
-         * The XSDatatype URI for "anyURI".
+         * The XSDatatype IRI for "anyURI".
          */
 
         public static final String xsAnyURI = NAMESPACE_XSD + "anyURI";
@@ -242,7 +242,7 @@ public class TestInsertRate extends AbstractTripleStoreTestCase {
      * 
      * @param nliteral
      *            The #of plain literals, the #of literals for each language
-     *            type, and the #of typed literals for each datatype URI.
+     *            type, and the #of typed literals for each datatype IRI.
      * 
      * @param litsize
      *            The average size of a literal. The generated literals use a
@@ -269,12 +269,12 @@ public class TestInsertRate extends AbstractTripleStoreTestCase {
             final int nproperty, final int nliteral, final int litsize)
             throws IOException {
 
-        final URI[] cspace = new URI[nclass];
-        final URI[] pspace = new URI[nproperty];
-        final URI[] tspace = new URI[] {
+        final IRI[] cspace = new IRI[nclass];
+        final IRI[] pspace = new IRI[nproperty];
+        final IRI[] tspace = new IRI[] {
                 // uncomment to get data typed literals.
-// new URIImpl( XMLSchema.xsInteger ),
-//        new URIImpl( XMLSchema.xsFloat )
+// org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI( XSD.xsInteger ),
+//        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI( XSD.xsFloat )
         };
         final String[] langSpace = new String[]{
                 // uncomment to get language typed literals.
@@ -300,14 +300,14 @@ public class TestInsertRate extends AbstractTripleStoreTestCase {
             for( int i=0; i<cspace.length; i++ ) {
             
             // @todo random class names
-            cspace[ i ] = fac.createURI( "http://class/"+i );
+            cspace[ i ] = fac.createIRI( "http://class/"+i );
                
             }
         
             for( int i=0; i<pspace.length; i++ ) {
 
             // @todo random property names      
-            pspace[ i ] = fac.createURI( "http://property/"+i );
+            pspace[ i ] = fac.createIRI( "http://property/"+i );
                
             }
 
@@ -457,8 +457,8 @@ public class TestInsertRate extends AbstractTripleStoreTestCase {
                 
                 for( int k=0; k<ospace.length; k++ ) {
                     
-                    URI s = randomOrder ? cspace[corder[i]] : cspace[i];
-                    URI p = randomOrder ? pspace[porder[j]] : pspace[j];
+                    IRI s = randomOrder ? cspace[corder[i]] : cspace[i];
+                    IRI p = randomOrder ? pspace[porder[j]] : pspace[j];
                     Value o = randomOrder ? ospace[oorder[k]] : ospace[k]; 
 
 //                  System.err.println
@@ -543,13 +543,13 @@ public class TestInsertRate extends AbstractTripleStoreTestCase {
          * Returns a random but unique value within the identified type
          * space.
          *
-         * @param t The data type URI.
+         * @param t The data type IRI.
          *
          * @param id A unique index used to obtain a unique value in the
          * identified type space.  Typically this is a one up identifier.
          */
 
-        private String getRandomType( URI t, int id )
+        private String getRandomType( IRI t, int id )
         {
 
         // FIXME This needs to be type sensitive.  For some types, the

@@ -34,14 +34,15 @@ import junit.extensions.proxy.IProxyTest;
 import junit.framework.Test;
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.URI;
-import org.openrdf.model.vocabulary.OWL;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParseException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.vocabulary.OWL;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParseException;
 
 import com.bigdata.gom.gpo.IGPO;
 
@@ -57,22 +58,22 @@ import com.bigdata.gom.gpo.IGPO;
  */
 public class TestOwlGOM extends ProxyGOMTest {
 
-    private static final Logger log = Logger.getLogger(TestOwlGOM.class);
+    private static final Logger log = LogManager.getLogger(TestOwlGOM.class);
 
 	final static String OWL_NAMESPACE = "http://www.w3.org/2002/07/owl#";
 	final static String RDFS_NAMESPACE = "http://www.w3.org/2000/01/rdf-schema#";
 	final static String RDF_NAMESPACE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 
-	URI owlURI(final String nme) {
-		return m_vf.createURI(OWL_NAMESPACE + nme);
+	IRI owlURI(final String nme) {
+		return m_vf.createIRI(OWL_NAMESPACE + nme);
 	}
 
-	URI rdfsURI(final String nme) {
-		return m_vf.createURI(RDFS_NAMESPACE + nme);
+	IRI rdfsURI(final String nme) {
+		return m_vf.createIRI(RDFS_NAMESPACE + nme);
 	}
 
-	URI rdfURI(final String nme) {
-		return m_vf.createURI(RDF_NAMESPACE + nme);
+	IRI rdfURI(final String nme) {
+		return m_vf.createIRI(RDF_NAMESPACE + nme);
 	}
 
 	public void testOwlLoad1() throws RDFParseException, RepositoryException,

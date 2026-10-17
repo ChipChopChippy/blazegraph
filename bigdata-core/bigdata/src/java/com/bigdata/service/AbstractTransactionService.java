@@ -41,8 +41,9 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.ITuple;
 import com.bigdata.btree.ITupleIterator;
 import com.bigdata.config.LongValidator;
@@ -81,7 +82,7 @@ abstract public class AbstractTransactionService extends AbstractService
     /**
      * Logger.
      */
-    protected static final Logger log = Logger.getLogger(AbstractTransactionService.class);
+    protected static final Logger log = LogManager.getLogger(AbstractTransactionService.class);
 
 //    protected static final boolean INFO = log.isInfoEnabled();
 

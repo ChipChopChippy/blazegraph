@@ -26,7 +26,7 @@ package com.bigdata.rdf.internal;
 
 import java.util.Iterator;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.rdf.internal.impl.BlobIV;
 import com.bigdata.rdf.model.BigdataURI;
@@ -50,7 +50,7 @@ public interface IExtensionFactory {
      * timezone to use to do so.
      * 
      * @param resolver
-     *            The interface used to resolve an {@link URI} to an
+     *            The interface used to resolve an {@link IRI} to an
      *            {@link BigdataURI}.
      * @param config
      *            The {@link ILexiconConfiguration}.

@@ -224,7 +224,7 @@ public class TestRule extends AbstractRuleTestCase {
         assertFalse(r.isFullyBound(0,bindingSet));
 
         // verify you can overwrite a variable in the tail.
-        bindingSet.set(u, new Constant<IV>(factory.newTermId(VTE.URI)));
+        bindingSet.set(u, new Constant<IV>(factory.newTermId(VTE.IRI)));
 
         assertTrue(r.isFullyBound(0,bindingSet)); // is fully bound.
         

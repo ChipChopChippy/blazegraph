@@ -38,21 +38,20 @@ import java.util.Properties;
 import java.util.TreeMap;
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
 
 import junit.framework.Test;
 
-import org.eclipse.jetty.util.IO;
-import org.openrdf.model.Graph;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.query.TupleQueryResult;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.query.TupleQueryResult;
 
 import com.bigdata.journal.BufferMode;
 import com.bigdata.journal.IIndexManager;
@@ -105,13 +104,13 @@ public class TestMultiTenancyAPI<S extends IIndexManager> extends
      */
     static class VoidSummary {
         /**
-         * The {@link Graph} from which the summary was extracted. The summary
+         * The {@link Model} from which the summary was extracted. The summary
          * is specific to the data set identified to the constructor. The
-         * {@link Graph} MAY contain descriptions of many data sets.
+         * {@link Model} MAY contain descriptions of many data sets.
          */
-        final Graph g;
+        final Model g;
         /**
-         * The {@link Resource} used to model the data set in the {@link Graph}.
+         * The {@link Resource} used to model the data set in the {@link Model}.
          */
         final Resource dataset;
         /** The dc:title(s) for the data set. */
@@ -119,18 +118,18 @@ public class TestMultiTenancyAPI<S extends IIndexManager> extends
         /** The bigdata namespace for the data set. */
         final Literal namespace;
         /** The sparql end point URL(s) for the data set. */
-        final List<URI> sparqlEndpoint = new LinkedList<URI>();
+        final List<IRI> sparqlEndpoint = new LinkedList<IRI>();
 
         /**
          * 
          * @param dataset
          *            The {@link Resource} used to model the data set in the
-         *            {@link Graph}.
+         *            {@link Model}.
          * @param g
-         *            The {@link Graph} containing the description of that data
+         *            The {@link Model} containing the description of that data
          *            set.
          */
-        public VoidSummary(final Resource dataset, final Graph g) {
+        public VoidSummary(final Resource dataset, final Model g) {
 
             this.dataset = dataset;
 
@@ -164,7 +163,7 @@ public class TestMultiTenancyAPI<S extends IIndexManager> extends
             for(Statement x : getMatches(g, dataset,
                     VoidVocabularyDecl.sparqlEndpoint, null/* endpointURL */)) {
                 
-                sparqlEndpoint.add((URI) x.getObject());
+                sparqlEndpoint.add((IRI) x.getObject());
 
             }
 
@@ -209,7 +208,7 @@ public class TestMultiTenancyAPI<S extends IIndexManager> extends
         final Map<Resource, VoidSummary> summaries = new LinkedHashMap<Resource, VoidSummary>();
 
         // Do the discovery.
-        final Graph g = RemoteRepository.asGraph(m_mgr
+        final Model g = RemoteRepository.asGraph(m_mgr
                 .getRepositoryDescriptions());
 
         final Statement[] a = getMatches(g, null/* dataset */, RDF.TYPE,
@@ -262,7 +261,7 @@ public class TestMultiTenancyAPI<S extends IIndexManager> extends
 			final String namespaceStr = summary.namespace.stringValue();
 			
 	        // Verify the expected namespace.
-	        assertEquals(new LiteralImpl(namespaceStr), summary.namespace);
+	        assertEquals(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral(namespaceStr), summary.namespace);
 
 	        // Verify at least SPARQL end point was described for that data set.
 	        assertFalse(summary.sparqlEndpoint.isEmpty());
@@ -726,7 +725,7 @@ public class TestMultiTenancyAPI<S extends IIndexManager> extends
     }
     
     public void testEOFStreams() throws IOException {
-    	final InputStream closed = IO.getClosedStream();
+        final InputStream closed = InputStream.nullInputStream();
     	
     	assertTrue(closed.read() == -1);
     }

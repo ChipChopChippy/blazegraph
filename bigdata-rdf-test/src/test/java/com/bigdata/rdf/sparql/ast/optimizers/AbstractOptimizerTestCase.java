@@ -24,9 +24,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 package com.bigdata.rdf.sparql.ast.optimizers;
 
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.bop.IConstant;
@@ -331,7 +331,7 @@ public abstract class AbstractOptimizerTestCase extends
 
 		private IV iv(final String id) {
 			
-			return makeIV(new URIImpl("http://example/" + id));
+			return makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/" + id));
 
 		}
 		
@@ -809,7 +809,7 @@ public abstract class AbstractOptimizerTestCase extends
 		 * Return a {@link FunctionNode}
 		 * 
 		 * @param uri
-		 *            the function URI. see {@link FunctionRegistry}
+		 *            the function IRI. see {@link FunctionRegistry}
 		 * @param args
 		 *            the arguments to the function.
 		 * @return
@@ -821,7 +821,7 @@ public abstract class AbstractOptimizerTestCase extends
 				final ValueExpressionNode... args//
 				) {
 
-			return functionNode(new URIImpl(uri), args);
+			return functionNode(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(uri), args);
 
 		}
 		
@@ -829,7 +829,7 @@ public abstract class AbstractOptimizerTestCase extends
 		 * Return a {@link FunctionNode}
 		 * 
 		 * @param uri
-		 *            the function URI. see {@link FunctionRegistry}
+		 *            the function IRI. see {@link FunctionRegistry}
 		 * @param args
 		 *            the arguments to the function.
 		 * @return
@@ -837,7 +837,7 @@ public abstract class AbstractOptimizerTestCase extends
 		// * @param scalarValues
 		// * One or more scalar values that are passed to the function
 		protected IValueExpressionNode functionNode(//
-				final URI uri,//
+				final IRI uri,//
 				final ValueExpressionNode... args//
 				) {
 

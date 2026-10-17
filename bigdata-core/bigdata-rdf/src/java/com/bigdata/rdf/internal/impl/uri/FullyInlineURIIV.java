@@ -24,8 +24,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.internal.impl.uri;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.rdf.internal.DTE;
 import com.bigdata.rdf.internal.IInlineUnicode;
@@ -38,24 +38,24 @@ import com.bigdata.rdf.model.BigdataURI;
 import com.bigdata.rdf.model.BigdataValueFactory;
 
 /**
- * Implementation for inline {@link URI}s. All information is inlined. This
+ * Implementation for inline {@link IRI}s. All information is inlined. This
  * class is mainly targeted at inlining at fully inlining URIs in scale-out
  * (which can be an attractive option).
  */
-public class FullyInlineURIIV<V extends BigdataURI> extends AbstractInlineIV<V, URI>
-        implements IInlineUnicode, URI {
+public class FullyInlineURIIV<V extends BigdataURI> extends AbstractInlineIV<V, IRI>
+        implements IInlineUnicode, IRI {
 
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
     
-    private final URI uri;
+    private final IRI uri;
     
     /** The cached byte length of this {@link IV}. */
     private transient int byteLength = 0;
 
-    public IV<V, URI> clone(final boolean clearCache) {
+    public IV<V, IRI> clone(final boolean clearCache) {
 
         final FullyInlineURIIV<V> tmp = new FullyInlineURIIV<V>(uri);
         
@@ -72,15 +72,15 @@ public class FullyInlineURIIV<V extends BigdataURI> extends AbstractInlineIV<V, 
 
     }
     
-    public FullyInlineURIIV(final URI uri) {
+    public FullyInlineURIIV(final IRI uri) {
 
         this(uri, 0/* byteLength */);
 
     }
     
-    public FullyInlineURIIV(final URI uri, final int byteLength) {
+    public FullyInlineURIIV(final IRI uri, final int byteLength) {
 
-        super(VTE.URI, DTE.XSDString);
+        super(VTE.IRI, DTE.XSDString);
 
         if (uri == null)
             throw new IllegalArgumentException();
@@ -91,7 +91,7 @@ public class FullyInlineURIIV<V extends BigdataURI> extends AbstractInlineIV<V, 
         
     }
 
-    final public URI getInlineValue() {
+    final public IRI getInlineValue() {
 
         return uri;
         
@@ -108,7 +108,7 @@ public class FullyInlineURIIV<V extends BigdataURI> extends AbstractInlineIV<V, 
 		V v = getValueCache();
 		if (v == null) {
             final BigdataValueFactory f = lex.getValueFactory();
-            v = (V) f.createURI(uri.stringValue());
+            v = (V) f.createIRI(uri.stringValue());
             v.setIV(this);
 			setValue(v);
 		}
@@ -125,7 +125,7 @@ public class FullyInlineURIIV<V extends BigdataURI> extends AbstractInlineIV<V, 
     }
 
     /**
-     * Return the hash code of the {@link URI}'s string value (per the openrdf
+     * Return the hash code of the {@link IRI}'s string value (per the openrdf
      * API).
      */
     public int hashCode() {
@@ -175,8 +175,8 @@ public class FullyInlineURIIV<V extends BigdataURI> extends AbstractInlineIV<V, 
     }
     
 	/**
-	 * Because we this is a fully inlined URI, we do not need the
-	 * materialized URI to answer the URI interface methods.
+	 * Because we this is a fully inlined IRI, we do not need the
+	 * materialized IRI to answer the IRI interface methods.
 	 */
 	@Override
 	public boolean needsMaterialization() {
@@ -196,7 +196,7 @@ public class FullyInlineURIIV<V extends BigdataURI> extends AbstractInlineIV<V, 
 	}
 
 	/**
-	 * Implements {@link URI#getLocalName()}.
+	 * Implements {@link IRI#getLocalName()}.
 	 */
 	@Override
 	public String getLocalName() {
@@ -206,7 +206,7 @@ public class FullyInlineURIIV<V extends BigdataURI> extends AbstractInlineIV<V, 
 	}
 
 	/**
-	 * Implements {@link URI#getNamespace()}.
+	 * Implements {@link IRI#getNamespace()}.
 	 */
 	@Override
 	public String getNamespace() {

@@ -4,10 +4,10 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.datatypes.XMLDatatypeUtil;
-import org.openrdf.model.vocabulary.XMLSchema;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.datatypes.XMLDatatypeUtil;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
 
 import com.bigdata.rdf.error.SparqlTypeErrorException;
 import com.bigdata.rdf.internal.IV;
@@ -30,10 +30,10 @@ public class DateTimeUtility implements IMathOpHandler {
     @Override
     public boolean canInvokeMathOp(final Literal... args) {
     	for (Literal lit : args) {
-    		final URI dt = lit.getDatatype();
+    		final IRI dt = lit.getDatatype();
     		if (dt == null)
     			return false;
-    		if (!(XMLDatatypeUtil.isCalendarDatatype(dt) || dt.equals(XMLSchema.DURATION)))
+    		if (!(XMLDatatypeUtil.isCalendarDatatype(dt) || dt.equals(XSD.DURATION)))
 				return false;
     	}
     	return true;
@@ -49,12 +49,12 @@ public class DateTimeUtility implements IMathOpHandler {
         if (!canInvokeMathOp(l1, l2))
         	throw new SparqlTypeErrorException();
 
-    	final URI dt1 = l1.getDatatype();
-        final URI dt2 = l2.getDatatype();
+    	final IRI dt1 = l1.getDatatype();
+        final IRI dt2 = l2.getDatatype();
         XMLGregorianCalendar c1 = XMLDatatypeUtil.isCalendarDatatype(dt1) ? l1.calendarValue() : null;
         XMLGregorianCalendar c2 = XMLDatatypeUtil.isCalendarDatatype(dt2) ? l2.calendarValue() : null;
-        Duration d1 = dt1.equals(XMLSchema.DURATION) ? datatypeFactory.newDuration(l1.getLabel()) : null;
-        Duration d2 = dt2.equals(XMLSchema.DURATION) ? datatypeFactory.newDuration(l2.getLabel()) : null;
+        Duration d1 = dt1.equals(XSD.DURATION) ? datatypeFactory.newDuration(l1.getLabel()) : null;
+        Duration d2 = dt2.equals(XSD.DURATION) ? datatypeFactory.newDuration(l2.getLabel()) : null;
         if (op == MathOp.PLUS) {
             if (c1 != null && c2 != null) {
                 throw new IllegalArgumentException("Cannot add 2 calendar literals:" + l1 + ":" + l2);
@@ -68,7 +68,7 @@ public class DateTimeUtility implements IMathOpHandler {
                 return DummyConstantNode.toDummyIV(str);
             } else if (d1 != null && d2 != null) {
                 Duration result = d1.add(d2);
-                final BigdataLiteral str = vf.createLiteral(result.toString(), XMLSchema.DURATION);
+                final BigdataLiteral str = vf.createLiteral(result.toString(), XSD.DURATION);
                 return DummyConstantNode.toDummyIV(str);
             } else {
                 throw new IllegalArgumentException("Cannot add process datatype literals:" + l1 + ":" + l2);
@@ -80,7 +80,7 @@ public class DateTimeUtility implements IMathOpHandler {
                 return new XSDNumericIV(days);
             } else if (d1 != null && d2 != null) {
                 Duration result = d1.subtract(d2);
-                final BigdataLiteral str = vf.createLiteral(result.toString(), XMLSchema.DURATION);
+                final BigdataLiteral str = vf.createLiteral(result.toString(), XSD.DURATION);
                 return DummyConstantNode.toDummyIV(str);
             } else {
                 throw new IllegalArgumentException("Cannot add process datatype literals:" + l1 + ":" + l2);

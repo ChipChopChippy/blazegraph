@@ -46,7 +46,7 @@ Copyright 2010 by TalkingTrends (Amsterdam, The Netherlands)
         <executions>
           <execution>
             <id>copy</id>
-            <phase>compile</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>copy</goal>
             </goals>
@@ -75,7 +75,7 @@ Copyright 2010 by TalkingTrends (Amsterdam, The Netherlands)
             <goals>
               <goal>run</goal>
             </goals>
-            <phase>compile</phase>
+            <phase>prepare-package</phase>
             <configuration>
               <target>
                 <unzip dest="target/classes/war">
@@ -129,7 +129,7 @@ Copyright 2010 by TalkingTrends (Amsterdam, The Netherlands)
                   <exclude>commons-lang:*</exclude>
                   <exclude>commons-codec:*</exclude>
                   <exclude>commons-fileupload:*</exclude>
-                  <exclude>org.openrdf.sesame:*</exclude>
+                  <exclude>org.eclipse.rdf4j:*</exclude>
                   <exclude>com.github.stephenc.high-scale-lib:*</exclude>
                   <exclude>blazegraph-colt:*</exclude>
                   <exclude>colt:*</exclude>
@@ -141,7 +141,7 @@ Copyright 2010 by TalkingTrends (Amsterdam, The Netherlands)
                   <exclude>org.apache.*:*</exclude>
                   <exclude>org.eclipse.jetty:*</exclude>
                   <exclude>com.tinkerpop.*:*</exclude>
-                  <exclude>javax.servlet:*</exclude>
+                  <exclude>jakarta.servlet:*</exclude>
                   <exclude>log4j:*</exclude>
                 </excludes>
               </artifactSet>
@@ -204,20 +204,20 @@ ga('send', 'pageview');
       <version>${project.version}</version>
       <exclusions>
         <exclusion>
-          <groupId>org.openrdf.sesame</groupId>
-          <artifactId>sesame-rio-testsuite</artifactId>
+          <groupId>org.eclipse.rdf4j</groupId>
+          <artifactId>rdf4j-rio-testsuite</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.openrdf.sesame</groupId>
-          <artifactId>sesame-sparql-testsuite</artifactId>
+          <groupId>org.eclipse.rdf4j</groupId>
+          <artifactId>rdf4j-sparql-testsuite</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.openrdf.sesame</groupId>
-          <artifactId>sesame-store-testsuite</artifactId>
+          <groupId>org.eclipse.rdf4j</groupId>
+          <artifactId>rdf4j-repository-testsuite</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>javax.servlet</groupId>
-          <artifactId>javax.servlet-api</artifactId>
+          <groupId>jakarta.servlet</groupId>
+          <artifactId>jakarta.servlet-api</artifactId>
         </exclusion>
       </exclusions>
     </dependency>

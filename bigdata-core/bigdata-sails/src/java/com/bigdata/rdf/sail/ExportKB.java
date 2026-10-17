@@ -44,14 +44,15 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.zip.GZIPOutputStream;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFWriter;
-import org.openrdf.rio.RDFWriterRegistry;
-import org.openrdf.sail.SailException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFWriter;
+import org.eclipse.rdf4j.rio.RDFWriterRegistry;
+import org.eclipse.rdf4j.sail.SailException;
 
 import com.bigdata.Banner;
 import com.bigdata.journal.IIndexManager;
@@ -63,7 +64,7 @@ import com.bigdata.relation.RelationSchema;
 import com.bigdata.relation.locator.ILocatableResource;
 import com.bigdata.sparse.ITPS;
 
-import info.aduna.iteration.CloseableIteration;
+import org.eclipse.rdf4j.common.iteration.CloseableIteration;
 
 /**
  * Utility class for exporting the configuration properties and data associated
@@ -77,7 +78,7 @@ import info.aduna.iteration.CloseableIteration;
  */
 public class ExportKB {
 
-    private static final Logger log = Logger.getLogger(ExportKB.class);
+    private static final Logger log = LogManager.getLogger(ExportKB.class);
 
     /**
      * The connection that will be used to export the data.
@@ -267,7 +268,7 @@ public class ExportKB {
 //            sail.initialize();
 //            final SailConnection conn = sail.getReadOnlyConnection();
 //            try {
-                final CloseableIteration<? extends Statement, SailException> itr = conn
+                final CloseableIteration<? extends Statement> itr = conn
                         .getStatements(null/* s */, null/* p */, null/* o */,
                                 includeInferred, new Resource[] {}/* contexts */);
                 try {
@@ -278,7 +279,7 @@ public class ExportKB {
                             new FileOutputStream(file));
                     try {
                         final RDFWriter writer = RDFWriterRegistry
-                                .getInstance().get(format).getWriter(os);
+                                .getInstance().get(format).orElseThrow().getWriter(os);
                         writer.startRDF();
                         while (itr.hasNext()) {
                             final Statement stmt = itr.next();
@@ -482,7 +483,7 @@ public class ExportKB {
                 usage();
                 System.exit(0);
             } else if(s.equals("-format")) {
-                format = RDFFormat.valueOf(args[i++]);
+                format = com.bigdata.rdf.rio.RDF4JFormatUtil.valueOf(args[i++]);
             } else if(s.equals("-includeInferred")) {
                 includeInferred = true;
             } else if (s.equals("-outdir")) {

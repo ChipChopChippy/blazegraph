@@ -27,12 +27,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.vocab;
 
-import org.openrdf.Sesame;
-import org.openrdf.model.Value;
-import org.openrdf.model.vocabulary.OWL;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.model.vocabulary.XMLSchema;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.vocabulary.OWL;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
 
 import com.bigdata.rdf.store.AbstractTripleStore;
 import com.bigdata.rdf.vocab.decls.DCAllVocabularyDecl;
@@ -49,7 +48,7 @@ import com.bigdata.rdf.vocab.decls.XMLSchemaVocabularyDecl;
  * A {@link Vocabulary} including well-known {@link Value}s for {@link RDF},
  * {@link RDFS}, {@link OWL}, {@link DCAllVocabularyDecl Dublin Core},
  * {@link SKOSVocabularyDecl SKOS}, {@link FOAFVocabularyDecl FOAF},
- * {@link XMLSchema}, and {@link Sesame}.
+ * {@link XSD}, and {@link SesameVocabularyDecl}.
  * 
  * @author <a href="mailto:thompsonbry@users.sourceforge.net">Bryan Thompson</a>
  * @version $Id$

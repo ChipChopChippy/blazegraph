@@ -29,12 +29,12 @@ package com.bigdata.rdf.rules;
 
 import java.util.Properties;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.spo.ISPO;
@@ -86,13 +86,13 @@ public class TestRuleRdfs03 extends AbstractRuleTestCase {
 
         try {
         
-            URI A = new URIImpl("http://www.foo.org/A");
-            URI X = new URIImpl("http://www.foo.org/X");
-            URI U = new URIImpl("http://www.foo.org/U");
-            Literal V1 = new LiteralImpl("V1"); // a literal.
-            URI V2 = new URIImpl("http://www.foo.org/V2"); // not a literal.
-            URI rdfRange = RDFS.RANGE;
-            URI rdfType = RDF.TYPE;
+            IRI A = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/A");
+            IRI X = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/X");
+            IRI U = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/U");
+            Literal V1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("V1"); // a literal.
+            IRI V2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/V2"); // not a literal.
+            IRI rdfRange = RDFS.RANGE;
+            IRI rdfType = RDF.TYPE;
 
             store.addStatement(A, rdfRange, X);
             store.addStatement(U, A, V1);
@@ -151,11 +151,11 @@ public class TestRuleRdfs03 extends AbstractRuleTestCase {
 
         try {
         
-            URI A = new URIImpl("http://www.foo.org/A");
-            URI B = new URIImpl("http://www.foo.org/B");
-            URI rdfsRange = RDFS.RANGE;
-            URI rdfsClass= RDFS.CLASS;
-            URI rdfType = RDF.TYPE;
+            IRI A = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/A");
+            IRI B = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/B");
+            IRI rdfsRange = RDFS.RANGE;
+            IRI rdfsClass= RDFS.CLASS;
+            IRI rdfType = RDF.TYPE;
 
             store.addStatement(A, rdfType, B);
             store.addStatement(rdfType, rdfsRange, rdfsClass);

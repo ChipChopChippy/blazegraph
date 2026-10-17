@@ -32,21 +32,22 @@ import java.util.Map;
 
 import junit.framework.TestCase2;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.sail.Sail;
-import org.openrdf.sail.memory.MemoryStore;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.sail.SailRepository;
+import org.eclipse.rdf4j.sail.Sail;
+import org.eclipse.rdf4j.sail.memory.MemoryStore;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpUtility;
@@ -64,7 +65,7 @@ import com.bigdata.rdf.store.BD;
  */
 public class TestBOpUtility extends TestCase2 {
 
-    private static final Logger log = Logger.getLogger(TestBOpUtility.class);
+    private static final Logger log = LogManager.getLogger(TestBOpUtility.class);
     
     /**
      * 
@@ -181,15 +182,15 @@ public class TestBOpUtility extends TestCase2 {
     	
     	final Sail sail = new MemoryStore();
     	final Repository repo = new SailRepository(sail);
-    	repo.initialize();
+    	repo.init();
     	final RepositoryConnection cxn = repo.getConnection();
     	
     	try {
     		
     		final ValueFactory vf = sail.getValueFactory();
     		
-    		final URI mike = vf.createURI(BD.NAMESPACE + "mike");
-    		final URI age = vf.createURI(BD.NAMESPACE + "age");
+    		final IRI mike = vf.createIRI(BD.NAMESPACE + "mike");
+    		final IRI age = vf.createIRI(BD.NAMESPACE + "age");
     		final Literal mikeAge = vf.createLiteral(34);
     		
     		cxn.add(vf.createStatement(mike, RDF.TYPE, RDFS.RESOURCE));

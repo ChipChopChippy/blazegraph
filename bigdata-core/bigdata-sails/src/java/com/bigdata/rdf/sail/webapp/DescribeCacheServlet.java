@@ -29,17 +29,18 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Graph;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.GraphImpl;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFWriter;
-import org.openrdf.rio.RDFWriterRegistry;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.LinkedHashModel;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFWriter;
+import org.eclipse.rdf4j.rio.RDFWriterRegistry;
 
 import com.bigdata.bop.engine.QueryEngine;
 import com.bigdata.bop.fed.QueryEngineFactory;
@@ -55,8 +56,8 @@ import com.bigdata.rdf.store.AbstractTripleStore;
 /**
  * A maintained cache for DESCRIBE of URIs.
  * <p>
- * In general, URIs may be identified either by a bare URI (in which case the
- * URI must be some extension of the SPARQL endpoint path) or by a SPARQL
+ * In general, URIs may be identified either by a bare IRI (in which case the
+ * IRI must be some extension of the SPARQL endpoint path) or by a SPARQL
  * DESCRIBE query ( <code>endpoint?query=DESCRIBE uri(,uri)*</code>).
  * <p>
  * The {@link DescribeCacheServlet} will recognize and perform the DESCRIBE of
@@ -80,13 +81,13 @@ import com.bigdata.rdf.store.AbstractTripleStore;
  * for a given schema namespace?
  * 
  * TODO Describe caching in an open web context requires maintaining metadata
- * about the web resources that have been queried for a given URI. This should
- * include at least the URI itself and could include well known aggregators that
- * might have data for that URI.
+ * about the web resources that have been queried for a given IRI. This should
+ * include at least the IRI itself and could include well known aggregators that
+ * might have data for that IRI.
  * 
  * TODO Take advantage of the known materialization performed by a DESCRIBE
  * query when running queries (materialized star-join). Also, store IVs in the
- * Graph as well as Values. We need both to do efficient star-joins (enter by IV
+ * Model as well as Values. We need both to do efficient star-joins (enter by IV
  * and have IV on output).
  * 
  * TODO Hash partitioned DESCRIBE fabric. The partitioned map is easy enough and
@@ -97,7 +98,7 @@ import com.bigdata.rdf.store.AbstractTripleStore;
  * namespace or for the webapp that specifies how to locate and maintain the
  * cache.
  * 
- * TODO Expose (and declare through VoID) a simple URI lookup service that is
+ * TODO Expose (and declare through VoID) a simple IRI lookup service that is
  * powered by this cache and turns into a DESCRIBE query if there is a cache
  * miss (or turn it into a DESCRIBE query and let that route to the cache
  * first).  VoID has the concept of this kind of "lookup" service.
@@ -109,7 +110,7 @@ import com.bigdata.rdf.store.AbstractTripleStore;
  */
 public class DescribeCacheServlet extends BigdataRDFServlet {
 
-    static private final transient Logger log = Logger
+    static private final transient Logger log = LogManager
             .getLogger(DescribeCacheServlet.class);
     
     /**
@@ -119,7 +120,7 @@ public class DescribeCacheServlet extends BigdataRDFServlet {
 
     /**
      * The name of a request attribute whose bound value is a {@link Set} of
-     * {@link URI}s to be described by the {@link DescribeCacheServlet}.
+     * {@link IRI}s to be described by the {@link DescribeCacheServlet}.
      */
     static final transient String ATTR_DESCRIBE_URIS = "describeUris";
     
@@ -140,19 +141,19 @@ public class DescribeCacheServlet extends BigdataRDFServlet {
 
         /*
          * 1. Check the request path for a linked data GET on a resource.
-         * If found, then add that URI to the request attribute.
+         * If found, then add that IRI to the request attribute.
          * 
          * 2. Else, if the request is a SPARQL DESCRIBE, then extract the URIs
          * to be described and attach them as request attributes (on a set).
-         * A single Graph will be returned in this case. The client will have
-         * to inspect the Graph to decide which URIs were found and which were
+         * A single Model will be returned in this case. The client will have
+         * to inspect the Model to decide which URIs were found and which were
          * not.
          * 
          * 3. Check the request attribute for a set of URIs to be DESCRIBEd.
          */
         
         @SuppressWarnings("unchecked")
-        final Set<URI> externalURIs = (Set<URI>) req.getAttribute(ATTR_DESCRIBE_URIS);
+        final Set<IRI> externalURIs = (Set<IRI>) req.getAttribute(ATTR_DESCRIBE_URIS);
 
         if (externalURIs == null) {
 
@@ -228,7 +229,7 @@ public class DescribeCacheServlet extends BigdataRDFServlet {
             final BigdataValueFactory valueFactory = tripleStore
                     .getValueFactory();
 
-            for (URI uri : externalURIs) {
+            for (IRI uri : externalURIs) {
 
                 internalURIs.add(valueFactory.asValue(uri));
 
@@ -262,14 +263,14 @@ public class DescribeCacheServlet extends BigdataRDFServlet {
          * 
          * TODO Support SKETCH (VoID request) option here.
          */
-        Graph g = null;
+        Model g = null;
         {
 
             for (BigdataURI uri : internalURIs) {
 
                 final IV<?, ?> iv = uri.getIV();
 
-                final Graph x = describeCache.lookup(iv);
+                final Model x = describeCache.lookup(iv);
 
                 if (x != null && g == null) {
 
@@ -281,7 +282,7 @@ public class DescribeCacheServlet extends BigdataRDFServlet {
                     } else {
 
                         // Collect the DESCRIBE of all graphs.
-                        g = new GraphImpl();
+                        g = new LinkedHashModel();
 
                         // Combine the resource descriptions together.
                         g.addAll(x);
@@ -362,7 +363,7 @@ public class DescribeCacheServlet extends BigdataRDFServlet {
             final OutputStream os = resp.getOutputStream();
 
             final RDFWriter w = RDFWriterRegistry.getInstance().get(format)
-                    .getWriter(os);
+                    .orElseThrow().getWriter(os);
 
             w.startRDF();
 

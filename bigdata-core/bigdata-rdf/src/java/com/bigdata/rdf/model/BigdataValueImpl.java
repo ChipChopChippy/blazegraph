@@ -65,7 +65,7 @@ public abstract class BigdataValueImpl implements BigdataValue {
 //     * @throws IllegalArgumentException
 //     *             if the argument is <code>null</code>.
 //     * @throws IllegalStateException
-//     *             if a different {@link BigdataValueFactoryImpl} has already been
+//     *             if a different {@link BigdataSimpleValueFactory} has already been
 //     *             set.
 //     */
 //    public final void setValueFactory(final BigdataValueFactory valueFactory) {
@@ -154,7 +154,7 @@ public abstract class BigdataValueImpl implements BigdataValue {
 
 		out.defaultWriteObject();
 		
-		out.writeUTF(((BigdataValueFactoryImpl) valueFactory).getNamespace());
+		out.writeUTF(((BigdataSimpleValueFactory) valueFactory).getNamespace());
 		
 	}
 
@@ -169,7 +169,7 @@ public abstract class BigdataValueImpl implements BigdataValue {
 
 		final String namespace = in.readUTF();
 		
-		valueFactory = BigdataValueFactoryImpl.getInstance(namespace);
+		valueFactory = BigdataSimpleValueFactory.getInstance(namespace);
 		
 	}
 	

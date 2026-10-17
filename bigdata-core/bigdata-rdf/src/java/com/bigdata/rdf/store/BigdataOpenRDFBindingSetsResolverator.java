@@ -33,10 +33,11 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Value;
-import org.openrdf.query.Binding;
-import org.openrdf.query.BindingSet;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.Binding;
+import org.eclipse.rdf4j.query.BindingSet;
 
 import com.bigdata.bop.Constant;
 import com.bigdata.bop.IBindingSet;
@@ -68,7 +69,7 @@ public class BigdataOpenRDFBindingSetsResolverator
         extends
         AbstractChunkedResolverator<BindingSet, IBindingSet, AbstractTripleStore> {
 
-    final private static Logger log = Logger
+    final private static Logger log = LogManager
             .getLogger(BigdataOpenRDFBindingSetsResolverator.class);
 
     /**

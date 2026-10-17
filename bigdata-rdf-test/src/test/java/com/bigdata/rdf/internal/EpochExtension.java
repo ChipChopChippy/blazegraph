@@ -27,11 +27,11 @@ package com.bigdata.rdf.internal;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.datatypes.XMLDatatypeUtil;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.datatypes.XMLDatatypeUtil;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.rdf.internal.impl.literal.AbstractLiteralIV;
 import com.bigdata.rdf.internal.impl.literal.LiteralExtensionIV;
@@ -49,9 +49,9 @@ import com.bigdata.rdf.store.BD;
 public class EpochExtension<V extends BigdataValue> implements IExtension<V> {
 
     /**
-     * The datatype URI for the epoch extension.
+     * The datatype IRI for the epoch extension.
      */
-    public transient static final URI EPOCH = new URIImpl(BD.NAMESPACE + "Epoch");
+    public transient static final IRI EPOCH = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Epoch");
     
     private final BigdataURI epoch;
     
@@ -83,7 +83,7 @@ public class EpochExtension<V extends BigdataValue> implements IExtension<V> {
         
         final Literal lit = (Literal) value;
         
-        final URI dt = lit.getDatatype();
+        final IRI dt = lit.getDatatype();
         
         if (dt == null || !EPOCH.stringValue().equals(dt.stringValue()))
             throw new IllegalArgumentException();

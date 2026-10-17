@@ -81,9 +81,16 @@ Copyright 2010 by TalkingTrends (Amsterdam, The Netherlands)
     </build>
   <dependencies>
     <dependency>
-      <groupId>org.openrdf.sesame</groupId>
-      <artifactId>sesame-runtime</artifactId>
-      <version>${sesame.version}</version>
+      <groupId>org.eclipse.rdf4j</groupId>
+      <artifactId>rdf4j-runtime</artifactId>
+      <type>pom</type>
+      <version>${rdf4j.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.eclipse.rdf4j</groupId>
+          <artifactId>rdf4j-sail-solr</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
 </project>

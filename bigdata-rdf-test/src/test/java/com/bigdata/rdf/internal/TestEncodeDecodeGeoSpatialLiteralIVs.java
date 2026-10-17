@@ -31,8 +31,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.rdf.internal.impl.extensions.GeoSpatialLiteralExtension;
 import com.bigdata.rdf.internal.impl.extensions.InvalidGeoSpatialDatatypeConfigurationError;
@@ -42,7 +42,7 @@ import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataURI;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.service.geospatial.GeoSpatial;
 import com.bigdata.service.geospatial.GeoSpatialDatatypeConfiguration;
 import com.bigdata.service.geospatial.GeoSpatialDatatypeFieldConfiguration;
@@ -60,16 +60,16 @@ public class TestEncodeDecodeGeoSpatialLiteralIVs extends
       AbstractEncodeDecodeKeysTestCase {
 
    private final String STR_DATATYPE_LAT_LON_LONG_MIN = "http://my.test.datatype/lat_lon_long_min";
-   private final URI URI_DATATYPE_LAT_LON_LONG_MIN = new URIImpl(STR_DATATYPE_LAT_LON_LONG_MIN);
+   private final IRI URI_DATATYPE_LAT_LON_LONG_MIN = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(STR_DATATYPE_LAT_LON_LONG_MIN);
 
    private final String STR_DATATYPE_LAT_LON_LONG = "http://my.test.datatype/lat_lon_as-long";
-   private final URI URI_DATATYPE_LAT_LON_LONG = new URIImpl(STR_DATATYPE_LAT_LON_LONG);
+   private final IRI URI_DATATYPE_LAT_LON_LONG = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(STR_DATATYPE_LAT_LON_LONG);
 
    private final String STR_DATATYPE_LAT_LON_DOUBLE = "http://my.test.datatype/lat_lon_as-double";
-   private final URI URI_DATATYPE_LAT_LON_DOUBLE = new URIImpl(STR_DATATYPE_LAT_LON_DOUBLE);
+   private final IRI URI_DATATYPE_LAT_LON_DOUBLE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(STR_DATATYPE_LAT_LON_DOUBLE);
 
    private final String STR_DATATYPE_LAT_LON_TIME = "http://my.test.datatype/lat_lon_time";
-   private final URI URI_DATATYPE_LAT_LON_TIME = new URIImpl(STR_DATATYPE_LAT_LON_TIME);
+   private final IRI URI_DATATYPE_LAT_LON_TIME = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(STR_DATATYPE_LAT_LON_TIME);
    
    /**
      * 
@@ -90,7 +90,7 @@ public class TestEncodeDecodeGeoSpatialLiteralIVs extends
     */
    public void test_encodeDecodeLatLonTimeGeoSpatialLiterals() throws Exception {
 
-      final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance("test");
+      final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance("test");
       
       final GeoSpatialLiteralExtension<BigdataValue> ext = 
          getLatLonTimeGSLiteralExtension(vf);
@@ -106,7 +106,7 @@ public class TestEncodeDecodeGeoSpatialLiteralIVs extends
     */
    public void test_encodeDecodeLatLonGeoSpatialLiterals() throws Exception {
 
-      final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance("test");
+      final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance("test");
       
       final GeoSpatialLiteralExtension<BigdataValue> ext = 
          getLatLonGSLiteralExtension(vf);
@@ -121,7 +121,7 @@ public class TestEncodeDecodeGeoSpatialLiteralIVs extends
     */
    public void test_encodeDecodeGeoSpatialLiteralsWrongFormat() throws Exception {
 
-      final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance("test");
+      final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance("test");
       
       
       // direction one: processing lat+lon literals with lat+lon+time datatype
@@ -179,7 +179,7 @@ public class TestEncodeDecodeGeoSpatialLiteralIVs extends
     */
    public void testZIndexOrderingPositive() {
       
-      final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance("test");
+      final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance("test");
       
       final GeoSpatialLiteralExtension<BigdataValue> litExt = 
             getSimpleLatLonGSLiteralExtension(vf); 
@@ -196,7 +196,7 @@ public class TestEncodeDecodeGeoSpatialLiteralIVs extends
     */
    public void testZIndexOrderingPositiveWithRangeAdjustment() {
       
-      final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance("test");
+      final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance("test");
 
       // the range in the test we delegate to is 0 .. 7
       final GeoSpatialLiteralExtension<BigdataValue> litExt = 
@@ -212,7 +212,7 @@ public class TestEncodeDecodeGeoSpatialLiteralIVs extends
     */
    public void testZIndexOrderingMixed() {
       
-      final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance("test");
+      final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance("test");
 
       // the range in the test we delegate to is -2 .. 1
       final GeoSpatialLiteralExtension<BigdataValue> litExt = 
@@ -228,7 +228,7 @@ public class TestEncodeDecodeGeoSpatialLiteralIVs extends
     */
    public void testZIndexOrderingMixedWithRangeAdjustment() {
       
-      final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance("test");
+      final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance("test");
 
       // the range in the test we delegate to is -2 .. 1
       final GeoSpatialLiteralExtension<BigdataValue> litExt = 
@@ -285,7 +285,7 @@ public class TestEncodeDecodeGeoSpatialLiteralIVs extends
    protected void zIndexOrderingPositiveBase(
       final BigdataValueFactory vf,
       final GeoSpatialLiteralExtension<BigdataValue> litExt,
-      final URI datatype) {
+      final IRI datatype) {
       
       /**
        * Scenario description: assume we have integers 0 .. 7 for each of the
@@ -487,7 +487,7 @@ public class TestEncodeDecodeGeoSpatialLiteralIVs extends
    protected void zIndexOrderingMixedBase(
       final BigdataValueFactory vf,
       final GeoSpatialLiteralExtension<BigdataValue> litExt,
-      final URI datatype) {
+      final IRI datatype) {
       
       // Generate values
       final BigdataLiteral[] asWritten  =
@@ -558,7 +558,7 @@ public class TestEncodeDecodeGeoSpatialLiteralIVs extends
     * @return the list of generated literals
     */
    protected final BigdataLiteral[] getDummyGeospatialLiteralsLatLon(
-         final BigdataValueFactory vf, final URI datatype) {
+         final BigdataValueFactory vf, final IRI datatype) {
 
       /**
        * The basic schema is a three-component datatype string made up from the
@@ -637,7 +637,7 @@ public class TestEncodeDecodeGeoSpatialLiteralIVs extends
     * @return the list of generated literals
     */
    protected final BigdataLiteral[] getDummyGeospatialLiteralsLatLonTime(
-         final BigdataValueFactory vf, final URI datatype) {
+         final BigdataValueFactory vf, final IRI datatype) {
 
       /**
        * Using the built-in datatype schema.
@@ -731,7 +731,7 @@ public class TestEncodeDecodeGeoSpatialLiteralIVs extends
     */
    protected final BigdataLiteral[] getGeospatialLiteralsLatLonInRange(
       final BigdataValueFactory vf, final int from, final int to,
-      final URI datatype) {
+      final IRI datatype) {
       
       final int numComponents = to-from+1;
       
@@ -878,9 +878,9 @@ public class TestEncodeDecodeGeoSpatialLiteralIVs extends
       return 
          new GeoSpatialLiteralExtension<BigdataValue>(
             new IDatatypeURIResolver() {
-               public BigdataURI resolve(URI uri) {
-                  final BigdataURI buri = vf.createURI(uri.stringValue());
-                  buri.setIV(newTermId(VTE.URI));
+               public BigdataURI resolve(IRI uri) {
+                  final BigdataURI buri = vf.createIRI(uri.stringValue());
+                  buri.setIV(newTermId(VTE.IRI));
                   return buri;
                }
          },datatypeConfig);

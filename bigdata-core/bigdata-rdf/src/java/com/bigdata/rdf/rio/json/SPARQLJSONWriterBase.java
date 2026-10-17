@@ -27,19 +27,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.openrdf.model.BNode;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.query.Binding;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryResultHandlerException;
-import org.openrdf.query.TupleQueryResultHandlerException;
-import org.openrdf.query.resultio.BasicQueryWriterSettings;
-import org.openrdf.query.resultio.QueryResultWriter;
-import org.openrdf.query.resultio.QueryResultWriterBase;
-import org.openrdf.rio.RioSetting;
-import org.openrdf.rio.helpers.BasicWriterSettings;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.Binding;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryResultHandlerException;
+import org.eclipse.rdf4j.query.TupleQueryResultHandlerException;
+import org.eclipse.rdf4j.query.resultio.BasicQueryWriterSettings;
+import org.eclipse.rdf4j.query.resultio.QueryResultWriter;
+import org.eclipse.rdf4j.query.resultio.AbstractQueryResultWriter;
+import org.eclipse.rdf4j.rio.RioSetting;
+import org.eclipse.rdf4j.rio.helpers.BasicWriterSettings;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -56,7 +56,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
  * 
  * @author Peter Ansell
  */
-abstract class SPARQLJSONWriterBase extends QueryResultWriterBase implements QueryResultWriter {
+abstract class SPARQLJSONWriterBase extends AbstractQueryResultWriter implements QueryResultWriter {
 
 	private static final JsonFactory JSON_FACTORY = new JsonFactory();
 
@@ -337,9 +337,9 @@ abstract class SPARQLJSONWriterBase extends QueryResultWriterBase implements Que
 	{
 		jg.writeStartObject();
 
-		if (value instanceof URI) {
+		if (value instanceof IRI) {
 			jg.writeStringField("type", "uri");
-			jg.writeStringField("value", ((URI)value).toString());
+			jg.writeStringField("value", ((IRI)value).toString());
 		}
 		else if (value instanceof BNode) {
 			jg.writeStringField("type", "bnode");
@@ -350,12 +350,11 @@ abstract class SPARQLJSONWriterBase extends QueryResultWriterBase implements Que
 
 			// TODO: Implement support for
 			// BasicWriterSettings.RDF_LANGSTRING_TO_LANG_LITERAL here
-			if (lit.getLanguage() != null) {
-				jg.writeObjectField("xml:lang", lit.getLanguage());
-			}
-			// TODO: Implement support for
-			// BasicWriterSettings.XSD_STRING_TO_PLAIN_LITERAL here
-			if (lit.getDatatype() != null) {
+			if (lit.getLanguage().isPresent()) {
+				jg.writeObjectField("xml:lang", lit.getLanguage().get());
+			} else if (lit.getDatatype() != null
+					&& !org.eclipse.rdf4j.model.vocabulary.XMLSchema.STRING.equals(lit.getDatatype())) {
+				// TODO: Implement support for BasicWriterSettings.XSD_STRING_TO_PLAIN_LITERAL.
 				jg.writeObjectField("datatype", lit.getDatatype().stringValue());
 			}
 

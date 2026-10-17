@@ -26,11 +26,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.ValueFactoryImpl;
-import org.openrdf.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
 
 import com.bigdata.rdf.internal.XSD;
 import com.tinkerpop.blueprints.Edge;
@@ -62,24 +62,24 @@ public class DefaultBlueprintsValueFactory implements BlueprintsValueFactory {
 	public final String EDGE_NAMESPACE;// = "http://www.bigdata.com/rdf/graph/edge/";
 	
     /**
-     * URI used for typing elements.
+     * IRI used for typing elements.
      */
-	public final URI TYPE;
+	public final IRI TYPE;
 	
     /**
-     * URI used to represent a Vertex.
+     * IRI used to represent a Vertex.
      */
-    public final URI VERTEX;
+    public final IRI VERTEX;
     
     /**
-     * URI used to represent a Edge.
+     * IRI used to represent a Edge.
      */
-    public final URI EDGE;
+    public final IRI EDGE;
 
     /**
-     * URI used for labeling edges.
+     * IRI used for labeling edges.
      */
-    public final URI LABEL;
+    public final IRI LABEL;
 
     /**
      * The Sesame value factory for URIs and Literals.
@@ -87,24 +87,24 @@ public class DefaultBlueprintsValueFactory implements BlueprintsValueFactory {
 	protected final ValueFactory vf;
 	
     /**
-     * Construct an instance with a simple Sesame ValueFactoryImpl.
+     * Construct an instance with a simple Sesame SimpleValueFactory.
      */
     public DefaultBlueprintsValueFactory(final String graphNamespace,
             final String vertexNamespace, final String edgeNamespace,
-            final URI type, final URI vertex, final URI edge, final URI label) {
+            final IRI type, final IRI vertex, final IRI edge, final IRI label) {
         
-        this(new ValueFactoryImpl(), graphNamespace, vertexNamespace,
+        this(SimpleValueFactory.getInstance(), graphNamespace, vertexNamespace,
                 edgeNamespace, type, vertex, edge, label);
         
     }
 
 	/**
-	 * Construct an instance with the specified ValueFactoryImpl.
+	 * Construct an instance with the specified SimpleValueFactory.
 	 */
     public DefaultBlueprintsValueFactory(final ValueFactory vf,
             final String graphNamespace, final String vertexNamespace,
-            final String edgeNamespace, final URI type, final URI vertex,
-            final URI edge, final URI label) {
+            final String edgeNamespace, final IRI type, final IRI vertex,
+            final IRI edge, final IRI label) {
 	    
 		this.vf = vf;
 		this.GRAPH_NAMESPACE = graphNamespace;
@@ -118,22 +118,22 @@ public class DefaultBlueprintsValueFactory implements BlueprintsValueFactory {
 	}
 	
     @Override
-    public URI getTypeURI() {
+    public IRI getTypeURI() {
         return TYPE;
     }
 
     @Override
-    public URI getVertexURI() {
+    public IRI getVertexURI() {
         return VERTEX;
     }
 
     @Override
-    public URI getEdgeURI() {
+    public IRI getEdgeURI() {
         return EDGE;
     }
 
     @Override
-    public URI getLabelURI() {
+    public IRI getLabelURI() {
         return LABEL;
     }
 
@@ -141,13 +141,13 @@ public class DefaultBlueprintsValueFactory implements BlueprintsValueFactory {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public URI toVertexURI(final Object key) {
+	public IRI toVertexURI(final Object key) {
 		
 		try {
 
 			final String id = key.toString();
 			
-			return vf.createURI(VERTEX_NAMESPACE, URLEncoder.encode(id, "UTF-8"));
+			return vf.createIRI(VERTEX_NAMESPACE, URLEncoder.encode(id, "UTF-8"));
 				
 		} catch (UnsupportedEncodingException e) {
 			
@@ -161,13 +161,13 @@ public class DefaultBlueprintsValueFactory implements BlueprintsValueFactory {
      * {@inheritDoc}
      */
 	@Override
-	public URI toEdgeURI(final Object key) {
+	public IRI toEdgeURI(final Object key) {
 		
 		try {
 
 			final String id = key.toString();
 			
-			return vf.createURI(EDGE_NAMESPACE, URLEncoder.encode(id, "UTF-8"));
+			return vf.createIRI(EDGE_NAMESPACE, URLEncoder.encode(id, "UTF-8"));
 				
 		} catch (UnsupportedEncodingException e) {
 			
@@ -181,7 +181,7 @@ public class DefaultBlueprintsValueFactory implements BlueprintsValueFactory {
      * {@inheritDoc}
      */
 	@Override
-	public URI toURI(final Element e) {
+	public IRI toURI(final Element e) {
 		
 		if (e instanceof Edge) {
 			
@@ -199,7 +199,7 @@ public class DefaultBlueprintsValueFactory implements BlueprintsValueFactory {
      * {@inheritDoc}
      */
 	@Override
-	public URI toPropertyURI(final String property) {
+	public IRI toPropertyURI(final String property) {
 		
 		try {
 
@@ -213,7 +213,7 @@ public class DefaultBlueprintsValueFactory implements BlueprintsValueFactory {
 		        
 		    } else {
 			
-		        return vf.createURI(GRAPH_NAMESPACE, URLEncoder.encode(property, "UTF-8"));
+		        return vf.createIRI(GRAPH_NAMESPACE, URLEncoder.encode(property, "UTF-8"));
 		        
 		    }
 				
@@ -226,10 +226,10 @@ public class DefaultBlueprintsValueFactory implements BlueprintsValueFactory {
 	}
 
 //	/**
-//	 * Returns true if the URI is part of the vertex namespace.
+//	 * Returns true if the IRI is part of the vertex namespace.
 //	 */
 ////    @Override
-//	public boolean isVertex(final URI uri) {
+//	public boolean isVertex(final IRI uri) {
 //		
 //		final String s = uri.stringValue();
 //		
@@ -238,10 +238,10 @@ public class DefaultBlueprintsValueFactory implements BlueprintsValueFactory {
 //	}
 //	
 //	/**
-//	 * Returns true if the URI is part of the edge namespace.
+//	 * Returns true if the IRI is part of the edge namespace.
 //	 */
 ////	@Override
-//	public boolean isEdge(final URI uri) {
+//	public boolean isEdge(final IRI uri) {
 //		
 //		final String s = uri.stringValue();
 //		
@@ -250,10 +250,10 @@ public class DefaultBlueprintsValueFactory implements BlueprintsValueFactory {
 //	}
 //	
 //    /**
-//     * Returns true if the URI is part of the property namespace.
+//     * Returns true if the IRI is part of the property namespace.
 //     */
 ////    @Override
-//    public boolean isProperty(final URI uri) {
+//    public boolean isProperty(final IRI uri) {
 //        
 //        return !isVertex(uri) && !isEdge(uri);
 //        
@@ -263,7 +263,7 @@ public class DefaultBlueprintsValueFactory implements BlueprintsValueFactory {
 //     * {@inheritDoc}
 //     */
 //	@Override
-//	public String fromVertexURI(final URI uri) {
+//	public String fromVertexURI(final IRI uri) {
 //		
 //		return fromURI(uri);
 //		
@@ -273,7 +273,7 @@ public class DefaultBlueprintsValueFactory implements BlueprintsValueFactory {
 //     * {@inheritDoc}
 //     */
 //	@Override
-//	public String fromEdgeURI(final URI uri) {
+//	public String fromEdgeURI(final IRI uri) {
 //		
 //		return fromURI(uri);
 //		
@@ -283,17 +283,17 @@ public class DefaultBlueprintsValueFactory implements BlueprintsValueFactory {
 //     * {@inheritDoc}
 //     */
 //	@Override
-//	public String fromPropertyURI(final URI uri) {
+//	public String fromPropertyURI(final IRI uri) {
 //		
 //		return fromURI(uri);
 //		
 //	}
 
 	/**
-	 * Round-trip a URI back into a graph element ID or property name.
+	 * Round-trip a IRI back into a graph element ID or property name.
 	 */
 	@Override
-	public String fromURI(final URI uri) {
+	public String fromURI(final IRI uri) {
 		
 		if (uri == null) {
 			throw new IllegalArgumentException();
@@ -359,7 +359,7 @@ public class DefaultBlueprintsValueFactory implements BlueprintsValueFactory {
 	@Override
 	public Object fromLiteral(final Literal l) {
 		
-		final URI datatype = l.getDatatype();
+		final IRI datatype = l.getDatatype();
 		
 		if (datatype == null) {
 			return l.getLabel();

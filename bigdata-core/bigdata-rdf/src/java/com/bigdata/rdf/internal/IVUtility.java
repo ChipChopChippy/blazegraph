@@ -31,6 +31,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.internal;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -39,8 +41,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.btree.keys.IKeyBuilder;
 import com.bigdata.btree.keys.KeyBuilder;
@@ -97,7 +99,7 @@ import com.bigdata.rdf.spo.SPOKeyOrder;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class IVUtility {
 
-//    private static final transient Logger log = Logger.getLogger(IVUtility.class);
+//    private static final transient Logger log = LogManager.getLogger(IVUtility.class);
 
     /**
      * When <code>true</code>, we will pack term identifiers using
@@ -366,7 +368,7 @@ public class IVUtility {
 
                     // TODO Should really be switch((int)extensionByte).
                     switch (AbstractIV.getInternalValueTypeEnum(flags)) {
-                    case URI:
+                    case IRI:
                         return new PartlyInlineURIIV<BigdataURI>(delegate,
                                 extensionIV);
                     case LITERAL:
@@ -451,7 +453,7 @@ public class IVUtility {
         }
         case BNODE:
             return decodeInlineBNode(flags, key, o);
-        case URI:
+        case IRI:
             return decodeInlineURI(flags, key, o);
         case LITERAL:
             return decodeInlineLiteral(flags, key, o);
@@ -578,7 +580,7 @@ public class IVUtility {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            return new FullyInlineURIIV<BigdataURI>(new URIImpl(str1),
+            return new FullyInlineURIIV<BigdataURI>(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(str1),
                     1/* flags */+ nbytes);
         }
         default:
@@ -899,7 +901,7 @@ public class IVUtility {
             iv = new FullyInlineTypedLiteralIV<BigdataLiteral>(//
                     str2,//
                     null, // language
-                    new URIImpl(str1), // datatype
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(str1), // datatype
                     byteLength//
                     );
             break;

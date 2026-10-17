@@ -29,8 +29,8 @@ package com.bigdata.gom.om;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
 
 /**
  * Generator for globally unique URIs.
@@ -54,7 +54,7 @@ public class IDGenerator implements IIDGenerator {
      *            to avoid collisions between different {@link IObjectManager}s.
      * @param valueFactory
      *            The {@link ValueFactory} that will be used when new
-     *            {@link URI}s are generated.
+     *            {@link IRI}s are generated.
      */
     public IDGenerator(final String endpoint, final UUID uuid,
             final ValueFactory valueFactory) {
@@ -70,22 +70,22 @@ public class IDGenerator implements IIDGenerator {
 
         this.valueFactory = valueFactory;
 
-        // Setup the prefix that we will reuse for each new URI.
+        // Setup the prefix that we will reuse for each new IRI.
         this.prefix = endpoint + "/gpo/" + uuid + "/";
 
     }
 
     @Override
-    public URI genId() {
+    public IRI genId() {
 
-        return valueFactory.createURI(prefix + nextId.incrementAndGet());
+        return valueFactory.createIRI(prefix + nextId.incrementAndGet());
 
     }
 
     @Override
-    public URI genId(final String scope) {
+    public IRI genId(final String scope) {
 
-        return valueFactory.createURI(prefix + scope + "/"
+        return valueFactory.createIRI(prefix + scope + "/"
                 + nextId.incrementAndGet());
 
     }

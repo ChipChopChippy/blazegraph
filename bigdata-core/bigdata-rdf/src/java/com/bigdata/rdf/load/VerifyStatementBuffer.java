@@ -3,10 +3,11 @@ package com.bigdata.rdf.load;
 import java.beans.Statement;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.rdf.model.BigdataStatement;
 import com.bigdata.rdf.model.BigdataValue;
@@ -20,7 +21,7 @@ import com.bigdata.striterator.IChunkedOrderedIterator;
 /**
  * Statements inserted into the buffer are verified against the database. No
  * new {@link Value}s or {@link Statement}s will be written on the
- * database by this class. The #of {@link URI}, {@link Literal}, and told
+ * database by this class. The #of {@link IRI}, {@link Literal}, and told
  * triples not found in the database are reported by various counters.
  * 
  * @author <a href="mailto:thompsonbry@users.sourceforge.net">Bryan Thompson</a>
@@ -35,7 +36,7 @@ import com.bigdata.striterator.IChunkedOrderedIterator;
  */
 public class VerifyStatementBuffer extends StatementBuffer {
 
-    final private static Logger log = Logger.getLogger(VerifyStatementBuffer.class);
+    final private static Logger log = LogManager.getLogger(VerifyStatementBuffer.class);
     
     final AtomicLong nterms, ntermsNotFound, ntriples, ntriplesNotFound;
     

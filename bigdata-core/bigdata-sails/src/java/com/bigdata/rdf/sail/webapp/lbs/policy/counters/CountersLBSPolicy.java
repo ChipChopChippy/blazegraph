@@ -32,12 +32,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.eclipse.jetty.client.HttpClient;
-import org.eclipse.jetty.client.api.Request;
+import org.eclipse.jetty.client.Request;
 import org.eclipse.jetty.http.HttpMethod;
 
 import com.bigdata.bop.engine.QueryEngine;
@@ -77,7 +78,7 @@ import com.bigdata.rdf.sail.webapp.lbs.ServiceScore;
  */
 public class CountersLBSPolicy extends AbstractHostLBSPolicy {
 
-    private static final Logger log = Logger.getLogger(CountersLBSPolicy.class);
+    private static final Logger log = LogManager.getLogger(CountersLBSPolicy.class);
 
     /**
      * 
@@ -370,7 +371,7 @@ public class CountersLBSPolicy extends AbstractHostLBSPolicy {
                 for (Map.Entry<String, String> e : opts.requestHeaders
                         .entrySet()) {
 
-                    request.header(e.getKey(), e.getValue());
+                    request.headers(headers -> headers.add(e.getKey(), e.getValue()));
 
                     if (log.isDebugEnabled())
                         log.debug(e.getKey() + ": " + e.getValue());
@@ -382,7 +383,7 @@ public class CountersLBSPolicy extends AbstractHostLBSPolicy {
             if (opts.entity != null) {
 
             	final EntityContentProvider cp = new EntityContentProvider(opts.entity);
-                request.content(cp, cp.getContentType());
+                request.body(cp);
 
             }
 

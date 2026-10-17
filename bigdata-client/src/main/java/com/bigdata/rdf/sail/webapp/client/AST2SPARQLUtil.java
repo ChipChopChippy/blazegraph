@@ -30,12 +30,11 @@ package com.bigdata.rdf.sail.webapp.client;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.openrdf.model.BNode;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.vocabulary.XMLSchema;
-import org.openrdf.query.parser.sparql.SPARQLUtil;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
 
 /**
  * Utility class for externalizing SPARQL prefix declaration management.
@@ -91,9 +90,9 @@ public class AST2SPARQLUtil {
      */
     public String toExternal(final Value val) {
         
-        if (val instanceof URI) {
+        if (val instanceof IRI) {
 
-            return toExternal((URI) val);
+            return toExternal((IRI) val);
         
         } else if (val instanceof Literal) {
         
@@ -122,7 +121,7 @@ public class AST2SPARQLUtil {
 
     }
     
-    public String toExternal(final URI uri) {
+    public String toExternal(final IRI uri) {
 
         if (prefixDecls != null) {
 
@@ -144,9 +143,9 @@ public class AST2SPARQLUtil {
 
         final String label = lit.getLabel();
         
-        final String languageCode = lit.getLanguage();
+        final String languageCode = lit.getLanguage().orElse(null);
         
-        final URI datatypeURI = lit.getDatatype();
+        final IRI datatypeURI = lit.getDatatype();
 
         final String datatypeStr = datatypeURI == null ? null
                 : toExternal(datatypeURI);
@@ -156,7 +155,7 @@ public class AST2SPARQLUtil {
                 + (datatypeURI != null ? datatypeStr.length() + 2 : 0));
 
         sb.append('"');
-        sb.append(SPARQLUtil.encodeString(label));
+        sb.append(encodeString(label));
         sb.append('"');
 
         if (languageCode != null) {
@@ -171,6 +170,43 @@ public class AST2SPARQLUtil {
 
         return sb.toString();
 
+    }
+
+    private static String encodeString(final String value) {
+
+        final StringBuilder encoded = new StringBuilder(value.length());
+        for (int i = 0; i < value.length(); i++) {
+            final char ch = value.charAt(i);
+            switch (ch) {
+            case '\\':
+                encoded.append("\\\\");
+                break;
+            case '\t':
+                encoded.append("\\t");
+                break;
+            case '\n':
+                encoded.append("\\n");
+                break;
+            case '\r':
+                encoded.append("\\r");
+                break;
+            case '\b':
+                encoded.append("\\b");
+                break;
+            case '\f':
+                encoded.append("\\f");
+                break;
+            case '"':
+                encoded.append("\\\"");
+                break;
+            case '\'':
+                encoded.append("\\'");
+                break;
+            default:
+                encoded.append(ch);
+            }
+        }
+        return encoded.toString();
     }
 
 }

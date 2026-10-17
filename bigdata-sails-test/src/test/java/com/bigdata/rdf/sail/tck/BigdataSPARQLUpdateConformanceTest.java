@@ -28,7 +28,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package com.bigdata.rdf.sail.tck;
 
-import info.aduna.iteration.Iterations;
+import org.eclipse.rdf4j.common.iteration.Iterations;
 
 import java.net.URL;
 import java.util.Arrays;
@@ -41,21 +41,21 @@ import java.util.UUID;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.util.ModelUtil;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.Update;
-import org.openrdf.query.parser.sparql.manifest.SPARQL11ManifestTest;
-import org.openrdf.query.parser.sparql.manifest.SPARQLUpdateConformanceTest;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.contextaware.ContextAwareConnection;
-import org.openrdf.repository.contextaware.ContextAwareRepository;
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.sail.memory.MemoryStore;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.util.ModelUtil;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.Update;
+import org.eclipse.rdf4j.query.parser.sparql.manifest.SPARQL11ManifestTest;
+import org.eclipse.rdf4j.query.parser.sparql.manifest.SPARQLUpdateConformanceTest;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.contextaware.ContextAwareConnection;
+import org.eclipse.rdf4j.repository.contextaware.ContextAwareRepository;
+import org.eclipse.rdf4j.repository.sail.SailRepository;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.sail.memory.MemoryStore;
 
 import com.bigdata.BigdataStatics;
 import com.bigdata.journal.BufferMode;
@@ -116,7 +116,7 @@ public class BigdataSPARQLUpdateConformanceTest extends
      * @param suite
      *            The test suite.
      * @param testURI
-     *            The test URI (these are defined by the DAWG).
+     *            The test IRI (these are defined by the DAWG).
      *            
      * @return An instance of this class which will run just that one test.
      * 
@@ -174,9 +174,9 @@ public class BigdataSPARQLUpdateConformanceTest extends
 
     
     public BigdataSPARQLUpdateConformanceTest(String testURI, String name,
-            String requestFile, URI defaultGraphURI,
-            Map<String, URI> inputNamedGraphs, URI resultDefaultGraphURI,
-            Map<String, URI> resultNamedGraphs) {
+            String requestFile, IRI defaultGraphURI,
+            Map<String, IRI> inputNamedGraphs, IRI resultDefaultGraphURI,
+            Map<String, IRI> resultNamedGraphs) {
 
         super(testURI, name, requestFile, defaultGraphURI, inputNamedGraphs,
                 resultDefaultGraphURI, resultNamedGraphs);
@@ -190,9 +190,9 @@ public class BigdataSPARQLUpdateConformanceTest extends
             @Override
             public BigdataSPARQLUpdateConformanceTest createSPARQLUpdateConformanceTest(
                     String testURI, String name, String requestFile,
-                    URI defaultGraphURI, Map<String, URI> inputNamedGraphs,
-                    URI resultDefaultGraphURI,
-                    Map<String, URI> resultNamedGraphs) {
+                    IRI defaultGraphURI, Map<String, IRI> inputNamedGraphs,
+                    IRI resultDefaultGraphURI,
+                    Map<String, IRI> resultNamedGraphs) {
 
                 return new BigdataSPARQLUpdateConformanceTest(testURI, name,
                         requestFile, defaultGraphURI, inputNamedGraphs,
@@ -315,13 +315,13 @@ public class BigdataSPARQLUpdateConformanceTest extends
 
             if (inputDefaultGraph != null) {
                 graphURL = new URL(inputDefaultGraph.stringValue());
-                conn.add(graphURL, null, RDFFormat.forFileName(graphURL.toString()));
+                conn.add(graphURL, null, com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(graphURL.toString()));
             }
 
             for (String ng : inputNamedGraphs.keySet()) {
                 graphURL = new URL(inputNamedGraphs.get(ng).stringValue());
-                conn.add(graphURL, null, RDFFormat.forFileName(graphURL.toString()),
-                        dataRep.getValueFactory().createURI(ng));
+                conn.add(graphURL, null, com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(graphURL.toString()),
+                        dataRep.getValueFactory().createIRI(ng));
             }
             
             conn.commit();
@@ -339,13 +339,13 @@ public class BigdataSPARQLUpdateConformanceTest extends
 
             if (resultDefaultGraph != null) {
                 graphURL = new URL(resultDefaultGraph.stringValue());
-                conn.add(graphURL, null, RDFFormat.forFileName(graphURL.toString()));
+                conn.add(graphURL, null, com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(graphURL.toString()));
             }
 
             for (String ng : resultNamedGraphs.keySet()) {
                 graphURL = new URL(resultNamedGraphs.get(ng).stringValue());
-                conn.add(graphURL, null, RDFFormat.forFileName(graphURL.toString()),
-                        dataRep.getValueFactory().createURI(ng));
+                conn.add(graphURL, null, com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(graphURL.toString()),
+                        dataRep.getValueFactory().createIRI(ng));
             }
             
             conn.commit();
@@ -366,7 +366,7 @@ public class BigdataSPARQLUpdateConformanceTest extends
             String updateString = readUpdateString();
             
             con.begin();
-//            con.setReadContexts((URI)null);
+//            con.setReadContexts((IRI)null);
             
             Update update = con.prepareUpdate(QueryLanguage.SPARQL, updateString, requestFileURL);
 //            if (this.dataset != null) {
@@ -382,7 +382,7 @@ public class BigdataSPARQLUpdateConformanceTest extends
                     (BigdataSailRepositoryConnection) con);
 
             for (String namedGraph : inputNamedGraphs.keySet()) {
-                URI contextURI = con.getValueFactory().createURI(namedGraph.replaceAll("\"", ""));
+                IRI contextURI = con.getValueFactory().createIRI(namedGraph.replaceAll("\"", ""));
                 compareGraphs(Iterations.asList(con.getStatements(null, null, null, true, contextURI)),
                         Iterations.asList(erCon.getStatements(null, null, null, true, contextURI)),
                         (BigdataSailRepositoryConnection) con);

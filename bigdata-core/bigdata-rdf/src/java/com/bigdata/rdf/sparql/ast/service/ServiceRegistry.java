@@ -33,8 +33,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.apache.http.conn.ClientConnectionManager;
 import org.eclipse.jetty.client.HttpClient;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.bop.join.BaseJoinStats;
 import com.bigdata.rdf.graph.impl.bd.GASService;
@@ -80,12 +80,12 @@ public class ServiceRegistry {
     /**
      * Primary {@link ServiceFactory} registration.
      */
-    private final ConcurrentMap<URI, ServiceFactory> services;
+    private final ConcurrentMap<IRI, ServiceFactory> services;
 
     /**
      * Aliases for registered {@link ServiceFactory}s.
      */
-    private final ConcurrentMap<URI/* from */, URI/* to */> aliases;
+    private final ConcurrentMap<IRI/* from */, IRI/* to */> aliases;
 
     /**
      * The set of registered {@link ServiceFactory}s is also maintained here for
@@ -116,11 +116,11 @@ public class ServiceRegistry {
 
     protected ServiceRegistry() {
 
-        services = new ConcurrentHashMap<URI, ServiceFactory>();
+        services = new ConcurrentHashMap<IRI, ServiceFactory>();
 
         customServices = new CopyOnWriteArrayList<CustomServiceFactory>();
 
-        aliases = new ConcurrentHashMap<URI, URI>();
+        aliases = new ConcurrentHashMap<IRI, IRI>();
 
         defaultServiceFactoryRef = new AtomicReference<ServiceFactory>(
                 new RemoteServiceFactoryImpl(SPARQLVersion.SPARQL_11));
@@ -148,7 +148,7 @@ public class ServiceRegistry {
 
         if (QueryHints.DEFAULT_DESCRIBE_CACHE) {
 
-            add(new URIImpl(BD.NAMESPACE + "describe"),
+            add(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "describe"),
                     new DescribeServiceFactory());
 
         }
@@ -160,14 +160,14 @@ public class ServiceRegistry {
              *      href="https://sourceforge.net/apps/trac/bigdata/ticket/607">
              *      HISTORY SERVICE </a>
              */
-            add(new URIImpl(BD.NAMESPACE + "history"),
+            add(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "history"),
                     new HistoryServiceFactory());
 
             /**
              * Replacing with a history service using RDR instead of a custom
              * index.
              */
-            add(new URIImpl(BD.NAMESPACE + "rdrhistory"),
+            add(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "rdrhistory"),
                     new RDRHistoryServiceFactory());
 
         }
@@ -213,11 +213,11 @@ public class ServiceRegistry {
      * Register a service.
      *
      * @param serviceURI
-     *            The service URI.
+     *            The service IRI.
      * @param factory
      *            The factory to execute calls against that service.
      */
-    public final void add(final URI serviceURI, final ServiceFactory factory) {
+    public final void add(final IRI serviceURI, final ServiceFactory factory) {
 
         synchronized (this) {
 
@@ -247,12 +247,12 @@ public class ServiceRegistry {
      * Remove a service from the registry and/or set of known aliases.
      *
      * @param serviceURI
-     *            The URI of the service -or- the URI of an alias registered
-     *            using {@link #addAlias(URI, URI)}.
+     *            The IRI of the service -or- the IRI of an alias registered
+     *            using {@link #addAlias(IRI, IRI)}.
      *
-     * @return <code>true</code> iff a service for that URI was removed.
+     * @return <code>true</code> iff a service for that IRI was removed.
      */
-    public final boolean remove(final URI serviceURI) {
+    public final boolean remove(final IRI serviceURI) {
 
         boolean modified = false;
 
@@ -287,24 +287,24 @@ public class ServiceRegistry {
     }
 
     /**
-     * Register one URI as an alias for another.
+     * Register one IRI as an alias for another.
      *
      * @param serviceURI
-     *            The URI of a service. It is expressly permitted to register an
-     *            alias for a URI which does not have a registered
-     *            {@link ServiceFactory}. This may be used to alias a remote URI
+     *            The IRI of a service. It is expressly permitted to register an
+     *            alias for a IRI which does not have a registered
+     *            {@link ServiceFactory}. This may be used to alias a remote IRI
      *            which you want to intercept locally.
      * @param aliasURI
-     *            The URI of an alias under which that service may be accessed.
+     *            The IRI of an alias under which that service may be accessed.
      * @throws IllegalStateException
      *             if the <i>serviceURI</i> has already been registered as a
-     *             alias (you must {@link #remove(URI)} the old alias before you
+     *             alias (you must {@link #remove(IRI)} the old alias before you
      *             can map it against a different <i>serviceURI</i>).
      * @throws IllegalStateException
      *             if the <i>aliasURI</i> has already been registered as a
      *             service (you can not mask an existing service registration).
      */
-    public final void addAlias(final URI serviceURI, final URI aliasURI) {
+    public final void addAlias(final IRI serviceURI, final IRI aliasURI) {
 
         if (serviceURI == null)
             throw new IllegalArgumentException();
@@ -315,9 +315,9 @@ public class ServiceRegistry {
         synchronized (this) {
 
             /*
-             * Note: it is expressly permitted to register an alias for a URI
+             * Note: it is expressly permitted to register an alias for a IRI
              * which does not have a registered ServiceFactory. This may be used
-             * to alias a remote URI which you want to intercept locally.
+             * to alias a remote IRI which you want to intercept locally.
              */
 
 //            // Lookup the service.
@@ -398,26 +398,26 @@ public class ServiceRegistry {
     }
 
     /**
-     * Return the {@link ServiceFactory} for that URI. If the {@link URI} is a
+     * Return the {@link ServiceFactory} for that IRI. If the {@link IRI} is a
      * known alias, then it is resolved before looking up the
      * {@link ServiceFactory}.
      *
      * @param serviceURI
-     *            The {@link URI}.
+     *            The {@link IRI}.
      *
      * @return The {@link ServiceFactory} if one is registered for that
-     *         {@link URI}.
+     *         {@link IRI}.
      */
-    public ServiceFactory get(final URI serviceURI) {
+    public ServiceFactory get(final IRI serviceURI) {
 
         if (serviceURI == null)
             throw new IllegalArgumentException();
 
         if (isWhitelistEnabled() && !serviceWhitelist.contains(serviceURI.stringValue())) {
-            throw new IllegalArgumentException("Service URI " + serviceURI + " is not allowed");
+            throw new IllegalArgumentException("Service IRI " + serviceURI + " is not allowed");
         }
 
-        final URI alias = aliases.get(serviceURI);
+        final IRI alias = aliases.get(serviceURI);
 
         if (alias != null) {
 
@@ -430,7 +430,7 @@ public class ServiceRegistry {
     }
 
     /**
-     * Resolve a {@link ServiceCall} for a service {@link URI}. If a
+     * Resolve a {@link ServiceCall} for a service {@link IRI}. If a
      * {@link ServiceFactory} was registered for that <i>serviceURI</i>, then it
      * will be returned. Otherwise {@link #getDefaultServiceFactory()} is used
      * to obtain the {@link ServiceFactory} that will be used to create the
@@ -442,7 +442,7 @@ public class ServiceRegistry {
      *            The {@link ClientConnectionManager} will be used to make
      *            remote HTTP connections.
      * @param serviceURI
-     *            The as-bound {@link URI} of the service end point.
+     *            The as-bound {@link IRI} of the service end point.
      * @param serviceNode
      *            The AST model of the SERVICE clause.
      *
@@ -450,17 +450,17 @@ public class ServiceRegistry {
      */
     public final ServiceCall<? extends Object> toServiceCall(
             final AbstractTripleStore store, final HttpClient cm,
-            URI serviceURI, final ServiceNode serviceNode, final BaseJoinStats stats) {
+            IRI serviceURI, final ServiceNode serviceNode, final BaseJoinStats stats) {
 
         if (serviceURI == null)
             throw new IllegalArgumentException();
 
-        // Resolve URI in case it was an alias.
-        final URI dealiasedServiceURI = aliases.get(serviceURI);
+        // Resolve IRI in case it was an alias.
+        final IRI dealiasedServiceURI = aliases.get(serviceURI);
 
         if (dealiasedServiceURI != null) {
 
-            // Use the de-aliased URI.
+            // Use the de-aliased IRI.
             serviceURI = dealiasedServiceURI;
 
         }
@@ -470,7 +470,7 @@ public class ServiceRegistry {
             if (serviceNode.isSilent()) {
                 f = nullServiceFactory;
             } else {
-                throw new IllegalArgumentException("Service URI " + serviceURI + " is not allowed");
+                throw new IllegalArgumentException("Service IRI " + serviceURI + " is not allowed");
             }
         } else {
             f = services.get(serviceURI);
@@ -499,17 +499,17 @@ public class ServiceRegistry {
     }
     
     /**
-     * Maps a URI to a service factory. If the URI is null or there is no custom
+     * Maps a IRI to a service factory. If the IRI is null or there is no custom
      * service, the default service factory (SPARQL 1.1 service) is returned.
      * 
-     * @param serviceUri the URI for which we look up the service
+     * @param serviceUri the IRI for which we look up the service
      * @return the associated service factory or the default service factory
      *         as fallback
      */
-    public ServiceFactory getServiceFactoryByServiceURI(URI serviceUri) {
+    public ServiceFactory getServiceFactoryByServiceURI(IRI serviceUri) {
        
        if (isWhitelistEnabled() && !serviceWhitelist.contains(serviceUri.stringValue())) {
-          throw new IllegalArgumentException("Service URI " + serviceUri + " is not allowed");
+          throw new IllegalArgumentException("Service IRI " + serviceUri + " is not allowed");
        }
        
        final ServiceFactory serviceFactory = 
@@ -522,14 +522,14 @@ public class ServiceRegistry {
 
     private static class ServiceCallCreateParamsImpl implements ServiceCallCreateParams {
 
-        private final URI serviceURI;
+        private final IRI serviceURI;
         private final AbstractTripleStore store;
         private final ServiceNode serviceNode;
         private final HttpClient cm;
         private final IServiceOptions serviceOptions;
         private final BaseJoinStats stats;
 
-        public ServiceCallCreateParamsImpl(final URI serviceURI,
+        public ServiceCallCreateParamsImpl(final IRI serviceURI,
                 final AbstractTripleStore store, final ServiceNode serviceNode,
                 final HttpClient cm,
                 final IServiceOptions serviceOptions,
@@ -550,7 +550,7 @@ public class ServiceRegistry {
         }
 
         @Override
-        public URI getServiceURI() {
+        public IRI getServiceURI() {
             return serviceURI;
         }
 

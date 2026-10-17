@@ -4,14 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.RepositoryResult;
-import org.openrdf.sail.SailException;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.RepositoryResult;
+import org.eclipse.rdf4j.sail.SailException;
 
 import com.bigdata.journal.BufferMode;
 import com.bigdata.journal.ITx;
@@ -56,7 +56,7 @@ public class ReleaseTimes {
             /*
              * Create some terms.
              */
-            final URI devuri = vf.createURI(BD.NAMESPACE + "developer");
+            final IRI devuri = vf.createIRI(BD.NAMESPACE + "developer");
             final Literal mp = vf.createLiteral("mike personick");
             final Literal bt = vf.createLiteral("bryan thompson");
             final Literal mc = vf.createLiteral("martyn cutcher");
@@ -135,14 +135,14 @@ public class ReleaseTimes {
 		}
 
 		/**
-		 * Define statement with a URI identifier, type and literal label
+		 * Define statement with a IRI identifier, type and literal label
 		 * 
 		 * First ensure that any previous valued statement is removed.
 		 * 
 		 * Commit, and return the store state.
 		 */
-		private static long assertStatement(BigdataSailRepositoryConnection cxn, URI id,
-				URI pred, Literal label) throws RepositoryException
+		private static long assertStatement(BigdataSailRepositoryConnection cxn, IRI id,
+				IRI pred, Literal label) throws RepositoryException
 		{
 			cxn.remove(id, pred, null);
 	        
@@ -167,7 +167,7 @@ public class ReleaseTimes {
 		 * the requested statement is present.
 		 */
 		static boolean checkState(final BigdataSailRepository repo, final long state,  
-				final URI id, final URI pred, final Literal label )
+				final IRI id, final IRI pred, final Literal label )
 		{
 			try {
 				final BigdataSailRepositoryConnection cxn;

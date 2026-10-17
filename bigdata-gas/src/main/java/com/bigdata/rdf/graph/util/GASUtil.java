@@ -15,11 +15,13 @@
 */
 package com.bigdata.rdf.graph.util;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
-import org.openrdf.model.Statement;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.Value;
 
 import cutthecrap.utils.striterators.EmptyIterator;
 
@@ -30,7 +32,7 @@ import cutthecrap.utils.striterators.EmptyIterator;
  */
 public class GASUtil {
 
-//    private static final Logger log = Logger.getLogger(GASUtil.class);
+//    private static final Logger log = LogManager.getLogger(GASUtil.class);
 
     /**
      * The average fan out of the frontier.

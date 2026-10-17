@@ -37,10 +37,10 @@ import java.util.UUID;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.rdf.internal.ColorsEnumExtension.Color;
 import com.bigdata.rdf.internal.impl.AbstractIV;
@@ -63,7 +63,7 @@ import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataURI;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.model.StatementEnum;
 import com.bigdata.rdf.spo.SPO;
 import com.bigdata.rdf.vocab.Vocabulary;
@@ -87,7 +87,7 @@ public class TestEncodeDecodeKeys extends AbstractEncodeDecodeKeysTestCase {
 
     final String GEO_SPATIAL_DATATYPE = "http://www.bigdata.com/rdf/geospatial#geoSpatialLiteral";
     
-    final URI GEO_SPATIAL_DATATYPE_URI = new URIImpl(GEO_SPATIAL_DATATYPE);
+    final IRI GEO_SPATIAL_DATATYPE_URI = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(GEO_SPATIAL_DATATYPE);
     
     final String GEO_SPATIAL_DATATYPE_CONFIG = 
         "{\"config\": "
@@ -193,7 +193,7 @@ public class TestEncodeDecodeKeys extends AbstractEncodeDecodeKeysTestCase {
                 assertEquals(dte, v.getDTE());
 
                 switch (vte) {
-                case URI:
+                case IRI:
                     assertTrue(v.isURI());
                     assertFalse(v.isBNode());
                     assertFalse(v.isLiteral());
@@ -234,10 +234,10 @@ public class TestEncodeDecodeKeys extends AbstractEncodeDecodeKeysTestCase {
     public void test_encodeDecode_allTermIds() {
 
         final IV<?, ?>[] e = {//
-                newTermId(VTE.URI),//
-                newTermId(VTE.URI),//
-                newTermId(VTE.URI),//
-                newTermId(VTE.URI) //
+                newTermId(VTE.IRI),//
+                newTermId(VTE.IRI),//
+                newTermId(VTE.IRI),//
+                newTermId(VTE.IRI) //
         };
 
         doEncodeDecodeTest(e);
@@ -461,13 +461,13 @@ public class TestEncodeDecodeKeys extends AbstractEncodeDecodeKeysTestCase {
      */
     public void test_encodeDecodeEpoch() {
         
-        final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance("test");
+        final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance("test");
         
         final EpochExtension<BigdataValue> ext = 
             new EpochExtension<BigdataValue>(new IDatatypeURIResolver() {
-            public BigdataURI resolve(final URI uri) {
-                final BigdataURI buri = vf.createURI(uri.stringValue());
-                buri.setIV(newTermId(VTE.URI));
+            public BigdataURI resolve(final IRI uri) {
+                final BigdataURI buri = vf.createIRI(uri.stringValue());
+                buri.setIV(newTermId(VTE.IRI));
                 return buri;
             }
         });
@@ -482,7 +482,7 @@ public class TestEncodeDecodeKeys extends AbstractEncodeDecodeKeysTestCase {
 
             final String s = Long.toString(v);
             
-            final Literal lit = new LiteralImpl(s, EpochExtension.EPOCH);
+            final Literal lit = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral(s, EpochExtension.EPOCH);
             
             final IV<?,?> iv = ext.createIV(lit);
 
@@ -504,13 +504,13 @@ public class TestEncodeDecodeKeys extends AbstractEncodeDecodeKeysTestCase {
      */
     public void test_encodeDecodeColor() {
         
-        final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance("test");
+        final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance("test");
         
         final ColorsEnumExtension<BigdataValue> ext = 
             new ColorsEnumExtension<BigdataValue>(new IDatatypeURIResolver() {
-            public BigdataURI resolve(URI uri) {
-                final BigdataURI buri = vf.createURI(uri.stringValue());
-                buri.setIV(newTermId(VTE.URI));
+            public BigdataURI resolve(IRI uri) {
+                final BigdataURI buri = vf.createIRI(uri.stringValue());
+                buri.setIV(newTermId(VTE.IRI));
                 return buri;
             }
         });
@@ -519,7 +519,7 @@ public class TestEncodeDecodeKeys extends AbstractEncodeDecodeKeysTestCase {
 
         for (Color c : Color.values()) {
         
-            a.add(ext.createIV(new LiteralImpl(c.name(),
+            a.add(ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral(c.name(),
                     ColorsEnumExtension.COLOR)));
             
         }
@@ -537,15 +537,15 @@ public class TestEncodeDecodeKeys extends AbstractEncodeDecodeKeysTestCase {
      */
     public void test_encodeDecodeDateTime() throws Exception {
         
-        final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance("test");
+        final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance("test");
         
         final DatatypeFactory df = DatatypeFactory.newInstance();
 
         final DateTimeExtension<BigdataValue> ext = 
             new DateTimeExtension<BigdataValue>(new IDatatypeURIResolver() {
-                public BigdataURI resolve(URI uri) {
-                    final BigdataURI buri = vf.createURI(uri.stringValue());
-                    buri.setIV(newTermId(VTE.URI));
+                public BigdataURI resolve(IRI uri) {
+                    final BigdataURI buri = vf.createIRI(uri.stringValue());
+                    buri.setIV(newTermId(VTE.IRI));
                     return buri;
                 }
             },
@@ -605,16 +605,16 @@ public class TestEncodeDecodeKeys extends AbstractEncodeDecodeKeysTestCase {
     public void test_dateTime_preservesMillis()
             throws DatatypeConfigurationException {
 
-        final BigdataValueFactory vf = BigdataValueFactoryImpl
+        final BigdataValueFactory vf = BigdataSimpleValueFactory
                 .getInstance("test");
 
         final DatatypeFactory df = DatatypeFactory.newInstance();
 
         final DateTimeExtension<BigdataValue> ext = new DateTimeExtension<BigdataValue>(
                 new IDatatypeURIResolver() {
-                    public BigdataURI resolve(URI uri) {
-                        final BigdataURI buri = vf.createURI(uri.stringValue());
-                        buri.setIV(newTermId(VTE.URI));
+                    public BigdataURI resolve(IRI uri) {
+                        final BigdataURI buri = vf.createIRI(uri.stringValue());
+                        buri.setIV(newTermId(VTE.IRI));
                         return buri;
                     }
                 }, TimeZone.getTimeZone("GMT"));
@@ -664,13 +664,13 @@ public class TestEncodeDecodeKeys extends AbstractEncodeDecodeKeysTestCase {
      */
     public void test_encodeDecodeDerivedNumerics() throws Exception {
         
-        final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance("test");
+        final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance("test");
         
         final DerivedNumericsExtension<BigdataValue> ext = 
             new DerivedNumericsExtension<BigdataValue>(new IDatatypeURIResolver() {
-                public BigdataURI resolve(URI uri) {
-                    final BigdataURI buri = vf.createURI(uri.stringValue());
-                    buri.setIV(newTermId(VTE.URI));
+                public BigdataURI resolve(IRI uri) {
+                    final BigdataURI buri = vf.createIRI(uri.stringValue());
+                    buri.setIV(newTermId(VTE.IRI));
                     return buri;
                 }
             });
@@ -714,7 +714,7 @@ public class TestEncodeDecodeKeys extends AbstractEncodeDecodeKeysTestCase {
      */
     public void test_encodeDecodeGeoSpatialLiterals01() throws Exception {
         
-        final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance("test");
+        final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance("test");
         
         /**
          * Initialize geo spatial config with default
@@ -725,9 +725,9 @@ public class TestEncodeDecodeKeys extends AbstractEncodeDecodeKeysTestCase {
         final GeoSpatialDatatypeConfiguration datatypeConfig = conf.getDatatypeConfigs().get(0);
         final GeoSpatialLiteralExtension<BigdataValue> ext = 
             new GeoSpatialLiteralExtension<BigdataValue>(new IDatatypeURIResolver() {
-                public BigdataURI resolve(URI uri) {
-                    final BigdataURI buri = vf.createURI(uri.stringValue());
-                    buri.setIV(newTermId(VTE.URI));
+                public BigdataURI resolve(IRI uri) {
+                    final BigdataURI buri = vf.createIRI(uri.stringValue());
+                    buri.setIV(newTermId(VTE.IRI));
                     return buri;
                 }
             }, datatypeConfig);
@@ -771,7 +771,7 @@ public class TestEncodeDecodeKeys extends AbstractEncodeDecodeKeysTestCase {
      */
     public void test_encodeDecodeGeoSpatialLiterals02() throws Exception {
         
-        final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance("test");
+        final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance("test");
         
         /**
          * Initialize geo spatial config with default
@@ -782,9 +782,9 @@ public class TestEncodeDecodeKeys extends AbstractEncodeDecodeKeysTestCase {
         final GeoSpatialDatatypeConfiguration datatypeConfig = conf.getDatatypeConfigs().get(0);
         final GeoSpatialLiteralExtension<BigdataValue> ext = 
             new GeoSpatialLiteralExtension<BigdataValue>(new IDatatypeURIResolver() {
-                public BigdataURI resolve(URI uri) {
-                    final BigdataURI buri = vf.createURI(uri.stringValue());
-                    buri.setIV(newTermId(VTE.URI));
+                public BigdataURI resolve(IRI uri) {
+                    final BigdataURI buri = vf.createIRI(uri.stringValue());
+                    buri.setIV(newTermId(VTE.IRI));
                     return buri;
                 }
             }, datatypeConfig);
@@ -824,11 +824,11 @@ public class TestEncodeDecodeKeys extends AbstractEncodeDecodeKeysTestCase {
      */
     public void test_encodeDecode_sids() {
         
-        final IV<?,?> s1 = newTermId(VTE.URI);
-        final IV<?,?> s2 = newTermId(VTE.URI);
-        final IV<?,?> p1 = newTermId(VTE.URI);
-        final IV<?,?> p2 = newTermId(VTE.URI);
-        final IV<?,?> o1 = newTermId(VTE.URI);
+        final IV<?,?> s1 = newTermId(VTE.IRI);
+        final IV<?,?> s2 = newTermId(VTE.IRI);
+        final IV<?,?> p1 = newTermId(VTE.IRI);
+        final IV<?,?> p2 = newTermId(VTE.IRI);
+        final IV<?,?> o1 = newTermId(VTE.IRI);
         final IV<?,?> o2 = newTermId(VTE.BNODE);
         final IV<?,?> o3 = newTermId(VTE.LITERAL);
 
@@ -887,11 +887,11 @@ public class TestEncodeDecodeKeys extends AbstractEncodeDecodeKeysTestCase {
     }
 
     /**
-     * Unit test for a fully inlined representation of a URI based on a
+     * Unit test for a fully inlined representation of a IRI based on a
      * <code>byte</code> code. The flags byte looks like:
-     * <code>VTE=URI, inline=true, extension=false,
+     * <code>VTE=IRI, inline=true, extension=false,
      * DTE=XSDByte</code>. It is followed by a <code>unsigned byte</code> value
-     * which is the index of the URI in the {@link Vocabulary} class for the
+     * which is the index of the IRI in the {@link Vocabulary} class for the
      * triple store.
      */
     public void test_encodeDecode_URIByteIV() {
@@ -911,11 +911,11 @@ public class TestEncodeDecodeKeys extends AbstractEncodeDecodeKeysTestCase {
     }
 
     /**
-     * Unit test for a fully inlined representation of a URI based on a
+     * Unit test for a fully inlined representation of a IRI based on a
      * <code>short</code> code. The flags byte looks like:
-     * <code>VTE=URI, inline=true, extension=false,
+     * <code>VTE=IRI, inline=true, extension=false,
      * DTE=XSDShort</code>. It is followed by an <code>unsigned short</code>
-     * value which is the index of the URI in the {@link Vocabulary} class for
+     * value which is the index of the IRI in the {@link Vocabulary} class for
      * the triple store.
      */
     public void test_encodeDecode_URIShortIV() {

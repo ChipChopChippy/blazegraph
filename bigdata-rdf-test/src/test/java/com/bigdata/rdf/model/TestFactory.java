@@ -33,9 +33,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import junit.framework.TestCase2;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
 
 import com.bigdata.rdf.internal.IV;
 import com.bigdata.rdf.internal.VTE;
@@ -43,7 +43,7 @@ import com.bigdata.rdf.internal.XSD;
 import com.bigdata.rdf.internal.impl.TermId;
 
 /**
- * Unit tests for {@link BigdataValueFactoryImpl}.
+ * Unit tests for {@link BigdataSimpleValueFactory}.
  * 
  * @author <a href="mailto:thompsonbry@users.sourceforge.net">Bryan Thompson</a>
  * @version $Id$
@@ -69,7 +69,7 @@ public class TestFactory extends TestCase2 {
 
     	super.setUp();
     	
-    	vf = BigdataValueFactoryImpl.getInstance(getName());
+    	vf = BigdataSimpleValueFactory.getInstance(getName());
     
     }
     
@@ -97,11 +97,11 @@ public class TestFactory extends TestCase2 {
      */
     public void test_create_xsdInt_canonical() {
         
-		final BigdataURI v1 = vf.createURI(XSD.INT.stringValue());
+		final BigdataURI v1 = vf.createIRI(XSD.INT.stringValue());
 
-		final BigdataURI v2 = vf.createURI(XSD.INT.stringValue());
+		final BigdataURI v2 = vf.createIRI(XSD.INT.stringValue());
 
-		// verify the URI.
+		// verify the IRI.
 		assertEquals(v1.stringValue(),XSD.INT.stringValue());
 		
 		// verify the same reference (canonical).
@@ -110,14 +110,14 @@ public class TestFactory extends TestCase2 {
     }
 
     /**
-     * Unit test for {@link ValueFactory#createLiteral(String, URI)} when the
-     * datatype URI is <code>null</code>.
+     * Unit test for {@link ValueFactory#createLiteral(String, IRI)} when the
+     * datatype IRI is <code>null</code>.
      * 
      * @see https://sourceforge.net/apps/trac/bigdata/ticket/226
      */
     public void test_create_literal_datatypeIsNull() {
         
-        final BigdataLiteral l1 = vf.createLiteral("12", (URI) null);
+        final BigdataLiteral l1 = vf.createLiteral("12", (IRI) null);
         
         assertEquals(null, l1.getDatatype());
 
@@ -148,7 +148,7 @@ public class TestFactory extends TestCase2 {
 
 	/**
 	 * Unit test verifies that a new {@link BigdataValue} instance is returned
-	 * when {@link BigdataValueFactory#asValue(org.openrdf.model.Value)} is
+	 * when {@link BigdataValueFactory#asValue(org.eclipse.rdf4j.model.Value)} is
 	 * invoked with a {@link BigdataValue} whose {@link IV} is a "dummmy" IV
 	 * (aka a "mock" IV). A "dummy" or "mock" {@link IV} is an {@link IV} which
 	 * stands in for a "null" and is used to hold the place for an RDF
@@ -158,11 +158,11 @@ public class TestFactory extends TestCase2 {
 	 */
     public void test_asValue_mockIV() {
     	
-    	final BigdataValue v1 = vf.createURI("http://www.bigdata.com");
+    	final BigdataValue v1 = vf.createIRI("http://www.bigdata.com");
     	
     	final BigdataValue v2 = vf.asValue(v1);
     	
-    	v1.setIV(TermId.mockIV(VTE.URI));
+    	v1.setIV(TermId.mockIV(VTE.IRI));
 
     	final BigdataValue v3 = vf.asValue(v1);
     	

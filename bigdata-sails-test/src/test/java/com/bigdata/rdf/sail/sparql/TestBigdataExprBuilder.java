@@ -28,11 +28,11 @@ package com.bigdata.rdf.sail.sparql;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.openrdf.model.vocabulary.DC;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.algebra.StatementPattern.Scope;
-import org.openrdf.query.impl.DatasetImpl;
+import org.eclipse.rdf4j.model.vocabulary.DC;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.query.impl.SimpleDataset;
 
 import com.bigdata.rdf.model.BigdataURI;
 import com.bigdata.rdf.model.BigdataValue;
@@ -744,7 +744,7 @@ public class TestBigdataExprBuilder extends AbstractBigdataExprBuilderTestCase {
             anonvar.setAnonymous(true);
             projection.addProjectionExpression(new AssignmentNode(anonvar,
                     new ConstantNode(makeIV(valueFactory
-                            .createURI("http://www.bigdata.com")))));
+                            .createIRI("http://www.bigdata.com")))));
 
         }
         
@@ -787,7 +787,7 @@ public class TestBigdataExprBuilder extends AbstractBigdataExprBuilderTestCase {
             anonvar.setAnonymous(true);
             projection.addProjectionExpression(new AssignmentNode(anonvar,
                     new ConstantNode(makeIV(valueFactory
-                            .createURI("http://www.bigdata.com")))));
+                            .createIRI("http://www.bigdata.com")))));
             
             final JoinGroupNode whereClause = new JoinGroupNode();
             whereClause.addChild(new StatementPatternNode(new VarNode("s"),
@@ -873,14 +873,14 @@ public class TestBigdataExprBuilder extends AbstractBigdataExprBuilderTestCase {
             final ConstructNode construct = new ConstructNode();
             expected.setConstruct(construct);
             construct.addChild(new StatementPatternNode(new VarNode("s"),
-                    new ConstantNode(makeIV(valueFactory.createURI(RDF.TYPE
+                    new ConstantNode(makeIV(valueFactory.createIRI(RDF.TYPE
                             .toString()))), new VarNode("o"), null/* c */,
                     Scope.DEFAULT_CONTEXTS));
 
             final JoinGroupNode whereClause = new JoinGroupNode();
             expected.setWhereClause(whereClause);
             whereClause.addChild(new StatementPatternNode(new VarNode("s"),
-                    new ConstantNode(makeIV(valueFactory.createURI(RDF.TYPE
+                    new ConstantNode(makeIV(valueFactory.createIRI(RDF.TYPE
                             .toString()))), new VarNode("o"), null/* c */,
                     Scope.DEFAULT_CONTEXTS));
         }
@@ -917,14 +917,14 @@ public class TestBigdataExprBuilder extends AbstractBigdataExprBuilderTestCase {
             final ConstructNode construct = new ConstructNode();
             expected.setConstruct(construct);
             construct.addChild(new StatementPatternNode(new VarNode("s"),
-                    new ConstantNode(makeIV(valueFactory.createURI(RDF.TYPE
+                    new ConstantNode(makeIV(valueFactory.createIRI(RDF.TYPE
                             .toString()))), new VarNode("o"), null/* c */,
                     Scope.DEFAULT_CONTEXTS));
 
             final JoinGroupNode whereClause = new JoinGroupNode();
             expected.setWhereClause(whereClause);
             whereClause.addChild(new StatementPatternNode(new VarNode("s"),
-                    new ConstantNode(makeIV(valueFactory.createURI(RDF.TYPE
+                    new ConstantNode(makeIV(valueFactory.createIRI(RDF.TYPE
                             .toString()))), new VarNode("o"), null/* c */,
                     Scope.DEFAULT_CONTEXTS));
         }
@@ -990,13 +990,13 @@ public class TestBigdataExprBuilder extends AbstractBigdataExprBuilderTestCase {
 
             {
                 final BigdataURI uri1 = valueFactory
-                        .createURI("http://example.org/dft.ttl");
+                        .createIRI("http://example.org/dft.ttl");
 
                 final BigdataURI uri2 = valueFactory
-                        .createURI("http://example.org/alice");
+                        .createIRI("http://example.org/alice");
                 
                 final BigdataURI uri3 = valueFactory
-                        .createURI("http://example.org/bob"); 
+                        .createIRI("http://example.org/bob"); 
 
                 final BigdataValue[] values = new BigdataValue[] { uri1, uri2,
                         uri3 };
@@ -1004,7 +1004,7 @@ public class TestBigdataExprBuilder extends AbstractBigdataExprBuilderTestCase {
                 tripleStore.getLexiconRelation().addTerms(values,
                         values.length, false/* readOnly */);
 
-                final DatasetImpl dataset = new DatasetImpl();
+                final SimpleDataset dataset = new SimpleDataset();
                 dataset.addDefaultGraph(uri1);
                 dataset.addNamedGraph(uri2);
                 dataset.addNamedGraph(uri3);
@@ -1017,7 +1017,7 @@ public class TestBigdataExprBuilder extends AbstractBigdataExprBuilderTestCase {
                 expected.setWhereClause(whereClause);
              
                 whereClause.addChild(new StatementPatternNode(new VarNode("g"),
-                        new ConstantNode(makeIV(valueFactory.createURI(DC.PUBLISHER
+                        new ConstantNode(makeIV(valueFactory.createIRI(DC.PUBLISHER
                                 .toString()))), new VarNode("who"), null/* c */,
                         Scope.DEFAULT_CONTEXTS));
                 
@@ -1027,7 +1027,7 @@ public class TestBigdataExprBuilder extends AbstractBigdataExprBuilderTestCase {
                 group.addChild(new StatementPatternNode(
                         new VarNode("x"),
                         new ConstantNode(makeIV(valueFactory
-                                .createURI(FOAFVocabularyDecl.mbox.toString()))),
+                                .createIRI(FOAFVocabularyDecl.mbox.toString()))),
                         new VarNode("mbox"), new VarNode("g"),
                         Scope.NAMED_CONTEXTS));
 
@@ -1084,13 +1084,13 @@ public class TestBigdataExprBuilder extends AbstractBigdataExprBuilderTestCase {
 
             {
                 final BigdataURI uri1 = valueFactory
-                        .createURI("http://example.org/dft.ttl");
+                        .createIRI("http://example.org/dft.ttl");
 
                 final BigdataURI uri2 = valueFactory
-                        .createURI("http://example.org/alice");
+                        .createIRI("http://example.org/alice");
 
                 final BigdataURI uri3 = valueFactory
-                        .createURI("http://example.org/bob");
+                        .createIRI("http://example.org/bob");
 
                 final BigdataValue[] values = new BigdataValue[] { //
                         uri1, //
@@ -1101,7 +1101,7 @@ public class TestBigdataExprBuilder extends AbstractBigdataExprBuilderTestCase {
                 tripleStore.getLexiconRelation().addTerms(values,
                         values.length, false/* readOnly */);
 
-                final DatasetImpl dataset = new DatasetImpl();
+                final SimpleDataset dataset = new SimpleDataset();
                 dataset.addDefaultGraph(uri1);
                 dataset.addNamedGraph(uri2);
                 dataset.addNamedGraph(uri3);
@@ -1116,7 +1116,7 @@ public class TestBigdataExprBuilder extends AbstractBigdataExprBuilderTestCase {
                 whereClause
                         .addChild(new StatementPatternNode(new VarNode("g"),
                                 new ConstantNode(makeIV(valueFactory
-                                        .createURI(DC.PUBLISHER.toString()))),
+                                        .createIRI(DC.PUBLISHER.toString()))),
                                 new VarNode("who"), null/* c */,
                                 Scope.DEFAULT_CONTEXTS));
 
@@ -1126,7 +1126,7 @@ public class TestBigdataExprBuilder extends AbstractBigdataExprBuilderTestCase {
                 group.addChild(new StatementPatternNode(
                         new VarNode("x"),
                         new ConstantNode(makeIV(valueFactory
-                                .createURI(FOAFVocabularyDecl.mbox.toString()))),
+                                .createIRI(FOAFVocabularyDecl.mbox.toString()))),
                         new VarNode("mbox"), new VarNode("g"),
                         Scope.NAMED_CONTEXTS));
 
@@ -1197,16 +1197,16 @@ public class TestBigdataExprBuilder extends AbstractBigdataExprBuilderTestCase {
                 expected.setWhereClause(whereClause);
 
                 final ConstantNode foaf_name = new ConstantNode(
-                        makeIV(valueFactory.createURI(FOAFVocabularyDecl.name
+                        makeIV(valueFactory.createIRI(FOAFVocabularyDecl.name
                                 .stringValue())));
 
                 final ConstantNode foaf_mbox = new ConstantNode(
-                        makeIV(valueFactory.createURI(FOAFVocabularyDecl.mbox
+                        makeIV(valueFactory.createIRI(FOAFVocabularyDecl.mbox
                                 .stringValue())));
 
                 final ConstantNode mailto = new ConstantNode(
                         makeIV(valueFactory
-                                .createURI("mailto:alice@example.org")));
+                                .createIRI("mailto:alice@example.org")));
 
                 final VarNode bnode = new VarNode("-anon-11");
                 bnode.setAnonymous(true);

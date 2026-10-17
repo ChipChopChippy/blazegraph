@@ -27,24 +27,24 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.Set;
 
-import org.openrdf.OpenRDFException;
-import org.openrdf.model.Statement;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParseException;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.Rio;
-import org.openrdf.rio.helpers.RDFHandlerBase;
-import org.openrdf.sail.memory.MemoryStore;
+import org.eclipse.rdf4j.common.exception.RDF4JException;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.sail.SailRepository;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFParseException;
+import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.Rio;
+import org.eclipse.rdf4j.rio.helpers.AbstractRDFHandler;
+import org.eclipse.rdf4j.sail.memory.MemoryStore;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.vocab.NoVocabulary;
@@ -133,7 +133,7 @@ public class TestTicket276 extends QuadsTestCase {
 			QueryEvaluationException, RDFParseException, IOException,
 			RDFHandlerException {
 		try {
-			repo.initialize();
+			repo.init();
 			final RepositoryConnection conn = repo.getConnection();
 			conn.setAutoCommit(false);
 			try {
@@ -146,9 +146,9 @@ public class TestTicket276 extends QuadsTestCase {
 						query);
 				q.setBinding(
 						"a",
-						vf.createURI("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"));
-				q.setBinding("t", vf.createURI("os:class/Location"));
-				q.setBinding("lookup", vf.createURI("os:prop/lookupName"));
+						vf.createIRI("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"));
+				q.setBinding("t", vf.createIRI("os:class/Location"));
+				q.setBinding("lookup", vf.createIRI("os:prop/lookupName"));
 				q.setBinding("l", vf.createLiteral("amsterdam"));
 				final TupleQueryResult tqr = q.evaluate();
                 while (tqr.hasNext()) {
@@ -171,16 +171,16 @@ public class TestTicket276 extends QuadsTestCase {
 
 	    final RDFParser rdfParser = Rio.createParser(RDFFormat.NTRIPLES,
 				conn.getValueFactory());
-		rdfParser.setVerifyData(true);
-		rdfParser.setStopAtFirstError(true);
-		rdfParser.setDatatypeHandling(RDFParser.DatatypeHandling.IGNORE);
-		rdfParser.setRDFHandler(new RDFHandlerBase() {
+		com.bigdata.rdf.rio.RDFParserOptions.setVerifyData(rdfParser, true);
+		
+		com.bigdata.rdf.rio.RDFParserOptions.setDatatypeHandling(rdfParser, com.bigdata.rdf.rio.DatatypeHandling.IGNORE);
+		rdfParser.setRDFHandler(new AbstractRDFHandler() {
 			@Override
 			public void handleStatement(Statement st)
 					throws RDFHandlerException {
 				try {
 					conn.add(st);
-				} catch (OpenRDFException e) {
+				} catch (RDF4JException e) {
 					throw new RDFHandlerException(e);
 				}
 			}

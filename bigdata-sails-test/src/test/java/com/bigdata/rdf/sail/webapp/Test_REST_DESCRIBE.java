@@ -31,15 +31,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import junit.framework.Test;
 
-import org.openrdf.model.Graph;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.GraphImpl;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.rio.RDFFormat;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.LinkedHashModel;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.rio.RDFFormat;
 
 import com.bigdata.journal.IIndexManager;
 import com.bigdata.rdf.sail.webapp.client.RemoteRepository.AddOp;
@@ -145,19 +145,19 @@ public class Test_REST_DESCRIBE<S extends IIndexManager> extends
          final RDFFormat format, final int tasks, final int threads,
          final int statements) throws Exception {
 
-      final URI person = new URIImpl(BD.NAMESPACE + "Person");
-      final URI likes = new URIImpl(BD.NAMESPACE + "likes");
-      final URI rdf = new URIImpl(BD.NAMESPACE + "RDF");
-      final URI rdfs = new URIImpl(BD.NAMESPACE + "RDFS");
+      final IRI person = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Person");
+      final IRI likes = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "likes");
+      final IRI rdf = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "RDF");
+      final IRI rdfs = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "RDFS");
 
       {
          // create a large number of mikes and bryans
-         final Graph g = new GraphImpl();
+         final Model g = new LinkedHashModel();
          for (int n = 0; n < statements; n++) {
-            final URI miken = new URIImpl(BD.NAMESPACE + "Mike#" + n);
-            final URI bryann = new URIImpl(BD.NAMESPACE + "Bryan#" + n);
-            final Literal nameMiken = new LiteralImpl("Mike#" + n);
-            final Literal nameBryann = new LiteralImpl("Bryan#" + n);
+            final IRI miken = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Mike#" + n);
+            final IRI bryann = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Bryan#" + n);
+            final Literal nameMiken = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Mike#" + n);
+            final Literal nameBryann = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Bryan#" + n);
             g.add(miken, RDF.TYPE, person);
             g.add(miken, likes, rdf);
             g.add(miken, RDFS.LABEL, nameMiken);
@@ -189,7 +189,7 @@ public class Test_REST_DESCRIBE<S extends IIndexManager> extends
             public Void call() throws Exception {
                try {
 
-                  final Graph actual = asGraph(m_repo
+                  final Model actual = asGraph(m_repo
                         .prepareGraphQuery(queryStr));
 
                   assertTrue(!actual.isEmpty());

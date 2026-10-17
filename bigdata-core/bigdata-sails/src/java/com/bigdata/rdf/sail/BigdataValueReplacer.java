@@ -31,15 +31,15 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.query.Binding;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.Dataset;
-import org.openrdf.query.impl.BindingImpl;
-import org.openrdf.query.impl.DatasetImpl;
-import org.openrdf.query.impl.MapBindingSet;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.Binding;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.Dataset;
+import org.eclipse.rdf4j.query.impl.SimpleDataset;
+import org.eclipse.rdf4j.query.impl.MapBindingSet;
 
 import com.bigdata.rdf.internal.IV;
 import com.bigdata.rdf.internal.VTE;
@@ -62,7 +62,7 @@ import com.bigdata.rdf.store.BigdataOpenRDFBindingSetsResolverator;
  */
 public class BigdataValueReplacer {
 
-    private final static Logger log = Logger
+    private final static Logger log = LogManager
             .getLogger(BigdataValueReplacer.class);
     
     private final AbstractTripleStore database;
@@ -117,11 +117,11 @@ public class BigdataValueReplacer {
 
         if (dataset != null) {
 
-            for(URI uri : dataset.getDefaultGraphs())
+            for(IRI uri : dataset.getDefaultGraphs())
                 if (uri != null)
                     values.put(uri, valueFactory.asValue(uri));
 
-            for(URI uri : dataset.getNamedGraphs())
+            for(IRI uri : dataset.getNamedGraphs())
                 if (uri != null)
                     values.put(uri, valueFactory.asValue(uri));
             
@@ -225,7 +225,7 @@ public class BigdataValueReplacer {
             
                 while (it.hasNext()) {
                     
-                    final BindingImpl binding = (BindingImpl) it.next();
+                    final Binding binding = it.next();
 
                     /*
                      * Note: We can not do this. The Sesame APIs let bindings
@@ -294,7 +294,7 @@ public class BigdataValueReplacer {
         /*
          * Create a new Dataset using the resolved Values.
          */
-        final DatasetImpl dataset2;
+        final SimpleDataset dataset2;
         
         if (dataset == null) {
 
@@ -302,13 +302,13 @@ public class BigdataValueReplacer {
 
         } else {
 
-            dataset2 = new DatasetImpl();
+            dataset2 = new SimpleDataset();
 
-            for (URI uri : dataset.getDefaultGraphs())
-                dataset2.addDefaultGraph((URI) values.get(uri));
+            for (IRI uri : dataset.getDefaultGraphs())
+                dataset2.addDefaultGraph((IRI) values.get(uri));
 
-            for (URI uri : dataset.getNamedGraphs())
-                dataset2.addNamedGraph((URI) values.get(uri));
+            for (IRI uri : dataset.getNamedGraphs())
+                dataset2.addNamedGraph((IRI) values.get(uri));
 
         }
 

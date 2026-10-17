@@ -34,7 +34,7 @@ import java.util.concurrent.FutureTask;
 
 import junit.framework.TestCase2;
 
-import org.openrdf.query.algebra.Compare.CompareOp;
+import org.eclipse.rdf4j.query.algebra.Compare.CompareOp;
 
 import com.bigdata.bop.BOpContext;
 import com.bigdata.bop.Bind;
@@ -70,7 +70,7 @@ import com.bigdata.rdf.internal.impl.literal.XSDNumericIV;
 import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.sparql.ast.GlobalAnnotations;
 import com.bigdata.rdf.store.AbstractTripleStore;
 import com.bigdata.relation.accesspath.IAsynchronousIterator;
@@ -950,7 +950,7 @@ abstract public class AbstractAggregationTestCase extends TestCase2 {
         final IConstant<String> book2 = new Constant<String>("book2");
         final IConstant<String> book3 = new Constant<String>("book3");
         final IConstant<String> book4 = new Constant<String>("book4");
-        final BigdataValueFactory f = BigdataValueFactoryImpl.getInstance(getName());
+        final BigdataValueFactory f = BigdataSimpleValueFactory.getInstance(getName());
         final TermId tid1 = new TermId<BigdataValue>(VTE.LITERAL, 1);
         tid1.setValue(f.createLiteral("blue"));
         final IConstant<IV> blue = new Constant<IV>(tid1);
@@ -1123,7 +1123,7 @@ abstract public class AbstractAggregationTestCase extends TestCase2 {
         final IConstant<String> book2 = new Constant<String>("book2");
         final IConstant<String> book3 = new Constant<String>("book3");
         final IConstant<String> book4 = new Constant<String>("book4");
-        final BigdataValueFactory f = BigdataValueFactoryImpl.getInstance(getName());
+        final BigdataValueFactory f = BigdataSimpleValueFactory.getInstance(getName());
         final TermId tid1 = new TermId<BigdataValue>(VTE.LITERAL, 1);
         tid1.setValue(f.createLiteral("blue"));
         final IConstant<IV> blue = new Constant<IV>(tid1);

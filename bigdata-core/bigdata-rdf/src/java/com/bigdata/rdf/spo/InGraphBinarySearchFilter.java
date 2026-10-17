@@ -7,7 +7,7 @@ import java.io.ObjectOutput;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.rdf.internal.IV;
 import com.bigdata.rdf.model.BigdataURI;
@@ -50,7 +50,7 @@ public final class InGraphBinarySearchFilter<E extends ISPO> extends SPOFilter<E
      * @param graphs
      *            The set of acceptable graph identifiers.
      */
-    public InGraphBinarySearchFilter(final Iterable<? extends URI> graphs) {
+    public InGraphBinarySearchFilter(final Iterable<? extends IRI> graphs) {
 
         /*
          * Create a sorted array of term identifiers for the set of contexts
@@ -59,7 +59,7 @@ public final class InGraphBinarySearchFilter<E extends ISPO> extends SPOFilter<E
 
         final HashSet<IV> contextSet = new HashSet<IV>();
         
-        for (URI uri : graphs) {
+        for (IRI uri : graphs) {
         
             final IV termId = ((BigdataURI) uri).getIV();
             

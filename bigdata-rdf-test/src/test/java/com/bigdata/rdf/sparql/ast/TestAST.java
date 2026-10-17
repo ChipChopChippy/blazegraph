@@ -29,8 +29,9 @@ package com.bigdata.rdf.sparql.ast;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
-import org.openrdf.query.algebra.Compare.CompareOp;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.query.algebra.Compare.CompareOp;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -55,7 +56,7 @@ import com.bigdata.rdf.internal.impl.TermId;
  */
 public class TestAST extends TestCase {
 
-	private static final Logger log = Logger.getLogger(TestAST.class);
+	private static final Logger log = LogManager.getLogger(TestAST.class);
 	
     /**
      * 
@@ -303,7 +304,7 @@ public class TestAST extends TestCase {
             subquery.setProjection(projection1);
 
             final TermNode nameConstant = new ConstantNode(
-                    TermId.mockIV(VTE.URI));
+                    TermId.mockIV(VTE.IRI));
             final JoinGroupNode whereClause = new JoinGroupNode();
             whereClause.addChild(new StatementPatternNode(new VarNode("y"),
                     nameConstant, new VarNode("name")));
