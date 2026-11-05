@@ -498,8 +498,8 @@ public class TestMultiTenancyAPI<S extends IIndexManager> extends
                 m_mgr.getRepositoryProperties(namespace2);
                 fail("Should not exist: " + namespace2);
             } catch (HttpException ex) {
-                // Expected status code.
-                assertEquals(404,ex.getStatusCode());
+                // Expected status code (Jetty 12 rejects some malformed namespaces with 400).
+                assertTrue(ex.getStatusCode() == 404 || ex.getStatusCode() == 400);
             }
         }
         

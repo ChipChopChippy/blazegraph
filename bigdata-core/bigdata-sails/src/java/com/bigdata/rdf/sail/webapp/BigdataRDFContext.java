@@ -1717,7 +1717,7 @@ public class BigdataRDFContext extends BigdataBaseContext {
                 
             }
 
-            query.evaluate(w);
+            query.evaluate(new com.bigdata.rdf.rio.LiteralNormalizingTupleQueryResultWriter(w));
 
 		}
 

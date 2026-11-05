@@ -154,10 +154,10 @@ public class Test_REST_DESCRIBE<S extends IIndexManager> extends
          // create a large number of mikes and bryans
          final Model g = new LinkedHashModel();
          for (int n = 0; n < statements; n++) {
-            final IRI miken = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Mike#" + n);
-            final IRI bryann = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Bryan#" + n);
-            final Literal nameMiken = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Mike#" + n);
-            final Literal nameBryann = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Bryan#" + n);
+            final IRI miken = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Mike_" + n);
+            final IRI bryann = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Bryan_" + n);
+            final Literal nameMiken = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Mike_" + n);
+            final Literal nameBryann = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Bryan_" + n);
             g.add(miken, RDF.TYPE, person);
             g.add(miken, likes, rdf);
             g.add(miken, RDFS.LABEL, nameMiken);

@@ -84,7 +84,7 @@ public class TestServiceWhiteList extends TestCase2 {
 						"SERVICE <" + SOME_SERVICE_ENDPOINT + "1> { } }").evaluate();
         	
         } catch(Exception e) {
-          	exceptionThrown = e.toString().contains("Service URI http://someService.com/test1 is not allowed");
+          	exceptionThrown = e.toString().contains("Service IRI http://someService.com/test1 is not allowed");
         }
         
         assertTrue(exceptionThrown);
