@@ -270,7 +270,10 @@ public class BigdataSail extends SailBase implements Sail {
 
     @Override
     public void init() throws SailException {
-        initialize();
+        // RDF4J repositories call init() lazily, even if already initialized.
+        if (!isInitialized()) {
+            initialize();
+        }
     }
 
     private static void verifyContextNotNull(final Resource... contexts) {

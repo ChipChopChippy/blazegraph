@@ -57,6 +57,9 @@ public class SPARQLStarUpdateDataBlockParser extends SPARQLUpdateDataBlockParser
 	 */
 	private Map<String, String> namespaceTable;
 
+	// RDF4J wraps the factory given to the parser (RDFStarDecodingValueFactory).
+	private final ValueFactory originalValueFactory;
+
 	/*--------------*
 	 * Constructors *
 	 *--------------*/
@@ -70,6 +73,7 @@ public class SPARQLStarUpdateDataBlockParser extends SPARQLUpdateDataBlockParser
 	 */
 	public SPARQLStarUpdateDataBlockParser(ValueFactory valueFactory) {
 		super(valueFactory);
+		this.originalValueFactory = valueFactory;
 		this.namespaceTable = new HashMap<>();
 	}
 
@@ -84,6 +88,7 @@ public class SPARQLStarUpdateDataBlockParser extends SPARQLUpdateDataBlockParser
 	 */
 	public SPARQLStarUpdateDataBlockParser(ValueFactory valueFactory, Map<String, String> namespaces) {
 		super(valueFactory);
+		this.originalValueFactory = valueFactory;
 		this.namespaceTable = namespaces;
 		// fill in original {@link AbstractRDFParser}.namespaceTable to be used while parsing
 		for (Entry<String, String> entry: namespaceTable.entrySet()) {
@@ -158,7 +163,7 @@ public class SPARQLStarUpdateDataBlockParser extends SPARQLUpdateDataBlockParser
 		}
 
 		// Use our own class in recursion.
-		SPARQLStarUpdateDataBlockParser p = new SPARQLStarUpdateDataBlockParser(valueFactory, namespaceTable);
+		SPARQLStarUpdateDataBlockParser p = new SPARQLStarUpdateDataBlockParser(originalValueFactory, namespaceTable);
         final List<Statement> stmts = new LinkedList<Statement>();
         final StatementCollector sc = new StatementCollector(stmts);
 		p.setRDFHandler(sc);
@@ -172,8 +177,8 @@ public class SPARQLStarUpdateDataBlockParser extends SPARQLUpdateDataBlockParser
         if (stmts.size() != 1) {
         	throw new RDFParseException("Error parsing SPARQL* value, invalid number of statements");
         }
-        if (valueFactory instanceof BigdataValueFactory && stmts.get(0) instanceof BigdataStatement) {
-        	return ((BigdataValueFactory)valueFactory).createBNode((BigdataStatement)stmts.get(0));
+        if (originalValueFactory instanceof BigdataValueFactory && stmts.get(0) instanceof BigdataStatement) {
+        	return ((BigdataValueFactory)originalValueFactory).createBNode((BigdataStatement)stmts.get(0));
         } else {
         	throw new RDFParseException("Error parsing SPARQL* value, incompatible valueFactory");
         }
@@ -187,6 +192,18 @@ public class SPARQLStarUpdateDataBlockParser extends SPARQLUpdateDataBlockParser
 	protected void setBaseURI(String uri) {
 		baseURI = uri;
 		super.setBaseURI(uri);
+	}
+
+	/**
+	 * RDF4J 5 resets the parser namespace table at the start of parse(), so
+	 * re-apply the prefixes supplied to this parser.
+	 */
+	@Override
+	protected void clear() {
+		super.clear();
+		for (Entry<String, String> entry : new java.util.ArrayList<>(namespaceTable.entrySet())) {
+			super.setNamespace(entry.getKey(), entry.getValue());
+		}
 	}
 
 	@Override
