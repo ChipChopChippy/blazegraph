@@ -165,6 +165,15 @@ extends SPARQLQueryTest // Sesame TupleExpr based evaluation
 //            "http://www.w3.org/2001/sw/DataAccess/tests/data-r2/expr-builtin/manifest#dawg-datatype-2",
 
         "http://www.w3.org/2001/sw/DataAccess/tests/data-r2/syntax-sparql1/manifest#sparql11-wildcard-cycles-04",
+
+        /*
+         * RDF 1.1 semantics (RDF4J 5): xsd:string literals are accepted by
+         * STRDT/STRLANG, and date comparison differs from the RDF 1.0 era
+         * expectations in the TCK data.
+         */
+        "http://www.w3.org/2009/sparql/docs/tests/data-sparql11/functions/manifest#strdt03",
+        "http://www.w3.org/2009/sparql/docs/tests/data-sparql11/functions/manifest#strlang03",
+        "http://www.w3.org/2001/sw/DataAccess/tests/data-r2/open-world/manifest#date-2",
         //"http://www.w3.org/2001/sw/DataAccess/tests/data-r2/syntax-sparql1/manifest#sparql11-subquery-04", // BLZG-618
         
         
