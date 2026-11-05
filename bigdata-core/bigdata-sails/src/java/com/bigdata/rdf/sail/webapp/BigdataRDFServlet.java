@@ -600,7 +600,7 @@ abstract public class BigdataRDFServlet extends BigdataServlet {
 
         final OutputStream os = resp.getOutputStream();
         try {
-            final RDFWriter writer = writerFactory.getWriter(os);
+            final RDFWriter writer = com.bigdata.rdf.rio.LiteralNormalizingRDFWriter.wrap(writerFactory.getWriter(os));
             writer.startRDF();
             final Iterator<Statement> itr = g.iterator();
             while (itr.hasNext()) {

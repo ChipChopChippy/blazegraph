@@ -278,8 +278,8 @@ public class ExportKB {
                     final OutputStream os = new GZIPOutputStream(
                             new FileOutputStream(file));
                     try {
-                        final RDFWriter writer = RDFWriterRegistry
-                                .getInstance().get(format).orElseThrow().getWriter(os);
+                        final RDFWriter writer = com.bigdata.rdf.rio.LiteralNormalizingRDFWriter.wrap(RDFWriterRegistry
+                                .getInstance().get(format).orElseThrow().getWriter(os));
                         writer.startRDF();
                         while (itr.hasNext()) {
                             final Statement stmt = itr.next();

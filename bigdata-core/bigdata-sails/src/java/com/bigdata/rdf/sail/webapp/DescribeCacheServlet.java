@@ -362,8 +362,8 @@ public class DescribeCacheServlet extends BigdataRDFServlet {
             
             final OutputStream os = resp.getOutputStream();
 
-            final RDFWriter w = RDFWriterRegistry.getInstance().get(format)
-                    .orElseThrow().getWriter(os);
+            final RDFWriter w = com.bigdata.rdf.rio.LiteralNormalizingRDFWriter.wrap(RDFWriterRegistry.getInstance().get(format)
+                    .orElseThrow().getWriter(os));
 
             w.startRDF();
 

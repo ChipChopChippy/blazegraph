@@ -1778,9 +1778,9 @@ public class BigdataRDFContext extends BigdataBaseContext {
             final RDFFormat format = RDFWriterRegistry.getInstance()
                     .getFileFormatForMIMEType(mimeType).orElse(null);
 
-            final RDFWriter w = RDFWriterRegistry.getInstance().get(format)
+            final RDFWriter w = com.bigdata.rdf.rio.LiteralNormalizingRDFWriter.wrap(RDFWriterRegistry.getInstance().get(format)
                     .orElseThrow(() -> new IllegalStateException("No RDF writer for " + format))
-                    .getWriter(os);
+                    .getWriter(os));
 
          query.evaluate(w);
          
