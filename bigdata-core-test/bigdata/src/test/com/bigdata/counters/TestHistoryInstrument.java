@@ -52,7 +52,7 @@ public class TestHistoryInstrument extends TestCase2 {
      * <code>null</code>. If we accept a truly random starting time then it
      * is harder to setup the unit tests to test overflow handling.
      */
-    final private long t0 = new Random().nextInt(100)*1000L*60*60;
+    final private long t0 = (1 + new Random().nextInt(100))*1000L*60*60;
     
     /**
      * 
