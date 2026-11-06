@@ -154,11 +154,7 @@
     <async-supported>true</async-supported>
   </servlet>
   <!-- Note: The HALoadBalancerServlet is deployed from override-web.xml -->
-  <!-- Serve anything under /html/* as a simple file. -->
-  <servlet-mapping>
-    <servlet-name>default</servlet-name>
-    <url-pattern>/html/*</url-pattern>
-  </servlet-mapping>
+  <!-- Anything under /html/* is served as a static file by the container's default servlet ("/"). -->
   <!-- Mapping for the default KB namespace (as configured above). -->
   <servlet-mapping>
     <servlet-name>REST API</servlet-name>
