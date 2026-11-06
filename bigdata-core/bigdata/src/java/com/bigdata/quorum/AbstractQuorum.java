@@ -52,8 +52,9 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.concurrent.FutureTaskMon;
 import com.bigdata.ha.HAPipelineGlue;
 import com.bigdata.ha.QuorumService;
@@ -77,13 +78,13 @@ import com.bigdata.util.concurrent.ThreadGuard.Guard;
 public abstract class AbstractQuorum<S extends Remote, C extends QuorumClient<S>>
         implements Quorum<S, C> {
 
-    static protected final transient Logger log = Logger
+    static protected final transient Logger log = LogManager
             .getLogger(AbstractQuorum.class);
 
     /**
      * Dedicated logger for quorum state.
      */
-    static protected final transient Logger qlog = Logger
+    static protected final transient Logger qlog = LogManager
             .getLogger("com.bigdata.quorum.quorumState");
 
     /**

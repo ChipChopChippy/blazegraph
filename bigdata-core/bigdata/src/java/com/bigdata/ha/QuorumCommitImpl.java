@@ -35,8 +35,9 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.ha.msg.HA2PhaseAbortMessage;
 import com.bigdata.ha.msg.HA2PhaseCommitMessage;
 import com.bigdata.ha.msg.HA2PhasePrepareMessage;
@@ -58,7 +59,7 @@ public class QuorumCommitImpl<S extends HACommitGlue> extends
         QuorumStateChangeListenerBase implements QuorumCommit<S>,
         QuorumStateChangeListener, ServiceLookup<HACommitGlue> {
 
-    static transient final Logger log = Logger
+    static transient final Logger log = LogManager
             .getLogger(QuorumCommitImpl.class);
 
     private final QuorumMember<S> member;

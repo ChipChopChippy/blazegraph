@@ -1,9 +1,11 @@
 package com.bigdata.rdf.graph.impl.bd;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.rdf.internal.IV;
 import com.bigdata.rdf.internal.IVUtility;
@@ -17,7 +19,7 @@ import com.bigdata.rdf.internal.IVUtility;
 public class MergeSortIterator implements Iterator<Value> {
 
     // private final static Logger log =
-    // Logger.getLogger(MergeSortIterator.class);
+    // LogManager.getLogger(MergeSortIterator.class);
 
     /**
      * The #of source iterators.

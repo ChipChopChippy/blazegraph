@@ -28,17 +28,14 @@ package com.bigdata.search;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.io.StringReader;
 import java.nio.CharBuffer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Analyzer.TokenStreamComponents;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.core.KeywordAnalyzer;
-import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
 
@@ -149,9 +146,9 @@ public class TermCompletionAnalyzer extends Analyzer {
 	 *   can be set to null to return the non-discarded version on the next cycle.
 	 *   
 	 */
-	private class TermCompletionTokenStream extends TokenStream {
+	private class TermCompletionTokenizer extends Tokenizer {
 
-		final String[] words;
+		String[] words;
 		final CharTermAttribute termAtt;
 		
 		
@@ -165,14 +162,25 @@ public class TermCompletionAnalyzer extends Analyzer {
 		private String afterDiscard;
 		private CharBuffer found;
 		
-		public TermCompletionTokenStream(final Reader reader) {
+		public TermCompletionTokenizer() {
 		    termAtt = addAttribute(CharTermAttribute.class);
-			words = wordBoundary.split(getStringReaderContents(reader));
 		}
 		
 		@Override
+		public void reset() throws IOException {
+			super.reset();
+			words = wordBoundary.split(getStringReaderContents(input));
+			currentWord = new char[]{};
+			currentWordIx = -1;
+			charPos = 0;
+			afterDiscard = null;
+			found = null;
+		}
+
+		@Override
 		public boolean incrementToken() throws IOException {
-			if ( next() ) {
+			clearAttributes();
+			if (next()) {
 				if (afterDiscard != null) {
 					int lg = afterDiscard.length();
 					afterDiscard.getChars(0, lg, termAtt.buffer(), 0);
@@ -233,35 +241,19 @@ public class TermCompletionAnalyzer extends Analyzer {
 
 	}
 
-	static String getStringReaderContents(Reader reader) {
-		try {
-			reader.mark(Integer.MAX_VALUE);
-			int length = (int) reader.skip(Integer.MAX_VALUE);
-			reader.reset();
-			char fileContent[] = new char[length];
-			reader.read(fileContent);
-			reader.reset();
-			return new String(fileContent);
-		} catch (IOException e) {
-			throw new RuntimeException("Impossible",e);
+	static String getStringReaderContents(Reader reader) throws IOException {
+		final StringBuilder contents = new StringBuilder();
+		final char[] buffer = new char[2048];
+		int count;
+		while ((count = reader.read(buffer)) != -1) {
+			contents.append(buffer, 0, count);
 		}
+		return contents.toString();
 	}
 	
 	@Override
 	protected TokenStreamComponents createComponents(String fieldName) {
-		Tokenizer source = new StandardTokenizer();
-	    return new TokenStreamComponents(source){
-	    	private Reader reader;
-			@Override
-	    	protected void setReader(Reader reader) {
-	    		this.reader = reader;
-	    		super.setReader(reader);
-	    	}
-	    	@Override
-	    	public TokenStream getTokenStream() {
-	    		return new TermCompletionTokenStream(reader);
-	    	}
-	    };
+		return new TokenStreamComponents(new TermCompletionTokenizer());
 	}
 	
 }

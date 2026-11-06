@@ -29,14 +29,14 @@ package com.bigdata.rdf.sail;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Properties;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.Binding;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.impl.BindingImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.Binding;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.impl.SimpleBinding;
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.vocab.NoVocabulary;
 
@@ -85,19 +85,19 @@ public class TestPruneBindingSets extends ProxyBigdataSailTestCase {
         
         try {
     
-            sail.initialize();
+            sail.init();
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             final BigdataSailRepositoryConnection cxn = 
                 (BigdataSailRepositoryConnection) repo.getConnection();
             try {
             cxn.setAutoCommit(false);
 
-            URI x = new URIImpl("_:X");
-            URI a = new URIImpl("_:A");
-            URI b = new URIImpl("_:B");
-            URI c = new URIImpl("_:C");
-            URI d = new URIImpl("_:D");
-            URI e = new URIImpl("_:E");
+            IRI x = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("_:X");
+            IRI a = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("_:A");
+            IRI b = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("_:B");
+            IRI c = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("_:C");
+            IRI d = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("_:D");
+            IRI e = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("_:E");
 /**/
             cxn.add(a, x, b);
             cxn.add(b, x, c);
@@ -135,7 +135,7 @@ public class TestPruneBindingSets extends ProxyBigdataSailTestCase {
  
                 Collection<BindingSet> solution = new LinkedList<BindingSet>();
                 solution.add(createBindingSet(new Binding[] {
-                    new BindingImpl("a", a)
+                    new SimpleBinding("a", a)
                 }));
                 
                 compare(result, solution);

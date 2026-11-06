@@ -61,18 +61,18 @@ package com.bigdata.rdf.sparql.ast.eval;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.RDFParserRegistry;
-import org.openrdf.rio.helpers.RDFHandlerBase;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.RDFParserRegistry;
+import org.eclipse.rdf4j.rio.helpers.AbstractRDFHandler;
 
 import com.bigdata.bop.engine.AbstractQueryEngineTestCase;
 import com.bigdata.rdf.model.StatementEnum;
@@ -137,22 +137,22 @@ public abstract class AbstractDataAndSPARQLTestCase extends AbstractASTEvaluatio
                 final String uri) {
 
             final RDFParser rdfParser = RDFParserRegistry.getInstance()
-                    .get(format).getParser();
+                    .get(format).get().getParser();
 
             rdfParser.setValueFactory(store.getValueFactory());
 
-            rdfParser.setVerifyData(true);
+            com.bigdata.rdf.rio.RDFParserOptions.setVerifyData(rdfParser, true);
 
-            rdfParser.setStopAtFirstError(true);
+            
 
-            rdfParser.setDatatypeHandling(RDFParser.DatatypeHandling.IGNORE);
+            com.bigdata.rdf.rio.RDFParserOptions.setDatatypeHandling(rdfParser, com.bigdata.rdf.rio.DatatypeHandling.IGNORE);
 
             final AddStatementHandler handler = new AddStatementHandler();
 
             if (getTripleStore().isQuads()) {
 
                 // Set the default context.
-                handler.setContext(new URIImpl(uri));
+                handler.setContext(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(uri));
 
             }
             
@@ -192,7 +192,7 @@ public abstract class AbstractDataAndSPARQLTestCase extends AbstractASTEvaluatio
          * Helper class adds statements to the sail as they are visited by a
          * parser.
          */
-        private class AddStatementHandler extends RDFHandlerBase {
+        private class AddStatementHandler extends AbstractRDFHandler {
 
             private final StatementBuffer<Statement> buffer;
 
@@ -217,7 +217,7 @@ public abstract class AbstractDataAndSPARQLTestCase extends AbstractASTEvaluatio
                     throws RDFHandlerException {
 
                 final Resource s = stmt.getSubject();
-                final URI p = stmt.getPredicate();
+                final IRI p = stmt.getPredicate();
                 final Value o = stmt.getObject();
                 final Resource c = stmt.getContext() == null ? this.context
                         : stmt.getContext();

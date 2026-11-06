@@ -33,7 +33,7 @@ import java.util.UUID;
 
 import junit.framework.TestCase2;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.rdf.internal.constraints.MathBOp.MathOp;
 import com.bigdata.rdf.internal.constraints.MathUtility;
@@ -47,7 +47,7 @@ import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataURI;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.test.MockTermIdFactory;
 
 /**
@@ -73,7 +73,7 @@ public class TestPackedLongIVs extends TestCase2 {
     public void testMath() {
         
         final BigdataValueFactory vf = 
-            BigdataValueFactoryImpl.getInstance(getName() + UUID.randomUUID());
+            BigdataSimpleValueFactory.getInstance(getName() + UUID.randomUUID());
 
         final MockTermIdFactory termIdFactory = new MockTermIdFactory();
         
@@ -81,9 +81,9 @@ public class TestPackedLongIVs extends TestCase2 {
             new CompressedTimestampExtension<BigdataValue>(
                 new IDatatypeURIResolver() {
                       @Override
-                      public BigdataURI resolve(final URI uri) {
-                         final BigdataURI buri = vf.createURI(uri.stringValue());
-                         buri.setIV(termIdFactory.newTermId(VTE.URI));
+                      public BigdataURI resolve(final IRI uri) {
+                         final BigdataURI buri = vf.createIRI(uri.stringValue());
+                         buri.setIV(termIdFactory.newTermId(VTE.IRI));
                          return buri;
                       }
                 });

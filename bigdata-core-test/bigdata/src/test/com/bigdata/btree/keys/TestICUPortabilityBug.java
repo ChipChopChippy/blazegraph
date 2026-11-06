@@ -33,8 +33,9 @@ import java.util.Locale;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.ibm.icu.text.Collator;
 import com.ibm.icu.text.RawCollationKey;
 import com.ibm.icu.text.RuleBasedCollator;
@@ -55,7 +56,7 @@ import com.ibm.icu.util.VersionInfo;
  */
 public class TestICUPortabilityBug extends TestCase {
 
-    private final static Logger log = Logger
+    private final static Logger log = LogManager
             .getLogger(TestICUPortabilityBug.class);  
     
     /**

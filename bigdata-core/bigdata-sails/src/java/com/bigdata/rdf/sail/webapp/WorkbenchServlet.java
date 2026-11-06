@@ -24,18 +24,19 @@ package com.bigdata.rdf.sail.webapp;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Graph;
-import org.openrdf.model.impl.LinkedHashModel;
-import org.openrdf.model.impl.ValueFactoryImpl;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.RDFParserFactory;
-import org.openrdf.rio.RDFParserRegistry;
-import org.openrdf.rio.helpers.StatementCollector;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.impl.LinkedHashModel;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.RDFParserFactory;
+import org.eclipse.rdf4j.rio.RDFParserRegistry;
+import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 
 import com.bigdata.rdf.sail.webapp.client.MiniMime;
 
@@ -49,7 +50,7 @@ public class WorkbenchServlet extends BigdataRDFServlet {
      */
     private static final long serialVersionUID = 1L;
     
-    static private final transient Logger log = Logger.getLogger(WorkbenchServlet.class); 
+    static private final transient Logger log = LogManager.getLogger(WorkbenchServlet.class);
 
     /**
      * Flag to signify a workbench operation.
@@ -100,7 +101,7 @@ public class WorkbenchServlet extends BigdataRDFServlet {
          * UpdateServlet fails to parse MIMEType when doing conneg. </a>
          */
 
-        final RDFFormat requestBodyFormat = RDFFormat.forMIMEType(new MiniMime(
+        final RDFFormat requestBodyFormat = com.bigdata.rdf.rio.RDF4JFormatUtil.forMIMEType(new MiniMime(
                 contentType).getMimeType());
 
         if (requestBodyFormat == null) {
@@ -113,7 +114,7 @@ public class WorkbenchServlet extends BigdataRDFServlet {
         }
 
         final RDFParserFactory rdfParserFactory = RDFParserRegistry
-                .getInstance().get(requestBodyFormat);
+                .getInstance().get(requestBodyFormat).orElse(null);
 
         if (rdfParserFactory == null) {
 
@@ -128,7 +129,7 @@ public class WorkbenchServlet extends BigdataRDFServlet {
 //        final String s= IOUtil.readString(req.getInputStream());
 //        System.err.println(s);
         
-        final Graph g = new LinkedHashModel();
+        final Model g = new LinkedHashModel();
         
         try {
         
@@ -139,14 +140,14 @@ public class WorkbenchServlet extends BigdataRDFServlet {
 	        final RDFParser rdfParser = rdfParserFactory
 	                .getParser();
 	
-	        rdfParser.setValueFactory(new ValueFactoryImpl());
+	        rdfParser.setValueFactory(SimpleValueFactory.getInstance());
 	
-	        rdfParser.setVerifyData(true);
+	        com.bigdata.rdf.rio.RDFParserOptions.setVerifyData(rdfParser, true);
 	
-	        rdfParser.setStopAtFirstError(true);
+	        
 	
-	        rdfParser
-	                .setDatatypeHandling(RDFParser.DatatypeHandling.IGNORE);
+	        com.bigdata.rdf.rio.RDFParserOptions.setDatatypeHandling(
+	                rdfParser, com.bigdata.rdf.rio.DatatypeHandling.IGNORE);
 	
 	        rdfParser.setRDFHandler(new StatementCollector(g));
 	

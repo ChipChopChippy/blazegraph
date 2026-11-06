@@ -4,10 +4,10 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.datatypes.XMLDatatypeUtil;
-import org.openrdf.model.vocabulary.XMLSchema;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.datatypes.XMLDatatypeUtil;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
 
 import com.bigdata.rdf.error.SparqlTypeErrorException;
 import com.bigdata.rdf.internal.IV;
@@ -25,7 +25,7 @@ public class MathUtility implements IMathOpHandler {
 
     public static boolean checkNumericDatatype(final Literal... args) {
     	for (Literal lit : args) {
-    		final URI dt = lit.getDatatype();
+    		final IRI dt = lit.getDatatype();
 
     		if (dt == null)
     		    return false;
@@ -61,27 +61,27 @@ public class MathUtility implements IMathOpHandler {
     	if (!checkNumericDatatype(l1, l2))
     		throw new IllegalArgumentException("Not numbers: " + l1 + ", " + l2);
 
-    	final URI dt1 = l1.getDatatype();
-        final URI dt2 = l2.getDatatype();
+    	final IRI dt1 = l1.getDatatype();
+        final IRI dt2 = l2.getDatatype();
 
         // Determine most specific datatype that the arguments have in common,
         // choosing from xsd:integer, xsd:decimal, xsd:float and xsd:double as
         // per the SPARQL/XPATH spec
-        URI commonDatatype;
+        IRI commonDatatype;
 
-        if (dt1.equals(XMLSchema.DOUBLE) || dt2.equals(XMLSchema.DOUBLE)) {
-            commonDatatype = XMLSchema.DOUBLE;
-        } else if (dt1.equals(XMLSchema.FLOAT) || dt2.equals(XMLSchema.FLOAT)) {
-            commonDatatype = XMLSchema.FLOAT;
-        } else if (dt1.equals(XMLSchema.DECIMAL) || dt2.equals(XMLSchema.DECIMAL)) {
-            commonDatatype = XMLSchema.DECIMAL;
+        if (dt1.equals(XSD.DOUBLE) || dt2.equals(XSD.DOUBLE)) {
+            commonDatatype = XSD.DOUBLE;
+        } else if (dt1.equals(XSD.FLOAT) || dt2.equals(XSD.FLOAT)) {
+            commonDatatype = XSD.FLOAT;
+        } else if (dt1.equals(XSD.DECIMAL) || dt2.equals(XSD.DECIMAL)) {
+            commonDatatype = XSD.DECIMAL;
         } else if (op == MathOp.DIVIDE) {
             // Result of integer divide is decimal and requires the arguments to
             // be handled as such, see for details:
             // http://www.w3.org/TR/xpath-functions/#func-numeric-divide
-            commonDatatype = XMLSchema.DECIMAL;
+            commonDatatype = XSD.DECIMAL;
         } else {
-            commonDatatype = XMLSchema.INTEGER;
+            commonDatatype = XSD.INTEGER;
         }
 
         // Note: Java already handles cases like divide-by-zero appropriately
@@ -90,22 +90,22 @@ public class MathUtility implements IMathOpHandler {
         // Chapter02/floatingPt2.html
 
         try {
-            if (commonDatatype.equals(XMLSchema.DOUBLE)) {
+            if (commonDatatype.equals(XSD.DOUBLE)) {
                 double left = l1.doubleValue();
                 double right = l2.doubleValue();
                 return numericalMath(left, right, op);
             }
-            else if (commonDatatype.equals(XMLSchema.FLOAT)) {
+            else if (commonDatatype.equals(XSD.FLOAT)) {
                 float left = l1.floatValue();
                 float right = l2.floatValue();
                 return numericalMath(left, right, op);
             }
-            else if (commonDatatype.equals(XMLSchema.DECIMAL)) {
+            else if (commonDatatype.equals(XSD.DECIMAL)) {
                 BigDecimal left = l1.decimalValue();
                 BigDecimal right = l2.decimalValue();
                 return numericalMath(left, right, op);
             }
-            else { // XMLSchema.INTEGER
+            else { // XSD.INTEGER
                 BigInteger left = l1.integerValue();
                 BigInteger right = l2.integerValue();
                 return numericalMath(left, right, op);
@@ -121,7 +121,7 @@ public class MathUtility implements IMathOpHandler {
 //    public static final IV numericalMath(final Literal l1, final IV iv2,
 //            final MathOp op) {
 //
-//        final URI dt1 = l1.getDatatype();
+//        final IRI dt1 = l1.getDatatype();
 //
 //        // Only numeric value can be used in math expressions
 //        if (dt1 == null || !XMLDatatypeUtil.isNumericDatatype(dt1)) {
@@ -148,11 +148,11 @@ public class MathUtility implements IMathOpHandler {
 //        // choosing from xsd:integer, xsd:decimal, xsd:float and xsd:double as
 //        // per the SPARQL/XPATH spec
 //
-//        if (dte2 == DTE.XSDDouble || dt1.equals(XMLSchema.DOUBLE)) {
+//        if (dte2 == DTE.XSDDouble || dt1.equals(XSD.DOUBLE)) {
 //            return numericalMath(l1.doubleValue(), num2.doubleValue(), op);
-//        } else if (dte2 == DTE.XSDFloat || dt1.equals(XMLSchema.FLOAT)) {
+//        } else if (dte2 == DTE.XSDFloat || dt1.equals(XSD.FLOAT)) {
 //            return numericalMath(l1.floatValue(), num2.floatValue(), op);
-//        } else if (dte2 == DTE.XSDDecimal || dt1.equals(XMLSchema.DECIMAL)) {
+//        } else if (dte2 == DTE.XSDDecimal || dt1.equals(XSD.DECIMAL)) {
 //            return numericalMath(l1.decimalValue(), num2.decimalValue(), op);
 //        } else if (op == MathOp.DIVIDE) {
 //            // Result of integer divide is decimal and requires the arguments to
@@ -168,14 +168,14 @@ public class MathUtility implements IMathOpHandler {
 //    public static final IV numericalMath(final Literal l1, final Literal l2,
 //            final MathOp op) {
 //
-//        final URI dt1 = l1.getDatatype();
+//        final IRI dt1 = l1.getDatatype();
 //
 //        // Only numeric value can be used in math expressions
 //        if (dt1 == null || !XMLDatatypeUtil.isNumericDatatype(dt1)) {
 //            throw new IllegalArgumentException("Not a number: " + l1);
 //        }
 //
-//        final URI dt2 = l2.getDatatype();
+//        final IRI dt2 = l2.getDatatype();
 //
 //        // Only numeric value can be used in math expressions
 //        if (dt2 == null || !XMLDatatypeUtil.isNumericDatatype(dt2)) {
@@ -186,11 +186,11 @@ public class MathUtility implements IMathOpHandler {
 //        // choosing from xsd:integer, xsd:decimal, xsd:float and xsd:double as
 //        // per the SPARQL/XPATH spec
 //
-//        if (dt2.equals(XMLSchema.DOUBLE)|| dt1.equals(XMLSchema.DOUBLE)) {
+//        if (dt2.equals(XSD.DOUBLE)|| dt1.equals(XSD.DOUBLE)) {
 //            return numericalMath(l1.doubleValue(), l2.doubleValue(), op);
-//        } else if ( dt2.equals(XMLSchema.FLOAT)|| dt1.equals(XMLSchema.FLOAT)) {
+//        } else if ( dt2.equals(XSD.FLOAT)|| dt1.equals(XSD.FLOAT)) {
 //            return numericalMath(l1.floatValue(), l2.floatValue(), op);
-//        } else if (dt2.equals(XMLSchema.DECIMAL)|| dt1.equals(XMLSchema.DECIMAL)) {
+//        } else if (dt2.equals(XSD.DECIMAL)|| dt1.equals(XSD.DECIMAL)) {
 //            return numericalMath(l1.decimalValue(), l2.decimalValue(), op);
 //        } else if (op == MathOp.DIVIDE) {
 //            // Result of integer divide is decimal and requires the arguments to
@@ -299,7 +299,7 @@ public class MathUtility implements IMathOpHandler {
     	if (!checkNumericDatatype(lit))
     		throw new IllegalArgumentException("not numeric: " + lit);
 
-    	final URI dte1 = lit.getDatatype();
+    	final IRI dte1 = lit.getDatatype();
 
         /*
          * FIXME These xpath functions have very custom semantics. They need to
@@ -319,15 +319,15 @@ public class MathUtility implements IMathOpHandler {
 //            throw new UnsupportedOperationException(op.toString());
 //        }
 
-        if (dte1.equals(XMLSchema.DECIMAL)) {
+        if (dte1.equals(XSD.DECIMAL)) {
             return numericalFunc(lit.decimalValue(), op);
-        } else if (dte1.equals(XMLSchema.INTEGER)) {
+        } else if (dte1.equals(XSD.INTEGER)) {
             return numericalFunc(lit.integerValue(), op);
-        } else if (dte1.equals(XMLSchema.FLOAT)) {
+        } else if (dte1.equals(XSD.FLOAT)) {
             return numericalFunc(lit.floatValue(), op);
-        } else if (dte1.equals(XMLSchema.INT)) {
+        } else if (dte1.equals(XSD.INT)) {
             return numericalFunc(lit.intValue(), op);
-        } else if (dte1.equals(XMLSchema.DOUBLE)) {
+        } else if (dte1.equals(XSD.DOUBLE)) {
             return numericalFunc(lit.doubleValue(), op);
         } else {
             return numericalFunc(lit.longValue(), op);

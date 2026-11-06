@@ -22,16 +22,15 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.journal;
-
 /**
  * An instance of this exception is thrown when the storage layer must go
  * through an abort before new writes may be applied or committed.
- * 
+ *
  * @author bryan
- * @see http://jira.blazegraph.com/browse/BLZG-181 (Add critical section
+ * @see jira.blazegraph.com/browse/BLZG-181 (Add critical section
  *      protection to AbstractJournal.abort() and
  *      BigdataSailConnection.rollback())
- * @see http://jira.blazegraph.com/browse/BLZG-1236 (Recycler error in 1.5.1)
+ * @see jira.blazegraph.com/browse/BLZG-1236 (Recycler error in 1.5.1)
  */
 public class AbortRequiredException extends IllegalStateException {
 

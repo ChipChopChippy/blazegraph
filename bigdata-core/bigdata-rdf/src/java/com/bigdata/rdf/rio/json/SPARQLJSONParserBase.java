@@ -23,13 +23,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryResultHandlerException;
-import org.openrdf.query.impl.MapBindingSet;
-import org.openrdf.query.resultio.QueryResultParseException;
-import org.openrdf.query.resultio.QueryResultParserBase;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryResultHandlerException;
+import org.eclipse.rdf4j.query.impl.MapBindingSet;
+import org.eclipse.rdf4j.query.resultio.QueryResultParseException;
+import org.eclipse.rdf4j.query.resultio.AbstractQueryResultParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +54,7 @@ import com.fasterxml.jackson.core.JsonToken;
  * @author Peter Ansell
  * @author Sebastian Schaffert
  */
-public abstract class SPARQLJSONParserBase extends QueryResultParserBase {
+public abstract class SPARQLJSONParserBase extends AbstractQueryResultParser {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -433,7 +433,7 @@ public abstract class SPARQLJSONParserBase extends QueryResultParserBase {
 				result = valueFactory.createLiteral(value, language);
 			}
 			else if (datatype != null) {
-				result = valueFactory.createLiteral(value, valueFactory.createURI(datatype));
+				result = valueFactory.createLiteral(value, valueFactory.createIRI(datatype));
 			}
 			else {
 				result = valueFactory.createLiteral(value);
@@ -443,7 +443,7 @@ public abstract class SPARQLJSONParserBase extends QueryResultParserBase {
 			result = valueFactory.createBNode(value);
 		}
 		else if (type.equals(URI)) {
-			result = valueFactory.createURI(value);
+			result = valueFactory.createIRI(value);
 		}
 
 		logger.debug("result value: {}", result);

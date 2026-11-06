@@ -27,8 +27,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 /**
  * Helper task for monitoring the results of otherwise unwatched tasks.
  * 
@@ -37,7 +38,7 @@ import org.apache.log4j.Logger;
  */
 public class MonitoredFutureTask<T> extends FutureTask<T> {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(MonitoredFutureTask.class);
     
     public MonitoredFutureTask(final Callable<T> callable) {

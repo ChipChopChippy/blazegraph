@@ -64,10 +64,10 @@ public class TestBlobIV extends TestCase2 {
 
     public void test_BlobIV_isExtensionIV() {
 
-        final BlobIV<BigdataURI> iv = new BlobIV<BigdataURI>(VTE.URI,
+        final BlobIV<BigdataURI> iv = new BlobIV<BigdataURI>(VTE.IRI,
                 12/* hash */, (short) 50/* counter */);
 
-        assertEquals(VTE.URI, iv.getVTE());
+        assertEquals(VTE.IRI, iv.getVTE());
 
         assertFalse(iv.isInline());
 
@@ -128,7 +128,7 @@ public class TestBlobIV extends TestCase2 {
     
     public void test_BlobIV_URI() {
     	
-    	final VTE vte = VTE.URI;
+    	final VTE vte = VTE.IRI;
     	
     	final int hashCode = 12;
     	
@@ -166,7 +166,7 @@ public class TestBlobIV extends TestCase2 {
 
     public void test_BlobIV_URI_Counter_ZERO() {
     	
-    	final VTE vte = VTE.URI;
+    	final VTE vte = VTE.IRI;
     	
     	final int hashCode = 12;
     	
@@ -178,7 +178,7 @@ public class TestBlobIV extends TestCase2 {
 
     public void test_BlobIV_URI_Counter_ONE() {
     	
-    	final VTE vte = VTE.URI;
+    	final VTE vte = VTE.IRI;
     	
     	final int hashCode = 12;
     	
@@ -190,7 +190,7 @@ public class TestBlobIV extends TestCase2 {
 
     public void test_BlobIV_URI_Counter_MIN_VALUE() {
     	
-    	final VTE vte = VTE.URI;
+    	final VTE vte = VTE.IRI;
     	
     	final int hashCode = 12;
     	
@@ -202,7 +202,7 @@ public class TestBlobIV extends TestCase2 {
 
     public void test_BlobIV_URI_Counter_MAX_VALUE() {
     	
-    	final VTE vte = VTE.URI;
+    	final VTE vte = VTE.IRI;
     	
     	final int hashCode = 12;
     	
@@ -229,10 +229,10 @@ public class TestBlobIV extends TestCase2 {
 
 //      [TermId(-5764607523034234880U), TermId(-1152921504606846976U), BlobIV(1974963648:16:L), TermId(8070450532247928832U)]
 //        {
-//            final IV iv0 = new TermId(VTE.URI, -5764607523034234880L);
-//            final IV iv1 = new TermId(VTE.URI, -1152921504606846976L);
+//            final IV iv0 = new TermId(VTE.IRI, -5764607523034234880L);
+//            final IV iv1 = new TermId(VTE.IRI, -1152921504606846976L);
 //            final IV iv2 = new BlobIV(vte, hashCode, (short) counter);
-//            final IV iv3 = new TermId(VTE.URI, -8070450532247928832L);
+//            final IV iv3 = new TermId(VTE.IRI, -8070450532247928832L);
 //            final IKeyBuilder keyBuilder = new KeyBuilder();
 //            keyBuilder.reset();
 //
@@ -321,7 +321,7 @@ public class TestBlobIV extends TestCase2 {
 			}
 
 			switch (vte) {
-			case URI:
+			case IRI:
 				assertTrue(v.isURI());
 				assertFalse(v.isBNode());
 				assertFalse(v.isLiteral());

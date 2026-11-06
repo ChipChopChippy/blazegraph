@@ -5,8 +5,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.IIndex;
 import com.bigdata.btree.IRangeQuery;
 import com.bigdata.btree.ITupleIterator;
@@ -34,7 +35,7 @@ import com.bigdata.util.Bytes;
  */
 public class JustificationRemover implements Callable<Long> {
 
-    protected static final Logger log = Logger
+    protected static final Logger log = LogManager
             .getLogger(JustificationRemover.class);
 
     /**

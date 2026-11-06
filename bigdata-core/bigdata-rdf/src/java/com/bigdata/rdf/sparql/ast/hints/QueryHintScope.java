@@ -27,8 +27,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sparql.ast.hints;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.rdf.sparql.ast.JoinGroupNode;
 import com.bigdata.rdf.sparql.ast.NamedSubqueryRoot;
@@ -42,7 +42,7 @@ import com.bigdata.rdf.sparql.ast.optimizers.ASTQueryHintOptimizer;
 import com.bigdata.rdf.sparql.ast.service.ServiceNode;
 
 /**
- * Type safe enumeration for the scope of a query hint. The {@link URI} for each
+ * Type safe enumeration for the scope of a query hint. The {@link IRI} for each
  * scope is {@value QueryHints#NAMESPACE} plus the name of the enumeration
  * value. For example, <code>http://www.bigdata.com/queryHints#Group</code>
  * would apply to the entire group in which that query hint was found.
@@ -58,7 +58,7 @@ public enum QueryHintScope {
     /**
      * The entire query.
      */
-    Query(new URIImpl(QueryHints.NAMESPACE + "Query")),
+    Query(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE + "Query")),
     /**
      * The query or subquery in which the query hint appears (any of the
      * {@link QueryBase} instances).
@@ -67,18 +67,18 @@ public enum QueryHintScope {
      * @see SubqueryRoot
      * @see NamedSubqueryRoot
      */
-    SubQuery(new URIImpl(QueryHints.NAMESPACE + "SubQuery")),
+    SubQuery(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE + "SubQuery")),
     /**
      * The group in which the query hint appears and any direct non-group
      * children within that group.
      */
-    Group(new URIImpl(QueryHints.NAMESPACE + "Group")),
+    Group(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE + "Group")),
     /**
      * The group in which the query hint appears and any children of that group.
      * This does not apply to things within {@link ServiceNode}s or
      * {@link SubqueryRoot}s.
      */
-    GroupAndSubGroups(new URIImpl(QueryHints.NAMESPACE + "GroupAndSubGroups")),
+    GroupAndSubGroups(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE + "GroupAndSubGroups")),
     /**
      * The query hint binds on the previous non-query hint AST node which is not
      * itself a query hint. This may be used to bind a query hint on a
@@ -86,19 +86,19 @@ public enum QueryHintScope {
      * {@link UnionNode}, a {@link ServiceNode}, etc. This DOES NOT bind the
      * query hint on the children of that AST node.
      */
-    Prior(new URIImpl(QueryHints.NAMESPACE + "Prior"));
+    Prior(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE + "Prior"));
 
-    private QueryHintScope(final URI uri) {
+    private QueryHintScope(final IRI uri) {
         this.uri = uri;
     }
 
-    private final URI uri;
+    private final IRI uri;
 
-    public URI getURI() {
+    public IRI getURI() {
         return uri;
     }
     
-    public static QueryHintScope valueOf(final URI uri) {
+    public static QueryHintScope valueOf(final IRI uri) {
         if(uri == null)
             throw new IllegalArgumentException();
         if (!QueryHints.NAMESPACE.equals(uri.getNamespace())) {

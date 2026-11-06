@@ -31,18 +31,18 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.bop.solutions;
 
-import info.aduna.lang.ObjectUtil;
+import org.eclipse.rdf4j.common.lang.ObjectUtil;
 
 import java.io.Serializable;
 import java.util.Comparator;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.datatypes.XMLDatatypeUtil;
-import org.openrdf.query.algebra.Compare.CompareOp;
-import org.openrdf.query.algebra.evaluation.ValueExprEvaluationException;
-import org.openrdf.query.algebra.evaluation.util.QueryEvaluationUtil;
-import org.openrdf.query.algebra.evaluation.util.ValueComparator;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.datatypes.XMLDatatypeUtil;
+import org.eclipse.rdf4j.query.algebra.Compare.CompareOp;
+import org.eclipse.rdf4j.query.algebra.evaluation.ValueExprEvaluationException;
+import org.eclipse.rdf4j.query.algebra.evaluation.util.QueryEvaluationUtil;
+import org.eclipse.rdf4j.query.algebra.evaluation.util.ValueComparator;
 
 import com.bigdata.rdf.internal.IV;
 import com.bigdata.rdf.internal.impl.bnode.SidIV;
@@ -76,7 +76,7 @@ public class IVComparator implements Comparator<IV>, Serializable {
     public int compare(final IV o1, final IV o2) {
 
         // check equality
-        if (ObjectUtil.nullEquals(o1, o2)) {
+        if (java.util.Objects.equals(o1, o2)) {
             return 0;
         }
 
@@ -118,7 +118,7 @@ public class IVComparator implements Comparator<IV>, Serializable {
         final boolean u1 = o1.isURI();
         final boolean u2 = o2.isURI();
         if (u1 && u2) {
-            return compareURIs((URI) o1, (URI) o2);
+            return compareURIs((IRI) o1, (IRI) o2);
         }
         if (u1) {
             return -1;
@@ -166,7 +166,7 @@ public class IVComparator implements Comparator<IV>, Serializable {
      * Only difference here with Sesame ValueComparator is that we use
      * stringValue() instead of toString().
      */
-    private int compareURIs(final URI leftURI, final URI rightURI) {
+    private int compareURIs(final IRI leftURI, final IRI rightURI) {
 
         return leftURI.stringValue().compareTo(rightURI.stringValue());
 
@@ -229,8 +229,8 @@ public class IVComparator implements Comparator<IV>, Serializable {
 		int result = 0;
 
 		// Sort by datatype first, plain literals come before datatyped literals
-		URI leftDatatype = leftLit.getDatatype();
-		URI rightDatatype = rightLit.getDatatype();
+		IRI leftDatatype = leftLit.getDatatype();
+		IRI rightDatatype = rightLit.getDatatype();
 
 		if (leftDatatype != null) {
 			if (rightDatatype != null) {
@@ -248,8 +248,8 @@ public class IVComparator implements Comparator<IV>, Serializable {
 		if (result == 0) {
 			// datatypes are equal or both literals are untyped; sort by language
 			// tags, simple literals come before literals with language tags
-			String leftLanguage = leftLit.getLanguage();
-			String rightLanguage = rightLit.getLanguage();
+			String leftLanguage = leftLit.getLanguage().orElse(null);
+			String rightLanguage = rightLit.getLanguage().orElse(null);
 
 			if (leftLanguage != null) {
 				if (rightLanguage != null) {
@@ -276,7 +276,7 @@ public class IVComparator implements Comparator<IV>, Serializable {
 	/**
 	 * Taken directly from Sesame's ValueComparator, no modification.
 	 */
-    private int compareDatatypes(final URI leftDatatype, final URI rightDatatype) {
+    private int compareDatatypes(final IRI leftDatatype, final IRI rightDatatype) {
 		if (XMLDatatypeUtil.isNumericDatatype(leftDatatype)) {
 			if (XMLDatatypeUtil.isNumericDatatype(rightDatatype)) {
 				// both are numeric datatypes

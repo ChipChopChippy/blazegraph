@@ -6,15 +6,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
-import org.openrdf.model.Graph;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Resource;
-import org.openrdf.model.util.GraphUtil;
-import org.openrdf.model.util.GraphUtilException;
-import org.openrdf.sail.config.SailConfigException;
-import org.openrdf.sail.config.SailImplConfigBase;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.util.Models;
+import org.eclipse.rdf4j.sail.config.SailConfigException;
+import org.eclipse.rdf4j.sail.config.AbstractSailImplConfig;
 
-public class BigdataSailConfig extends SailImplConfigBase {
+public class BigdataSailConfig extends AbstractSailImplConfig {
 
 	/*-----------*
 	 * Variables *
@@ -57,35 +56,28 @@ public class BigdataSailConfig extends SailImplConfigBase {
     }
     
 	@Override
-	public Resource export(Graph graph)
+	public Resource export(Model graph)
 	{
 		Resource implNode = super.export(graph);
 
 		if (propertiesFile != null) {
 			graph.add(implNode, BigdataConfigSchema.PROPERTIES, 
-                    graph.getValueFactory().createLiteral(propertiesFile));
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance()
+                            .createLiteral(propertiesFile));
 		}
 
 		return implNode;
 	}
 
 	@Override
-	public void parse(Graph graph, Resource implNode)
+	public void parse(Model graph, Resource implNode)
 		throws SailConfigException
 	{
 		super.parse(graph, implNode);
 
-		try {
-			Literal propertiesLit = GraphUtil.getOptionalObjectLiteral(
-                    graph, implNode, BigdataConfigSchema.PROPERTIES);
-			if (propertiesLit != null) {
-				setPropertiesFile((propertiesLit).getLabel());
-			} else {
-                throw new SailConfigException("Properties file required");
-            }
-		}
-		catch (GraphUtilException e) {
-			throw new SailConfigException(e.getMessage(), e);
-		}
+        Literal propertiesLit = Models.objectLiteral(
+                graph.filter(implNode, BigdataConfigSchema.PROPERTIES, null))
+                .orElseThrow(() -> new SailConfigException("Properties file required"));
+        setPropertiesFile(propertiesLit.getLabel());
 	}
 }

@@ -28,10 +28,10 @@ package com.bigdata.rdf.sail;
 
 import java.util.Properties;
 
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.Update;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.Update;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.sparql.ast.QuadsOperationInTriplesModeException;
@@ -84,7 +84,7 @@ public class TestTicket1518 extends ProxyBigdataSailTestCase {
 
         try {
 
-            sail.initialize();
+            sail.init();
             
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             
@@ -134,7 +134,7 @@ public class TestTicket1518 extends ProxyBigdataSailTestCase {
 
         try {
 
-            sail.initialize();
+            sail.init();
             
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             
@@ -184,7 +184,7 @@ public class TestTicket1518 extends ProxyBigdataSailTestCase {
 
         try {
 
-            sail.initialize();
+            sail.init();
             
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             
@@ -231,7 +231,7 @@ public class TestTicket1518 extends ProxyBigdataSailTestCase {
 
         try {
 
-            sail.initialize();
+            sail.init();
             
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             

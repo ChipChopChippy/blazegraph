@@ -26,7 +26,7 @@ package com.bigdata.rdf.internal;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.rdf.internal.impl.literal.AbstractLiteralIV;
 import com.bigdata.rdf.internal.impl.uri.URIExtensionIV;
@@ -81,7 +81,7 @@ public class InlineURIFactory implements IInlineURIFactory {
 	 * or the constructor of a subclass. The set of registered handlers must not
 	 * be changed outside of the constructor scope both for reasons of
 	 * visibility of the changes (thread-safety) and stability of the mapping of
-	 * {@link URI}s onto {@link IV}s.
+	 * {@link IRI}s onto {@link IV}s.
 	 * 
 	 * @param handler
 	 */
@@ -105,11 +105,11 @@ public class InlineURIFactory implements IInlineURIFactory {
 
     @Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public URIExtensionIV createInlineURIIV(final URI uri) {
+	public URIExtensionIV createInlineURIIV(final IRI uri) {
 
 		final String str = uri.stringValue();
 
-		// Find handler with longest prefix match LTE the given URI.
+		// Find handler with longest prefix match LTE the given IRI.
 		final Map.Entry<String, InlineURIHandler> floorEntry = getHandlersByNamespace().floorEntry(str);
 
 		if (floorEntry == null) {
@@ -124,8 +124,8 @@ public class InlineURIFactory implements IInlineURIFactory {
 		/*
 		 * Note: the floorEntry is NOT guaranteed to be a prefix. It can also be
 		 * strictly LT the probe key. Therefore we must additionally verify here
-		 * that the prefix under which the URI handler was registered is a
-		 * prefix of the URI before invoking that handler.
+		 * that the prefix under which the IRI handler was registered is a
+		 * prefix of the IRI before invoking that handler.
 		 */
 		if (str.startsWith(prefix)) {
 
@@ -146,7 +146,7 @@ public class InlineURIFactory implements IInlineURIFactory {
 		/*
 		 * Note: This code checks each handler. This is presumably being done
 		 * because the ipv4 syntax can include "/" characters (for the optional
-		 * netmask) so the URI namespace (as defined by openrdf) is not matching
+		 * netmask) so the IRI namespace (as defined by openrdf) is not matching
 		 * the prefix under which the handler is registered.
 		 */
 //        for (InlineURIHandler handler : handlersByNamespace.values()) {
@@ -159,7 +159,7 @@ public class InlineURIFactory implements IInlineURIFactory {
     }
 
     @Override
-    public String getLocalNameFromDelegate(final URI namespace,
+    public String getLocalNameFromDelegate(final IRI namespace,
             final AbstractLiteralIV<BigdataLiteral, ?> delegate) {
 
 		final InlineURIHandler handler = getHandlersByNamespace().get(namespace.stringValue());

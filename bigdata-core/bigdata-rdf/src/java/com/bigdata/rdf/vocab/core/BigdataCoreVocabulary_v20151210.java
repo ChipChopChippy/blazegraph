@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.vocab.core;
 
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.rdf.sail.RDRHistory;
 import com.bigdata.rdf.store.AbstractTripleStore;
@@ -72,9 +72,9 @@ public class BigdataCoreVocabulary_v20151210 extends BigdataCoreVocabulary_v2015
          * Some new URIs for graph and RDR management.
          */
 		addDecl(new BaseVocabularyDecl(
-				new URIImpl(BD.NAMESPACE + "Vertex"), // BigdataRDFFactory.VERTEX,
-				new URIImpl(BD.NAMESPACE + "Edge"), // BigdataRDFFactory.EDGE,
-				new URIImpl("attr:/type"), // GPO.tid,
+				org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Vertex"), // BigdataRDFFactory.VERTEX,
+				org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Edge"), // BigdataRDFFactory.EDGE,
+				org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("attr:/type"), // GPO.tid,
 				BD.SID,
 				BD.STATEMENT_TYPE,
 				BD.NULL_GRAPH,

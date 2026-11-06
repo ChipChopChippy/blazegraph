@@ -85,15 +85,15 @@ public class TestSPOPredicate extends TestCase2 {
 
         relation = "test";
 
-        rdfsSubClassOf = new Constant<IV>(factory.newTermId(VTE.URI));
+        rdfsSubClassOf = new Constant<IV>(factory.newTermId(VTE.IRI));
 
-        rdfsResource = new Constant<IV>(factory.newTermId(VTE.URI));
+        rdfsResource = new Constant<IV>(factory.newTermId(VTE.IRI));
 
-        rdfType = new Constant<IV>(factory.newTermId(VTE.URI));
+        rdfType = new Constant<IV>(factory.newTermId(VTE.IRI));
 
-        rdfsClass = new Constant<IV>(factory.newTermId(VTE.URI));
+        rdfsClass = new Constant<IV>(factory.newTermId(VTE.IRI));
 
-        someGraph = new Constant<IV>(factory.newTermId(VTE.URI));
+        someGraph = new Constant<IV>(factory.newTermId(VTE.IRI));
 
     }
     

@@ -40,8 +40,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.util.InnerCause;
 
 /**
@@ -52,7 +53,7 @@ import com.bigdata.util.InnerCause;
  */
 public class TestDoubleOpen extends ProxyTestCase<Journal> {
 
-    private static final transient Logger log = Logger
+    private static final transient Logger log = LogManager
             .getLogger(TestDoubleOpen.class);
     
     /**

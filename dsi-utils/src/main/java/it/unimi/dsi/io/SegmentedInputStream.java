@@ -31,7 +31,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 /** Exhibits a single {@link InputStream} as a number of streams divided into {@link java.io.InputStream#reset() reset()}-separated
  * segments.

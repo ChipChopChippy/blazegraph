@@ -63,19 +63,19 @@ abstract public class AbstractRuleTestCase extends TestCase2 {
     private static MockTermIdFactory f = new MockTermIdFactory();
     
     protected final static Constant<IV> rdfsSubClassOf = new Constant<IV>(
-            f.newTermId(VTE.URI));
+            f.newTermId(VTE.IRI));
     
     protected final static Constant<IV> rdfsResource = new Constant<IV>(
-            f.newTermId(VTE.URI));
+            f.newTermId(VTE.IRI));
     
     protected final static Constant<IV> rdfType = new Constant<IV>(
-            f.newTermId(VTE.URI));
+            f.newTermId(VTE.IRI));
     
     protected final static Constant<IV> rdfsClass = new Constant<IV>(
-            f.newTermId(VTE.URI));
+            f.newTermId(VTE.IRI));
 
     protected final static Constant<IV> rdfProperty = new Constant<IV>(
-            f.newTermId(VTE.URI));
+            f.newTermId(VTE.IRI));
 
     /**
      * this is rdfs9:

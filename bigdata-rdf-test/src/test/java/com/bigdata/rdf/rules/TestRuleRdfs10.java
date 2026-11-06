@@ -29,10 +29,10 @@ package com.bigdata.rdf.rules;
 
 import java.util.Properties;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.rio.IStatementBuffer;
@@ -88,7 +88,7 @@ public class TestRuleRdfs10 extends AbstractRuleTestCase {
 
         try {
 
-            URI U = new URIImpl("http://www.foo.org/U");
+            IRI U = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/U");
 
             IStatementBuffer buffer = new StatementBuffer(store,
                     100/* capacity */);
@@ -149,8 +149,8 @@ public class TestRuleRdfs10 extends AbstractRuleTestCase {
 
         try {
 
-            URI U1 = new URIImpl("http://www.foo.org/U1");
-            URI U2 = new URIImpl("http://www.foo.org/U2");
+            IRI U1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/U1");
+            IRI U2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/U2");
 
             IStatementBuffer buffer = new StatementBuffer(store,
                     100/* capacity */);

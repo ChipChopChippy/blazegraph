@@ -32,11 +32,12 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.BNode;
-import org.openrdf.model.Value;
-import org.openrdf.query.Binding;
-import org.openrdf.query.BindingSet;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.Binding;
+import org.eclipse.rdf4j.query.BindingSet;
 
 import com.bigdata.bop.IVariable;
 import com.bigdata.rdf.sail.webapp.client.AST2SPARQLUtil;
@@ -52,7 +53,7 @@ import com.bigdata.rdf.sail.webapp.client.AST2SPARQLUtil;
  */
 public class RemoteSparql11QueryBuilder implements IRemoteSparqlQueryBuilder {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(RemoteSparql10QueryBuilder.class);
 
 //    private final ServiceNode serviceNode;

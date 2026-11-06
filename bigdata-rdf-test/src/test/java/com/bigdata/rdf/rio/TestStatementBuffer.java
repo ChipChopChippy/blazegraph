@@ -29,13 +29,13 @@ package com.bigdata.rdf.rio;
 
 import java.util.Properties;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.internal.XSD;
@@ -159,10 +159,10 @@ public class TestStatementBuffer extends AbstractTripleStoreTestCase {
              * add a statement.
              */
 
-            final URI s1 = new URIImpl("http://www.foo.org");
-            final URI p1 = RDF.TYPE;
-            final URI o1 = RDFS.RESOURCE;
-            final URI c1 = null; // no context.
+            final IRI s1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org");
+            final IRI p1 = RDF.TYPE;
+            final IRI o1 = RDFS.RESOURCE;
+            final IRI c1 = null; // no context.
 
             buffer.handleStatement(s1, p1, o1, c1, StatementEnum.Explicit);
 
@@ -175,10 +175,10 @@ public class TestStatementBuffer extends AbstractTripleStoreTestCase {
              * add another statement.
              */
 
-            final URI s2 = new URIImpl("http://www.foo.org"); // duplicate term!
-            final URI p2 = RDFS.LABEL;
-            final Literal o2 = new LiteralImpl("test lit.");
-            final URI c2 = null;
+            final IRI s2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org"); // duplicate term!
+            final IRI p2 = RDFS.LABEL;
+            final Literal o2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("test lit.");
+            final IRI c2 = null;
 
             buffer.handleStatement(s2, p2, o2, c2, StatementEnum.Explicit);
 
@@ -191,10 +191,10 @@ public class TestStatementBuffer extends AbstractTripleStoreTestCase {
              * add a duplicate statement.
              */
 
-            final URI s3 = new URIImpl("http://www.foo.org"); // duplicate term
-            final URI p3 = RDFS.LABEL;                        // duplicate term
-            final Literal o3 = new LiteralImpl("test lit.");  // duplicate term
-            final URI c3 = null;
+            final IRI s3 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org"); // duplicate term
+            final IRI p3 = RDFS.LABEL;                        // duplicate term
+            final Literal o3 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("test lit.");  // duplicate term
+            final IRI c3 = null;
 
             buffer.handleStatement(s3, p3, o3, c3, StatementEnum.Explicit);
 
@@ -255,10 +255,10 @@ public class TestStatementBuffer extends AbstractTripleStoreTestCase {
              * add a statement.
              */
 
-            final URI s1 = new URIImpl("http://www.foo.org");
-            final URI p1 = RDF.TYPE;
-            final URI o1 = RDFS.RESOURCE;
-            final URI c1 = null; // no context.
+            final IRI s1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org");
+            final IRI p1 = RDF.TYPE;
+            final IRI o1 = RDFS.RESOURCE;
+            final IRI c1 = null; // no context.
 
             buffer.add(vf.createStatement(s1, p1, o1, c1, StatementEnum.Explicit));
 
@@ -266,10 +266,10 @@ public class TestStatementBuffer extends AbstractTripleStoreTestCase {
              * add another statement.
              */
 
-            final URI s2 = new URIImpl("http://www.foo.org"); // duplicate term!
-            final URI p2 = RDFS.LABEL;
-            final Literal o2 = new LiteralImpl("test lit.");
-            final URI c2 = null;
+            final IRI s2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org"); // duplicate term!
+            final IRI p2 = RDFS.LABEL;
+            final Literal o2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("test lit.");
+            final IRI c2 = null;
 
             buffer.add(vf.createStatement(s2, p2, o2, c2, StatementEnum.Explicit));
 
@@ -277,10 +277,10 @@ public class TestStatementBuffer extends AbstractTripleStoreTestCase {
              * add a duplicate statement.
              */
 
-            final URI s3 = new URIImpl("http://www.foo.org"); // duplicate term
-            final URI p3 = RDFS.LABEL;                        // duplicate term
-            final Literal o3 = new LiteralImpl("test lit.");  // duplicate term
-            final URI c3 = null;
+            final IRI s3 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org"); // duplicate term
+            final IRI p3 = RDFS.LABEL;                        // duplicate term
+            final Literal o3 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("test lit.");  // duplicate term
+            final IRI c3 = null;
 
             buffer.handleStatement(s3, p3, o3, c3, StatementEnum.Explicit);
 
@@ -343,12 +343,12 @@ public class TestStatementBuffer extends AbstractTripleStoreTestCase {
 
 			final BigdataValueFactory vf = store.getValueFactory();
 
-			final BigdataURI SAP = vf.createURI("http://example.com/SAP");
-			final BigdataURI bought = vf.createURI("http://example.com/bought");
-			final BigdataURI sybase = vf.createURI("http://example.com/sybase");
-			final BigdataURI dcSource = vf.createURI("http://purl.org/dc/terms/source");
-			final BigdataURI dcCreated = vf.createURI("http://purl.org/dc/terms/created");
-			final BigdataURI newsSybase = vf.createURI("http://example.com/news/us-sybase");
+			final BigdataURI SAP = vf.createIRI("http://example.com/SAP");
+			final BigdataURI bought = vf.createIRI("http://example.com/bought");
+			final BigdataURI sybase = vf.createIRI("http://example.com/sybase");
+			final BigdataURI dcSource = vf.createIRI("http://purl.org/dc/terms/source");
+			final BigdataURI dcCreated = vf.createIRI("http://purl.org/dc/terms/created");
+			final BigdataURI newsSybase = vf.createIRI("http://example.com/news/us-sybase");
 			final BigdataLiteral createdDate = vf.createLiteral("2011-04-05T12:00:00Z",XSD.DATETIME);
 			final BigdataBNode s1 = vf.createBNode("s1");
 
@@ -512,12 +512,12 @@ public class TestStatementBuffer extends AbstractTripleStoreTestCase {
 
 			final BigdataValueFactory vf = store.getValueFactory();
 
-			final BigdataURI SAP = vf.createURI("http://example.com/SAP");
-			final BigdataURI bought = vf.createURI("http://example.com/bought");
-			final BigdataURI sybase = vf.createURI("http://example.com/sybase");
-			final BigdataURI dcSource = vf.createURI("http://purl.org/dc/terms/source");
-			final BigdataURI dcCreated = vf.createURI("http://purl.org/dc/terms/created");
-			final BigdataURI newsSybase = vf.createURI("http://example.com/news/us-sybase");
+			final BigdataURI SAP = vf.createIRI("http://example.com/SAP");
+			final BigdataURI bought = vf.createIRI("http://example.com/bought");
+			final BigdataURI sybase = vf.createIRI("http://example.com/sybase");
+			final BigdataURI dcSource = vf.createIRI("http://purl.org/dc/terms/source");
+			final BigdataURI dcCreated = vf.createIRI("http://purl.org/dc/terms/created");
+			final BigdataURI newsSybase = vf.createIRI("http://example.com/news/us-sybase");
 			final BigdataLiteral createdDate = vf.createLiteral("2011-04-05T12:00:00Z",XSD.DATETIME);
 			final BigdataBNode s1 = vf.createBNode("s1");
 
@@ -577,7 +577,7 @@ public class TestStatementBuffer extends AbstractTripleStoreTestCase {
 			assertTrue(store.hasStatement(s1, dcCreated, createdDate));
 
 			/*
-			 * FIXME BigdataStatementImpl currently relies on c() to be the
+			 * FIXME BigdataSimpleStatement currently relies on c() to be the
 			 * SidIV. This needs to be changed. The SidIV should now be formed
 			 * dynamically from the concatenation of the subject, predicate, and
 			 * object roles IVs. The context role [c] needs to remain available
@@ -647,10 +647,10 @@ public class TestStatementBuffer extends AbstractTripleStoreTestCase {
 
           final BigdataValueFactory vf = store.getValueFactory();
 
-          final BigdataURI s = vf.createURI("http://example.com/s");
-          final BigdataURI p = vf.createURI("http://example.com/p");
-          final BigdataURI o = vf.createURI("http://example.com/o");
-          final BigdataURI c = vf.createURI("http://example.com/c");
+          final BigdataURI s = vf.createIRI("http://example.com/s");
+          final BigdataURI p = vf.createIRI("http://example.com/p");
+          final BigdataURI o = vf.createIRI("http://example.com/o");
+          final BigdataURI c = vf.createIRI("http://example.com/c");
 
           final StatementBuffer<Statement> buffer = new StatementBuffer<Statement>(
                 store, capacity);

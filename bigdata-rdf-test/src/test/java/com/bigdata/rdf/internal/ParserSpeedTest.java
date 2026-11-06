@@ -13,17 +13,18 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.zip.GZIPInputStream;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Statement;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.ValueFactoryImpl;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParseException;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.RDFParserFactory;
-import org.openrdf.rio.RDFParserRegistry;
-import org.openrdf.rio.helpers.RDFHandlerBase;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFParseException;
+import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.RDFParserFactory;
+import org.eclipse.rdf4j.rio.RDFParserRegistry;
+import org.eclipse.rdf4j.rio.helpers.AbstractRDFHandler;
 
 import com.bigdata.Banner;
 
@@ -37,7 +38,7 @@ import com.bigdata.Banner;
  */
 public class ParserSpeedTest {
 
-	private final static Logger log = Logger.getLogger(ParserSpeedTest.class);
+	private final static Logger log = LogManager.getLogger(ParserSpeedTest.class);
 	
 	/**
 	 * Thread pool used to run the parser.
@@ -61,8 +62,8 @@ public class ParserSpeedTest {
 		this.parserService = Executors.newCachedThreadPool();
 
 		// TODO compare w/ openrdf default value factory....
-//		this.vf = BigdataValueFactoryImpl.getInstance("test");
-		this.vf = new ValueFactoryImpl();
+//		this.vf = BigdataSimpleValueFactory.getInstance("test");
+		this.vf = SimpleValueFactory.getInstance();
 		
 	}
 
@@ -95,14 +96,14 @@ public class ParserSpeedTest {
 
 		final String n = f.getName();
 
-		RDFFormat fmt = RDFFormat.forFileName(n);
+		RDFFormat fmt = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(n);
 
 		if (fmt == null && n.endsWith(".zip")) {
-			fmt = RDFFormat.forFileName(n.substring(0, n.length() - 4));
+			fmt = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(n.substring(0, n.length() - 4));
 		}
 
 		if (fmt == null && n.endsWith(".gz")) {
-			fmt = RDFFormat.forFileName(n.substring(0, n.length() - 3));
+			fmt = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(n.substring(0, n.length() - 3));
 		}
 
 		if (fmt == null) {
@@ -179,7 +180,7 @@ public class ParserSpeedTest {
 			if (!file.exists())
 				throw new RuntimeException("Not found: " + file);
 
-			final RDFFormat format = RDFFormat.forFileName(file.getName());
+			final RDFFormat format = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(file.getName());
 
 			if (format == null)
 				throw new RuntimeException("Unknown format: " + file);
@@ -188,7 +189,7 @@ public class ParserSpeedTest {
 				log.debug("RDFFormat=" + format);
 
 			final RDFParserFactory rdfParserFactory = RDFParserRegistry
-					.getInstance().get(format);
+					.getInstance().get(format).orElse(null);
 
 			if (rdfParserFactory == null)
 				throw new RuntimeException("No parser for format: " + format);
@@ -197,11 +198,11 @@ public class ParserSpeedTest {
 
 			rdfParser.setValueFactory(vf);
 
-			rdfParser.setVerifyData(false);
+			com.bigdata.rdf.rio.RDFParserOptions.setVerifyData(rdfParser, false);
 
-			rdfParser.setStopAtFirstError(false);
+			
 
-			rdfParser.setDatatypeHandling(RDFParser.DatatypeHandling.IGNORE);
+			com.bigdata.rdf.rio.RDFParserOptions.setDatatypeHandling(rdfParser, com.bigdata.rdf.rio.DatatypeHandling.IGNORE);
 
 			rdfParser.setRDFHandler(stmtHandler);
 
@@ -241,7 +242,7 @@ public class ParserSpeedTest {
 	/**
 	 * Helper class adds statements to the sail as they are visited by a parser.
 	 */
-	private class StatementHandler extends RDFHandlerBase {
+	private class StatementHandler extends AbstractRDFHandler {
 
 		public StatementHandler() {
 

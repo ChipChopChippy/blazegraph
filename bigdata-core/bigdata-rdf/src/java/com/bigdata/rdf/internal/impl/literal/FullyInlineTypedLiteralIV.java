@@ -24,8 +24,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.internal.impl.literal;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.base.CoreDatatype;
 
 import com.bigdata.rdf.internal.DTE;
 import com.bigdata.rdf.internal.IInlineUnicode;
@@ -35,12 +36,12 @@ import com.bigdata.rdf.internal.impl.extensions.XSDStringExtension;
 import com.bigdata.rdf.lexicon.ITermIndexCodes;
 import com.bigdata.rdf.lexicon.LexiconRelation;
 import com.bigdata.rdf.model.BigdataLiteral;
-import com.bigdata.rdf.model.BigdataLiteralImpl;
+import com.bigdata.rdf.model.BigdataSimpleLiteral;
 import com.bigdata.rdf.model.BigdataValueFactory;
 
 /**
  * Implementation for inline {@link Literal}s. Literals may be plain (just a
- * label), have a datatype URI, or have a language code. In each case, all
+ * label), have a datatype IRI, or have a language code. In each case, all
  * information is inlined. This class is mainly targeted at inlining small plain
  * literals and language code literals, but may also be used to fully inline
  * literals in scale-out (which can be an attractive option).
@@ -49,7 +50,7 @@ import com.bigdata.rdf.model.BigdataValueFactory;
  * the {@link XSDStringExtension}.
  * 
  * TODO Validate methods on this class against {@link Literal} and
- * {@link BigdataLiteralImpl} (API compliance).
+ * {@link BigdataSimpleLiteral} (API compliance).
  */
 public class FullyInlineTypedLiteralIV<V extends BigdataLiteral> extends
         AbstractLiteralIV<V, String> implements IInlineUnicode, Literal {
@@ -69,10 +70,10 @@ public class FullyInlineTypedLiteralIV<V extends BigdataLiteral> extends
     private final String language;
 
     /**
-     * The Literal's language datatype URI (optional but exclusive with the
+     * The Literal's language datatype IRI (optional but exclusive with the
      * {@link #language}).
      */
-    private final URI datatype;
+    private final IRI datatype;
 
     /**
      * Indicates what "type" of literal this is.
@@ -129,26 +130,26 @@ public class FullyInlineTypedLiteralIV<V extends BigdataLiteral> extends
     }
     
     public FullyInlineTypedLiteralIV(final String label, final String languageCode,
-            final URI datatypeURI) {
+            final IRI datatypeURI) {
 
         this(label, languageCode, datatypeURI, 0/* byteLength */, false/* temp */);
 
     }
 
     public FullyInlineTypedLiteralIV(final String label, final String languageCode,
-            final URI datatypeURI, final boolean temp) {
+            final IRI datatypeURI, final boolean temp) {
 
         this(label, languageCode, datatypeURI, 0/* byteLength */, temp);
 
     }
 
     public FullyInlineTypedLiteralIV(final String label, final String languageCode,
-            final URI datatypeURI, final int byteLength) {
+            final IRI datatypeURI, final int byteLength) {
     	this(label, languageCode, datatypeURI, byteLength, false/* temp */);
     }
 
     public FullyInlineTypedLiteralIV(final String label, final String languageCode,
-            final URI datatypeURI, final int byteLength, final boolean temp) {
+            final IRI datatypeURI, final int byteLength, final boolean temp) {
 
         super(DTE.XSDString);
 
@@ -203,17 +204,24 @@ public class FullyInlineTypedLiteralIV<V extends BigdataLiteral> extends
      * Overrides {@link AbstractLiteralIV#getLanguage()}.
      */
     @Override
-    final public String getLanguage() {
+    final public java.util.Optional<String> getLanguage() {
         
-        return language;
+        return java.util.Optional.ofNullable(language);
         
+    }
+
+    @Override
+    public CoreDatatype getCoreDatatype() {
+        if (language != null)
+            return CoreDatatype.RDF.LANGSTRING;
+        return CoreDatatype.from(datatype);
     }
 
     /**
      * Overrides {@link AbstractLiteralIV#getDatatype()}.
      */
     @Override
-    final public URI getDatatype() {
+    final public IRI getDatatype() {
         
         return datatype;
         
@@ -263,9 +271,9 @@ public class FullyInlineTypedLiteralIV<V extends BigdataLiteral> extends
         if (language != null) {
 
             // the language code is case insensitive.
-            return language.equalsIgnoreCase(t.getLanguage());
+            return language.equalsIgnoreCase(t.getLanguage().orElse(null));
 
-        } else if (t.getLanguage() != null) {
+        } else if (t.getLanguage().isPresent()) {
 
             return false;
 
@@ -300,7 +308,7 @@ public class FullyInlineTypedLiteralIV<V extends BigdataLiteral> extends
 
             /*
              * Cache the byteLength if not yet set. This needs to include the
-             * termCode, the label, and the language or datatype URI iff
+             * termCode, the label, and the language or datatype IRI iff
              * present.
              */
             byteLength = 1 // flags
@@ -338,7 +346,7 @@ public class FullyInlineTypedLiteralIV<V extends BigdataLiteral> extends
      * Note: The ordering here is defined over the datatype or language code
      * followed by the label. The Unicode compression scheme (BOCU) preserves
      * the code point order, so we can compare the {@link String} values of the
-     * datatype URI and/or language code and the labels to determine the
+     * datatype IRI and/or language code and the labels to determine the
      * ordering. The ordering provided is disjoint across distinct datatypes and
      * language codes. It is the same order which is present for the keys in the
      * index. The [termCode] is used to partition the space into plain literals,

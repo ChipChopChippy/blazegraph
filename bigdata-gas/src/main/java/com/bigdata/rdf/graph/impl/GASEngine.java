@@ -15,6 +15,8 @@
 */
 package com.bigdata.rdf.graph.impl;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.lang.reflect.Constructor;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -25,7 +27,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.rdf.graph.IGASContext;
 import com.bigdata.rdf.graph.IGASEngine;
@@ -72,7 +74,7 @@ import com.bigdata.rdf.graph.impl.scheduler.CHMScheduler;
 @SuppressWarnings("rawtypes")
 abstract public class GASEngine implements IGASEngine {
 
-//    private static final Logger log = Logger.getLogger(GASEngine.class);
+//    private static final Logger log = LogManager.getLogger(GASEngine.class);
 
     /**
      * The {@link ExecutorService} used to parallelize tasks (iff

@@ -28,14 +28,14 @@ package com.bigdata.rdf.sail.webapp;
 
 import java.util.Properties;
 
-import org.openrdf.model.Statement;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.StatementImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.Update;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.Update;
 
 import com.bigdata.journal.BufferMode;
 import com.bigdata.rdf.axioms.NoAxioms;
@@ -76,15 +76,15 @@ public class TestBLZG1943 extends ProxyBigdataSailTestCase {
 
         try {
 
-            repo.initialize();
+            repo.init();
             
             BigdataSailRepositoryConnection conn = repo.getConnection();
             
             // init repository
             conn.setAutoCommit(false);
             for (int i=0; i<500; i++) {
-                final Statement s1 = new StatementImpl(new URIImpl("http://s" + i), new URIImpl("http://lat"), new LiteralImpl("10.24884"));
-                final Statement s2 = new StatementImpl(new URIImpl("http://s" + i), new URIImpl("http://lon"), new LiteralImpl("73.24884"));
+                final Statement s1 = SimpleValueFactory.getInstance().createStatement(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://s" + i), org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://lat"), org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("10.24884"));
+                final Statement s2 = SimpleValueFactory.getInstance().createStatement(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://s" + i), org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://lon"), org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("73.24884"));
                 
                 conn.add(s1);
                 conn.add(s2);

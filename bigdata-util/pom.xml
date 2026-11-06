@@ -28,12 +28,12 @@ Copyright 2010 by TalkingTrends (Amsterdam, The Netherlands)
   <parent>
     <groupId>com.blazegraph</groupId>
     <artifactId>blazegraph-parent</artifactId>
-    <version>2.1.6-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <groupId>com.blazegraph</groupId>
   <artifactId>bigdata-util</artifactId>
-  <version>2.1.6-SNAPSHOT</version>
+  <version>3.0.0-SNAPSHOT</version>
   <name>Blazegraph Utilities</name>
   <description>Utility classes used by multiple artifacts</description>
   <build>
@@ -87,8 +87,8 @@ ga('send', 'pageview');
   </reporting>
   <dependencies>
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
       <version>${log4j.version}</version>
     </dependency>
     <dependency>
@@ -112,19 +112,14 @@ ga('send', 'pageview');
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
       <version>${servlet.version}</version>
     </dependency>
     <dependency>
       <groupId>com.blazegraph</groupId>
       <artifactId>blazegraph-colt</artifactId>
       <version>${colt.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.openrdf.sesame</groupId>
-      <artifactId>sesame-util</artifactId>
-      <version>${sesame.version}</version>
     </dependency>
     <dependency>
       <groupId>com.blazegraph</groupId>
@@ -167,7 +162,7 @@ ga('send', 'pageview');
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>${jackson.version}</version>
+      <version>${jackson.annotations.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>

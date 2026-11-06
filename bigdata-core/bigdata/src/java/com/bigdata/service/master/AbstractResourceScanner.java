@@ -33,8 +33,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.relation.accesspath.BlockingBuffer;
 
 /**
@@ -47,7 +48,7 @@ import com.bigdata.relation.accesspath.BlockingBuffer;
  */
 public abstract class AbstractResourceScanner<V> implements Callable<Long> {
 
-    protected static final Logger log = Logger
+    protected static final Logger log = LogManager
             .getLogger(AbstractResourceScanner.class);
     
     /**

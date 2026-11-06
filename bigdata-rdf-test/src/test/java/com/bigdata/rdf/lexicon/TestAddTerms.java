@@ -34,7 +34,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Properties;
 
-import org.openrdf.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.internal.IV;
@@ -100,26 +100,26 @@ public class TestAddTerms extends AbstractTripleStoreTestCase {
 
             terms.add(f.asValue(RDF.TYPE));
             terms.add(f.asValue(RDF.PROPERTY));
-            terms.add(f.createURI(getVeryLargeURI()));
+            terms.add(f.createIRI(getVeryLargeURI()));
             
             terms.add(f.createLiteral("test"));
             terms.add(f.createLiteral("test", "en"));
             terms.add(f.createLiteral(getVeryLargeLiteral()));
 
             terms.add(f.createLiteral("10", f
-                    .createURI("http://www.w3.org/2001/XMLSchema#int")));
+                    .createIRI("http://www.w3.org/2001/XMLSchema#int")));
 
             terms.add(f.createLiteral("12", f
-                    .createURI("http://www.w3.org/2001/XMLSchema#float")));
+                    .createIRI("http://www.w3.org/2001/XMLSchema#float")));
 
             terms.add(f.createLiteral("12.", f
-                    .createURI("http://www.w3.org/2001/XMLSchema#float")));
+                    .createIRI("http://www.w3.org/2001/XMLSchema#float")));
 
             terms.add(f.createLiteral("12.0", f
-                    .createURI("http://www.w3.org/2001/XMLSchema#float")));
+                    .createIRI("http://www.w3.org/2001/XMLSchema#float")));
 
             terms.add(f.createLiteral("12.00", f
-                    .createURI("http://www.w3.org/2001/XMLSchema#float")));
+                    .createIRI("http://www.w3.org/2001/XMLSchema#float")));
 
 			if (store.getLexiconRelation().isStoreBlankNodes()) {
 	            /*
@@ -284,7 +284,7 @@ public class TestAddTerms extends AbstractTripleStoreTestCase {
             assertEquals(2,terms.size());
             
             // Add two instances of the same reference.
-            final BigdataURI largeURI = f.createURI(getVeryLargeURI());
+            final BigdataURI largeURI = f.createIRI(getVeryLargeURI());
             terms.add(largeURI);
             terms.add(largeURI);
             assertEquals(4,terms.size());
@@ -391,8 +391,8 @@ public class TestAddTerms extends AbstractTripleStoreTestCase {
             assertEquals(2,terms.size());
             
             // Add two distinct instances of the same Value.
-            terms.add(f.createURI(getVeryLargeURI()));
-            terms.add(f.createURI(getVeryLargeURI()));
+            terms.add(f.createIRI(getVeryLargeURI()));
+            terms.add(f.createIRI(getVeryLargeURI()));
             assertEquals(4,terms.size());
 
             // Add two distinct instances of the same Value.

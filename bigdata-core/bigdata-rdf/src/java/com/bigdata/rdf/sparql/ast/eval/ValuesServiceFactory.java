@@ -33,11 +33,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.URIImpl;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpContextBase;
@@ -83,13 +84,13 @@ import cutthecrap.utils.striterators.ICloseableIterator;
  */
 public class ValuesServiceFactory extends AbstractServiceFactory {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(ValuesServiceFactory.class);
 
     /**
-     * The URI service key.
+     * The IRI service key.
      */
-    public static final URI SERVICE_KEY = new URIImpl(BD.NAMESPACE+"values");
+    public static final IRI SERVICE_KEY = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE+"values");
     
     /**
      * The service params for this service.
@@ -99,12 +100,12 @@ public class ValuesServiceFactory extends AbstractServiceFactory {
     	/**
     	 * The limit on the sample.
     	 */
-    	URI VAR = new URIImpl(SERVICE_KEY.stringValue() + ".var");
+    	IRI VAR = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SERVICE_KEY.stringValue() + ".var");
     	
     	/**
     	 * The seed on the sample.
     	 */
-    	URI VAL = new URIImpl(SERVICE_KEY.stringValue() + ".val");
+    	IRI VAL = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SERVICE_KEY.stringValue() + ".val");
     	
     }
     
@@ -159,7 +160,7 @@ public class ValuesServiceFactory extends AbstractServiceFactory {
             final GroupNodeBase<IGroupMemberNode> group,
             final ServiceParams serviceParams) {
 
-    	final Iterator<Map.Entry<URI, List<TermNode>>> it = serviceParams.iterator();
+    	final Iterator<Map.Entry<IRI, List<TermNode>>> it = serviceParams.iterator();
     	
     	if (!serviceParams.contains(ValuesParams.VAR)) {
     		
@@ -175,7 +176,7 @@ public class ValuesServiceFactory extends AbstractServiceFactory {
     	
     	while (it.hasNext()) {
     	
-    		final URI param = it.next().getKey();
+    		final IRI param = it.next().getKey();
     		
     		if (ValuesParams.VAR.equals(param)) {
     			

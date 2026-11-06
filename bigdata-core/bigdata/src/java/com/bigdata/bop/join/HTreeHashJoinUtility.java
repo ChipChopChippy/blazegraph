@@ -36,8 +36,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.BOpContext;
 import com.bigdata.bop.Constant;
 import com.bigdata.bop.HTreeAnnotations;
@@ -71,7 +72,7 @@ import com.bigdata.rdf.internal.encoder.IBindingSetDecoder;
 import com.bigdata.rdf.internal.encoder.IVBindingSetEncoder;
 import com.bigdata.rdf.internal.impl.literal.XSDBooleanIV;
 import com.bigdata.rdf.model.BigdataValue;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.relation.accesspath.BufferClosedException;
 import com.bigdata.relation.accesspath.IBuffer;
 import com.bigdata.rwstore.sector.IMemoryManager;
@@ -119,7 +120,7 @@ import cutthecrap.utils.striterators.Visitor;
  */
 public class HTreeHashJoinUtility implements IHashJoinUtility {
 
-    static private final transient Logger log = Logger
+    static private final transient Logger log = LogManager
             .getLogger(HTreeHashJoinUtility.class);
 
     /**
@@ -595,7 +596,7 @@ public class HTreeHashJoinUtility implements IHashJoinUtility {
         store = new MemStore(mmgr.createAllocationContext());
 
         // Setup the encoder.  The ivCache will be backed by the memory manager.
-        this.encoder = new IVBindingSetEncoder(BigdataValueFactoryImpl.getInstance(((String[]) op
+        this.encoder = new IVBindingSetEncoder(BigdataSimpleValueFactory.getInstance(((String[]) op
                 .getRequiredProperty(Predicate.Annotations.RELATION_NAME))[0]), filter);
 
         /*

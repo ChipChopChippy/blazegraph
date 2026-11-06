@@ -31,8 +31,9 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Value;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.btree.IIndex;
 import com.bigdata.btree.keys.IKeyBuilder;
@@ -72,7 +73,7 @@ import com.bigdata.service.Split;
 public class BlobsWriteProc extends AbstractKeyArrayIndexProcedure<Result> implements
         IParallelizableIndexProcedure<Result>, IMutableRelationIndexWriteProcedure<Result> {
     
-    private static final Logger log = Logger.getLogger(BlobsWriteProc.class);
+    private static final Logger log = LogManager.getLogger(BlobsWriteProc.class);
     
     /**
      * 

@@ -15,10 +15,10 @@
 */
 package com.bigdata.rdf.graph.impl.ram;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
 
 import com.bigdata.rdf.graph.AbstractGraphTestCase;
 import com.bigdata.rdf.graph.impl.ram.RAMGASEngine.RAMGraph;
@@ -68,7 +68,7 @@ public class AbstractRAMGraphTestCase extends AbstractGraphTestCase {
      */
     protected class SmallGraphProblem {
 
-        private final URI rdfType, rdfsLabel, foafKnows, foafPerson, mike,
+        private final IRI rdfType, rdfsLabel, foafKnows, foafPerson, mike,
                 bryan, martyn, dc;
 
         /**
@@ -102,14 +102,14 @@ public class AbstractRAMGraphTestCase extends AbstractGraphTestCase {
 
             final ValueFactory vf = g.getValueFactory();
 
-            rdfType = vf.createURI(RDF.TYPE.stringValue());
-            rdfsLabel = vf.createURI(RDFS.LABEL.stringValue());
-            foafKnows = vf.createURI("http://xmlns.com/foaf/0.1/knows");
-            foafPerson = vf.createURI("http://xmlns.com/foaf/0.1/Person");
-            mike = vf.createURI("http://www.bigdata.com/Mike");
-            bryan = vf.createURI("http://www.bigdata.com/Bryan");
-            martyn = vf.createURI("http://www.bigdata.com/Martyn");
-            dc = vf.createURI("http://www.bigdata.com/DC");
+            rdfType = vf.createIRI(RDF.TYPE.stringValue());
+            rdfsLabel = vf.createIRI(RDFS.LABEL.stringValue());
+            foafKnows = vf.createIRI("http://xmlns.com/foaf/0.1/knows");
+            foafPerson = vf.createIRI("http://xmlns.com/foaf/0.1/Person");
+            mike = vf.createIRI("http://www.bigdata.com/Mike");
+            bryan = vf.createIRI("http://www.bigdata.com/Bryan");
+            martyn = vf.createIRI("http://www.bigdata.com/Martyn");
+            dc = vf.createIRI("http://www.bigdata.com/DC");
             
             g.add(vf.createStatement(mike, rdfType, foafPerson));
             g.add(vf.createStatement(bryan, rdfType, foafPerson));
@@ -126,27 +126,27 @@ public class AbstractRAMGraphTestCase extends AbstractGraphTestCase {
 
         }
 
-        public URI getRdfType() {
+        public IRI getRdfType() {
             return rdfType;
         }
 
-        public URI getFoafKnows() {
+        public IRI getFoafKnows() {
             return foafKnows;
         }
 
-        public URI getFoafPerson() {
+        public IRI getFoafPerson() {
             return foafPerson;
         }
 
-        public URI getMike() {
+        public IRI getMike() {
             return mike;
         }
 
-        public URI getBryan() {
+        public IRI getBryan() {
             return bryan;
         }
 
-        public URI getMartyn() {
+        public IRI getMartyn() {
             return martyn;
         }
 

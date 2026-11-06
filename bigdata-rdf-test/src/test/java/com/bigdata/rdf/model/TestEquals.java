@@ -2,14 +2,14 @@ package com.bigdata.rdf.model;
 
 import junit.framework.TestCase;
 
-import org.openrdf.model.BNode;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.BNodeImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.impl.ValueFactoryImpl;
-import org.openrdf.model.vocabulary.XMLSchema;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleBNode;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
 
 import com.bigdata.rdf.internal.IV;
 import com.bigdata.rdf.internal.VTE;
@@ -35,17 +35,17 @@ public class TestEquals extends TestCase {
 
 	public void test_equalsURI() {
 		
-	    final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance(getName());
+	    final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance(getName());
 	
-	    final BigdataValueFactory vf2 = BigdataValueFactoryImpl.getInstance(getName()+"2");
+	    final BigdataValueFactory vf2 = BigdataSimpleValueFactory.getInstance(getName()+"2");
 		
-	    final BigdataURI v1 = vf.createURI("http://www.bigdata.com");
+	    final BigdataURI v1 = vf.createIRI("http://www.bigdata.com");
 	    
-	    final BigdataURI v2 = vf.createURI("http://www.bigdata.com");
+	    final BigdataURI v2 = vf.createIRI("http://www.bigdata.com");
 	    
-	    final URI v3 = new URIImpl("http://www.bigdata.com");
+	    final IRI v3 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com");
 
-	    final BigdataURI v4 = vf2.createURI("http://www.bigdata.com");
+	    final BigdataURI v4 = vf2.createIRI("http://www.bigdata.com");
 
 	    assertTrue( v1 != v2 );
 	    
@@ -62,7 +62,7 @@ public class TestEquals extends TestCase {
 	    assertTrue(v2.equals(v4));
 	    assertTrue(v4.equals(v2));
 
-	    v2.setIV(TermId.mockIV(VTE.URI));
+	    v2.setIV(TermId.mockIV(VTE.IRI));
 	    
 	    assertTrue(v1.equals(v2));
 	    assertTrue(v2.equals(v1));
@@ -77,7 +77,7 @@ public class TestEquals extends TestCase {
 	    assertTrue(v2.equals(v4));
 	    assertTrue(v4.equals(v2));
 
-	    v1.setIV(new TermId<BigdataURI>(VTE.URI, 1));
+	    v1.setIV(new TermId<BigdataURI>(VTE.IRI, 1));
 
 	    assertTrue(v1.equals(v2));
 	    assertTrue(v2.equals(v1));
@@ -98,14 +98,14 @@ public class TestEquals extends TestCase {
 
 		doLiteralTest("bigdata", null/* datatype */, null/* languageCode */);
 
-		doLiteralTest("bigdata", XMLSchema.STRING/* datatype */, null/* languageCode */);
+		doLiteralTest("bigdata", XSD.STRING/* datatype */, null/* languageCode */);
 
 		doLiteralTest("bigdata", null/* datatype */, "en"/* languageCode */);
 
 	}
 
 	private Literal createLiteral(ValueFactory f, final String label,
-			final URI datatype, final String languageCode) {
+			final IRI datatype, final String languageCode) {
 
 		if (datatype == null && languageCode == null)
 			return f.createLiteral(label);
@@ -117,13 +117,13 @@ public class TestEquals extends TestCase {
 
 	}
 
-	private void doLiteralTest(final String label, final URI datatype,
+	private void doLiteralTest(final String label, final IRI datatype,
 			final String languageCode) {
 
-		final BigdataValueFactory vf = BigdataValueFactoryImpl
+		final BigdataValueFactory vf = BigdataSimpleValueFactory
 				.getInstance(getName());
 
-		final BigdataValueFactory vf2 = BigdataValueFactoryImpl
+		final BigdataValueFactory vf2 = BigdataSimpleValueFactory
 				.getInstance(getName() + "2");
 
 		final BigdataLiteral v1 = (BigdataLiteral) createLiteral(vf, label,
@@ -132,7 +132,7 @@ public class TestEquals extends TestCase {
 		final BigdataLiteral v2 = (BigdataLiteral) createLiteral(vf, label,
 				datatype, languageCode);
 
-		final Literal v3 = createLiteral(new ValueFactoryImpl(), label,
+		final Literal v3 = createLiteral(SimpleValueFactory.getInstance(), label,
 				datatype, languageCode);
 
 		final BigdataLiteral v4 = (BigdataLiteral) createLiteral(vf2, label,
@@ -187,15 +187,15 @@ public class TestEquals extends TestCase {
 	
 	public void test_equalsBNode() {
 
-	    final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance(getName());
+	    final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance(getName());
 
-	    final BigdataValueFactory vf2 = BigdataValueFactoryImpl.getInstance(getName()+"2");
+	    final BigdataValueFactory vf2 = BigdataSimpleValueFactory.getInstance(getName()+"2");
 		
 	    final BigdataBNode v1 = vf.createBNode("bigdata");
 	    
 	    final BigdataBNode v2 = vf.createBNode("bigdata");
 
-	    final BNode v3 = new BNodeImpl("bigdata");
+	    final BNode v3 = SimpleValueFactory.getInstance().createBNode("bigdata");
 
 	    final BigdataBNode v4 = vf2.createBNode("bigdata");
 

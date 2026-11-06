@@ -4,8 +4,9 @@ import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.IIndex;
 import com.bigdata.btree.proc.AbstractKeyArrayIndexProcedure.ResultBitBuffer;
 import com.bigdata.btree.proc.AbstractKeyArrayIndexProcedure.ResultBitBufferHandler;
@@ -25,7 +26,7 @@ import com.bigdata.rdf.inf.Justification;
  */
 public class SPOIndexRemover implements Callable<Long> {
 
-    protected static final Logger log = Logger.getLogger(SPOIndexRemover.class);
+    protected static final Logger log = LogManager.getLogger(SPOIndexRemover.class);
 
     /**
      * True iff the {@link #log} level is INFO or less.

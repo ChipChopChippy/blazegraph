@@ -30,11 +30,12 @@ package com.bigdata.rdf.sail.webapp;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.counters.CounterSet;
 import com.bigdata.counters.ICounterSetAccess;
 import com.bigdata.counters.format.CounterSetFormat;
@@ -69,7 +70,7 @@ public class CountersServlet extends BigdataServlet {
      */
     private static final long serialVersionUID = 1L;
     
-    static private final transient Logger log = Logger.getLogger(CountersServlet.class); 
+    static private final transient Logger log = LogManager.getLogger(CountersServlet.class);
 
     /**
      * 

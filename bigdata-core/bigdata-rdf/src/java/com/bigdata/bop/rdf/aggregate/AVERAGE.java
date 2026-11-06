@@ -23,11 +23,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.bop.rdf.aggregate;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.Map;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.datatypes.XMLDatatypeUtil;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.datatypes.XMLDatatypeUtil;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -55,7 +57,7 @@ import com.bigdata.rdf.model.BigdataValue;
  */
 public class AVERAGE extends AggregateBase<IV> implements  INeedsMaterialization {
 
-//    private static final transient Logger log = Logger.getLogger(AVERAGE.class);
+//    private static final transient Logger log = LogManager.getLogger(AVERAGE.class);
 
     /**
 	 * 
@@ -187,7 +189,7 @@ public class AVERAGE extends AggregateBase<IV> implements  INeedsMaterialization
 ////                    throw new SparqlTypeErrorException();
 //
 //                // Only numeric value can be used in math expressions
-//                final URI dt1 = ((Literal)val1).getDatatype();
+//                final IRI dt1 = ((Literal)val1).getDatatype();
 //                if (dt1 == null || !XMLDatatypeUtil.isNumericDatatype(dt1))
 //                    throw new SparqlTypeErrorException();
 //

@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 /**
  * Demonstrate how to use bigdata.  You are free to use this code for whatever
@@ -32,7 +32,7 @@ public class SparqlBuilder {
         addTriplePattern(s, p, o, true);
     }
 
-    public SparqlBuilder(String s, String p, URI o) {
+    public SparqlBuilder(String s, String p, IRI o) {
         this();
         addTriplePattern(s, p, o, true);
     }
@@ -42,47 +42,47 @@ public class SparqlBuilder {
         addTriplePattern(s, p, o, true);
     }
 
-    public SparqlBuilder(String s, URI p, String o) {
+    public SparqlBuilder(String s, IRI p, String o) {
         this();
         addTriplePattern(s, p, o, true);
     }
 
-    public SparqlBuilder(String s, URI p, Literal o) {
+    public SparqlBuilder(String s, IRI p, Literal o) {
         this();
         addTriplePattern(s, p, o, true);
     }
 
-    public SparqlBuilder(String s, URI p, URI o) {
+    public SparqlBuilder(String s, IRI p, IRI o) {
         this();
         addTriplePattern(s, p, o, true);
     }
 
-    public SparqlBuilder(String s, URI p, Value o) {
+    public SparqlBuilder(String s, IRI p, Value o) {
         this();
         addTriplePattern(s, p, o, true);
     }
 
-    public SparqlBuilder(URI s, String p, String o) {
+    public SparqlBuilder(IRI s, String p, String o) {
         this();
         addTriplePattern(s, p, o, true);
     }
 
-    public SparqlBuilder(URI s, String p, Literal o) {
+    public SparqlBuilder(IRI s, String p, Literal o) {
         this();
         addTriplePattern(s, p, o, true);
     }
 
-    public SparqlBuilder(URI s, String p, URI o) {
+    public SparqlBuilder(IRI s, String p, IRI o) {
         this();
         addTriplePattern(s, p, o, true);
     }
 
-    public SparqlBuilder(URI s, String p, Value o) {
+    public SparqlBuilder(IRI s, String p, Value o) {
         this();
         addTriplePattern(s, p, o, true);
     }
 
-    public SparqlBuilder(URI s, URI p, String o) {
+    public SparqlBuilder(IRI s, IRI p, String o) {
         this();
         addTriplePattern(s, p, o, true);
     }
@@ -109,7 +109,7 @@ public class SparqlBuilder {
         return "<" + s + ">";
     }
 
-    public static String uri(URI uri) {
+    public static String uri(IRI uri) {
         return uri(uri.stringValue());
     }
 
@@ -129,7 +129,7 @@ public class SparqlBuilder {
         return addTriplePattern(s, p, o, true);
     }
 
-    public SparqlBuilder addTriplePattern(String s, String p, URI o) {
+    public SparqlBuilder addTriplePattern(String s, String p, IRI o) {
         return addTriplePattern(s, p, o, true);
     }
 
@@ -137,39 +137,39 @@ public class SparqlBuilder {
         return addTriplePattern(s, p, o, true);
     }
 
-    public SparqlBuilder addTriplePattern(String s, URI p, String o) {
+    public SparqlBuilder addTriplePattern(String s, IRI p, String o) {
         return addTriplePattern(s, p, o, true);
     }
 
-    public SparqlBuilder addTriplePattern(String s, URI p, Literal o) {
+    public SparqlBuilder addTriplePattern(String s, IRI p, Literal o) {
         return addTriplePattern(s, p, o, true);
     }
 
-    public SparqlBuilder addTriplePattern(String s, URI p, URI o) {
+    public SparqlBuilder addTriplePattern(String s, IRI p, IRI o) {
         return addTriplePattern(s, p, o, true);
     }
 
-    public SparqlBuilder addTriplePattern(String s, URI p, Value o) {
+    public SparqlBuilder addTriplePattern(String s, IRI p, Value o) {
         return addTriplePattern(s, p, o, true);
     }
 
-    public SparqlBuilder addTriplePattern(URI s, String p, String o) {
+    public SparqlBuilder addTriplePattern(IRI s, String p, String o) {
         return addTriplePattern(s, p, o, true);
     }
 
-    public SparqlBuilder addTriplePattern(URI s, String p, Literal o) {
+    public SparqlBuilder addTriplePattern(IRI s, String p, Literal o) {
         return addTriplePattern(s, p, o, true);
     }
 
-    public SparqlBuilder addTriplePattern(URI s, String p, URI o) {
+    public SparqlBuilder addTriplePattern(IRI s, String p, IRI o) {
         return addTriplePattern(s, p, o, true);
     }
 
-    public SparqlBuilder addTriplePattern(URI s, String p, Value o) {
+    public SparqlBuilder addTriplePattern(IRI s, String p, Value o) {
         return addTriplePattern(s, p, o, true);
     }
 
-    public SparqlBuilder addTriplePattern(URI s, URI p, String o) {
+    public SparqlBuilder addTriplePattern(IRI s, IRI p, String o) {
         return addTriplePattern(s, p, o, true);
     }
 
@@ -191,7 +191,7 @@ public class SparqlBuilder {
         return this;
     }
 
-    public SparqlBuilder addTriplePattern(String s, String p, URI o,
+    public SparqlBuilder addTriplePattern(String s, String p, IRI o,
             boolean construct) {
         where.addTriplePattern(s, p, o);
         if (construct) {
@@ -209,7 +209,7 @@ public class SparqlBuilder {
         return this;
     }
 
-    public SparqlBuilder addTriplePattern(String s, URI p, String o,
+    public SparqlBuilder addTriplePattern(String s, IRI p, String o,
             boolean construct) {
         where.addTriplePattern(s, p, o);
         if (construct) {
@@ -218,7 +218,7 @@ public class SparqlBuilder {
         return this;
     }
 
-    public SparqlBuilder addTriplePattern(String s, URI p, Literal o,
+    public SparqlBuilder addTriplePattern(String s, IRI p, Literal o,
             boolean construct) {
         where.addTriplePattern(s, p, o);
         if (construct) {
@@ -227,7 +227,7 @@ public class SparqlBuilder {
         return this;
     }
 
-    public SparqlBuilder addTriplePattern(String s, URI p, URI o,
+    public SparqlBuilder addTriplePattern(String s, IRI p, IRI o,
             boolean construct) {
         where.addTriplePattern(s, p, o);
         if (construct) {
@@ -236,7 +236,7 @@ public class SparqlBuilder {
         return this;
     }
 
-    public SparqlBuilder addTriplePattern(String s, URI p, Value o,
+    public SparqlBuilder addTriplePattern(String s, IRI p, Value o,
             boolean construct) {
         where.addTriplePattern(s, p, o);
         if (construct) {
@@ -245,7 +245,7 @@ public class SparqlBuilder {
         return this;
     }
 
-    public SparqlBuilder addTriplePattern(URI s, String p, String o,
+    public SparqlBuilder addTriplePattern(IRI s, String p, String o,
             boolean construct) {
         where.addTriplePattern(s, p, o);
         if (construct) {
@@ -254,7 +254,7 @@ public class SparqlBuilder {
         return this;
     }
 
-    public SparqlBuilder addTriplePattern(URI s, String p, Literal o,
+    public SparqlBuilder addTriplePattern(IRI s, String p, Literal o,
             boolean construct) {
         where.addTriplePattern(s, p, o);
         if (construct) {
@@ -263,7 +263,7 @@ public class SparqlBuilder {
         return this;
     }
 
-    public SparqlBuilder addTriplePattern(URI s, String p, URI o,
+    public SparqlBuilder addTriplePattern(IRI s, String p, IRI o,
             boolean construct) {
         where.addTriplePattern(s, p, o);
         if (construct) {
@@ -272,7 +272,7 @@ public class SparqlBuilder {
         return this;
     }
 
-    public SparqlBuilder addTriplePattern(URI s, String p, Value o,
+    public SparqlBuilder addTriplePattern(IRI s, String p, Value o,
             boolean construct) {
         where.addTriplePattern(s, p, o);
         if (construct) {
@@ -281,7 +281,7 @@ public class SparqlBuilder {
         return this;
     }
 
-    public SparqlBuilder addTriplePattern(URI s, URI p, String o,
+    public SparqlBuilder addTriplePattern(IRI s, IRI p, String o,
             boolean construct) {
         where.addTriplePattern(s, p, o);
         if (construct) {
@@ -367,7 +367,7 @@ public class SparqlBuilder {
             return this;
         }
 
-        public Graph addTriplePattern(String s, String p, URI o) {
+        public Graph addTriplePattern(String s, String p, IRI o) {
             Triple triple = new Triple(s, p, uri(o));
             add(triple);
             return this;
@@ -375,65 +375,65 @@ public class SparqlBuilder {
 
         public Graph addTriplePattern(String s, String p, Value o) {
             Triple triple =
-                    new Triple(s, p, o instanceof URI ? uri((URI) o)
+                    new Triple(s, p, o instanceof IRI ? uri((IRI) o)
                             : literal((Literal) o));
             add(triple);
             return this;
         }
 
-        public Graph addTriplePattern(String s, URI p, String o) {
+        public Graph addTriplePattern(String s, IRI p, String o) {
             Triple triple = new Triple(s, uri(p), o);
             add(triple);
             return this;
         }
 
-        public Graph addTriplePattern(String s, URI p, Literal o) {
+        public Graph addTriplePattern(String s, IRI p, Literal o) {
             Triple triple = new Triple(s, uri(p), literal(o));
             add(triple);
             return this;
         }
 
-        public Graph addTriplePattern(String s, URI p, URI o) {
+        public Graph addTriplePattern(String s, IRI p, IRI o) {
             Triple triple = new Triple(s, uri(p), uri(o));
             add(triple);
             return this;
         }
 
-        public Graph addTriplePattern(String s, URI p, Value o) {
+        public Graph addTriplePattern(String s, IRI p, Value o) {
             Triple triple =
-                    new Triple(s, uri(p), o instanceof URI ? uri((URI) o)
+                    new Triple(s, uri(p), o instanceof IRI ? uri((IRI) o)
                             : literal((Literal) o));
             add(triple);
             return this;
         }
 
-        public Graph addTriplePattern(URI s, String p, String o) {
+        public Graph addTriplePattern(IRI s, String p, String o) {
             Triple triple = new Triple(uri(s), p, o);
             add(triple);
             return this;
         }
 
-        public Graph addTriplePattern(URI s, String p, Literal o) {
+        public Graph addTriplePattern(IRI s, String p, Literal o) {
             Triple triple = new Triple(uri(s), p, literal(o));
             add(triple);
             return this;
         }
 
-        public Graph addTriplePattern(URI s, String p, URI o) {
+        public Graph addTriplePattern(IRI s, String p, IRI o) {
             Triple triple = new Triple(uri(s), p, uri(o));
             add(triple);
             return this;
         }
 
-        public Graph addTriplePattern(URI s, String p, Value o) {
+        public Graph addTriplePattern(IRI s, String p, Value o) {
             Triple triple =
-                    new Triple(uri(s), p, o instanceof URI ? uri((URI) o)
+                    new Triple(uri(s), p, o instanceof IRI ? uri((IRI) o)
                             : literal((Literal) o));
             add(triple);
             return this;
         }
 
-        public Graph addTriplePattern(URI s, URI p, String o) {
+        public Graph addTriplePattern(IRI s, IRI p, String o) {
             Triple triple = new Triple(uri(s), uri(p), o);
             add(triple);
             return this;

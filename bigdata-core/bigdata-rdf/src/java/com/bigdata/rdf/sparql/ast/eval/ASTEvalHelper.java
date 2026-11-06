@@ -37,21 +37,22 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.MDC;
-import org.openrdf.model.Value;
-import org.openrdf.query.Binding;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.Dataset;
-import org.openrdf.query.GraphQueryResult;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.UpdateExecutionException;
-import org.openrdf.query.algebra.evaluation.QueryBindingSet;
-import org.openrdf.query.impl.GraphQueryResultImpl;
-import org.openrdf.query.impl.TupleQueryResultImpl;
-import org.openrdf.sail.SailException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.ThreadContext;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.Binding;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.Dataset;
+import org.eclipse.rdf4j.query.GraphQueryResult;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.UpdateExecutionException;
+import org.eclipse.rdf4j.query.algebra.evaluation.QueryBindingSet;
+import org.eclipse.rdf4j.query.impl.IteratingGraphQueryResult;
+import org.eclipse.rdf4j.query.impl.IteratingTupleQueryResult;
+import org.eclipse.rdf4j.sail.SailException;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.Constant;
@@ -92,7 +93,7 @@ import com.bigdata.striterator.Dechunkerator;
 import com.bigdata.striterator.IChunkedOrderedIterator;
 
 import cutthecrap.utils.striterators.ICloseableIterator;
-import info.aduna.iteration.CloseableIteration;
+import org.eclipse.rdf4j.common.iteration.CloseableIteration;
 
 /**
  * Helper class for evaluating SPARQL queries.
@@ -106,7 +107,7 @@ public class ASTEvalHelper {
      * A logger whose sole purpose is to log the SPARQL queries which are being
      * evaluated <strong>DO NOT USE THIS FOR OTHER PURPOSES !!! </strong>
      */
-    private static final Logger log = Logger.getLogger(ASTEvalHelper.class);
+    private static final Logger log = LogManager.getLogger(ASTEvalHelper.class);
 
     /**
      * Evaluate a boolean query.
@@ -162,7 +163,7 @@ public class ASTEvalHelper {
         final boolean materializeProjectionInQuery = context.materializeProjectionInQuery
                 && !optimizedQuery.hasSlice();
 
-        CloseableIteration<BindingSet, QueryEvaluationException> itr = null;
+        CloseableIteration<BindingSet> itr = null;
         try {
             itr = ASTEvalHelper.evaluateQuery(
                     astContainer,
@@ -223,13 +224,13 @@ public class ASTEvalHelper {
         final boolean materializeProjectionInQuery = context.materializeProjectionInQuery
                 && !optimizedQuery.hasSlice();
 
-        final CloseableIteration<BindingSet, QueryEvaluationException> itr = ASTEvalHelper
+        final CloseableIteration<BindingSet> itr = ASTEvalHelper
                 .evaluateQuery(astContainer, context, 
                         materializeProjectionInQuery, projected);
 
         TupleQueryResult r = null;
         try {
-            r = new TupleQueryResultImpl(projectedSet, itr);
+            r = new IteratingTupleQueryResult(projectedSet, itr);
             return r;
         } finally {
             if (r == null) {
@@ -518,14 +519,14 @@ public class ASTEvalHelper {
         GraphQueryResult result = null;
         
         // Solutions to the WHERE clause (as projected).
-        final CloseableIteration<BindingSet, QueryEvaluationException> solutions = ASTEvalHelper
+        final CloseableIteration<BindingSet> solutions = ASTEvalHelper
                 .evaluateQuery(astContainer, context, materializeProjectionInQuery//
                         , optimizedQuery.getProjection().getProjectionVars()//
                 );
 
         try {
         
-        final CloseableIteration<BindingSet, QueryEvaluationException> solutions2;
+        final CloseableIteration<BindingSet> solutions2;
         final Set<BigdataValue> describedResources;
         if (describeCache != null) {
 
@@ -572,7 +573,7 @@ public class ASTEvalHelper {
         }
 
         // Constructed Statements.
-        final CloseableIteration<BigdataStatement, QueryEvaluationException> src =
+        final CloseableIteration<BigdataStatement> src =
                 new ASTConstructIterator(context, store, //
                         optimizedQuery.getConstruct(), //
                         optimizedQuery.getWhereClause(),//
@@ -580,7 +581,7 @@ public class ASTEvalHelper {
                         solutions2//
                         );
 
-        final CloseableIteration<BigdataStatement, QueryEvaluationException> src2;
+        final CloseableIteration<BigdataStatement> src2;
         if (isDescribe) {
         	switch (describeMode) {
         	case SymmetricOneStep: // No expansion step.
@@ -613,7 +614,7 @@ public class ASTEvalHelper {
         } else {
         	src2 = src;
         }
-        final CloseableIteration<BigdataStatement, QueryEvaluationException> src3;
+        final CloseableIteration<BigdataStatement> src3;
 
         if (describeCache != null) {
 
@@ -640,7 +641,7 @@ public class ASTEvalHelper {
 
         }
         
-        result = new GraphQueryResultImpl(//
+        result = new IteratingGraphQueryResult(//
                 optimizedQuery.getPrefixDecls(), //
                 src3);
         } finally {
@@ -733,7 +734,7 @@ public class ASTEvalHelper {
      *      interrupting a running query</a>
      */
     static //private Note: Exposed to CBD class.
-    CloseableIteration<BindingSet, QueryEvaluationException> evaluateQuery(
+    CloseableIteration<BindingSet> evaluateQuery(
             final ASTContainer astContainer,
             final AST2BOpContext ctx,            
             final boolean materializeProjectionInQuery,
@@ -832,7 +833,7 @@ public class ASTEvalHelper {
      * @return A Sesame {@link CloseableIteration} which will drain
      *         {@link BindingSet}s of materialized RDF {@link Value}s.
      */
-    private static CloseableIteration<BindingSet, QueryEvaluationException> iterator(
+    private static CloseableIteration<BindingSet> iterator(
             final IRunningQuery runningQuery, final AbstractTripleStore db,
             final boolean materializeProjectionInQuery,
             final IVariable<?>[] required) {
@@ -876,7 +877,7 @@ public class ASTEvalHelper {
         final IChunkedOrderedIterator<IBindingSet> it2 = new ChunkedWrappedIterator<IBindingSet>(
                 it1, chunkCapacity, IBindingSet.class);
 
-        final CloseableIteration<BindingSet, QueryEvaluationException> it3; 
+        final CloseableIteration<BindingSet> it3; 
 
         if(materializeProjectionInQuery) {
         
@@ -1202,13 +1203,13 @@ public class ASTEvalHelper {
 
     private static void setupLoggingContext(final IEvaluationContext context) {
 
-        MDC.put("tx", TimestampUtility.toString(context.getTimestamp()));
+        ThreadContext.put("tx", TimestampUtility.toString(context.getTimestamp()));
 
     }
     
     private static void clearLoggingContext() {
         
-        MDC.remove("tx");
+        ThreadContext.remove("tx");
     }
     
 }

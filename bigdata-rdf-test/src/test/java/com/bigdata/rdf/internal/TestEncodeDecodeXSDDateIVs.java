@@ -29,7 +29,7 @@ package com.bigdata.rdf.internal;
 
 import java.util.TimeZone;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.rdf.internal.impl.extensions.DateTimeExtension;
 import com.bigdata.rdf.internal.impl.literal.LiteralExtensionIV;
@@ -38,7 +38,7 @@ import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataURI;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 
 /**
  * Unit tests for {@link XSDIntegerIV}.
@@ -67,7 +67,7 @@ public class TestEncodeDecodeXSDDateIVs extends
      */
     public void test_encodeDecodeDateLiterals() throws Exception {
 
-       final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance("test");
+       final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance("test");
        
        final DateTimeExtension<BigdataValue> ext =  getDateTimeExtensionGMT(vf);
        
@@ -101,7 +101,7 @@ public class TestEncodeDecodeXSDDateIVs extends
      */
     public void test_encodeDecodeGDay() throws Exception {
 
-       final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance("test");
+       final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance("test");
        
        final DateTimeExtension<BigdataValue> ext =  getDateTimeExtensionGMT(vf);
        
@@ -136,7 +136,7 @@ public class TestEncodeDecodeXSDDateIVs extends
      */
     public void test_encodeDecodeGMonth() throws Exception {
 
-       final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance("test");
+       final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance("test");
        
        final DateTimeExtension<BigdataValue> ext =  getDateTimeExtensionGMT(vf);
        
@@ -171,7 +171,7 @@ public class TestEncodeDecodeXSDDateIVs extends
      */
     public void test_encodeDecodeGMonthDay() throws Exception {
 
-       final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance("test");
+       final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance("test");
        
        final DateTimeExtension<BigdataValue> ext =  getDateTimeExtensionGMT(vf);
        
@@ -206,7 +206,7 @@ public class TestEncodeDecodeXSDDateIVs extends
      */
     public void test_encodeDecodeGYear() throws Exception {
 
-       final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance("test");
+       final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance("test");
        
        final DateTimeExtension<BigdataValue> ext =  getDateTimeExtensionGMT(vf);
        
@@ -241,7 +241,7 @@ public class TestEncodeDecodeXSDDateIVs extends
      */
     public void test_encodeDecodeGYearMonth() throws Exception {
 
-       final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance("test");
+       final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance("test");
        
        final DateTimeExtension<BigdataValue> ext =  getDateTimeExtensionGMT(vf);
        
@@ -277,7 +277,7 @@ public class TestEncodeDecodeXSDDateIVs extends
      */
     public void test_encodeDecodeDateTime() throws Exception {
 
-       final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance("test");
+       final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance("test");
        
        final DateTimeExtension<BigdataValue> ext =  getDateTimeExtensionGMT(vf);
        
@@ -317,7 +317,7 @@ public class TestEncodeDecodeXSDDateIVs extends
      */
     public void test_encodeDecodeTime() throws Exception {
 
-       final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance("test");
+       final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance("test");
        
        final DateTimeExtension<BigdataValue> ext =  getDateTimeExtensionGMT(vf);
        
@@ -357,9 +357,9 @@ public class TestEncodeDecodeXSDDateIVs extends
        return 
           new DateTimeExtension<BigdataValue>(
              new IDatatypeURIResolver() {
-                public BigdataURI resolve(URI uri) {
-                   final BigdataURI buri = vf.createURI(uri.stringValue());
-                   buri.setIV(newTermId(VTE.URI));
+                public BigdataURI resolve(IRI uri) {
+                   final BigdataURI buri = vf.createIRI(uri.stringValue());
+                   buri.setIV(newTermId(VTE.IRI));
                    return buri;
                 }
           },TimeZone.getTimeZone("GMT"));

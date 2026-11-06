@@ -26,10 +26,11 @@ package com.bigdata.rdf.internal.constraints;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -52,7 +53,7 @@ public class StrBOp extends IVValueExpression<IV>
 	 */
     private static final long serialVersionUID = 3125106876006900339L;
 
-    private static final transient Logger log = Logger.getLogger(StrBOp.class);
+    private static final transient Logger log = LogManager.getLogger(StrBOp.class);
 
     public StrBOp(final IValueExpression<? extends IV> x, 
     		final GlobalAnnotations globals) {
@@ -102,7 +103,9 @@ public class StrBOp extends IVValueExpression<IV>
 
         if (val instanceof Literal) {
         	final Literal lit = (Literal) val;
-            if (lit.getDatatype() == null && lit.getLanguage() == null) {
+            if ((lit.getDatatype() == null
+                    || org.eclipse.rdf4j.model.vocabulary.XMLSchema.STRING.equals(lit.getDatatype()))
+                    && !lit.getLanguage().isPresent()) {
                 // if simple literal return it
                 return iv;
         	}
@@ -111,8 +114,8 @@ public class StrBOp extends IVValueExpression<IV>
                 final BigdataLiteral str = vf.createLiteral(lit.getLabel());
                 return super.asIV(str, bs);
             }
-        } else if (val instanceof URI) {
-            // return new simple literal using URI label
+        } else if (val instanceof IRI) {
+            // return new simple literal using IRI label
             final BigdataLiteral str = vf.createLiteral(val.stringValue());
             return super.asIV(str, bs);
         } else {
@@ -130,8 +133,8 @@ public class StrBOp extends IVValueExpression<IV>
 //        }
 //
 //        if (iv.isURI()) {
-//            // return new simple literal using URI label
-//            final URI uri = (URI) iv.getValue();
+//            // return new simple literal using IRI label
+//            final IRI uri = (IRI) iv.getValue();
 //            final BigdataLiteral str = vf.createLiteral(uri.toString());
 //            return super.asIV(str, bs);
 //        } else if (iv.isLiteral()) {

@@ -33,13 +33,14 @@ import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.impl.MapBindingSet;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.impl.MapBindingSet;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpUtility;
@@ -102,7 +103,7 @@ import cutthecrap.utils.striterators.Striterator;
  */
 public class TestQueryHints extends AbstractDataDrivenSPARQLTestCase {
 
-    private static final Logger log = Logger.getLogger(TestQueryHints.class);
+    private static final Logger log = LogManager.getLogger(TestQueryHints.class);
 
     /**
      * 
@@ -1279,17 +1280,17 @@ public class TestQueryHints extends AbstractDataDrivenSPARQLTestCase {
          */
         assertTrue(PipelineOp.Annotations.DEFAULT_PIPELINED);
 
-        final URI serviceURI = new URIImpl("http://www.bigdata.com/mockService");
+        final IRI serviceURI = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/mockService");
         
         final List<BindingSet> serviceSolutions = new LinkedList<BindingSet>();
         {
             final MapBindingSet bset = new MapBindingSet();
-            bset.addBinding("x",new URIImpl("http://www.bigdata.com/Mike"));
+            bset.addBinding("x",org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/Mike"));
             serviceSolutions.add(bset);
         }
         {
             final MapBindingSet bset = new MapBindingSet();
-            bset.addBinding("x",new URIImpl("http://www.bigdata.com/Bryan"));
+            bset.addBinding("x",org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/Bryan"));
             serviceSolutions.add(bset);
         }
         
@@ -1358,17 +1359,17 @@ public class TestQueryHints extends AbstractDataDrivenSPARQLTestCase {
          */
         assertTrue(PipelineOp.Annotations.DEFAULT_PIPELINED);
 
-        final URI serviceURI = new URIImpl("http://www.bigdata.com/mockService");
+        final IRI serviceURI = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/mockService");
         
         final List<BindingSet> serviceSolutions = new LinkedList<BindingSet>();
         {
             final MapBindingSet bset = new MapBindingSet();
-            bset.addBinding("x",new URIImpl("http://www.bigdata.com/Mike"));
+            bset.addBinding("x",org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/Mike"));
             serviceSolutions.add(bset);
         }
         {
             final MapBindingSet bset = new MapBindingSet();
-            bset.addBinding("x",new URIImpl("http://www.bigdata.com/Bryan"));
+            bset.addBinding("x",org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/Bryan"));
             serviceSolutions.add(bset);
         }
         
@@ -1429,17 +1430,17 @@ public class TestQueryHints extends AbstractDataDrivenSPARQLTestCase {
      */
     public void test_query_hints_09() throws Exception {
 
-        final URI serviceURI = new URIImpl("http://www.bigdata.com/mockService");
+        final IRI serviceURI = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/mockService");
         
         final List<BindingSet> serviceSolutions = new LinkedList<BindingSet>();
         {
             final MapBindingSet bset = new MapBindingSet();
-            bset.addBinding("x",new URIImpl("http://www.bigdata.com/Mike"));
+            bset.addBinding("x",org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/Mike"));
             serviceSolutions.add(bset);
         }
         {
             final MapBindingSet bset = new MapBindingSet();
-            bset.addBinding("x",new URIImpl("http://www.bigdata.com/Bryan"));
+            bset.addBinding("x",org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/Bryan"));
             serviceSolutions.add(bset);
         }
         
@@ -1501,17 +1502,17 @@ public class TestQueryHints extends AbstractDataDrivenSPARQLTestCase {
      */
     public void test_query_hints_10() throws Exception {
 
-        final URI serviceURI = new URIImpl("http://www.bigdata.com/mockService");
+        final IRI serviceURI = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/mockService");
         
         final List<BindingSet> serviceSolutions = new LinkedList<BindingSet>();
         {
             final MapBindingSet bset = new MapBindingSet();
-            bset.addBinding("x",new URIImpl("http://www.bigdata.com/Mike"));
+            bset.addBinding("x",org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/Mike"));
             serviceSolutions.add(bset);
         }
         {
             final MapBindingSet bset = new MapBindingSet();
-            bset.addBinding("x",new URIImpl("http://www.bigdata.com/Bryan"));
+            bset.addBinding("x",org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/Bryan"));
             serviceSolutions.add(bset);
         }
         

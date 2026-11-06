@@ -4,20 +4,20 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 public class TestVocabularyDecl_BLZG1591 implements VocabularyDecl {
 
-    static private final URI[] uris = new URI[]{//
+    static private final IRI[] uris = new IRI[]{//
     	// two named graphs
-        new URIImpl("http://test.com/P")
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://test.com/P")
     };
 
     public TestVocabularyDecl_BLZG1591() {
     }
     
-    public Iterator<URI> values() {
+    public Iterator<IRI> values() {
 
         return Collections.unmodifiableList(Arrays.asList(uris)).iterator();
         

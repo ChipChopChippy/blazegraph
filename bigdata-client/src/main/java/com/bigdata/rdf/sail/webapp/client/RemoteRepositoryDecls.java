@@ -22,8 +22,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.rdf.sail.webapp.client;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 
 //Note: Do not import. Not part of the bigdata-client.jar
 //
@@ -43,7 +43,8 @@ public class RemoteRepositoryDecls {
     */
    private static final String BD_NAMESPACE = "http://www.bigdata.com/rdf#";
 
-   protected static final URI BD_NULL_GRAPH = new URIImpl(BD_NAMESPACE + "nullGraph");
+   protected static final IRI BD_NULL_GRAPH = SimpleValueFactory.getInstance()
+         .createIRI(BD_NAMESPACE + "nullGraph");
    
    /**
     * The name of the <code>UTF-8</code> character encoding.
@@ -148,28 +149,28 @@ public class RemoteRepositoryDecls {
    public static final String MAX_QUERY_TIME_MILLIS = "maxQueryTimeMillis";
 
    /**
-    * URL query parameter used to specify a URI in the default graph for SPARQL
+    * URL query parameter used to specify a IRI in the default graph for SPARQL
     * query (but not for SPARQL update).
     * @see com.bigdata.rdf.sail.webapp.BigdataRDFContext.DEFAULT_GRAPH_URI
     */
    public static final String DEFAULT_GRAPH_URI = "default-graph-uri";
 
    /**
-    * URL query parameter used to specify a URI in the set of named graphs for
+    * URL query parameter used to specify a IRI in the set of named graphs for
     * SPARQL query (but not for SPARQL update).
     * @see com.bigdata.rdf.sail.webapp.BigdataRDFContext.NAMED_GRAPH_URI
     */
    public static final String NAMED_GRAPH_URI = "named-graph-uri";
    
    /**
-    * URL query parameter used to specify a URI in the default graph for SPARQL
+    * URL query parameter used to specify a IRI in the default graph for SPARQL
     * UPDATE.
     * @see com.bigdata.rdf.sail.webapp.BigdataRDFContext.USING_GRAPH_URI
     */
    public static final String USING_GRAPH_URI = "using-graph-uri";
 
    /**
-    * URL query parameter used to specify a URI in the set of named graphs for
+    * URL query parameter used to specify a IRI in the set of named graphs for
     * SPARQL UPDATE.
     * @see com.bigdata.rdf.sail.webapp.BigdataRDFContext.USING_NAMED_GRAPH_URI
     */

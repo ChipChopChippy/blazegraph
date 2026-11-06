@@ -29,7 +29,7 @@ package com.bigdata.rdf.vocab;
 
 import java.util.Iterator;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.rdf.internal.impl.uri.VocabURIShortIV;
 import com.bigdata.rdf.store.AbstractTripleStore;
@@ -46,7 +46,7 @@ import com.bigdata.rdf.store.AbstractTripleStore;
  * static field named <code>NAMESPACE</code>. Declaring the namespace used by
  * provides for compact encoding of URIs within that namespace (e.g., using a
  * {@link VocabURIShortIV} for the namespace and a compressed unicode representation
- * of the localName of the URI) even if those URIs were not part of the original
+ * of the localName of the IRI) even if those URIs were not part of the original
  * vocabulary declaration. Thus, it provides a compact fallback encoding if the
  * vocabulary evolves after the {@link AbstractTripleStore} has been
  * provisioned.
@@ -59,6 +59,6 @@ public interface VocabularyDecl {
      * Return an iterator which will visit the declared values. The iterator
      * must not support removal.
      */
-    public Iterator<URI> values();
+    public Iterator<IRI> values();
 
 }

@@ -36,8 +36,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.bop.PipelineOp;
 import com.bigdata.bop.engine.AbstractRunningQuery;
@@ -62,7 +63,7 @@ import com.bigdata.service.ResourceService;
  */
 public class FederatedQueryEngine extends QueryEngine {
 
-    private final static transient Logger log = Logger
+    private final static transient Logger log = LogManager
             .getLogger(FederatedQueryEngine.class);
 
     /**

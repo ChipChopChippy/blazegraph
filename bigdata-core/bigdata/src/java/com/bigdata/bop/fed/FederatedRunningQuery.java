@@ -34,8 +34,9 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpEvaluationContext;
 import com.bigdata.bop.IBindingSet;
@@ -58,7 +59,7 @@ import com.bigdata.service.IBigdataFederation;
  */
 public class FederatedRunningQuery extends ChunkedRunningQuery {
 
-    private final static transient Logger log = Logger
+    private final static transient Logger log = LogManager
             .getLogger(FederatedRunningQuery.class);
 
     /**

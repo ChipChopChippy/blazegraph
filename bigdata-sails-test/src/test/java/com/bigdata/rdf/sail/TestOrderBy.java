@@ -28,11 +28,11 @@ package com.bigdata.rdf.sail;
 
 import java.util.Properties;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.vocab.NoVocabulary;
@@ -76,7 +76,7 @@ public class TestOrderBy extends ProxyBigdataSailTestCase {
     public void testOrderBy() throws Exception {
 
         final BigdataSail sail = getSail();
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         final BigdataSailRepositoryConnection cxn = 
             (BigdataSailRepositoryConnection) repo.getConnection();
@@ -87,11 +87,11 @@ public class TestOrderBy extends ProxyBigdataSailTestCase {
             final ValueFactory vf = sail.getValueFactory();
             
 //          This fails with BigData trunk of 21-07-2010
-            final URI s1 = vf.createURI("s:1");
-            final URI s2 = vf.createURI("s:2");
-            final URI s3 = vf.createURI("s:3");
-            final URI pred1 = vf.createURI("p:1");
-            final URI pred2 = vf.createURI("p:2");
+            final IRI s1 = vf.createIRI("s:1");
+            final IRI s2 = vf.createIRI("s:2");
+            final IRI s3 = vf.createIRI("s:3");
+            final IRI pred1 = vf.createIRI("p:1");
+            final IRI pred2 = vf.createIRI("p:2");
             cxn.add(s1, pred1, vf.createLiteral(3));
             cxn.add(s1, pred2, vf.createLiteral("a"));
             cxn.add(s2, pred1, vf.createLiteral(1));

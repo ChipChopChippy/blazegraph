@@ -8,9 +8,9 @@ package com.bigdata.rdf.rio.turtle;
 import java.io.OutputStream;
 import java.io.Writer;
 
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFWriter;
-import org.openrdf.rio.RDFWriterFactory;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFWriter;
+import org.eclipse.rdf4j.rio.RDFWriterFactory;
 
 import com.bigdata.rdf.ServiceProviderHook;
 
@@ -49,5 +49,15 @@ public class BigdataTurtleWriterFactory implements RDFWriterFactory {
 	@Override
 	public RDFWriter getWriter(final Writer writer) {
 		return new BigdataTurtleWriter(writer);
+	}
+
+	@Override
+	public RDFWriter getWriter(final Writer writer, final String baseIRI) {
+		return getWriter(writer);
+	}
+
+	@Override
+	public RDFWriter getWriter(final OutputStream out, final String baseIRI) {
+		return getWriter(out);
 	}
 }

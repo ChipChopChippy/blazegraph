@@ -30,8 +30,8 @@ import java.util.UUID;
 
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.server.Server;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.TupleQueryResult;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.TupleQueryResult;
 
 import com.bigdata.BigdataStatics;
 import com.bigdata.journal.BufferMode;
@@ -84,7 +84,7 @@ public class TestServiceWhiteList extends TestCase2 {
 						"SERVICE <" + SOME_SERVICE_ENDPOINT + "1> { } }").evaluate();
         	
         } catch(Exception e) {
-          	exceptionThrown = e.toString().contains("Service URI http://someService.com/test1 is not allowed");
+          	exceptionThrown = e.toString().contains("Service IRI http://someService.com/test1 is not allowed");
         }
         
         assertTrue(exceptionThrown);
@@ -179,7 +179,7 @@ public class TestServiceWhiteList extends TestCase2 {
 	        // if (log.isInfoEnabled())
 	        log.warn("tearing down test: " + getName());
 	        
-	        ServiceRegistry.getInstance().remove(new URIImpl(SOME_SERVICE_ENDPOINT));
+	        ServiceRegistry.getInstance().remove(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SOME_SERVICE_ENDPOINT));
 	        ServiceRegistry.getInstance().setWhitelistEnabled(false);
 	        
 	       if (m_fixture != null) {

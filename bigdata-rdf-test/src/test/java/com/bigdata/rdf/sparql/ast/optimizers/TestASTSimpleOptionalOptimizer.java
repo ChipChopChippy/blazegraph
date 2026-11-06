@@ -31,8 +31,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.bop.BOpUtility;
 import com.bigdata.bop.Constant;
@@ -194,8 +194,8 @@ public class TestASTSimpleOptionalOptimizer extends
          * the verify it using equals().
          */
         final BigdataValueFactory f = store.getValueFactory();
-        final BigdataURI p = f.createURI("http://example.org/ns#p");
-        final BigdataURI q = f.createURI("http://example.org/ns#q");
+        final BigdataURI p = f.createIRI("http://example.org/ns#p");
+        final BigdataURI q = f.createIRI("http://example.org/ns#q");
         final BigdataValue[] values = new BigdataValue[] { p, q };
         store.getLexiconRelation()
                 .addTerms(values, values.length, false/* readOnly */);
@@ -281,8 +281,8 @@ public class TestASTSimpleOptionalOptimizer extends
          * the verify it using equals().
          */
         final BigdataValueFactory f = store.getValueFactory();
-        final BigdataURI p = f.createURI("http://example.org/ns#p");
-        final BigdataURI q = f.createURI("http://example.org/ns#q");
+        final BigdataURI p = f.createIRI("http://example.org/ns#p");
+        final BigdataURI q = f.createIRI("http://example.org/ns#q");
         final BigdataValue[] values = new BigdataValue[] { p, q };
         store.getLexiconRelation()
                 .addTerms(values, values.length, false/* readOnly */);
@@ -400,8 +400,8 @@ public class TestASTSimpleOptionalOptimizer extends
 //         * the verify it using equals().
 //         */
 //        final BigdataValueFactory f = store.getValueFactory();
-//        final BigdataURI p = f.createURI("http://example.org/ns#p");
-//        final BigdataURI q = f.createURI("http://example.org/ns#q");
+//        final BigdataURI p = f.createIRI("http://example.org/ns#p");
+//        final BigdataURI q = f.createIRI("http://example.org/ns#q");
 //        final BigdataValue[] values = new BigdataValue[] { p, q };
 //        store.getLexiconRelation()
 //                .addTerms(values, values.length, false/* readOnly */);

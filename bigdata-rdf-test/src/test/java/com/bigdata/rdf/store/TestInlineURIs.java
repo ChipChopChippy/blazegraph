@@ -30,9 +30,10 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.internal.DTE;
@@ -69,7 +70,7 @@ import com.bigdata.rdf.vocab.core.BigdataCoreVocabulary_v20151106;
  */
 public class TestInlineURIs extends AbstractTripleStoreTestCase {
 
-    protected static final Logger log = Logger.getLogger(TestInlineURIs.class);
+    protected static final Logger log = LogManager.getLogger(TestInlineURIs.class);
 
     /**
      * Please set your database properties here, except for your journal file,
@@ -110,9 +111,9 @@ public class TestInlineURIs extends AbstractTripleStoreTestCase {
 
 			final BigdataValueFactory vf = store.getValueFactory();
 
-			final BigdataURI uri1 = vf.createURI("urn:uuid:" + UUID.randomUUID().toString());
-			final BigdataURI uri2 = vf.createURI("urn:uuid:" + UUID.randomUUID().toString());
-			final BigdataURI uri3 = vf.createURI("urn:uuid:foo");
+			final BigdataURI uri1 = vf.createIRI("urn:uuid:" + UUID.randomUUID().toString());
+			final BigdataURI uri2 = vf.createIRI("urn:uuid:" + UUID.randomUUID().toString());
+			final BigdataURI uri3 = vf.createIRI("urn:uuid:foo");
 
 			final StatementBuffer<BigdataStatement> sb = new StatementBuffer<BigdataStatement>(store, 10/* capacity */);
 
@@ -146,10 +147,10 @@ public class TestInlineURIs extends AbstractTripleStoreTestCase {
 
 			final BigdataValueFactory vf = store.getValueFactory();
 
-            final BigdataURI uri1 = vf.createURI("urn:ipv4:10.128.1.2");
-            final BigdataURI uri2 = vf.createURI("urn:ipv4:10.128.1.2/24");
-            final BigdataURI uri3 = vf.createURI("urn:ipv4:500.425.1.2");
-            final BigdataURI uri4 = vf.createURI("urn:ipv4");
+            final BigdataURI uri1 = vf.createIRI("urn:ipv4:10.128.1.2");
+            final BigdataURI uri2 = vf.createIRI("urn:ipv4:10.128.1.2/24");
+            final BigdataURI uri3 = vf.createIRI("urn:ipv4:500.425.1.2");
+            final BigdataURI uri4 = vf.createIRI("urn:ipv4");
 
             final BigdataLiteral l = vf.createLiteral("10.128.1.2", XSD.IPV4);
             
@@ -194,9 +195,9 @@ public class TestInlineURIs extends AbstractTripleStoreTestCase {
         
                 final BigdataValueFactory vf = store.getValueFactory();
 
-                final BigdataURI uri1 = vf.createURI(CUSTOM_NAMESPACE + UUID.randomUUID().toString());
-                final BigdataURI uri2 = vf.createURI(CUSTOM_NAMESPACE + UUID.randomUUID().toString());
-                final BigdataURI uri3 = vf.createURI(CUSTOM_NAMESPACE + "foo");
+                final BigdataURI uri1 = vf.createIRI(CUSTOM_NAMESPACE + UUID.randomUUID().toString());
+                final BigdataURI uri2 = vf.createIRI(CUSTOM_NAMESPACE + UUID.randomUUID().toString());
+                final BigdataURI uri3 = vf.createIRI(CUSTOM_NAMESPACE + "foo");
     
     			final StatementBuffer<BigdataStatement> sb = new StatementBuffer<BigdataStatement>(store, 10/* capacity */);
 
@@ -286,7 +287,7 @@ public class TestInlineURIs extends AbstractTripleStoreTestCase {
 				final StatementBuffer<BigdataStatement> sb = new StatementBuffer<BigdataStatement>(store,
 						10/* capacity */);
 				for (int i = 0; i < options.length; i += 2) {
-					final BigdataURI uri = vf.createURI((String) options[i]);
+					final BigdataURI uri = vf.createIRI((String) options[i]);
 					uris.add(uri);
 					sb.add(uri, RDF.TYPE, vf.createLiteral("doesn't matter"));
 				}
@@ -334,13 +335,13 @@ public class TestInlineURIs extends AbstractTripleStoreTestCase {
 
 			final BigdataValueFactory vf = store.getValueFactory();
 
-			final BigdataURI uri1 = vf.createURI(CUSTOM_NAMESPACE + UUID.randomUUID().toString());
-			final BigdataURI uri2 = vf.createURI(CUSTOM_NAMESPACE + "1");
-			final BigdataURI uri3 = vf.createURI(CUSTOM_NAMESPACE + Short.MAX_VALUE);
-			final BigdataURI uri4 = vf.createURI(CUSTOM_NAMESPACE + Integer.MAX_VALUE);
-			final BigdataURI uri5 = vf.createURI(CUSTOM_NAMESPACE + Long.MAX_VALUE);
-			final BigdataURI uri6 = vf.createURI(CUSTOM_NAMESPACE + "2.3");
-			final BigdataURI uri7 = vf.createURI(CUSTOM_NAMESPACE + "foo");
+			final BigdataURI uri1 = vf.createIRI(CUSTOM_NAMESPACE + UUID.randomUUID().toString());
+			final BigdataURI uri2 = vf.createIRI(CUSTOM_NAMESPACE + "1");
+			final BigdataURI uri3 = vf.createIRI(CUSTOM_NAMESPACE + Short.MAX_VALUE);
+			final BigdataURI uri4 = vf.createIRI(CUSTOM_NAMESPACE + Integer.MAX_VALUE);
+			final BigdataURI uri5 = vf.createIRI(CUSTOM_NAMESPACE + Long.MAX_VALUE);
+			final BigdataURI uri6 = vf.createIRI(CUSTOM_NAMESPACE + "2.3");
+			final BigdataURI uri7 = vf.createIRI(CUSTOM_NAMESPACE + "foo");
 
 			{
 				final StatementBuffer<BigdataStatement> sb = new StatementBuffer<BigdataStatement>(store,
@@ -415,7 +416,7 @@ public class TestInlineURIs extends AbstractTripleStoreTestCase {
             }
             sb.setLength(sb.length()-1);
             
-            final BigdataURI uri1 = vf.createURI(sb.toString());
+            final BigdataURI uri1 = vf.createIRI(sb.toString());
 
             {
                 final StatementBuffer<BigdataStatement> buf = new StatementBuffer<BigdataStatement>(store,

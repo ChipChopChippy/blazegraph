@@ -28,11 +28,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.store;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.SESAME;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.SESAME;
 
 import com.bigdata.rdf.sparql.ast.cache.DescribeServiceFactory;
 import com.bigdata.rdf.sparql.ast.eval.ServiceParams;
@@ -76,7 +76,7 @@ public interface BD {
      * &lt;/rdf:Description&gt;
      * </pre>
      */
-    URI SID = new URIImpl(NAMESPACE+"sid");
+    IRI SID = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"sid");
     
     /**
      * The name of a per-statement attribute whose indicates whether the
@@ -98,16 +98,16 @@ public interface BD {
      * an inference or an axiom then then knowledge base will continue to report
      * it as either an axiom or an inference as appropriate.
      */
-    URI STATEMENT_TYPE = new URIImpl(NAMESPACE+"statementType");
+    IRI STATEMENT_TYPE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"statementType");
     
     /**
-     * The URI for the "DESCRIBE" service.
+     * The IRI for the "DESCRIBE" service.
      * 
      * @see DescribeServiceFactory
      * @see <a href="https://sourceforge.net/apps/trac/bigdata/ticket/584">
      *      Describe Cache </a>
      */
-    URI DESCRIBE = new URIImpl(NAMESPACE + "describe");
+    IRI DESCRIBE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "describe");
 
     /**
     * Sesame has the notion of a "null" graph. Any time you insert a statement
@@ -115,14 +115,14 @@ public interface BD {
     * actually inserted into this "null" graph. If SPARQL <code>DATASET</code>
     * is not specified, then all contexts are queried and you will see
     * statements from the "null" graph as well as from any other context.
-    * {@link com.bigdata.rdf.sail.BigdataSailConnection#getStatements(Resource, URI, Value, boolean, Resource...)}
+    * {@link com.bigdata.rdf.sail.BigdataSailConnection#getStatements(Resource, IRI, Value, boolean, Resource...)}
     * will return statements from the "null" graph if the context is either
     * unbound or is an array whose sole element is <code>null</code>.
     * <p>
     * Given
     * 
     * <pre>
-    * void foo(Resource s, final URI p, final Value o, final Resource... contexts)
+    * void foo(Resource s, final IRI p, final Value o, final Resource... contexts)
     * </pre>
     * 
     * <dl>
@@ -150,12 +150,12 @@ public interface BD {
     *      not encoded/decoded according to openrdf semantics (REST API) </a>
     * 
     * @see com.bigdata.rdf.sail.BigdataSailConnection#addStatement(Resource,
-    *      URI, Value, Resource...)
+    *      IRI, Value, Resource...)
     * @see com.bigdata.rdf.sail.BigdataSailConnection#getStatements(Resource,
-    *      URI, Value, boolean, Resource...)
+    *      IRI, Value, boolean, Resource...)
     * @see SESAME#NIL
     */
-    URI NULL_GRAPH = new URIImpl(NAMESPACE + "nullGraph");
+    IRI NULL_GRAPH = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "nullGraph");
 
     /**
      * <p>
@@ -196,7 +196,7 @@ public interface BD {
      *      href="https://sourceforge.net/apps/mediawiki/bigdata/index.php?title=VirtualGraphs">
      *      Virtual Graphs (wiki)</a>
      */
-    URI VIRTUAL_GRAPH = new URIImpl(NAMESPACE + "virtualGraph");
+    IRI VIRTUAL_GRAPH = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "virtualGraph");
     
 //    /**
 //     * We need the ability to do atomic add+drop in one operation via the
@@ -206,10 +206,10 @@ public interface BD {
 //     * mark the separation point between statements to drop (above the 
 //     * separator) and statements to add (below the separator).
 //     */
-//    URI ATOMIC_UPDATE_SEPARATOR_KEY = new URIImpl(NAMESPACE + "atomicUpdateSeparatorKey");
+//    IRI ATOMIC_UPDATE_SEPARATOR_KEY = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "atomicUpdateSeparatorKey");
     
     /**
-     * URI that can be used as the Subject of magic triple patterns for bigdata
+     * IRI that can be used as the Subject of magic triple patterns for bigdata
      * SERVICEs. There may be zero or more such triple patterns. The Predicate
      * (key) and Object (val) positions for those triple patterns are extracted
      * into a {@link ServiceParams} object. For each key, there may be one or
@@ -225,10 +225,10 @@ public interface BD {
      * 
      * @see ServiceParams.
      */
-    URI SERVICE_PARAM = new URIImpl(NAMESPACE + "serviceParam");
+    IRI SERVICE_PARAM = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "serviceParam");
     
     /**
-    * The well-known URI of the ALP SERVICE extension.
+    * The well-known IRI of the ALP SERVICE extension.
     * 
     * @see ASTALPServiceOptimizer
     * @see <a href="http://trac.blazegraph.com/ticket/1072"> Configurable ALP
@@ -236,6 +236,6 @@ public interface BD {
     * @see <a href="http://trac.blazegraph.com/ticket/1117"> Document the ALP
     *      Service </a>
     */
-    URI ALP_SERVICE = new URIImpl(NAMESPACE + "alp");
+    IRI ALP_SERVICE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "alp");
 
 }

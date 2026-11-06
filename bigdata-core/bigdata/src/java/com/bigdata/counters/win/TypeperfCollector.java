@@ -42,8 +42,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CancellationException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.counters.AbstractProcessCollector;
 import com.bigdata.counters.AbstractProcessReader;
 import com.bigdata.counters.CounterSet;
@@ -71,7 +72,7 @@ import com.bigdata.util.InnerCause;
  */
 public class TypeperfCollector extends AbstractProcessCollector {
 
-    static private final Logger log = Logger.getLogger(TypeperfCollector.class);
+    static private final Logger log = LogManager.getLogger(TypeperfCollector.class);
 
 //    /**
 //     * True iff the {@link #log} level is INFO or less.

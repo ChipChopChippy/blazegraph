@@ -29,14 +29,13 @@ package com.bigdata.search;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.util.Version;
 
 /**
  * This class can be used with the bigdata properties file to specify
@@ -60,8 +59,7 @@ import org.apache.lucene.util.Version;
  * More generally any subclass of  {@link Analyzer} that has at least one constructor matching:
  * <ul>
  * <li>no arguments
- * <li>{@link Version}
- * <li>{@link Version}, {@link Set}
+ * <li>{@link org.apache.lucene.analysis.CharArraySet}
  * </ul>
  * is usable. If the class has a static method named <code>getDefaultStopSet()</code> then this is assumed
  * to do what it says on the can; some of the Lucene analyzers store their default stop words elsewhere,
@@ -108,7 +106,7 @@ import org.apache.lucene.util.Version;
  *
  */
 public class ConfigurableAnalyzerFactory implements IAnalyzerFactory {
-	final private static transient Logger log = Logger.getLogger(ConfigurableAnalyzerFactory.class);
+	final private static transient Logger log = LogManager.getLogger(ConfigurableAnalyzerFactory.class);
 
 	/**
      * Options understood by the {@link ConfigurableAnalyzerFactory}.
@@ -213,7 +211,7 @@ c.b.s.C.analyzer.en.like=eng
         String STOPWORDS_VALUE_NONE = "none";
         /**
          * The value of the pattern parameter to
-         * {@link PatternAnalyzer#PatternAnalyzer(Version, Pattern, boolean, Set)} 
+         * {@link PatternAnalyzerImpl#PatternAnalyzerImpl(Pattern, org.apache.lucene.analysis.CharArraySet)}
          * (Note the {@link Pattern#UNICODE_CHARACTER_CLASS} flag is enabled).
          * It is an error if a different analyzer class is specified.
          */

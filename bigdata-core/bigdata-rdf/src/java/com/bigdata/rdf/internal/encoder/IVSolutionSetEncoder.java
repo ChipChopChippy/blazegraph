@@ -34,8 +34,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Value;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.bop.IConstant;
@@ -52,7 +53,7 @@ import com.bigdata.rdf.internal.IVUtility;
 import com.bigdata.rdf.internal.impl.TermId;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.model.BigdataValueSerializer;
 import com.bigdata.util.BytesUtil;
 
@@ -171,7 +172,7 @@ import com.bigdata.util.BytesUtil;
  */
 public class IVSolutionSetEncoder implements IBindingSetEncoder {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(IVSolutionSetEncoder.class);
     
     /**
@@ -384,7 +385,7 @@ public class IVSolutionSetEncoder implements IBindingSetEncoder {
                     if (namespace == null) {
                         // Note: The namespace is discovered here!!!
                         namespace = value.getValueFactory().getNamespace();
-                        valueSer = BigdataValueFactoryImpl.getInstance(
+                        valueSer = BigdataSimpleValueFactory.getInstance(
                                 namespace).getValueSerializer();
                         discoveredNamespace = true;
                     }

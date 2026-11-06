@@ -33,12 +33,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sail.sparql;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.vocabulary.FN;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.vocabulary.FN;
 
 import com.bigdata.bop.aggregate.AggregateBase;
 import com.bigdata.bop.rdf.aggregate.GROUP_CONCAT;
@@ -141,7 +143,7 @@ import com.bigdata.rdf.sparql.ast.VarNode;
  */
 public class ValueExprBuilder extends BigdataASTVisitorBase {
 
-//    private static final Logger log = Logger.getLogger(ValueExprBuilder.class);
+//    private static final Logger log = LogManager.getLogger(ValueExprBuilder.class);
 
     /**
      * Used to manage collection and nesting of graph patterns. This is mostly
@@ -175,7 +177,7 @@ public class ValueExprBuilder extends BigdataASTVisitorBase {
     /**
      * Handle a simple function without any arguments.
      */
-    protected FunctionNode noneary(final SimpleNode node, final URI functionURI)
+    protected FunctionNode noneary(final SimpleNode node, final IRI functionURI)
             throws VisitorException {
 
         return new FunctionNode(functionURI,
@@ -187,7 +189,7 @@ public class ValueExprBuilder extends BigdataASTVisitorBase {
      * Handle a simple unary function (the child of the node is the argument to
      * the function).
      */
-    protected FunctionNode unary(final SimpleNode node, final URI functionURI)
+    protected FunctionNode unary(final SimpleNode node, final IRI functionURI)
             throws VisitorException {
 
         return new FunctionNode(functionURI,
@@ -200,7 +202,7 @@ public class ValueExprBuilder extends BigdataASTVisitorBase {
      * Handle a simple binary function (both children of the node are arguments
      * to the function).
      */
-    protected FunctionNode binary(final SimpleNode node, final URI functionURI)
+    protected FunctionNode binary(final SimpleNode node, final IRI functionURI)
             throws VisitorException {
 
         return new FunctionNode(functionURI,
@@ -213,7 +215,7 @@ public class ValueExprBuilder extends BigdataASTVisitorBase {
      * Handle a simple ternary function (there are three children of the node
      * which are the arguments to the function).
      */
-    protected FunctionNode ternary(final SimpleNode node, final URI functionURI)
+    protected FunctionNode ternary(final SimpleNode node, final IRI functionURI)
             throws VisitorException {
 
         return new FunctionNode(functionURI,
@@ -229,7 +231,7 @@ public class ValueExprBuilder extends BigdataASTVisitorBase {
      * Handle a function with four arguments (there are four children of the
      * node which are the arguments to the function).
      */
-    protected FunctionNode quadary(final SimpleNode node, final URI functionURI)
+    protected FunctionNode quadary(final SimpleNode node, final IRI functionURI)
             throws VisitorException {
 
         return new FunctionNode(functionURI,
@@ -247,7 +249,7 @@ public class ValueExprBuilder extends BigdataASTVisitorBase {
      * Handle a simple nary function (all children of the node are arguments to
      * the function).
      */
-    protected FunctionNode nary(final SimpleNode node, final URI functionURI)
+    protected FunctionNode nary(final SimpleNode node, final IRI functionURI)
             throws VisitorException {
 
         final int nargs = node.jjtGetNumChildren();
@@ -286,7 +288,7 @@ public class ValueExprBuilder extends BigdataASTVisitorBase {
     }
 
     protected FunctionNode aggregate(final ASTAggregate node,
-            final URI functionURI) throws VisitorException {
+            final IRI functionURI) throws VisitorException {
 
         Map<String, Object> scalarValues = null;
 
@@ -348,7 +350,7 @@ public class ValueExprBuilder extends BigdataASTVisitorBase {
         throws VisitorException
     {
 
-        final URI functionURI;
+        final IRI functionURI;
         switch (node.getOperator()) {
         case LT:
             functionURI = FunctionRegistry.LT;
@@ -435,7 +437,7 @@ public class ValueExprBuilder extends BigdataASTVisitorBase {
         throws VisitorException
     {
 
-        final URI functionURI;
+        final IRI functionURI;
         switch (node.getOperator()) {
         case PLUS:
             functionURI = FunctionRegistry.ADD;

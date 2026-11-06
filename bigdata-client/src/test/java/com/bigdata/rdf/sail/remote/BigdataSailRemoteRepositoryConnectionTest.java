@@ -34,20 +34,20 @@ import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.impl.DatasetImpl;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.RepositoryResult;
-import org.openrdf.rio.RDFHandler;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.helpers.RDFHandlerBase;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.impl.SimpleDataset;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.RepositoryResult;
+import org.eclipse.rdf4j.rio.RDFHandler;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.helpers.AbstractRDFHandler;
 
 import com.bigdata.rdf.sail.webapp.client.EncodeDecodeValue;
 import com.bigdata.rdf.sail.webapp.client.MockRemoteRepository;
@@ -66,17 +66,17 @@ public class BigdataSailRemoteRepositoryConnectionTest extends TestCase {
 	private BigdataSailRemoteRepository repo;
 
 	private final boolean includeInferred = false;
-	private final Resource s = new URIImpl("http://test/s");
-	private final URI p = new URIImpl("http://test/p");
-	private final Value o = new URIImpl("http://test/o");
-	private final Resource c = new URIImpl("http://test/c");
-	private final URI defaultGraph1 = new URIImpl("http://test/defaultGraph1");
-	private final URI defaultGraph2 = new URIImpl("http://test/defaultGraph2");
-	private final URI namedGraph1 = new URIImpl("http://test/namedGraph1");
-	private final URI namedGraph2 = new URIImpl("http://test/namedGraph2");
-	private final DatasetImpl dataset = new DatasetImpl();
-	private final Set<URI> defaultGraphs = new HashSet<>();
-	private final Set<URI> namedGraphs = new HashSet<>();
+	private final Resource s = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://test/s");
+	private final IRI p = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://test/p");
+	private final Value o = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://test/o");
+	private final Resource c = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://test/c");
+	private final IRI defaultGraph1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://test/defaultGraph1");
+	private final IRI defaultGraph2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://test/defaultGraph2");
+	private final IRI namedGraph1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://test/namedGraph1");
+	private final IRI namedGraph2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://test/namedGraph2");
+	private final SimpleDataset dataset = new SimpleDataset();
+	private final Set<IRI> defaultGraphs = new HashSet<>();
+	private final Set<IRI> namedGraphs = new HashSet<>();
 
 	@Before
     protected void setUp() {
@@ -207,7 +207,7 @@ public class BigdataSailRemoteRepositoryConnectionTest extends TestCase {
 	
 	@Test
 	public void testExport() throws RepositoryException, RDFHandlerException {
-		final RDFHandler handler = new RDFHandlerBase();
+		final RDFHandler handler = new AbstractRDFHandler() {};
 		con.exportStatements(s, p, o, includeInferred, handler, c);
 		assertEquals(EncodeDecodeValue.encodeValue(s), remote.data.opts.getRequestParam("s"));
 		assertEquals(EncodeDecodeValue.encodeValue(p), remote.data.opts.getRequestParam("p"));

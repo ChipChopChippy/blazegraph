@@ -31,10 +31,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.URI;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.axioms.OwlAxioms;
@@ -61,7 +62,7 @@ import com.bigdata.rdf.vocab.RDFSVocabulary;
  */
 public class TestChangeSets extends ProxyBigdataSailTestCase {
 
-    private static final Logger log = Logger.getLogger(TestChangeSets.class);
+    private static final Logger log = LogManager.getLogger(TestChangeSets.class);
     
     public Properties getTriplesNoInference() {
         
@@ -122,7 +123,7 @@ public class TestChangeSets extends ProxyBigdataSailTestCase {
 
         try {
             
-            sail.initialize();
+            sail.init();
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             cxn = (BigdataSailRepositoryConnection) repo.getConnection();
             cxn.setAutoCommit(false);
@@ -136,9 +137,9 @@ public class TestChangeSets extends ProxyBigdataSailTestCase {
 
             final String ns = BD.NAMESPACE;
             
-            final URI a = vf.createURI(ns+"A");
-            final URI b = vf.createURI(ns+"B");
-            final URI c = vf.createURI(ns+"C");
+            final IRI a = vf.createIRI(ns+"A");
+            final IRI b = vf.createIRI(ns+"B");
+            final IRI c = vf.createIRI(ns+"C");
             
             final BigdataStatement[] stmts = new BigdataStatement[] {
                 vf.createStatement(a, RDFS.SUBCLASSOF, b),
@@ -235,7 +236,7 @@ public class TestChangeSets extends ProxyBigdataSailTestCase {
 
         try {
             
-            sail.initialize();
+            sail.init();
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             cxn = (BigdataSailRepositoryConnection) repo.getConnection();
             cxn.setAutoCommit(false);
@@ -249,9 +250,9 @@ public class TestChangeSets extends ProxyBigdataSailTestCase {
 
             final String ns = BD.NAMESPACE;
             
-            final URI a = vf.createURI(ns+"A");
-            final URI b = vf.createURI(ns+"B");
-            final URI c = vf.createURI(ns+"C");
+            final IRI a = vf.createIRI(ns+"A");
+            final IRI b = vf.createIRI(ns+"B");
+            final IRI c = vf.createIRI(ns+"C");
             
             final BigdataStatement[] stmts = new BigdataStatement[] {
                 vf.createStatement(a, RDFS.SUBCLASSOF, b),
@@ -336,7 +337,7 @@ public class TestChangeSets extends ProxyBigdataSailTestCase {
         BigdataSailRepositoryConnection cxn = null;
         final BigdataSail sail = getSail(getTriplesNoInference());
         try {
-            sail.initialize();
+            sail.init();
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             cxn = (BigdataSailRepositoryConnection) repo.getConnection();
             cxn.setAutoCommit(false);
@@ -349,9 +350,9 @@ public class TestChangeSets extends ProxyBigdataSailTestCase {
             
             final String ns = BD.NAMESPACE;
             
-            final URI a = vf.createURI(ns+"A");
-            final URI b = vf.createURI(ns+"B");
-            final URI c = vf.createURI(ns+"C");
+            final IRI a = vf.createIRI(ns+"A");
+            final IRI b = vf.createIRI(ns+"B");
+            final IRI c = vf.createIRI(ns+"C");
             
             final BigdataStatement[] stmts = new BigdataStatement[] {
                 vf.createStatement(a, RDFS.SUBCLASSOF, b),
@@ -430,7 +431,7 @@ public class TestChangeSets extends ProxyBigdataSailTestCase {
         BigdataSailRepositoryConnection cxn = null;
         final BigdataSail sail = getSail(getTriplesNoInference());
         try {
-            sail.initialize();
+            sail.init();
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             cxn = (BigdataSailRepositoryConnection) repo.getConnection();
             cxn.setAutoCommit(false);
@@ -442,13 +443,13 @@ public class TestChangeSets extends ProxyBigdataSailTestCase {
             
             final String ns = BD.NAMESPACE;
             
-            final URI a = vf.createURI(ns+"A");
-            final URI b = vf.createURI(ns+"B");
-            final URI c = vf.createURI(ns+"C");
-            final URI d = vf.createURI(ns+"D");
-            final URI x = vf.createURI(ns+"X");
-            final URI y = vf.createURI(ns+"Y");
-            final URI z = vf.createURI(ns+"Z");
+            final IRI a = vf.createIRI(ns+"A");
+            final IRI b = vf.createIRI(ns+"B");
+            final IRI c = vf.createIRI(ns+"C");
+            final IRI d = vf.createIRI(ns+"D");
+            final IRI x = vf.createIRI(ns+"X");
+            final IRI y = vf.createIRI(ns+"Y");
+            final IRI z = vf.createIRI(ns+"Z");
 //            final BNode sid1 = vf.createBNode();
 //            final BNode sid2 = vf.createBNode();
             
@@ -552,7 +553,7 @@ public class TestChangeSets extends ProxyBigdataSailTestCase {
         final BigdataSail sail = getSail(getTriplesWithInference());
         try {
 
-            sail.initialize();
+            sail.init();
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             cxn = (BigdataSailRepositoryConnection) repo.getConnection();
             cxn.setAutoCommit(false);
@@ -568,9 +569,9 @@ public class TestChangeSets extends ProxyBigdataSailTestCase {
             
             final String ns = BD.NAMESPACE;
             
-            final URI a = vf.createURI(ns+"A");
-            final URI b = vf.createURI(ns+"B");
-            final URI c = vf.createURI(ns+"C");
+            final IRI a = vf.createIRI(ns+"A");
+            final IRI b = vf.createIRI(ns+"B");
+            final IRI c = vf.createIRI(ns+"C");
             
             final BigdataStatement[] explicit = new BigdataStatement[] {
                 vf.createStatement(a, RDFS.SUBCLASSOF, b),
@@ -664,7 +665,7 @@ public class TestChangeSets extends ProxyBigdataSailTestCase {
         BigdataSailRepositoryConnection cxn = null;
         final BigdataSail sail = getSail(getTriplesWithInference());
         try {
-            sail.initialize();
+            sail.init();
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             cxn = (BigdataSailRepositoryConnection) repo.getConnection();
             cxn.setAutoCommit(false);
@@ -680,9 +681,9 @@ public class TestChangeSets extends ProxyBigdataSailTestCase {
             
             final String ns = BD.NAMESPACE;
             
-            final URI a = vf.createURI(ns+"A");
-            final URI b = vf.createURI(ns+"B");
-            final URI c = vf.createURI(ns+"C");
+            final IRI a = vf.createIRI(ns+"A");
+            final IRI b = vf.createIRI(ns+"B");
+            final IRI c = vf.createIRI(ns+"C");
             
             final BigdataStatement[] explicitAdd = new BigdataStatement[] {
                 vf.createStatement(a, RDFS.SUBCLASSOF, b),
@@ -793,7 +794,7 @@ public class TestChangeSets extends ProxyBigdataSailTestCase {
 
         try {
 
-            sail.initialize();
+            sail.init();
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             cxn = (BigdataSailRepositoryConnection) repo.getConnection();
             cxn.setAutoCommit(false);
@@ -806,9 +807,9 @@ public class TestChangeSets extends ProxyBigdataSailTestCase {
             
             final String ns = BD.NAMESPACE;
             
-            final URI a = vf.createURI(ns+"A");
-            final URI b = vf.createURI(ns+"B");
-            final URI c = vf.createURI(ns+"C");
+            final IRI a = vf.createIRI(ns+"A");
+            final IRI b = vf.createIRI(ns+"B");
+            final IRI c = vf.createIRI(ns+"C");
             
             final BigdataStatement[] explicit = new BigdataStatement[] {
                 vf.createStatement(a, RDFS.SUBCLASSOF, b),

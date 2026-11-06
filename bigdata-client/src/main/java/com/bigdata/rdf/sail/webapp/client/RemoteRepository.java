@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sail.webapp.client;
 
-import info.aduna.io.IOUtil;
+import org.eclipse.rdf4j.common.io.IOUtil;
 
 import java.io.Closeable;
 import java.io.File;
@@ -39,14 +39,15 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.mime.FormBodyPart;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.query.GraphQueryResult;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.rio.RDFFormat;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.GraphQueryResult;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.rio.RDFFormat;
 
 import com.bigdata.rdf.sail.remote.BigdataSailRemoteRepository;
 
@@ -65,7 +66,7 @@ import com.bigdata.rdf.sail.remote.BigdataSailRemoteRepository;
  */
 public class RemoteRepository extends RemoteRepositoryBase {
 
-    private static final transient Logger log = Logger
+    private static final transient Logger log = LogManager
             .getLogger(RemoteRepository.class);
 
    /**
@@ -375,7 +376,7 @@ public class RemoteRepository extends RemoteRepositoryBase {
      * @return
      * @throws Exception
      */
-    public GraphQueryResult getStatements(final Resource subj, final URI pred,
+    public GraphQueryResult getStatements(final Resource subj, final IRI pred,
             final Value obj, final boolean includeInferred,
             final Resource... contexts) throws Exception {
 
@@ -447,7 +448,7 @@ public class RemoteRepository extends RemoteRepositoryBase {
     * @see <a href="http://trac.bigdata.com/ticket/1177"> Resource... contexts
     *      not encoded/decoded according to openrdf semantics (REST API) </a>
     */
-   public boolean hasStatement(final Resource s, final URI p, final Value o,
+   public boolean hasStatement(final Resource s, final IRI p, final Value o,
          final boolean includeInferred, final Resource... c) throws Exception {
       if (c == null) {
          // Note: May not be a null Resource[] reference.
@@ -532,7 +533,7 @@ public class RemoteRepository extends RemoteRepositoryBase {
     * @see <a href="http://trac.bigdata.com/ticket/1127"> Add REST API method
     *      for exact range counts </a>
     */
-   public long rangeCount(final Resource s, final URI p, final Value o,
+   public long rangeCount(final Resource s, final IRI p, final Value o,
          final Resource... c) throws Exception {
 
       return rangeCount(false/* exact */, s, p, o, c);
@@ -568,7 +569,7 @@ public class RemoteRepository extends RemoteRepositoryBase {
     * @see <a href="http://trac.bigdata.com/ticket/1177"> Resource... contexts
     *      not encoded/decoded according to openrdf semantics (REST API) </a>
     */
-   public long rangeCount(final boolean exact, final Resource s, final URI p,
+   public long rangeCount(final boolean exact, final Resource s, final IRI p,
          final Value o, final Resource... c) throws Exception {
 
       if (c == null) {
@@ -1328,7 +1329,7 @@ public class RemoteRepository extends RemoteRepositoryBase {
     }
    
     /**
-     * Add by URI, statements, or file.
+     * Add by IRI, statements, or file.
      */
     public static class AddOp {
 
@@ -1455,7 +1456,7 @@ public class RemoteRepository extends RemoteRepositoryBase {
        * @param c
        *           The contexts (optional, BUT may not be a null Resource[]).
        */
-        public RemoveOp(final Resource s, final URI p, final Value o, final Resource... c) {
+        public RemoveOp(final Resource s, final IRI p, final Value o, final Resource... c) {
             if (c == null)
                throw new IllegalArgumentException();
             this.s = s;

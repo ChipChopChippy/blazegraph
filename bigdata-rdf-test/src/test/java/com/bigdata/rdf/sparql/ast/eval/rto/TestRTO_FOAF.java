@@ -27,6 +27,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sparql.ast.eval.rto;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.Properties;
 
 import com.bigdata.rdf.axioms.NoAxioms;
@@ -44,7 +46,7 @@ import com.bigdata.rdf.sail.BigdataSail;
  */
 public class TestRTO_FOAF extends AbstractRTOTestCase {
 
-//    private final static Logger log = Logger.getLogger(TestRTO_LUBM.class);
+//    private final static Logger log = LogManager.getLogger(TestRTO_LUBM.class);
     
     /**
      * 

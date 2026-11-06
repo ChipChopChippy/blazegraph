@@ -1,6 +1,6 @@
 package com.bigdata.rdf.internal.impl.uri;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.rdf.internal.INonInlineExtensionCodes;
 import com.bigdata.rdf.internal.IV;
@@ -11,7 +11,7 @@ import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataURI;
 
 /**
- * A {@link URI} modeled as a namespace {@link IV} plus an inline Unicode
+ * A {@link IRI} modeled as a namespace {@link IV} plus an inline Unicode
  * <code>localName</code>.
  * 
  * @author <a href="mailto:thompsonbry@users.sourceforge.net">Bryan Thompson</a>
@@ -19,7 +19,7 @@ import com.bigdata.rdf.model.BigdataURI;
  * @param <V>
  */
 public class PartlyInlineURIIV<V extends BigdataURI> extends
-        AbstractNonInlineExtensionIVWithDelegateIV<V, URI> {
+        AbstractNonInlineExtensionIVWithDelegateIV<V, IRI> {
 
 	/**
 	 * 
@@ -35,7 +35,7 @@ public class PartlyInlineURIIV<V extends BigdataURI> extends
      * delegateIV, then it will be done separately for those objects when they
      * are inserted into the termsCache.
 	 */
-    public IV<V, URI> clone(final boolean clearCache) {
+    public IV<V, IRI> clone(final boolean clearCache) {
 
         final PartlyInlineURIIV<V> tmp = new PartlyInlineURIIV<V>(
                 getDelegate(), getExtensionIV());
@@ -54,7 +54,7 @@ public class PartlyInlineURIIV<V extends BigdataURI> extends
 			final AbstractLiteralIV<BigdataLiteral, ?> delegate, 
 			final IV<?, ?> namespace) {
 
-        super(VTE.URI, delegate, namespace);
+        super(VTE.IRI, delegate, namespace);
         
     }
 
@@ -64,7 +64,7 @@ public class PartlyInlineURIIV<V extends BigdataURI> extends
      */
     public String toString() {
 
-        return "URI(namespaceIV=" + getExtensionIV()
+        return "IRI(namespaceIV=" + getExtensionIV()
                 + String.valueOf(getVTE().getCharCode()) + ", localName="
                 + getDelegate() + ")";
 
@@ -78,7 +78,7 @@ public class PartlyInlineURIIV<V extends BigdataURI> extends
     }
     
     /**
-     * Implements {@link URI#getLocalName()}. 
+     * Implements {@link IRI#getLocalName()}. 
      * <p>
      * We can use the inline delegate for this.
      */

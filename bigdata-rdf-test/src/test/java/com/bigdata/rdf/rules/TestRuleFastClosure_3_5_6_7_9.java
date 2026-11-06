@@ -30,9 +30,9 @@ package com.bigdata.rdf.rules;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
 import com.bigdata.bop.IConstant;
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.internal.IV;
@@ -99,11 +99,11 @@ public class TestRuleFastClosure_3_5_6_7_9 extends AbstractRuleTestCase {
 
             final BigdataValueFactory valueFactory = store.getValueFactory();
             
-            final URI A = valueFactory.createURI("http://www.foo.org/A");
-            final URI B = valueFactory.createURI("http://www.foo.org/B");
-            final URI C = valueFactory.createURI("http://www.foo.org/C");
+            final IRI A = valueFactory.createIRI("http://www.foo.org/A");
+            final IRI B = valueFactory.createIRI("http://www.foo.org/B");
+            final IRI C = valueFactory.createIRI("http://www.foo.org/C");
 
-            final URI rdfsSubPropertyOf = valueFactory.asValue(RDFS.SUBPROPERTYOF);
+            final IRI rdfsSubPropertyOf = valueFactory.asValue(RDFS.SUBPROPERTYOF);
 
             store.addStatement(A, rdfsSubPropertyOf, rdfsSubPropertyOf);
             store.addStatement(B, rdfsSubPropertyOf, A);
@@ -177,12 +177,12 @@ public class TestRuleFastClosure_3_5_6_7_9 extends AbstractRuleTestCase {
         
         try {
 
-            URI A = new URIImpl("http://www.foo.org/A");
-            URI B = new URIImpl("http://www.foo.org/B");
-            URI C = new URIImpl("http://www.foo.org/C");
-            URI D = new URIImpl("http://www.foo.org/D");
+            IRI A = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/A");
+            IRI B = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/B");
+            IRI C = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/C");
+            IRI D = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/D");
 
-            URI MyRange = new URIImpl("http://www.foo.org/MyRange");
+            IRI MyRange = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/MyRange");
 
             {
                 IStatementBuffer buffer = new StatementBuffer(store, 100/* capacity */);
@@ -206,7 +206,7 @@ public class TestRuleFastClosure_3_5_6_7_9 extends AbstractRuleTestCase {
             /*
              * Setup the closure of the rdfs:subPropertyOf for rdfs:Range.
              * 
-             * Note: This includes both rdfs:Range and the MyRange URI. The
+             * Note: This includes both rdfs:Range and the MyRange IRI. The
              * latter is not declared by the ontology to be a subPropertyOf
              * rdfs:Range since that is not required by this test, but we are
              * treating it as such for the purpose of this test.

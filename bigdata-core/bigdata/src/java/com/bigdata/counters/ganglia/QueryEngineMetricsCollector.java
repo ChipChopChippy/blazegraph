@@ -2,8 +2,9 @@ package com.bigdata.counters.ganglia;
 
 import java.util.Iterator;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.counters.AbstractStatisticsCollector;
 import com.bigdata.counters.CounterSet;
 import com.bigdata.counters.ICounter;
@@ -20,7 +21,7 @@ import com.bigdata.service.IFederationDelegate;
  */
 public class QueryEngineMetricsCollector implements IGangliaMetricsCollector {
 
-    private static Logger log = Logger
+    private static Logger log = LogManager
             .getLogger(QueryEngineMetricsCollector.class);
     
 //    /**

@@ -137,7 +137,10 @@ app_paths = Paths(
         "lib/bigdata.jar",
         "lib/jsk-platform.jar",
         "lib/jsk-lib.jar",
-        "lib/log4j.jar"],
+        "lib/log4j-api.jar",
+        "lib/log4j-core.jar",
+        "lib/log4j-slf4j-impl.jar",
+        "lib/slf4j-api.jar"],
     config = "bin/config/disco.config",
     properties = {
         "java.security.policy":
@@ -146,6 +149,8 @@ app_paths = Paths(
             ("var/config/policy/provider/" +
              "dynamic-policy.properties"),
         "log4j.primary.configuration":
+            "var/config/logging/disco-logging.properties",
+        "log4j2.configurationFile":
             "var/config/logging/disco-logging.properties",
         "appHome": ""})
 

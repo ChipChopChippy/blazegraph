@@ -35,8 +35,8 @@ import java.util.concurrent.FutureTask;
 
 import junit.framework.TestCase2;
 
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.LiteralImpl;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpContext;
@@ -61,7 +61,7 @@ import com.bigdata.rdf.internal.VTE;
 import com.bigdata.rdf.internal.impl.TermId;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.relation.accesspath.IAsynchronousIterator;
 import com.bigdata.relation.accesspath.IBlockingBuffer;
 import com.bigdata.relation.accesspath.ThickAsynchronousIterator;
@@ -136,19 +136,19 @@ abstract public class AbstractDistinctSolutionsTestCase extends TestCase2 {
             
             this.namespace = namespace;
 
-            brad = makeIV(new LiteralImpl("Brad"));
+            brad = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Brad"));
             
-            john = makeIV(new LiteralImpl("John"));
+            john = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("John"));
 
-            fred = makeIV(new LiteralImpl("Fred"));
+            fred = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Fred"));
 
-            jane = makeIV(new LiteralImpl("Jane "));
+            jane = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Jane "));
 
-            mary = makeIV(new LiteralImpl("Mary"));
+            mary = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Mary"));
 
-            paul = makeIV(new LiteralImpl("Paul"));
+            paul = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Paul"));
 
-            leon = makeIV(new LiteralImpl("Leon"));
+            leon = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Leon"));
             
             final Var<?> x = Var.var("x");
             final Var<?> y = Var.var("y");
@@ -204,7 +204,7 @@ abstract public class AbstractDistinctSolutionsTestCase extends TestCase2 {
          */
         @SuppressWarnings({ "unchecked", "rawtypes" })
         private IV makeIV(final Value v) {
-            final BigdataValueFactory valueFactory = BigdataValueFactoryImpl
+            final BigdataValueFactory valueFactory = BigdataSimpleValueFactory
                     .getInstance(namespace);
             final BigdataValue bv = valueFactory.asValue(v);
             final IV iv = new TermId(VTE.valueOf(v), nextId++);

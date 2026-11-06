@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.rdf.internal;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.rdf.internal.impl.AbstractIV;
 import com.bigdata.rdf.internal.impl.literal.PackedLongIV;
@@ -72,7 +72,7 @@ public enum DTEExtension {
 	 * <p>
 	 * Note: This is NOT the same as the {@link AbstractIV#isExtension()} bit.
 	 * The latter <strong>always</strong> indicates that an {@link IV} follows
-	 * the <code>flags</code> byte and indicates the actual datatype URI. In
+	 * the <code>flags</code> byte and indicates the actual datatype IRI. In
 	 * contrast, {@link #RESERVED} is a placeholder that could give us another
 	 * byte to handle additional "intrinsic" types.
 	 * 
@@ -95,13 +95,13 @@ public enum DTEExtension {
      *            The class of the Java object used to represent instances of
      *            the coded data type. (The inline object.)
      * @param datatype
-     *            The well-known URI for the data type.
+     *            The well-known IRI for the data type.
      * @param flags
      *            Some bit flags. See {@link #NUMERIC},
      *            {@link #UNSIGNED_NUMERIC}, etc.
      */
     private DTEExtension(final byte v, final int len, final Class<?> cls,
-            final URI datatypeURI, final int flags) {
+            final IRI datatypeURI, final int flags) {
         this.v = v;
         this.len = len;
         this.cls = cls;
@@ -130,16 +130,16 @@ public enum DTEExtension {
     }
 
     /**
-	 * Return the {@link DTEExtension} for the datatype {@link URI}.
+	 * Return the {@link DTEExtension} for the datatype {@link IRI}.
 	 * 
 	 * @param datatype
-	 *            The datatype {@link URI}.
+	 *            The datatype {@link IRI}.
 	 * 
 	 * @return The {@link DTEException} for that datatype -or- <code>null</code>
-	 *         if the datatype {@link URI} is none of the datatypes for which
+	 *         if the datatype {@link IRI} is none of the datatypes for which
 	 *         native support is provided.
 	 */
-    static final public DTEExtension valueOf(final URI datatype) {
+    static final public DTEExtension valueOf(final IRI datatype) {
         /*
          * Note: This switch MUST correspond to the declarations above (you can
          * not make the cases of the switch from [v] since it is not considered
@@ -183,9 +183,9 @@ public enum DTEExtension {
     private final Class<?> cls;
 
     /**
-     * The well-known URI for the data type.
+     * The well-known IRI for the data type.
      */
-    private final URI datatypeURI;
+    private final IRI datatypeURI;
 
     /**
      * Some bit flags.
@@ -222,9 +222,9 @@ public enum DTEExtension {
     }
 
     /**
-     * The corresponding datatype {@link URI}.
+     * The corresponding datatype {@link IRI}.
      */
-    final public URI getDatatypeURI() {
+    final public IRI getDatatypeURI() {
 
         return datatypeURI;
         

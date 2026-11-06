@@ -42,8 +42,9 @@ import java.util.concurrent.TimeoutException;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.concurrent.NonBlockingLockManagerWithNewDesign.LockFutureTask;
 import com.bigdata.util.DaemonThreadFactory;
 
@@ -55,7 +56,7 @@ import com.bigdata.util.DaemonThreadFactory;
  */
 public class TestNonBlockingLockManagerWithNewDesign extends TestCase {
 
-    protected static final Logger log = Logger
+    protected static final Logger log = LogManager
             .getLogger(TestNonBlockingLockManagerWithNewDesign.class);
 
     protected static final boolean INFO = log.isInfoEnabled();

@@ -27,19 +27,20 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.repository.sail.SailTupleQuery;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.sail.Sail;
-import org.openrdf.sail.memory.MemoryStore;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.sail.SailRepository;
+import org.eclipse.rdf4j.repository.sail.SailTupleQuery;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.sail.Sail;
+import org.eclipse.rdf4j.sail.memory.MemoryStore;
 
 import com.bigdata.journal.BufferMode;
 import com.bigdata.rdf.axioms.NoAxioms;
@@ -70,7 +71,7 @@ import com.bigdata.rdf.vocab.NoVocabulary;
  */
 public class TestMillisecondPrecisionForInlineDateTimes extends QuadsTestCase {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(TestMillisecondPrecisionForInlineDateTimes.class);
 
     /**
@@ -148,7 +149,7 @@ public class TestMillisecondPrecisionForInlineDateTimes extends QuadsTestCase {
 	                + "  ?ar <os:prop/analysis/datePublished> ?datePub\n"
 	                + "} ORDER BY DESC(?datePub)";
 	        
-	  		sesameSail.initialize();
+	  		sesameSail.init();
 	  		bigdataSail.initialize();
 	  		
   			final Repository sesameRepo = new SailRepository(sesameSail);
@@ -187,10 +188,10 @@ public class TestMillisecondPrecisionForInlineDateTimes extends QuadsTestCase {
              * sure you answer truly is correct if you choose to do it this way.
 
 //            answer.add(createBindingSet(
-//            		new BindingImpl("neType", vf.createURI("http://example/class/Location"))
+//            		new SimpleBinding("neType", vf.createIRI("http://example/class/Location"))
 //            		));
 //            answer.add(createBindingSet(
-//            		new BindingImpl("neType", vf.createURI("http://example/class/Person"))
+//            		new SimpleBinding("neType", vf.createIRI("http://example/class/Person"))
 //            		));
 
              */

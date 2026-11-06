@@ -8,9 +8,9 @@ import java.util.List;
 
 import junit.framework.TestCase2;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
 
 import com.bigdata.btree.keys.IKeyBuilder;
 import com.bigdata.rdf.internal.impl.literal.FullyInlineTypedLiteralIV;
@@ -47,7 +47,7 @@ public class TestURIExtensionIV extends TestCase2 {
         
         namespace = getName();
         
-//        valueFactory  = BigdataValueFactoryImpl.getInstance(namespace);
+//        valueFactory  = BigdataSimpleValueFactory.getInstance(namespace);
         
         vocab = new MockVocabulary(namespace);
         
@@ -72,14 +72,14 @@ public class TestURIExtensionIV extends TestCase2 {
     
     private static class MockVocabularyDecl implements VocabularyDecl {
 
-        static private final URI[] uris = new URI[]{//
-            new URIImpl("http://www.bigdata.com/"), //
-            new URIImpl(RDFS.NAMESPACE), //
-            new URIImpl("http://www.Department0.University0.edu/"),//
+        static private final IRI[] uris = new IRI[]{//
+            org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/"), //
+            org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(RDFS.NAMESPACE), //
+            org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.Department0.University0.edu/"),//
         };
         
         @Override
-        public Iterator<URI> values() {
+        public Iterator<IRI> values() {
             return Collections.unmodifiableList(Arrays.asList(uris)).iterator();
         }
         
@@ -109,11 +109,11 @@ public class TestURIExtensionIV extends TestCase2 {
         
     }
 
-    private URIExtensionIV<BigdataURI> newFixture(final URI uri) {
+    private URIExtensionIV<BigdataURI> newFixture(final IRI uri) {
 
         final String namespace = uri.getNamespace();
 
-        final URI namespaceURI = new URIImpl(namespace);
+        final IRI namespaceURI = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(namespace);
         
         final IV<?, ?> namespaceIV = vocab.get(namespaceURI);
 
@@ -135,22 +135,22 @@ public class TestURIExtensionIV extends TestCase2 {
     
 	public void test_InlineURIIV() {
 
-//        doTest(new URIImpl("http://www.bigdata.com"));
-        doTest(new URIImpl("http://www.bigdata.com/"));
-        doTest(new URIImpl("http://www.bigdata.com/foo"));
+//        doTest(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com"));
+        doTest(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/"));
+        doTest(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/foo"));
         doTest(RDFS.CLASS);
         doTest(RDFS.SUBPROPERTYOF);
-        doTest(new URIImpl("http://www.Department0.University0.edu/UndergraduateStudent488"));
-        doTest(new URIImpl("http://www.Department0.University0.edu/GraduateStudent15"));
-//        doTest(new URIImpl("http://www.bigdata.com:80/foo"));
+        doTest(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.Department0.University0.edu/UndergraduateStudent488"));
+        doTest(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.Department0.University0.edu/GraduateStudent15"));
+//        doTest(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com:80/foo"));
 
 	}
 
-	private void doTest(final URI uri) {
+	private void doTest(final IRI uri) {
 
         final URIExtensionIV<BigdataURI> iv = newFixture(uri);
         
-		assertEquals(VTE.URI, iv.getVTE());
+		assertEquals(VTE.IRI, iv.getVTE());
 		
 		assertTrue(iv.isInline());
 		
@@ -179,14 +179,14 @@ public class TestURIExtensionIV extends TestCase2 {
         final List<IV<?,?>> ivs = new LinkedList<IV<?,?>>();
         {
 
-//            ivs.add(newFixture(new URIImpl("http://www.bigdata.com")));
-            ivs.add(newFixture(new URIImpl("http://www.bigdata.com/")));
-            ivs.add(newFixture(new URIImpl("http://www.bigdata.com/foo")));
+//            ivs.add(newFixture(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com")));
+            ivs.add(newFixture(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/")));
+            ivs.add(newFixture(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/foo")));
             ivs.add(newFixture(RDFS.CLASS));
             ivs.add(newFixture(RDFS.SUBPROPERTYOF));
-            ivs.add(newFixture(new URIImpl("http://www.Department0.University0.edu/UndergraduateStudent488")));
-            ivs.add(newFixture(new URIImpl("http://www.Department0.University0.edu/GraduateStudent15")));
-//            ivs.add(newFixture(new URIImpl("http://www.bigdata.com:80/foo")));
+            ivs.add(newFixture(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.Department0.University0.edu/UndergraduateStudent488")));
+            ivs.add(newFixture(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.Department0.University0.edu/GraduateStudent15")));
+//            ivs.add(newFixture(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com:80/foo")));
 
         }
         

@@ -39,7 +39,7 @@ import com.bigdata.rdf.internal.impl.TermId;
 import com.bigdata.rdf.model.BigdataURI;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.util.BytesUtil;
 import com.bigdata.util.BytesUtil.UnsignedByteArrayComparator;
 
@@ -66,13 +66,13 @@ public class TestTermIVComparator extends TestCase2 {
 
     public void test_termIdComparator() {
 
-        final TermId<?> lmin = new TermId<BigdataURI>(VTE.URI, Long.MIN_VALUE);
-        final TermId<?> lm1 = new TermId<BigdataURI>(VTE.URI, -1L);
-        final TermId<?> l0 = new TermId<BigdataURI>(VTE.URI, 0L);
-        final TermId<?> lp1 = new TermId<BigdataURI>(VTE.URI, 1L);
-        final TermId<?> lmax = new TermId<BigdataURI>(VTE.URI, Long.MAX_VALUE);
+        final TermId<?> lmin = new TermId<BigdataURI>(VTE.IRI, Long.MIN_VALUE);
+        final TermId<?> lm1 = new TermId<BigdataURI>(VTE.IRI, -1L);
+        final TermId<?> l0 = new TermId<BigdataURI>(VTE.IRI, 0L);
+        final TermId<?> lp1 = new TermId<BigdataURI>(VTE.IRI, 1L);
+        final TermId<?> lmax = new TermId<BigdataURI>(VTE.IRI, Long.MAX_VALUE);
 
-        final BigdataValueFactory f = BigdataValueFactoryImpl
+        final BigdataValueFactory f = BigdataSimpleValueFactory
                 .getInstance(getName()/*namespace*/);
 
         final BigdataValue vmin = f.createLiteral("a"); vmin.setIV( lmin);

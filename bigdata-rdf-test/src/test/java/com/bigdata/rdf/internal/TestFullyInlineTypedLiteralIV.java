@@ -5,8 +5,8 @@ import java.util.List;
 
 import junit.framework.TestCase2;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.btree.keys.IKeyBuilder;
 import com.bigdata.rdf.internal.impl.literal.FullyInlineTypedLiteralIV;
@@ -48,7 +48,7 @@ public class TestFullyInlineTypedLiteralIV extends TestCase2 {
 
 	public void test_InlineLiteralIV_datatypeURI() {
 
-		final URI datatype = new URIImpl("http://www.bigdata.com");
+		final IRI datatype = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com");
 
 		doTest(new FullyInlineTypedLiteralIV<BigdataLiteral>("", null, datatype));
 		doTest(new FullyInlineTypedLiteralIV<BigdataLiteral>(" ", null, datatype));
@@ -89,7 +89,7 @@ public class TestFullyInlineTypedLiteralIV extends TestCase2 {
 	    final List<IV<?,?>> ivs = new LinkedList<IV<?,?>>();
         {
 
-            final URI datatype = new URIImpl("http://www.bigdata.com");
+            final IRI datatype = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com");
             
             ivs.add(new FullyInlineTypedLiteralIV<BigdataLiteral>(""));
             ivs.add(new FullyInlineTypedLiteralIV<BigdataLiteral>(" "));

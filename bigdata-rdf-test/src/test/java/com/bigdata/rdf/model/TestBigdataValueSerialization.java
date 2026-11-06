@@ -4,21 +4,21 @@ import java.util.UUID;
 
 import junit.framework.TestCase2;
 
-import org.openrdf.model.BNode;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.BNodeImpl;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.impl.ValueFactoryImpl;
-import org.openrdf.model.vocabulary.XMLSchema;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleBNode;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
 
 import com.bigdata.io.SerializerUtil;
 
 /**
  * Test suite for {@link BigdataValueImpl} serialization semantics, including
- * the correct recovery of the {@link BigdataValueFactoryImpl} reference when
+ * the correct recovery of the {@link BigdataSimpleValueFactory} reference when
  * deserialized.
  * 
  * @see BigdataValueSerializer
@@ -42,7 +42,7 @@ public class TestBigdataValueSerialization extends TestCase2 {
         super.setUp();
         
         fixture = new BigdataValueSerializer<Value>(
-                ValueFactoryImpl.getInstance());
+                SimpleValueFactory.getInstance());
         
     }
     
@@ -75,7 +75,7 @@ public class TestBigdataValueSerialization extends TestCase2 {
      */
     public void test_URIs() {
 
-        final URI a = new URIImpl("http://www.bigdata.com");
+        final IRI a = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com");
         
         assertEquals(a, roundTrip_tuned(a));
         
@@ -86,7 +86,7 @@ public class TestBigdataValueSerialization extends TestCase2 {
      */
     public void test_plainLiterals() {
 
-        final Literal a = new LiteralImpl("bigdata");
+        final Literal a = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("bigdata");
         
         assertEquals(a, roundTrip_tuned(a));
         
@@ -97,7 +97,7 @@ public class TestBigdataValueSerialization extends TestCase2 {
      */
     public void test_langCodeLiterals() {
 
-        final Literal a = new LiteralImpl("bigdata","en");
+        final Literal a = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("bigdata","en");
         
         assertEquals(a, roundTrip_tuned(a));
         
@@ -108,7 +108,7 @@ public class TestBigdataValueSerialization extends TestCase2 {
      */
     public void test_dataTypeLiterals() {
 
-        final Literal a = new LiteralImpl("bigdata", XMLSchema.INT);
+        final Literal a = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("bigdata", XSD.INT);
         
         assertEquals(a, roundTrip_tuned(a));
         
@@ -123,7 +123,7 @@ public class TestBigdataValueSerialization extends TestCase2 {
      */
     public void test_bnodes() {
 
-        final BNode a = new BNodeImpl(UUID.randomUUID().toString());
+        final BNode a = SimpleValueFactory.getInstance().createBNode(UUID.randomUUID().toString());
         
         assertEquals(a, roundTrip_tuned(a));
         
@@ -131,39 +131,39 @@ public class TestBigdataValueSerialization extends TestCase2 {
 
 	public void test_roundTrip_URI() {
 
-		doRoundTripTest(new URIImpl("http://www.bigdata.com"));
+		doRoundTripTest(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com"));
 		
 	}
 
 	public void test_roundTrip_BNode() {
 
-        doRoundTripTest(new BNodeImpl("12"));
+        doRoundTripTest(SimpleValueFactory.getInstance().createBNode("12"));
 
-        doRoundTripTest(new BNodeImpl(UUID.randomUUID().toString()));
+        doRoundTripTest(SimpleValueFactory.getInstance().createBNode(UUID.randomUUID().toString()));
 		
 	}
 
 	public void test_roundTrip_plainLiteral() {
 
-		doRoundTripTest(new LiteralImpl("bigdata"));
+		doRoundTripTest(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("bigdata"));
 		
 	}
 
     public void test_roundTrip_langCodeLiterals() {
 
-        doRoundTripTest(new LiteralImpl("bigdata", "en"));
+        doRoundTripTest(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("bigdata", "en"));
 
     }
 	
 	public void test_roundTrip_xsd_string() {
 
-		doRoundTripTest(new LiteralImpl("bigdata", XMLSchema.STRING));
+		doRoundTripTest(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("bigdata", XSD.STRING));
 
 	}
 
 	public void test_roundTrip_xsd_int() {
 
-		doRoundTripTest(new LiteralImpl("12", XMLSchema.INT));
+		doRoundTripTest(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("12", XSD.INT));
 
 	}
 
@@ -184,7 +184,7 @@ public class TestBigdataValueSerialization extends TestCase2 {
         if (log.isInfoEnabled())
             log.info("length(s)=" + s.length());
         
-	    doRoundTripTest(new LiteralImpl(s));
+	    doRoundTripTest(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral(s));
 	    
 	}
 	
@@ -192,10 +192,10 @@ public class TestBigdataValueSerialization extends TestCase2 {
 		
 		final String namespace = getName();
 		
-		final BigdataValueFactory f = BigdataValueFactoryImpl.getInstance(namespace);
+		final BigdataValueFactory f = BigdataSimpleValueFactory.getInstance(namespace);
 
 		// same reference (singleton pattern).
-		assertTrue(f == BigdataValueFactoryImpl.getInstance(namespace));
+		assertTrue(f == BigdataSimpleValueFactory.getInstance(namespace));
 
 		// Coerce into a BigdataValue.
 		final BigdataValue expected = f.asValue(v);

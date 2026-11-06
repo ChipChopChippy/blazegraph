@@ -45,8 +45,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.zip.Adler32;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.ha.HAGlueBase;
 import com.bigdata.ha.HAPipelineGlue;
 import com.bigdata.ha.IHAPipelineResetRequest;
@@ -106,7 +107,7 @@ import com.bigdata.util.Bytes;
  */
 public class TestWORMWriteCacheService extends TestCase3 {
 
-    private static final Logger log = Logger.getLogger
+    private static final Logger log = LogManager.getLogger
     ( TestWORMWriteCacheService.class
       );
 

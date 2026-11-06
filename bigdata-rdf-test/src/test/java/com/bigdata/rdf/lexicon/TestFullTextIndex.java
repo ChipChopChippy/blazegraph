@@ -35,14 +35,12 @@ import java.util.concurrent.TimeUnit;
 
 import junit.framework.AssertionFailedError;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.model.vocabulary.XMLSchema;
-import org.openrdf.util.iterators.Iterators;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
 
 import com.bigdata.btree.ChunkedLocalRangeIterator;
 import com.bigdata.btree.IIndex;
@@ -208,7 +206,7 @@ public class TestFullTextIndex extends AbstractTripleStoreTestCase {
         
     }
 
-    private LiteralImpl getLargeLiteral(final AbstractTripleStore store) {
+    private Literal getLargeLiteral(final AbstractTripleStore store) {
         
         final int len = store.getLexiconRelation().getLexiconConfiguration().getBlobsThreshold();
 
@@ -239,7 +237,7 @@ public class TestFullTextIndex extends AbstractTripleStoreTestCase {
         if (log.isInfoEnabled())
             log.info("length(s)=" + s.length());
 
-        return new LiteralImpl(s);
+        return org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral(s);
     
     }
     
@@ -253,7 +251,7 @@ public class TestFullTextIndex extends AbstractTripleStoreTestCase {
 
             final BigdataValueFactory f = store.getValueFactory();
             
-            final LiteralImpl largeLiteral = getLargeLiteral(store);
+            final Literal largeLiteral = getLargeLiteral(store);
             
             final BigdataValue[] terms = new BigdataValue[] {//
                     f.createLiteral("abc"),//
@@ -263,10 +261,10 @@ public class TestFullTextIndex extends AbstractTripleStoreTestCase {
                     f.createLiteral("tag team", "en"),//
                     f.createLiteral("the first day", "en"),// // 'the' is a stopword.
 
-                    f.createURI("http://www.bigdata.com"),//
+                    f.createIRI("http://www.bigdata.com"),//
                     f.asValue(RDF.TYPE),//
                     f.asValue(RDFS.SUBCLASSOF),//
-                    f.asValue(XMLSchema.DECIMAL),//
+                    f.asValue(XSD.DECIMAL),//
 
                     f.createBNode(UUID.randomUUID().toString()),//
                     f.createBNode("a12"),//
@@ -434,10 +432,10 @@ public class TestFullTextIndex extends AbstractTripleStoreTestCase {
                     f.createLiteral("quick brown fox"),//
 
                     f.createLiteral("slow brown dog", f
-                            .asValue(XMLSchema.STRING)),//
+                            .asValue(XSD.STRING)),//
                     
                     f.createLiteral("http://www.bigdata.com/mangy/yellow/cat",
-                            f.asValue(XMLSchema.ANYURI)),//
+                            f.asValue(XSD.ANYURI)),//
                             
                     f.createLiteral("10.128.1.2",
                             f.asValue(XSD.IPV4)),//
@@ -452,14 +450,14 @@ public class TestFullTextIndex extends AbstractTripleStoreTestCase {
                     0f, // minCosine,
                     new BigdataValue[] {//
                     f.createLiteral("quick brown fox"), //
-                    f.createLiteral("slow brown dog", XMLSchema.STRING) //
+                    f.createLiteral("slow brown dog", XSD.STRING) //
                     });
             
             assertExpectedHits(store, "cat", "en", //
 //                    0f, // minCosine,
                     new BigdataValue[] {//
                     f.createLiteral("http://www.bigdata.com/mangy/yellow/cat",
-                            f.asValue(XMLSchema.ANYURI))//
+                            f.asValue(XSD.ANYURI))//
                     });
             
             assertExpectedHits(store, "10.128.", true,
@@ -481,14 +479,14 @@ public class TestFullTextIndex extends AbstractTripleStoreTestCase {
                         0f, // minCosine,
                         new BigdataValue[] {//
                         f.createLiteral("quick brown fox"), //
-                        f.createLiteral("slow brown dog", XMLSchema.STRING) //
+                        f.createLiteral("slow brown dog", XSD.STRING) //
                         });
                 
                 assertExpectedHits(store, "cat", "en", //
 //                        0f, // minCosine,
                         new BigdataValue[] {//
                         f.createLiteral("http://www.bigdata.com/mangy/yellow/cat",
-                                f.asValue(XMLSchema.ANYURI))//
+                                f.asValue(XSD.ANYURI))//
                         });
                 
                 assertExpectedHits(store, "10.128.", true,
@@ -562,10 +560,10 @@ public class TestFullTextIndex extends AbstractTripleStoreTestCase {
                     f.createLiteral("quick brown fox"),//
 
                     f.createLiteral("slow brown dog", f
-                            .asValue(XMLSchema.STRING)),//
+                            .asValue(XSD.STRING)),//
                     
                     f.createLiteral("http://www.bigdata.com/mangy/yellow/cat",
-                            f.asValue(XMLSchema.ANYURI)),//
+                            f.asValue(XSD.ANYURI)),//
             };
 
             store.addTerms(terms);
@@ -574,14 +572,14 @@ public class TestFullTextIndex extends AbstractTripleStoreTestCase {
                     0f, // minCosine,
                     new BigdataValue[] {//
                     f.createLiteral("quick brown fox"), //
-                    f.createLiteral("slow brown dog", XMLSchema.STRING) //
+                    f.createLiteral("slow brown dog", XSD.STRING) //
                     });
             
             assertExpectedHits(store, "cat", "en", //
 //                    0f, // minCosine,
                     new BigdataValue[] {//
                     f.createLiteral("http://www.bigdata.com/mangy/yellow/cat",
-                            f.asValue(XMLSchema.ANYURI))//
+                            f.asValue(XSD.ANYURI))//
                     });
             
             if(store.isStable()) {
@@ -596,14 +594,14 @@ public class TestFullTextIndex extends AbstractTripleStoreTestCase {
                         0f, // minCosine,
                         new BigdataValue[] {//
                         f.createLiteral("quick brown fox"), //
-                        f.createLiteral("slow brown dog", XMLSchema.STRING) //
+                        f.createLiteral("slow brown dog", XSD.STRING) //
                         });
                 
                 assertExpectedHits(store, "cat", "en", //
 //                        0f, // minCosine,
                         new BigdataValue[] {//
                         f.createLiteral("http://www.bigdata.com/mangy/yellow/cat",
-                                f.asValue(XMLSchema.ANYURI))//
+                                f.asValue(XSD.ANYURI))//
                         });
                 
             }
@@ -629,7 +627,7 @@ public class TestFullTextIndex extends AbstractTripleStoreTestCase {
             
             BigdataValueFactory f = store.getValueFactory();
             
-            final LiteralImpl largeLiteral = getLargeLiteral(store);
+            final Literal largeLiteral = getLargeLiteral(store);
 
             {
             
@@ -641,10 +639,10 @@ public class TestFullTextIndex extends AbstractTripleStoreTestCase {
 	                    f.createLiteral("tag team", "en"),//
 	                    f.createLiteral("the first day", "en"),// // 'the' is a stopword.
 	
-	                    f.createURI("http://www.bigdata.com"),//
+	                    f.createIRI("http://www.bigdata.com"),//
 	                    f.asValue(RDF.TYPE),//
 	                    f.asValue(RDFS.SUBCLASSOF),//
-	                    f.asValue(XMLSchema.DECIMAL),//
+	                    f.asValue(XSD.DECIMAL),//
 	
 	                    f.createBNode(UUID.randomUUID().toString()),//
 	                    f.createBNode("a12"),//
@@ -653,9 +651,9 @@ public class TestFullTextIndex extends AbstractTripleStoreTestCase {
 	
 	            };
 	            
-				final Resource s = f.createURI("x:s");
+				final Resource s = f.createIRI("x:s");
 				
-				final URI p = f.createURI("x:p");
+				final IRI p = f.createIRI("x:p");
 	            
         		final IStatementBuffer<Statement> buffer = new StatementBuffer<Statement>(null/* focusStore */, store,
         				terms.length/* capacity */, 0/* queueCapacity */);
@@ -766,6 +764,9 @@ public class TestFullTextIndex extends AbstractTripleStoreTestCase {
 	                }
 	            }
             }
+
+            // the hit cache would otherwise return the hits from before the index was ruined.
+            ((com.bigdata.search.FullTextIndex<?>) store.getLexiconRelation().getSearchEngine()).clearHitCache();
 
             /*
              * re-open the store before search to verify that the data were made

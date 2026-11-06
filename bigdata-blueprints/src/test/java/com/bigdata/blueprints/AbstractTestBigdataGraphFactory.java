@@ -28,9 +28,11 @@ import java.io.InputStream;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.junit.Test;
 
+import com.bigdata.rdf.sail.webapp.NanoSparqlServer;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.util.io.graphml.GraphMLReader;
@@ -47,7 +49,14 @@ import com.tinkerpop.blueprints.util.io.graphml.GraphMLReader;
  */
 public abstract class AbstractTestBigdataGraphFactory extends TestCase {
 
-	private static final transient Logger log = Logger
+    static {
+        if (System.getProperty(NanoSparqlServer.SystemProperties.JETTY_XML) == null) {
+            System.setProperty(NanoSparqlServer.SystemProperties.JETTY_XML,
+                    "jetty/jettyBlueprintsTest.xml");
+        }
+    }
+
+	private static final transient Logger log = LogManager
 			.getLogger(AbstractTestBigdataGraphFactory.class);
 
 	public static void testPrint(Object message) {

@@ -61,21 +61,21 @@ import java.util.LinkedHashSet;
 
 import junit.framework.Test;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.ValueFactoryImpl;
-import org.openrdf.model.vocabulary.DC;
-import org.openrdf.model.vocabulary.FOAF;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.model.vocabulary.XMLSchema;
-import org.openrdf.query.parser.sparql.SPARQLUpdateTest;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.rio.RDFFormat;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.DC;
+import org.eclipse.rdf4j.model.vocabulary.FOAF;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
+import org.eclipse.rdf4j.query.parser.sparql.SPARQLUpdateTest;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.rio.RDFFormat;
 
 import com.bigdata.journal.BufferMode;
 import com.bigdata.journal.IIndexManager;
@@ -138,8 +138,8 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
 
 	private static final String EX_NS = "http://example.org/";
 
-    private ValueFactory f = new ValueFactoryImpl();
-    private URI bob, alice, graph1, graph2;
+    private ValueFactory f = SimpleValueFactory.getInstance();
+    private IRI bob, alice, graph1, graph2;
 //    protected RemoteRepository m_repo;
 
 	@Override
@@ -152,11 +152,11 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
 		// Load the test data set.
 		doLoadFile();
 
-        bob = f.createURI(EX_NS, "bob");
-        alice = f.createURI(EX_NS, "alice");
+        bob = f.createIRI(EX_NS, "bob");
+        alice = f.createIRI(EX_NS, "alice");
 
-        graph1 = f.createURI(EX_NS, "graph1");
-        graph2 = f.createURI(EX_NS, "graph2");
+        graph1 = f.createIRI(EX_NS, "graph1");
+        graph2 = f.createIRI(EX_NS, "graph2");
 	}
 	
 	/**
@@ -215,13 +215,13 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
         declarations.append("PREFIX dc: <" + DC.NAMESPACE + "> \n");
         declarations.append("PREFIX foaf: <" + FOAF.NAMESPACE + "> \n");
         declarations.append("PREFIX ex: <" + EX_NS + "> \n");
-        declarations.append("PREFIX xsd: <" +  XMLSchema.NAMESPACE + "> \n");
+        declarations.append("PREFIX xsd: <" +  XSD.NAMESPACE + "> \n");
         declarations.append("\n");
 
         return declarations.toString();
     }
 
-    protected boolean hasStatement(final Resource subj, final URI pred,
+    protected boolean hasStatement(final Resource subj, final IRI pred,
             final Value obj, final boolean includeInferred,
             final Resource... contexts) throws RepositoryException {
 
@@ -449,7 +449,7 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
         update.append(" OPTIONAL {?s ex:age ?age . BIND ((?age + 1) as ?incAge)  } ");
         update.append(" } ");
 
-        final URI age = f.createURI(EX_NS, "age");
+        final IRI age = f.createIRI(EX_NS, "age");
 
         assertFalse(hasStatement(alice, age, null, true));
         assertTrue(hasStatement(bob, age, null, true));
@@ -464,7 +464,7 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
 //                log.info(stmt.toString());
 //        }
 
-        assertTrue(hasStatement(bob, age, f.createLiteral("43", XMLSchema.INTEGER), true));
+        assertTrue(hasStatement(bob, age, f.createLiteral("43", XSD.INTEGER), true));
 
 //        result = m_repo.getStatements(alice, age, null, true);
 //
@@ -541,10 +541,10 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
       update.append("   FILTER( ?y < 46 ) ");
       update.append(" } ");
 
-      final URI age = f.createURI(EX_NS, "age");
-      final Literal originalAgeValue = f.createLiteral("42", XMLSchema.INTEGER);
-      final Literal correctAgeValue = f.createLiteral("43", XMLSchema.INTEGER);
-      final Literal inCorrectAgeValue = f.createLiteral("46", XMLSchema.INTEGER);
+      final IRI age = f.createIRI(EX_NS, "age");
+      final Literal originalAgeValue = f.createLiteral("42", XSD.INTEGER);
+      final Literal correctAgeValue = f.createLiteral("43", XSD.INTEGER);
+      final Literal inCorrectAgeValue = f.createLiteral("46", XSD.INTEGER);
 
       assertTrue(hasStatement(bob, age, originalAgeValue, true));
 
@@ -776,8 +776,8 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
 //        assertFalse(msg, hasStatement(alice, FOAF.NAME, f.createLiteral("Alice"), true));
 //
 //        msg = "ex:containsPerson properties should not have been deleted";
-//        assertTrue(msg, hasStatement(graph1, f.createURI(EX_NS, "containsPerson"), bob, true));
-//        assertTrue(msg, hasStatement(graph2, f.createURI(EX_NS, "containsPerson"), alice, true));
+//        assertTrue(msg, hasStatement(graph1, f.createIRI(EX_NS, "containsPerson"), bob, true));
+//        assertTrue(msg, hasStatement(graph2, f.createIRI(EX_NS, "containsPerson"), alice, true));
 //
 //    }
 
@@ -793,7 +793,7 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
 
 //        Update operation = con.prepareUpdate(QueryLanguage.SPARQL, update.toString());
 
-        URI book1 = f.createURI(EX_NS, "book1");
+        IRI book1 = f.createIRI(EX_NS, "book1");
 
         assertFalse(hasStatement(book1, DC.TITLE, f.createLiteral("book 1"), true));
         assertFalse(hasStatement(book1, DC.CREATOR, f.createLiteral("Ringo"), true));
@@ -818,8 +818,8 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
 
 //        Update operation = con.prepareUpdate(QueryLanguage.SPARQL, update.toString());
 
-        URI book1 = f.createURI(EX_NS, "book1");
-        URI book2 = f.createURI(EX_NS, "book2");
+        IRI book1 = f.createIRI(EX_NS, "book1");
+        IRI book2 = f.createIRI(EX_NS, "book2");
 
         assertFalse(hasStatement(book1, DC.TITLE, f.createLiteral("book 1"), true));
         assertFalse(hasStatement(book1, DC.CREATOR, f.createLiteral("Ringo"), true));
@@ -846,7 +846,7 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
 
 //        Update operation = con.prepareUpdate(QueryLanguage.SPARQL, update.toString());
 
-        URI book1 = f.createURI(EX_NS, "book1");
+        IRI book1 = f.createIRI(EX_NS, "book1");
 
         assertFalse(hasStatement(book1, DC.TITLE, f.createLiteral("book 1"), true, graph1));
         assertFalse(hasStatement(book1, DC.CREATOR, f.createLiteral("Ringo"), true, graph1));
@@ -870,9 +870,9 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
       update.append(getNamespaceDeclarations());
       update.append("INSERT DATA { GRAPH ex:graph1 { ex:Human rdfs:subClassOf ex:Mammal. ex:Mammal rdfs:subClassOf ex:Animal. ex:george a ex:Human. ex:ringo a ex:Human. } } ");
 
-      final URI human = f.createURI(EX_NS, "Human");
-      final URI mammal = f.createURI(EX_NS, "Mammal");
-      final URI george = f.createURI(EX_NS, "george");
+      final IRI human = f.createIRI(EX_NS, "Human");
+      final IRI mammal = f.createIRI(EX_NS, "Mammal");
+      final IRI george = f.createIRI(EX_NS, "george");
 
       m_repo.prepareUpdate(update.toString()).evaluate();
 
@@ -977,7 +977,7 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
         final StringBuilder update = new StringBuilder();
         update.append(getNamespaceDeclarations());
 
-        URI newGraph = f.createURI(EX_NS, "new-graph");
+        IRI newGraph = f.createIRI(EX_NS, "new-graph");
 
         update.append("CREATE GRAPH <" + newGraph + "> ");
 
@@ -1076,7 +1076,7 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
         
         m_repo.prepareUpdate(update.toString()).evaluate();
 
-        assertTrue(hasStatement(bob, FOAF.NAME, null, false, f.createURI(EX_NS, "graph3")));
+        assertTrue(hasStatement(bob, FOAF.NAME, null, false, f.createIRI(EX_NS, "graph3")));
         assertTrue(hasStatement(bob, FOAF.NAME, null, false, graph1));
     }
 
@@ -1100,8 +1100,8 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
 
         assertTrue(hasStatement(graph1, DC.PUBLISHER, null, false, (Resource)null));
         assertTrue(hasStatement(graph2, DC.PUBLISHER, null, false, (Resource)null));
-        assertTrue(hasStatement(graph1, DC.PUBLISHER, null, false, f.createURI(EX_NS, "graph3")));
-        assertTrue(hasStatement(graph2, DC.PUBLISHER, null, false, f.createURI(EX_NS, "graph3")));
+        assertTrue(hasStatement(graph1, DC.PUBLISHER, null, false, f.createIRI(EX_NS, "graph3")));
+        assertTrue(hasStatement(graph2, DC.PUBLISHER, null, false, f.createIRI(EX_NS, "graph3")));
 
     }
 
@@ -1187,7 +1187,7 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
         
         m_repo.prepareUpdate(update.toString()).evaluate();
 
-        assertTrue(hasStatement(bob, FOAF.NAME, null, false, f.createURI(EX_NS, "graph3")));
+        assertTrue(hasStatement(bob, FOAF.NAME, null, false, f.createIRI(EX_NS, "graph3")));
         assertTrue(hasStatement(bob, FOAF.NAME, null, false, graph1));
     }
 
@@ -1211,8 +1211,8 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
 
         assertTrue(hasStatement(graph1, DC.PUBLISHER, null, false, (Resource)null));
         assertTrue(hasStatement(graph2, DC.PUBLISHER, null, false, (Resource)null));
-        assertTrue(hasStatement(graph1, DC.PUBLISHER, null, false, f.createURI(EX_NS, "graph3")));
-        assertTrue(hasStatement(graph2, DC.PUBLISHER, null, false, f.createURI(EX_NS, "graph3")));
+        assertTrue(hasStatement(graph1, DC.PUBLISHER, null, false, f.createIRI(EX_NS, "graph3")));
+        assertTrue(hasStatement(graph2, DC.PUBLISHER, null, false, f.createIRI(EX_NS, "graph3")));
 
     }
 
@@ -1277,7 +1277,7 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
         
         m_repo.prepareUpdate(update.toString()).evaluate();
 
-        assertTrue(hasStatement(bob, FOAF.NAME, null, false, f.createURI(EX_NS, "graph3")));
+        assertTrue(hasStatement(bob, FOAF.NAME, null, false, f.createIRI(EX_NS, "graph3")));
         assertFalse(hasStatement(null, null, null, false, graph1));
     }
 
@@ -1300,8 +1300,8 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
 
         assertFalse(hasStatement(graph1, DC.PUBLISHER, null, false, (Resource)null));
         assertFalse(hasStatement(graph2, DC.PUBLISHER, null, false, (Resource)null));
-        assertTrue(hasStatement(graph1, DC.PUBLISHER, null, false, f.createURI(EX_NS, "graph3")));
-        assertTrue(hasStatement(graph2, DC.PUBLISHER, null, false, f.createURI(EX_NS, "graph3")));
+        assertTrue(hasStatement(graph1, DC.PUBLISHER, null, false, f.createIRI(EX_NS, "graph3")));
+        assertTrue(hasStatement(graph2, DC.PUBLISHER, null, false, f.createIRI(EX_NS, "graph3")));
 
     }
 
@@ -1606,10 +1606,10 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
                 "LOAD <file:src/test/java/com/bigdata/rdf/sail/webapp/dataset-update-example9.trig>")
                 .evaluate();
 
-        final URI book1 = f.createURI("http://example/book1");
-//        URI book3 = f.createURI("http://example/book3");
-        final URI bookStore = f.createURI("http://example/bookStore");
-        final URI bookStore2 = f.createURI("http://example/bookStore2");
+        final IRI book1 = f.createIRI("http://example/book1");
+//        IRI book3 = f.createIRI("http://example/book3");
+        final IRI bookStore = f.createIRI("http://example/bookStore");
+        final IRI bookStore2 = f.createIRI("http://example/bookStore2");
         
         final StringBuilder update = new StringBuilder();
         update.append("prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> ");
@@ -1689,8 +1689,8 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
         
         m_repo.prepareUpdate(update.toString()).evaluate();
 
-        final URI one = f.createURI("http://example.org/one");
-        final URI two = f.createURI("http://example.org/two");
+        final IRI one = f.createIRI("http://example.org/one");
+        final IRI two = f.createIRI("http://example.org/two");
 
         String msg = "Nothing in graph <one>";
         assertFalse(msg, hasStatement(null, null, null, true, one));
@@ -1759,7 +1759,7 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
         
         m_repo.prepareUpdate(update).evaluate();
         
-        assertTrue(hasStatement(f.createURI(ns, "mike"), RDFS.LABEL,
+        assertTrue(hasStatement(f.createIRI(ns, "mike"), RDFS.LABEL,
                 f.createLiteral("Michael Personick"), true));
 
     }
@@ -1774,7 +1774,7 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
         
         m_repo.prepareUpdate(update).evaluate();
 
-        assertFalse(hasStatement(f.createURI(ns, "mike"), RDFS.LABEL,
+        assertFalse(hasStatement(f.createIRI(ns, "mike"), RDFS.LABEL,
                 f.createLiteral("Michael Personick"), true));
 
     }
@@ -1786,8 +1786,8 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
     	final URL url = this.getClass().getClassLoader().getResource("com/bigdata/rdf/rio/small.rdf");
 
 
-        final URI g1 = f.createURI("http://www.bigdata.com/g1");
-        final URI g2 = f.createURI("http://www.bigdata.com/g2");
+        final IRI g1 = f.createIRI("http://www.bigdata.com/g1");
+        final IRI g2 = f.createIRI("http://www.bigdata.com/g2");
 
         final String update = "LOAD <" + url.toExternalForm() + "> "
                 + "INTO GRAPH <" + g1.stringValue() + ">";
@@ -1796,10 +1796,10 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
         
         m_repo.prepareUpdate(update).evaluate();
 
-        assertFalse(hasStatement(f.createURI(ns, "mike"), RDFS.LABEL,
+        assertFalse(hasStatement(f.createIRI(ns, "mike"), RDFS.LABEL,
                 f.createLiteral("Michael Personick"), true, g2));
 
-        assertTrue(hasStatement(f.createURI(ns, "mike"), RDFS.LABEL,
+        assertTrue(hasStatement(f.createIRI(ns, "mike"), RDFS.LABEL,
                 f.createLiteral("Michael Personick"), true, g1));
 
     }
@@ -1819,7 +1819,7 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
         
         m_repo.prepareUpdate(update).evaluate();
         
-        assertTrue(hasStatement(f.createURI(ns, "mike"), RDFS.LABEL,
+        assertTrue(hasStatement(f.createIRI(ns, "mike"), RDFS.LABEL,
                 f.createLiteral("Michael Personick"), true));
 
     }
@@ -1836,7 +1836,7 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
 //        
 //        m_repo.prepareUpdate(update).evaluate();
 //        
-//        assertTrue(hasStatement(f.createURI(ns, "mike"), RDFS.LABEL,
+//        assertTrue(hasStatement(f.createIRI(ns, "mike"), RDFS.LABEL,
 //                f.createLiteral("Michael Personick"), true));
 //
 //    }
@@ -1852,10 +1852,10 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
 //        con.commit();
 //        loadDataset("/testdata-update/dataset-update-example9.trig");
 //
-//        URI book1 = f.createURI("http://example/book1");
-//        URI book3 = f.createURI("http://example/book3");
-//        URI bookStore = f.createURI("http://example/bookStore");
-//        URI bookStore2 = f.createURI("http://example/bookStore2");
+//        IRI book1 = f.createIRI("http://example/book1");
+//        IRI book3 = f.createIRI("http://example/book3");
+//        IRI bookStore = f.createIRI("http://example/bookStore");
+//        IRI bookStore2 = f.createIRI("http://example/bookStore2");
 //        
 //        final StringBuilder update = new StringBuilder();
 //        update.append("prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> ");
@@ -1916,7 +1916,7 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
     	for (int i = 0; i < length; i++) {
     		sb.append('a');
     	}
-    	return new LiteralImpl(sb.toString());
+    	return org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral(sb.toString());
     	
     }
 
@@ -1966,14 +1966,14 @@ public class TestSparqlUpdate<S extends IIndexManager> extends
             throws Exception
     {
         // entities used in test case
-        final URI s1 = f.createURI("http://s1");
+        final IRI s1 = f.createIRI("http://s1");
         
-        final URI p1 = f.createURI("http://p1");
-        final URI p2 = f.createURI("http://p2");
-        final URI p3 = f.createURI("http://p3");
+        final IRI p1 = f.createIRI("http://p1");
+        final IRI p2 = f.createIRI("http://p2");
+        final IRI p3 = f.createIRI("http://p3");
         
-        final URI o1 = f.createURI("http://o1");
-        final URI o2 = f.createURI("http://o2");
+        final IRI o1 = f.createIRI("http://o1");
+        final IRI o2 = f.createIRI("http://o2");
 
         // bootstrap repository with two triples
         final StringBuilder bootstrap = new StringBuilder();

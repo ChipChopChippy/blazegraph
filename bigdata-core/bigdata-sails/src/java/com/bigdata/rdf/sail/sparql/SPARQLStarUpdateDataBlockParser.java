@@ -24,14 +24,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.openrdf.model.Statement;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.ValueFactoryImpl;
-import org.openrdf.repository.sail.helpers.SPARQLUpdateDataBlockParser;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParseException;
-import org.openrdf.rio.helpers.StatementCollector;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.repository.sail.helpers.SPARQLUpdateDataBlockParser;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFParseException;
+import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 
 import com.bigdata.rdf.model.BigdataStatement;
 import com.bigdata.rdf.model.BigdataValueFactory;
@@ -53,9 +53,12 @@ public class SPARQLStarUpdateDataBlockParser extends SPARQLUpdateDataBlockParser
 
 	/**
 	 * Namespaces mapping, collected from PREFIX statements, should be passed in to recursive SPARQL* parsing.
-	 * Original namespaceTable variable is private to {@link RDFParserBase} and could not be accessed from this class.
+	 * Original namespaceTable variable is private to {@link AbstractRDFParser} and could not be accessed from this class.
 	 */
 	private Map<String, String> namespaceTable;
+
+	// RDF4J wraps the factory given to the parser (RDFStarDecodingValueFactory).
+	private final ValueFactory originalValueFactory;
 
 	/*--------------*
 	 * Constructors *
@@ -70,6 +73,7 @@ public class SPARQLStarUpdateDataBlockParser extends SPARQLUpdateDataBlockParser
 	 */
 	public SPARQLStarUpdateDataBlockParser(ValueFactory valueFactory) {
 		super(valueFactory);
+		this.originalValueFactory = valueFactory;
 		this.namespaceTable = new HashMap<>();
 	}
 
@@ -84,8 +88,9 @@ public class SPARQLStarUpdateDataBlockParser extends SPARQLUpdateDataBlockParser
 	 */
 	public SPARQLStarUpdateDataBlockParser(ValueFactory valueFactory, Map<String, String> namespaces) {
 		super(valueFactory);
+		this.originalValueFactory = valueFactory;
 		this.namespaceTable = namespaces;
-		// fill in original {@link RDFParserBase}.namespaceTable to be used while parsing
+		// fill in original {@link AbstractRDFParser}.namespaceTable to be used while parsing
 		for (Entry<String, String> entry: namespaceTable.entrySet()) {
 			super.setNamespace(entry.getKey(), entry.getValue());
 		}
@@ -104,10 +109,10 @@ public class SPARQLStarUpdateDataBlockParser extends SPARQLUpdateDataBlockParser
 	}
 	
 	private boolean checkSparqlStarSyntax() throws IOException {
-		int c1 = read();
+		int c1 = readCodePoint();
 		int c2;
 		try {
-			c2 = read();
+			c2 = readCodePoint();
 			unread(c2);
 		} finally {
 			unread(c1);
@@ -120,22 +125,22 @@ public class SPARQLStarUpdateDataBlockParser extends SPARQLUpdateDataBlockParser
 		StringBuilder stmtBuf = new StringBuilder(100);
 
 		// First 2 characters should be '<'
-		int c = read();
+		int c = readCodePoint();
 		verifyCharacterOrFail(c, "<");
-		c = read();
+		c = readCodePoint();
 		verifyCharacterOrFail(c, "<");
 		int recursiveCounter = 1;
 
 		// Read up to the next ">>" characters combination
 		while (true) {
-			c = read();
-			int c2 = peek();
+			c = readCodePoint();
+			int c2 = peekCodePoint();
 
 			if (c == '<' && c2 =='<' ) {
 				recursiveCounter++;
 			} else  if (c == '>' && c2 == '>') {
 				if (--recursiveCounter == 0) {
-					c = read();
+					c = readCodePoint();
 					break;
 				}
 			} else if (c == -1) {
@@ -146,7 +151,7 @@ public class SPARQLStarUpdateDataBlockParser extends SPARQLUpdateDataBlockParser
 
 			if (c == '\\') {
 				// This escapes the next character, which might be a '>'
-				c = read();
+				c = readCodePoint();
 				if (c == -1) {
 					throwEOFException();
 				}
@@ -158,7 +163,7 @@ public class SPARQLStarUpdateDataBlockParser extends SPARQLUpdateDataBlockParser
 		}
 
 		// Use our own class in recursion.
-		SPARQLStarUpdateDataBlockParser p = new SPARQLStarUpdateDataBlockParser(valueFactory, namespaceTable);
+		SPARQLStarUpdateDataBlockParser p = new SPARQLStarUpdateDataBlockParser(originalValueFactory, namespaceTable);
         final List<Statement> stmts = new LinkedList<Statement>();
         final StatementCollector sc = new StatementCollector(stmts);
 		p.setRDFHandler(sc);
@@ -172,8 +177,8 @@ public class SPARQLStarUpdateDataBlockParser extends SPARQLUpdateDataBlockParser
         if (stmts.size() != 1) {
         	throw new RDFParseException("Error parsing SPARQL* value, invalid number of statements");
         }
-        if (valueFactory instanceof BigdataValueFactory && stmts.get(0) instanceof BigdataStatement) {
-        	return ((BigdataValueFactory)valueFactory).createBNode((BigdataStatement)stmts.get(0));
+        if (originalValueFactory instanceof BigdataValueFactory && stmts.get(0) instanceof BigdataStatement) {
+        	return ((BigdataValueFactory)originalValueFactory).createBNode((BigdataStatement)stmts.get(0));
         } else {
         	throw new RDFParseException("Error parsing SPARQL* value, incompatible valueFactory");
         }
@@ -181,12 +186,24 @@ public class SPARQLStarUpdateDataBlockParser extends SPARQLUpdateDataBlockParser
 
 	/**
 	 * Overriding setBaseURI to keep base URI value for SPARQL* parsing as
-	 * org.openrdf.rio.helpers.RDFParserBase.baseURI is a private field
+	 * org.eclipse.rdf4j.rio.helpers.AbstractRDFParser.baseURI is a private field
 	 */
 	@Override
 	protected void setBaseURI(String uri) {
 		baseURI = uri;
 		super.setBaseURI(uri);
+	}
+
+	/**
+	 * RDF4J 5 resets the parser namespace table at the start of parse(), so
+	 * re-apply the prefixes supplied to this parser.
+	 */
+	@Override
+	protected void clear() {
+		super.clear();
+		for (Entry<String, String> entry : new java.util.ArrayList<>(namespaceTable.entrySet())) {
+			super.setNamespace(entry.getKey(), entry.getValue());
+		}
 	}
 
 	@Override

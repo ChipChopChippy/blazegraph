@@ -40,13 +40,14 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.BNode;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.datatypes.XMLDatatypeUtil;
-import org.openrdf.model.impl.URIImpl;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.datatypes.XMLDatatypeUtil;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.rdf.internal.constraints.DateTimeUtility;
 import com.bigdata.rdf.internal.constraints.IMathOpHandler;
@@ -94,7 +95,7 @@ public class LexiconConfiguration<V extends BigdataValue>
         implements ILexiconConfiguration<V> {
 
     private static final Logger log =
-        Logger.getLogger(LexiconConfiguration.class);
+        LogManager.getLogger(LexiconConfiguration.class);
 
     /**
 	 * The maximum character length of an RDF {@link Value} before it will be
@@ -144,7 +145,7 @@ public class LexiconConfiguration<V extends BigdataValue>
     /**
      * The maximum length of a Unicode string which may be inlined into the
      * statement indices. This applies to blank node IDs, literal labels
-     * (including the {@link XSDStringExtension}), local names of {@link URI}s,
+     * (including the {@link XSDStringExtension}), local names of {@link IRI}s,
      * etc.
      *
      * @see AbstractTripleStore.Options#MAX_INLINE_TEXT_LENGTH
@@ -194,19 +195,19 @@ public class LexiconConfiguration<V extends BigdataValue>
     private final BigdataValueFactory valueFactory;
 
     /**
-     * The inline URI factory for the lexicon.
+     * The inline IRI factory for the lexicon.
      */
     private final IInlineURIFactory uriFactory;
 
     /**
-     * Mapping from the {@link IV} for the datatype URI of a registered
+     * Mapping from the {@link IV} for the datatype IRI of a registered
      * extension to the {@link IExtension}.
      */
     @SuppressWarnings("rawtypes")
     private final Map<IV, IExtension<? extends BigdataValue>> iv2ext;
 
     /**
-     * Mapping from the string value of the datatype URI for a registered
+     * Mapping from the string value of the datatype IRI for a registered
      * extension to the {@link IExtension}.
      */
     private final Map<String, IExtension<? extends BigdataValue>> datatype2ext;
@@ -215,7 +216,7 @@ public class LexiconConfiguration<V extends BigdataValue>
      * The set of inline datatypes that should be included in the text index 
      * even though they are inline and not normally text indexed.
      */
-    private final Set<URI> inlineDatatypesToTextIndex;
+    private final Set<IRI> inlineDatatypesToTextIndex;
 
     /**
      * The set of registered {@link IMathOpHandler}s.
@@ -290,7 +291,7 @@ public class LexiconConfiguration<V extends BigdataValue>
     }
     
     @Override
-    public boolean isInlineDatatypeToTextIndex(final URI dt) {
+    public boolean isInlineDatatypeToTextIndex(final IRI dt) {
         
         return dt != null && inlineDatatypesToTextIndex.contains(dt);
         
@@ -397,7 +398,7 @@ public class LexiconConfiguration<V extends BigdataValue>
          * TODO Make this configurable.
          */
         this.inlineDatatypesToTextIndex =
-                new LinkedHashSet<URI>(Arrays.asList(new URI[] {
+                new LinkedHashSet<IRI>(Arrays.asList(new IRI[] {
                         XSD.IPV4
                 }));
 
@@ -496,10 +497,10 @@ public class LexiconConfiguration<V extends BigdataValue>
          * inlined.
          */
 
-        if (value instanceof URI) {
+        if (value instanceof IRI) {
 
             /*
-             * Test the Vocabulary to see if this URI was pre-declared. If so,
+             * Test the Vocabulary to see if this IRI was pre-declared. If so,
              * then return the IV from the Vocabulary. It will be either an
              * URIByteIV or an URIShortIV.
              */
@@ -512,7 +513,7 @@ public class LexiconConfiguration<V extends BigdataValue>
 
             } else {
 
-                iv = createInlineURIIV((URI) value);
+                iv = createInlineURIIV((IRI) value);
 
             }
 
@@ -543,17 +544,17 @@ public class LexiconConfiguration<V extends BigdataValue>
     }
 
 	/**
-	 * If the {@link URI} can be inlined into the statement indices for this
+	 * If the {@link IRI} can be inlined into the statement indices for this
 	 * {@link LexiconConfiguration}, then return its inline {@link IV}.
 	 *
 	 * @param value
-	 *            The {@link URI}.
+	 *            The {@link IRI}.
 	 *
-	 * @return The inline {@link IV} -or- <code>null</code> if the {@link URI}
+	 * @return The inline {@link IV} -or- <code>null</code> if the {@link IRI}
 	 *         can not be inlined into the statement indices.
 	 */
     @SuppressWarnings("unchecked")
-    private IV<BigdataURI, ?> createInlineURIIV(final URI value) {
+    private IV<BigdataURI, ?> createInlineURIIV(final IRI value) {
 
 // deprecated in favor of the extensible InlineURIFactory mechanism
 //    	try {
@@ -595,13 +596,13 @@ public class LexiconConfiguration<V extends BigdataValue>
 
         }
 
-        final String localName = ((URI) value).getLocalName();
+        final String localName = ((IRI) value).getLocalName();
 
         if (localName.length() < maxInlineTextLength) {
 
-            final String namespace = ((URI) value).getNamespace();
+            final String namespace = ((IRI) value).getNamespace();
 
-            final IV<BigdataURI, ?> namespaceIV = vocab.get(new URIImpl(namespace));
+            final IV<BigdataURI, ?> namespaceIV = vocab.get(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(namespace));
 
             if (namespaceIV != null) {
 
@@ -615,19 +616,19 @@ public class LexiconConfiguration<V extends BigdataValue>
 
         }
 
-        // URI was not inlined.
+        // IRI was not inlined.
         return null;
 
     }
 
     /**
-     * Inflate the localName portion of an inline URI using its storage delegate.
+     * Inflate the localName portion of an inline IRI using its storage delegate.
      * @param namespace the uris's prefix
      * @param delegate the storage delegate
      * @return the inflated localName
      */
     @Override
-    public String getInlineURILocalNameFromDelegate(final URI namespace,
+    public String getInlineURILocalNameFromDelegate(final IRI namespace,
             final AbstractLiteralIV<BigdataLiteral, ?> delegate) {
         return uriFactory.getLocalNameFromDelegate(namespace, delegate);
     }
@@ -644,7 +645,7 @@ public class LexiconConfiguration<V extends BigdataValue>
      */
     private IV<BigdataLiteral,?> createInlineLiteralIV(final Literal value) {
 
-        final URI datatype = value.getDatatype();
+        final IRI datatype = value.getDatatype();
 
         IV<BigdataLiteral, ?> iv = null;
 
@@ -700,7 +701,7 @@ public class LexiconConfiguration<V extends BigdataValue>
      *         basic inlining behavior for xsd datatypes?
      */
     private AbstractInlineIV<BigdataLiteral, ?> createExtensionIV(
-            final Literal value, final URI datatype) {
+            final Literal value, final IRI datatype) {
 
         final IExtension<? extends BigdataValue> xFactory =
             datatype2ext.get(datatype.stringValue());
@@ -770,7 +771,7 @@ public class LexiconConfiguration<V extends BigdataValue>
             if (totalLength <= maxInlineTextLength) {
 
                 return new FullyInlineTypedLiteralIV<BigdataLiteral>(
-                        value.getLabel(), value.getLanguage(),
+                        value.getLabel(), value.getLanguage().orElse(null),
                         value.getDatatype());
 
             }
@@ -792,7 +793,7 @@ public class LexiconConfiguration<V extends BigdataValue>
 	 * @param value
 	 *            The RDF {@link Value}.
 	 * @param datatype
-	 *            The XSD datatype {@link URI}.
+	 *            The XSD datatype {@link IRI}.
 	 *
 	 * @return The {@link IV} -or- <code>null</code> if the value could not be
 	 *         inlined.
@@ -800,7 +801,7 @@ public class LexiconConfiguration<V extends BigdataValue>
 	 * @see BLZG-1507 (Implement support for DTE extension types for URIs)
 	 */
     private AbstractInlineIV<BigdataLiteral, ?> createInlineDatatypeIV(
-            final Literal value, final URI datatype) {
+            final Literal value, final IRI datatype) {
 
         // Get the native (intrinsic) DTE.
         final DTE dte = DTE.valueOf(datatype);

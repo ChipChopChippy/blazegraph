@@ -29,13 +29,14 @@ import java.io.InputStream;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicLong;
 
-import javax.servlet.Servlet;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.Servlet;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-import org.openrdf.rio.RDFFormat;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.rio.RDFFormat;
 
 import com.bigdata.journal.ITx;
 import com.bigdata.rdf.inf.ClosureStats;
@@ -65,7 +66,7 @@ public class DataLoaderServlet extends BigdataRDFServlet {
      */
 	private static final long serialVersionUID = 1L;
 
-	static private final transient Logger log = Logger
+	static private final transient Logger log = LogManager
 			.getLogger(DataLoaderServlet.class);
 
 	/**
@@ -219,7 +220,7 @@ public class DataLoaderServlet extends BigdataRDFServlet {
 				log.info("Format=" + format);
 
 			final PropertiesParserFactory parserFactory = PropertiesParserRegistry
-					.getInstance().get(format);
+					.getInstance().get(format).orElse(null);
 
 			if (parserFactory == null) {
 
@@ -380,7 +381,7 @@ public class DataLoaderServlet extends BigdataRDFServlet {
         	// final PrintStream os = new PrintStream(resp.getOutputStream());
 
 			// RDF Format
-			final RDFFormat rdfFormat = RDFFormat.valueOf(props.getProperty(
+			final RDFFormat rdfFormat = com.bigdata.rdf.rio.RDF4JFormatUtil.valueOf(props.getProperty(
 					"format", "rdf/xml"));
 
 			// baseURI

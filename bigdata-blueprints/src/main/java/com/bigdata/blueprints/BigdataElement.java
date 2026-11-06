@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.tinkerpop.blueprints.Element;
 
@@ -43,10 +43,10 @@ public abstract class BigdataElement implements Element {
 		"id", ""	
 	});
 	
-	protected final URI uri;
+	protected final IRI uri;
 	protected final BigdataGraph graph;
 	
-	public BigdataElement(final URI uri, final BigdataGraph graph) {
+	public BigdataElement(final IRI uri, final BigdataGraph graph) {
 		this.uri = uri;
 		this.graph = graph;
 	}

@@ -27,8 +27,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sparql.ast.optimizers;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.rdf.internal.IV;
@@ -123,7 +124,7 @@ import com.bigdata.rdf.sparql.ast.eval.AST2BOpContext;
  */
 public class ASTUnknownTermOptimizer implements IASTOptimizer {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(ASTUnknownTermOptimizer.class);
 
     @Override

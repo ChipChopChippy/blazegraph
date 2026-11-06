@@ -27,9 +27,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sparql.ast.eval;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.Map;
 
-import org.openrdf.model.Literal;
+import org.eclipse.rdf4j.model.Literal;
 
 import com.bigdata.bop.Constant;
 import com.bigdata.bop.IBindingSet;
@@ -72,7 +74,7 @@ import com.bigdata.search.IHit;
  */
 public class ASTSearchInSearchOptimizer extends AbstractJoinGroupOptimizer {
 
-//    private static final Logger log = Logger.getLogger(ASTSearchInSearchOptimizer.class);
+//    private static final Logger log = LogManager.getLogger(ASTSearchInSearchOptimizer.class);
     
 //    static private long time = 0;
     
@@ -199,7 +201,7 @@ public class ASTSearchInSearchOptimizer extends AbstractJoinGroupOptimizer {
 
         final Hiterator<IHit> it = textIndex.search(new FullTextQuery(
     		s,//
-            search.getLanguage(),// 
+            search.getLanguage().orElse(null),//
             prefixMatch,//
             regex,
             match != null && match.equalsIgnoreCase("ALL"),

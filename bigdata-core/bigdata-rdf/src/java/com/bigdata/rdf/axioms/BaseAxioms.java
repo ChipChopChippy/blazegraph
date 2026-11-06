@@ -37,7 +37,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.btree.keys.IKeyBuilder;
 import com.bigdata.btree.keys.KeyBuilder;
@@ -46,7 +46,7 @@ import com.bigdata.rdf.internal.IV;
 import com.bigdata.rdf.internal.IVUtility;
 import com.bigdata.rdf.model.BigdataStatement;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.model.StatementEnum;
 import com.bigdata.rdf.rio.StatementBuffer;
 import com.bigdata.rdf.spo.ISPO;
@@ -112,7 +112,7 @@ public abstract class BaseAxioms implements Axioms, Externalizable {
      */
     final protected BigdataValueFactory getValueFactory() {
         
-        return BigdataValueFactoryImpl.getInstance(namespace);
+        return BigdataSimpleValueFactory.getInstance(namespace);
 //        return db.getValueFactory();
         
     }

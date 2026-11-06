@@ -31,9 +31,9 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.UUID;
-import org.openrdf.model.BNode;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.internal.IV;
 import com.bigdata.rdf.model.BigdataBNode;
@@ -78,13 +78,13 @@ public class TestRestartSafe extends AbstractTripleStoreTestCase {
             
             final BigdataValueFactory f = store.getValueFactory();
             
-            final BigdataURI x = f.createURI("http://www.foo.org/x");
-            final BigdataURI y = f.createURI("http://www.foo.org/y");
-            final BigdataURI z = f.createURI("http://www.foo.org/z");
+            final BigdataURI x = f.createIRI("http://www.foo.org/x");
+            final BigdataURI y = f.createIRI("http://www.foo.org/y");
+            final BigdataURI z = f.createIRI("http://www.foo.org/z");
 
-            final BigdataURI A = f.createURI("http://www.foo.org/A");
-            final BigdataURI B = f.createURI("http://www.foo.org/B");
-            final BigdataURI C = f.createURI("http://www.foo.org/C");
+            final BigdataURI A = f.createIRI("http://www.foo.org/A");
+            final BigdataURI B = f.createIRI("http://www.foo.org/B");
+            final BigdataURI C = f.createIRI("http://www.foo.org/C");
 
             final BigdataURI rdfType = f.asValue(RDF.TYPE);
 

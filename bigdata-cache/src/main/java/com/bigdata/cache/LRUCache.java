@@ -32,8 +32,9 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 /**
  * Hard reference hash map with Least Recently Used ordering over entries. The
  * keys are object identifiers. The values are cache entries wrapping the
@@ -54,7 +55,7 @@ import org.apache.log4j.Logger;
 public class LRUCache<K,T> implements ICachePolicy<K,T>
 {
  
-    protected static final Logger log = Logger.getLogger(LRUCache.class);
+    protected static final Logger log = LogManager.getLogger(LRUCache.class);
     
     protected static final boolean INFO = log.isInfoEnabled();
     

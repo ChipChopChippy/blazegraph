@@ -26,11 +26,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
 
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.bop.IVariable;
@@ -58,7 +59,7 @@ import com.bigdata.rdf.internal.IV;
 public class PATHS extends BaseGASProgram<PATHS.VS, PATHS.ES, Void> implements
         IPredecessor<PATHS.VS, PATHS.ES, Void> {
 
-    private static final Logger log = Logger.getLogger(PATHS.class);
+    private static final Logger log = LogManager.getLogger(PATHS.class);
     
     public static class VS {
 
@@ -81,8 +82,8 @@ public class PATHS extends BaseGASProgram<PATHS.VS, PATHS.ES, Void> implements
          * vertex.  Each one has a list of edges along which they were able to
          * reach this vertex.
          */
-        private final Map<Value, Set<URI>> predecessors = 
-        		Collections.synchronizedMap(new LinkedHashMap<Value, Set<URI>>());
+        private final Map<Value, Set<IRI>> predecessors = 
+        		Collections.synchronizedMap(new LinkedHashMap<Value, Set<IRI>>());
         
         /**
          * The depth at which this vertex was first visited (origin ZERO) and
@@ -97,7 +98,7 @@ public class PATHS extends BaseGASProgram<PATHS.VS, PATHS.ES, Void> implements
         /**
          * Return the vertices that discovered this vertex during BFS traversal.
          */
-        public Map<Value, Set<URI>> predecessors() {
+        public Map<Value, Set<IRI>> predecessors() {
 
             return predecessors;
             
@@ -107,13 +108,13 @@ public class PATHS extends BaseGASProgram<PATHS.VS, PATHS.ES, Void> implements
          * Add a predecessor (might have already been added) and the edge
          * along which the predecessor discovered this vertex.
          */
-        public synchronized void addPredecessor(final Value pred, final URI edge) {
+        public synchronized void addPredecessor(final Value pred, final IRI edge) {
         	
-        	Set<URI> edges = predecessors.get(pred);
+        	Set<IRI> edges = predecessors.get(pred);
         	
         	if (edges == null) {
         	
-        		edges = new LinkedHashSet<URI>();
+        		edges = new LinkedHashSet<IRI>();
         		
         		predecessors.put(pred, edges);
         		
@@ -131,7 +132,7 @@ public class PATHS extends BaseGASProgram<PATHS.VS, PATHS.ES, Void> implements
          *         first visited the vertex (this helps to avoid multiple
          *         scheduling of a vertex).
          */
-        public synchronized boolean visit(final int depth, final Value pred, final URI edge) {
+        public synchronized boolean visit(final int depth, final Value pred, final IRI edge) {
 
         	boolean ret = false;
         	

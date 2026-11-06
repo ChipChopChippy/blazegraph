@@ -25,8 +25,8 @@ package com.bigdata.rdf.graph.impl.bd;
 
 import java.util.Properties;
 
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.journal.BufferMode;
 import com.bigdata.journal.Journal;
@@ -124,19 +124,19 @@ public class AbstractBigdataGraphTestCase extends AbstractGraphTestCase {
                     
                 final ValueFactory vf = conn.getBigdataSail().getValueFactory();
     
-            rdfType = (BigdataURI) vf.createURI(RDF.TYPE.stringValue());
+            rdfType = (BigdataURI) vf.createIRI(RDF.TYPE.stringValue());
     
             foafKnows = (BigdataURI) vf
-                    .createURI("http://xmlns.com/foaf/0.1/knows");
+                    .createIRI("http://xmlns.com/foaf/0.1/knows");
     
             foafPerson = (BigdataURI) vf
-                    .createURI("http://xmlns.com/foaf/0.1/Person");
+                    .createIRI("http://xmlns.com/foaf/0.1/Person");
     
-            mike = (BigdataURI) vf.createURI("http://www.bigdata.com/Mike");
+            mike = (BigdataURI) vf.createIRI("http://www.bigdata.com/Mike");
     
-            bryan = (BigdataURI) vf.createURI("http://www.bigdata.com/Bryan");
+            bryan = (BigdataURI) vf.createIRI("http://www.bigdata.com/Bryan");
     
-            martyn = (BigdataURI) vf.createURI("http://www.bigdata.com/Martyn");
+            martyn = (BigdataURI) vf.createIRI("http://www.bigdata.com/Martyn");
     
             final BigdataValue[] terms = new BigdataValue[] { rdfType,
                     foafKnows, foafPerson, mike, bryan, martyn };
@@ -226,16 +226,16 @@ public class AbstractBigdataGraphTestCase extends AbstractGraphTestCase {
                 final ValueFactory vf = conn.getBigdataSail().getValueFactory();
     
             foafKnows = (BigdataURI) vf
-                    .createURI("http://xmlns.com/foaf/0.1/knows");
+                    .createIRI("http://xmlns.com/foaf/0.1/knows");
             
             linkWeight = (BigdataURI) vf
-                    .createURI("http://www.bigdata.com/weight");
+                    .createIRI("http://www.bigdata.com/weight");
     
-            v1 = (BigdataURI) vf.createURI("http://www.bigdata.com/1");
-            v2 = (BigdataURI) vf.createURI("http://www.bigdata.com/2");
-            v3 = (BigdataURI) vf.createURI("http://www.bigdata.com/3");
-            v4 = (BigdataURI) vf.createURI("http://www.bigdata.com/4");
-            v5 = (BigdataURI) vf.createURI("http://www.bigdata.com/5");
+            v1 = (BigdataURI) vf.createIRI("http://www.bigdata.com/1");
+            v2 = (BigdataURI) vf.createIRI("http://www.bigdata.com/2");
+            v3 = (BigdataURI) vf.createIRI("http://www.bigdata.com/3");
+            v4 = (BigdataURI) vf.createIRI("http://www.bigdata.com/4");
+            v5 = (BigdataURI) vf.createIRI("http://www.bigdata.com/5");
     
             final BigdataValue[] terms = new BigdataValue[] { foafKnows,
                     linkWeight, v1, v2, v3, v4, v5 };

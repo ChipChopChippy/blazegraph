@@ -27,6 +27,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.bop.rdf.join;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -85,7 +87,7 @@ import cutthecrap.utils.striterators.ICloseableIterator;
 public class VariableUnificationOp extends PipelineOp {
 
 //   private final static Logger log = 
-//      Logger.getLogger(VariableUnificationOp.class);
+//      LogManager.getLogger(VariableUnificationOp.class);
 
    private static final long serialVersionUID = 1L;
 

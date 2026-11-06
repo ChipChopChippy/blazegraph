@@ -30,8 +30,9 @@ package com.bigdata.sparse;
 
 import java.util.NoSuchElementException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.AbstractTuple;
 import com.bigdata.btree.IIndex;
 import com.bigdata.btree.IRangeQuery;
@@ -69,7 +70,7 @@ public class AtomicRowFilter extends TupleTransformer<TPV, TPS> implements
 
     private static final long serialVersionUID = 4410286292657970569L;
 
-    protected static transient final Logger log = Logger
+    protected static transient final Logger log = LogManager
             .getLogger(AtomicRowFilter.class);
 
 //    protected static transient final boolean INFO = log.isInfoEnabled();

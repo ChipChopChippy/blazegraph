@@ -24,9 +24,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.rdf.internal.constraints;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.Map;
 
-import org.openrdf.model.Literal;
+import org.eclipse.rdf4j.model.Literal;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -49,7 +51,7 @@ public class LangBOp extends IVValueExpression<IV>
 	 */
 	private static final long serialVersionUID = 7391999162162545704L;
 	
-//	private static final transient Logger log = Logger.getLogger(LangBOp.class);
+//	private static final transient Logger log = LogManager.getLogger(LangBOp.class);
 
     public LangBOp(final IValueExpression<? extends IV> x,
             final GlobalAnnotations globals) {
@@ -87,7 +89,7 @@ public class LangBOp extends IVValueExpression<IV>
 
         final Literal literal = getAndCheckLiteralValue(0, bs);
 
-        String langTag = literal.getLanguage();
+        String langTag = literal.getLanguage().orElse(null);
 
         if (langTag == null) {
 

@@ -35,10 +35,10 @@ import java.util.concurrent.FutureTask;
 
 import junit.framework.TestCase;
 
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpContext;
@@ -61,7 +61,7 @@ import com.bigdata.rdf.internal.XSD;
 import com.bigdata.rdf.internal.impl.TermId;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.vocab.decls.FOAFVocabularyDecl;
 import com.bigdata.relation.accesspath.IBuffer;
 import com.bigdata.striterator.Chunkerator;
@@ -108,17 +108,17 @@ abstract public class AbstractHashJoinUtilityTestCase extends TestCase {
             
             this.namespace = namespace;
 
-            brad = makeIV(new LiteralImpl("Brad"));
+            brad = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Brad"));
             
-            john = makeIV(new LiteralImpl("John"));
+            john = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("John"));
 
-            fred = makeIV(new LiteralImpl("Fred"));
+            fred = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Fred"));
 
-            mary = makeIV(new LiteralImpl("Mary"));
+            mary = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Mary"));
 
-            paul = makeIV(new LiteralImpl("Paul"));
+            paul = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Paul"));
 
-            leon = makeIV(new LiteralImpl("Leon"));
+            leon = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Leon"));
         }
 
         /**
@@ -131,7 +131,7 @@ abstract public class AbstractHashJoinUtilityTestCase extends TestCase {
          */
         @SuppressWarnings({ "unchecked", "rawtypes" })
         private IV makeIV(final Value v) {
-            final BigdataValueFactory valueFactory = BigdataValueFactoryImpl
+            final BigdataValueFactory valueFactory = BigdataSimpleValueFactory
                     .getInstance(namespace);
             final BigdataValue bv = valueFactory.asValue(v);
             final IV iv = new TermId(VTE.valueOf(v), nextId++);
@@ -257,9 +257,9 @@ abstract public class AbstractHashJoinUtilityTestCase extends TestCase {
 
             this.namespace = namespace;
 
-            alice = makeIV(new URIImpl("http://example/alice"));
+            alice = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/alice"));
 
-            bob = makeIV(new URIImpl("http://example/bob"));
+            bob = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/bob"));
 
             rdfType = makeIV(RDF.TYPE);
 
@@ -267,7 +267,7 @@ abstract public class AbstractHashJoinUtilityTestCase extends TestCase {
 
             foafPerson = makeIV(FOAFVocabularyDecl.Person);
 
-            aliceLabel = makeIV(new LiteralImpl("Alice"));
+            aliceLabel = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Alice"));
             
         }
 
@@ -281,7 +281,7 @@ abstract public class AbstractHashJoinUtilityTestCase extends TestCase {
          */
         @SuppressWarnings({ "unchecked", "rawtypes" })
         private IV makeIV(final Value v) {
-            final BigdataValueFactory valueFactory = BigdataValueFactoryImpl
+            final BigdataValueFactory valueFactory = BigdataSimpleValueFactory
                     .getInstance(namespace);
             final BigdataValue bv = valueFactory.asValue(v);
             final IV iv = new TermId(VTE.valueOf(v), nextId++);
@@ -371,19 +371,19 @@ abstract public class AbstractHashJoinUtilityTestCase extends TestCase {
 
             this.namespace = namespace;
 
-            a = makeIV(new LiteralImpl("a"));
+            a = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("a"));
 
-            b = makeIV(new LiteralImpl("b"));
+            b = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("b"));
 
-            one = makeIV(new LiteralImpl("1", XSD.INTEGER));
+            one = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("1", XSD.INTEGER));
 
-            two = makeIV(new LiteralImpl("2", XSD.INTEGER));
+            two = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("2", XSD.INTEGER));
 
-            three = makeIV(new LiteralImpl("3.0", XSD.DECIMAL));
+            three = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("3.0", XSD.DECIMAL));
 
-            four = makeIV(new LiteralImpl("4.0", XSD.DECIMAL));
+            four = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("4.0", XSD.DECIMAL));
 
-            five = makeIV(new LiteralImpl("5.0", XSD.DECIMAL));
+            five = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("5.0", XSD.DECIMAL));
             
         }
 
@@ -397,7 +397,7 @@ abstract public class AbstractHashJoinUtilityTestCase extends TestCase {
          */
         @SuppressWarnings({ "unchecked", "rawtypes" })
         private IV makeIV(final Value v) {
-            final BigdataValueFactory valueFactory = BigdataValueFactoryImpl
+            final BigdataValueFactory valueFactory = BigdataSimpleValueFactory
                     .getInstance(namespace);
             final BigdataValue bv = valueFactory.asValue(v);
             final IV iv = new TermId(VTE.valueOf(v), nextId++);
@@ -2079,19 +2079,19 @@ abstract public class AbstractHashJoinUtilityTestCase extends TestCase {
             
             this.namespace = namespace;
 
-            a = makeIV(new URIImpl("http://example.org/a"));
+            a = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/a"));
             
-            b = makeIV(new URIImpl("http://example.org/b"));
+            b = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/b"));
 
-            foafName = makeIV(new URIImpl("http://xmlns.com/foaf/0.1/name"));
+            foafName = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://xmlns.com/foaf/0.1/name"));
 
-            alan = makeIV(new LiteralImpl("Alan"));
+            alan = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Alan"));
 
-            bob = makeIV(new LiteralImpl("Bob"));
+            bob = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Bob"));
 
-            foafInterest = makeIV(new URIImpl("http://xmlns.com/foaf/0.1/interest"));
+            foafInterest = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://xmlns.com/foaf/0.1/interest"));
             
-            label = makeIV(new LiteralImpl("SPARQL 1.1 Basic Federated Query"));
+            label = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("SPARQL 1.1 Basic Federated Query"));
             
         }
 
@@ -2105,7 +2105,7 @@ abstract public class AbstractHashJoinUtilityTestCase extends TestCase {
          */
         @SuppressWarnings({ "unchecked", "rawtypes" })
         private IV makeIV(final Value v) {
-            final BigdataValueFactory valueFactory = BigdataValueFactoryImpl
+            final BigdataValueFactory valueFactory = BigdataSimpleValueFactory
                     .getInstance(namespace);
             final BigdataValue bv = valueFactory.asValue(v);
             final IV iv = new TermId(VTE.valueOf(v), nextId++);
@@ -2382,27 +2382,27 @@ abstract public class AbstractHashJoinUtilityTestCase extends TestCase {
             
             this.namespace = namespace;
 
-            a = makeIV(new URIImpl("http://example.org/a"));
+            a = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/a"));
             
-            b = makeIV(new URIImpl("http://example.org/b"));
+            b = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/b"));
             
-            c = makeIV(new URIImpl("http://example.org/c"));
+            c = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/c"));
 
-            foafName = makeIV(new URIImpl("http://xmlns.com/foaf/0.1/name"));
+            foafName = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://xmlns.com/foaf/0.1/name"));
 
-            foafMbox = makeIV(new URIImpl("http://xmlns.com/foaf/0.1/mbox"));
+            foafMbox = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://xmlns.com/foaf/0.1/mbox"));
             
-            alan = makeIV(new LiteralImpl("Alan"));
+            alan = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Alan"));
 
-            bob = makeIV(new LiteralImpl("Bob"));
+            bob = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Bob"));
 
-            alice = makeIV(new LiteralImpl("Alice"));
+            alice = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Alice"));
 
-            alanEmail = makeIV(new LiteralImpl("alan@example.org"));
+            alanEmail = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("alan@example.org"));
             
-            bobEmail = makeIV(new LiteralImpl("bob@example.org"));
+            bobEmail = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("bob@example.org"));
             
-            aliceEmail = makeIV(new LiteralImpl("alice@example.org"));
+            aliceEmail = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("alice@example.org"));
             
         }
 
@@ -2416,7 +2416,7 @@ abstract public class AbstractHashJoinUtilityTestCase extends TestCase {
          */
         @SuppressWarnings({ "unchecked", "rawtypes" })
         private IV makeIV(final Value v) {
-            final BigdataValueFactory valueFactory = BigdataValueFactoryImpl
+            final BigdataValueFactory valueFactory = BigdataSimpleValueFactory
                     .getInstance(namespace);
             final BigdataValue bv = valueFactory.asValue(v);
             final IV iv = new TermId(VTE.valueOf(v), nextId++);

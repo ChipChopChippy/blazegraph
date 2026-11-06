@@ -27,6 +27,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package com.bigdata.bop;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -75,7 +77,7 @@ import cutthecrap.utils.striterators.ICloseableIterator;
  */
 public class BOpContext<E> extends BOpContextBase {
 
-//    static private final transient Logger log = Logger.getLogger(BOpContext.class);
+//    static private final transient Logger log = LogManager.getLogger(BOpContext.class);
 
     private final IRunningQuery runningQuery;
     

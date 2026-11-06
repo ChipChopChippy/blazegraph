@@ -41,13 +41,14 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.BNode;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.vocabulary.RDF;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.counters.CounterSet;
 import com.bigdata.counters.ICounterSetAccess;
@@ -58,7 +59,7 @@ import com.bigdata.rdf.changesets.ChangeAction;
 import com.bigdata.rdf.changesets.ChangeRecord;
 import com.bigdata.rdf.changesets.IChangeLog;
 import com.bigdata.rdf.model.BigdataBNode;
-import com.bigdata.rdf.model.BigdataBNodeImpl;
+import com.bigdata.rdf.model.BigdataSimpleBNode;
 import com.bigdata.rdf.model.BigdataResource;
 import com.bigdata.rdf.model.BigdataStatement;
 import com.bigdata.rdf.model.BigdataURI;
@@ -99,7 +100,7 @@ import com.bigdata.util.concurrent.LatchedExecutor;
  */
 public class StatementBuffer<S extends Statement> implements IStatementBuffer<S>, ICounterSetAccess {
 
-    final private static Logger log = Logger.getLogger(StatementBuffer.class);
+    final private static Logger log = LogManager.getLogger(StatementBuffer.class);
    
 //    final static private boolean INFO = log.isInfoEnabled();
     final static private boolean DEBUG = log.isDebugEnabled();
@@ -134,7 +135,7 @@ public class StatementBuffer<S extends Statement> implements IStatementBuffer<S>
     
     /**
      * @todo consider tossing out these counters - they only add complexity to
-     * the code in {@link #handleStatement(Resource, URI, Value, StatementEnum)}.
+     * the code in {@link #handleStatement(Resource, IRI, Value, StatementEnum)}.
      */
     protected int numURIs, numLiterals, numBNodes;
     
@@ -195,7 +196,7 @@ public class StatementBuffer<S extends Statement> implements IStatementBuffer<S>
      * statements about it (since we need to make sure the ground version is 
      * present).
      */
-    private Map<BigdataBNodeImpl, ReifiedStmt> reifiedStmts;
+    private Map<BigdataSimpleBNode, ReifiedStmt> reifiedStmts;
 
     /**
      * <code>true</code> if statement identifiers are enabled.
@@ -681,7 +682,7 @@ public class StatementBuffer<S extends Statement> implements IStatementBuffer<S>
     
 		/**
 		 * TODO BLZG-1522. There is some odd interaction with SIDS that causes a
-		 * thrown exception from BigdataBNodeImpl.getIV() when the queue is used
+		 * thrown exception from BigdataSimpleBNode.getIV() when the queue is used
 		 * with sids....
 		 * 
 		 * <pre>
@@ -1030,9 +1031,9 @@ public class StatementBuffer<S extends Statement> implements IStatementBuffer<S>
 //            // stage 0
 //            if (reifiedStmts != null) {
 //            	
-//            	for (Map.Entry<BigdataBNodeImpl, ReifiedStmt> e : reifiedStmts.entrySet()) {
+//            	for (Map.Entry<BigdataSimpleBNode, ReifiedStmt> e : reifiedStmts.entrySet()) {
 //            	
-//            		final BigdataBNodeImpl sid = e.getKey();
+//            		final BigdataSimpleBNode sid = e.getKey();
 //            		
 //            		final ReifiedStmt reifiedStmt = e.getValue();
 //            		
@@ -1063,7 +1064,7 @@ public class StatementBuffer<S extends Statement> implements IStatementBuffer<S>
 //            	
 //            	if (log.isInfoEnabled()) {
 //            	
-//            		for (BigdataBNodeImpl sid : reifiedStmts.keySet()) {
+//            		for (BigdataSimpleBNode sid : reifiedStmts.keySet()) {
 //            	
 //            			log.info("sid: " + sid + ", iv=" + sid.getIV());
 //            			
@@ -1966,7 +1967,7 @@ public class StatementBuffer<S extends Statement> implements IStatementBuffer<S>
          * Note: If statement identifiers are enabled and the context position is
          * non-<code>null</code> then it will be unified with the statement
          * identifier assigned to that statement. It is an error if the context
-         * position is a URI (since it can not be unified with the assigned
+         * position is a IRI (since it can not be unified with the assigned
          * statement identifier). It is an error if the context position is a blank
          * node which is already bound to a term identifier whose value is different
          * from the statement identifier assigned/reported by the {@link #database}.
@@ -2049,10 +2050,10 @@ public class StatementBuffer<S extends Statement> implements IStatementBuffer<S>
 //                    if (c == null)
 //                        continue;
     //
-////                    if (c instanceof URI) {
+////                    if (c instanceof IRI) {
     ////
 ////                        throw new UnificationException(
-////                                "URI not permitted in context position when statement identifiers are enabled: "
+////                                "IRI not permitted in context position when statement identifiers are enabled: "
 ////                                        + stmt);
 ////                        
 ////                    }
@@ -2199,7 +2200,7 @@ public class StatementBuffer<S extends Statement> implements IStatementBuffer<S>
      * @param o
      */
     @Override
-    public void add(final Resource s, final URI p, final Value o) {
+    public void add(final Resource s, final IRI p, final Value o) {
         
         add(s, p, o, null, StatementEnum.Explicit);
         
@@ -2214,7 +2215,7 @@ public class StatementBuffer<S extends Statement> implements IStatementBuffer<S>
      * @param c
      */
     @Override
-    public void add(final Resource s, final URI p, final Value o, final Resource c) {
+    public void add(final Resource s, final IRI p, final Value o, final Resource c) {
         
         add(s, p, o, c, StatementEnum.Explicit);
         
@@ -2229,7 +2230,7 @@ public class StatementBuffer<S extends Statement> implements IStatementBuffer<S>
      * @param type
      */
     @Override
-    public void add(final Resource s, final URI p, final Value o,
+    public void add(final Resource s, final IRI p, final Value o,
             final Resource c, final StatementEnum type) {
         
         if (nearCapacity()) {
@@ -2464,7 +2465,7 @@ public class StatementBuffer<S extends Statement> implements IStatementBuffer<S>
     	if (term == null)
     		return;
     	
-        if (term instanceof URI) {
+        if (term instanceof IRI) {
 
             numURIs++;
 
@@ -2513,7 +2514,7 @@ public class StatementBuffer<S extends Statement> implements IStatementBuffer<S>
      * 
      * @see #nearCapacity()
      */
-    protected void handleStatement(Resource _s, URI _p, Value _o, Resource _c,
+    protected void handleStatement(Resource _s, IRI _p, Value _o, Resource _c,
             final StatementEnum type) {
         
     	// silently strip context in quads mode. See #1086.
@@ -2553,7 +2554,7 @@ public class StatementBuffer<S extends Statement> implements IStatementBuffer<S>
         	
         	if (equals(p, RDF_SUBJECT, RDF_PREDICATE, RDF_OBJECT)) {
         		
-	    		final BigdataBNodeImpl sid = (BigdataBNodeImpl) s;
+	    		final BigdataSimpleBNode sid = (BigdataSimpleBNode) s;
 	    		
 	        	if (sid.getStatement() != null) {
 
@@ -2567,7 +2568,7 @@ public class StatementBuffer<S extends Statement> implements IStatementBuffer<S>
 	
 	    		if (reifiedStmts == null) {
 	    			
-	    			reifiedStmts = new HashMap<BigdataBNodeImpl, ReifiedStmt>();
+	    			reifiedStmts = new HashMap<BigdataSimpleBNode, ReifiedStmt>();
 	    			
 	    		}
 	    		
@@ -2649,13 +2650,13 @@ public class StatementBuffer<S extends Statement> implements IStatementBuffer<S>
         
 //        if (c != null && statementIdentifiers && c instanceof BNode) {
 //        	
-//        	((BigdataBNodeImpl) c).setStatement(stmt);
+//        	((BigdataSimpleBNode) c).setStatement(stmt);
 //        	
 //        }
 
     }
     
-    private void checkSid(final BigdataBNode sid, final URI p, final Value o) {
+    private void checkSid(final BigdataBNode sid, final IRI p, final Value o) {
     	
     	final BigdataStatement stmt = sid.getStatement();
     	
@@ -2745,7 +2746,7 @@ public class StatementBuffer<S extends Statement> implements IStatementBuffer<S>
 			return s;
 		}
 
-		public void set(final URI p, final BigdataValue o) {
+		public void set(final IRI p, final BigdataValue o) {
 			
 			if (p.toString().equals(RDF.SUBJECT.toString())) {
 				
@@ -2761,7 +2762,7 @@ public class StatementBuffer<S extends Statement> implements IStatementBuffer<S>
 			
 //			} else if (p.equals(RDF.CONTEXT)) {
 //				
-//				setPredicate((URI) c);
+//				setPredicate((IRI) c);
 //			
 			} else {
 

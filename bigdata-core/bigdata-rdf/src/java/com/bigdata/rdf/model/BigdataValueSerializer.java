@@ -32,11 +32,11 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.openrdf.model.BNode;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
 
 import com.bigdata.io.ByteArrayBuffer;
 import com.bigdata.io.DataInputBuffer;
@@ -120,7 +120,7 @@ public class BigdataValueSerializer<V extends Value> {
     /**
      * Error message indicates that the term code in the serialized record
      * did not correspond to a known term code for an RDF value of the
-     * appropriate type (e.g., a URI code where an Literal code was
+     * appropriate type (e.g., a IRI code where an Literal code was
      * expected). The codes are defined by {@link ITermIndexCodes}.
      */
     protected static final String ERR_CODE = "Bad term code";
@@ -181,7 +181,7 @@ public class BigdataValueSerializer<V extends Value> {
         if (val == null)
             throw new IllegalArgumentException();
         
-        if (val instanceof URI) {
+        if (val instanceof IRI) {
         
             return ITermIndexCodes.TERM_CODE_URI;
             
@@ -189,7 +189,7 @@ public class BigdataValueSerializer<V extends Value> {
             
             final Literal lit = (Literal) val;
             
-            if (lit.getLanguage() != null)
+            if (lit.getLanguage().isPresent())
                 return ITermIndexCodes.TERM_CODE_LCL;
 
             if (lit.getDatatype() != null)
@@ -308,7 +308,7 @@ public class BigdataValueSerializer<V extends Value> {
     /**
      * Routine for efficient de-serialization of an RDF {@link Value}.
      * <p>
-     * Note: This automatically uses the {@link BigdataValueFactoryImpl} to create
+     * Note: This automatically uses the {@link BigdataSimpleValueFactory} to create
      * the {@link BigdataValue}s from the de-serialized state so the factory
      * reference is always set on the returned {@link BigdataValueImpl}.
      * 
@@ -331,7 +331,7 @@ public class BigdataValueSerializer<V extends Value> {
     /**
      * Routine for efficient de-serialization of a {@link BigdataValue}.
      * <p>
-     * Note: This automatically uses the {@link BigdataValueFactoryImpl} to
+     * Note: This automatically uses the {@link BigdataSimpleValueFactory} to
      * create the {@link BigdataValue}s from the de-serialized state so the
      * factory reference is always set on the returned {@link BigdataValueImpl}.
      * 
@@ -374,7 +374,7 @@ public class BigdataValueSerializer<V extends Value> {
     }
 
     /**
-     * Implements the serialization of a Literal, URI, or BNode.
+     * Implements the serialization of a Literal, IRI, or BNode.
      * 
      * @param val
      *            The {@link Value}.
@@ -415,7 +415,7 @@ public class BigdataValueSerializer<V extends Value> {
         case ITermIndexCodes.TERM_CODE_URI: {
             
             // Serialize as UTF.
-            out.writeUTF(((URI)val).stringValue());
+            out.writeUTF(((IRI)val).stringValue());
 
             break;
             
@@ -436,7 +436,8 @@ public class BigdataValueSerializer<V extends Value> {
              * directly as ASCII bytes.
              */
             
-            out.writeUTF(((Literal)val).getLanguage());
+            out.writeUTF(((Literal)val).getLanguage()
+                    .orElseThrow(() -> new IllegalStateException("Language literal has no language")));
             
             out.writeUTF(((Literal)val).getLabel());
             
@@ -459,9 +460,9 @@ public class BigdataValueSerializer<V extends Value> {
     }
     
     /**
-     * Implements the de-serialization of a Literal, URI, or BNode.
+     * Implements the de-serialization of a Literal, IRI, or BNode.
      * <p>
-     * Note: This automatically uses the {@link BigdataValueFactoryImpl} to create
+     * Note: This automatically uses the {@link BigdataSimpleValueFactory} to create
      * the {@link BigdataValue}s from the de-serialized state so the factory
      * reference is always set on the returned {@link BigdataValueImpl}.
      * 
@@ -495,7 +496,7 @@ public class BigdataValueSerializer<V extends Value> {
 
         case ITermIndexCodes.TERM_CODE_URI: {
 
-            return (V) valueFactory.createURI(in.readUTF());
+            return (V) valueFactory.createIRI(in.readUTF());
 
         }
 
@@ -522,7 +523,7 @@ public class BigdataValueSerializer<V extends Value> {
             final String label = in.readUTF();
 
             return (V) valueFactory.createLiteral(label, valueFactory
-                    .createURI(datatype));
+                    .createIRI(datatype));
             
         }
 
@@ -535,7 +536,7 @@ public class BigdataValueSerializer<V extends Value> {
     }
 
     /**
-     * Implements the serialization of a Literal, URI, or BNode.
+     * Implements the serialization of a Literal, IRI, or BNode.
      * 
      * @param val
      *            The {@link Value}.
@@ -571,7 +572,7 @@ public class BigdataValueSerializer<V extends Value> {
 
         case ITermIndexCodes.TERM_CODE_URI:
             
-            uc.encode(((URI)val).stringValue(), out, tmp);
+            uc.encode(((IRI)val).stringValue(), out, tmp);
             
             break;
         
@@ -590,7 +591,8 @@ public class BigdataValueSerializer<V extends Value> {
              * directly as ASCII bytes.
              */
             
-            uc.encode(((Literal) val).getLanguage(), out, tmp);
+            uc.encode(((Literal) val).getLanguage()
+                    .orElseThrow(() -> new IllegalStateException("Language literal has no language")), out, tmp);
 
             uc.encode(((Literal) val).getLabel(), out, tmp);
 
@@ -613,9 +615,9 @@ public class BigdataValueSerializer<V extends Value> {
     }
 
     /**
-     * Implements the de-serialization of a Literal, URI, or BNode.
+     * Implements the de-serialization of a Literal, IRI, or BNode.
      * <p>
-     * Note: This automatically uses the {@link BigdataValueFactoryImpl} to
+     * Note: This automatically uses the {@link BigdataSimpleValueFactory} to
      * create the {@link BigdataValue}s from the de-serialized state so the
      * factory reference is always set on the returned {@link BigdataValueImpl}.
      * 
@@ -650,7 +652,7 @@ public class BigdataValueSerializer<V extends Value> {
             return (V) valueFactory.createBNode(uc.decode1(in, tmp));
 
         case ITermIndexCodes.TERM_CODE_URI:
-            return (V) valueFactory.createURI(uc.decode1(in, tmp));
+            return (V) valueFactory.createIRI(uc.decode1(in, tmp));
 
         case ITermIndexCodes.TERM_CODE_LIT:
             return (V) valueFactory.createLiteral(uc.decode1(in, tmp));
@@ -671,7 +673,7 @@ public class BigdataValueSerializer<V extends Value> {
             final String label = uc.decode1(in, tmp);
 
             return (V) valueFactory.createLiteral(label, valueFactory
-                    .createURI(datatype));
+                    .createIRI(datatype));
 
         }
 
@@ -696,9 +698,9 @@ public class BigdataValueSerializer<V extends Value> {
         if (v == null)
             throw new IllegalArgumentException();
         
-        if (v instanceof URI) {
+        if (v instanceof IRI) {
     
-            return ((URI) v).stringValue().length();
+            return ((IRI) v).stringValue().length();
     
         } else if (v instanceof Literal) {
     
@@ -709,8 +711,7 @@ public class BigdataValueSerializer<V extends Value> {
             final int datatypeLength = value.getDatatype() == null ? 0 : value
                     .getDatatype().stringValue().length();
     
-            final int languageLength = value.getLanguage() == null ? 0 : value
-                    .getLanguage().length();
+            final int languageLength = value.getLanguage().map(String::length).orElse(0);
     
             final long totalLength = label.length() + datatypeLength
                     + languageLength;

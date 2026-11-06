@@ -1,5 +1,7 @@
 package com.bigdata.ha.msg;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.io.ByteArrayInputStream;
 import java.io.DataInput;
 import java.io.DataInputStream;
@@ -15,7 +17,7 @@ import com.bigdata.util.Bytes;
 
 public class HASendState implements IHASendState, Externalizable {
 
-//    private static final Logger log = Logger.getLogger(HASendState.class);
+//    private static final Logger log = LogManager.getLogger(HASendState.class);
 
     private static final long serialVersionUID = 1;
 

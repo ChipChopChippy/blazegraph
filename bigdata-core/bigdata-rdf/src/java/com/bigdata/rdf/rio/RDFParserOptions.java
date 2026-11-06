@@ -30,15 +30,16 @@ package com.bigdata.rdf.rio;
 import java.io.Serializable;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.RDFParser.DatatypeHandling;
-import org.openrdf.rio.helpers.RDFParserBase;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.ParserConfig;
+import org.eclipse.rdf4j.rio.helpers.BasicParserSettings;
 
 /**
  * Instances of this class may be used to configure options on an
  * {@link RDFParser}. The options all have the defaults specified by
- * {@link RDFParserBase}.
+ * {@link RDFParser}.
  * <p>
  * Note: synchronization on the class instance is used to ensure safe
  * publication of the member field values.
@@ -48,7 +49,7 @@ import org.openrdf.rio.helpers.RDFParserBase;
  */
 public class RDFParserOptions implements Serializable, IRDFParserOptions {
 
-    private static final Logger log = Logger.getLogger(RDFParserOptions.class);
+    private static final Logger log = LogManager.getLogger(RDFParserOptions.class);
     
     /**
      * 
@@ -67,7 +68,7 @@ public class RDFParserOptions implements Serializable, IRDFParserOptions {
 
         /**
          * Optional boolean property may be used to set
-         * {@link RDFParserBase#setPreserveBNodeIDs(boolean)} (default is
+         * the parser's blank-node setting (default is
          * {@value #DEFAULT_PRESERVE_BNODE_IDS}).
          */
         public static final String PRESERVE_BNODE_IDS = RDFParserOptions.class
@@ -78,7 +79,7 @@ public class RDFParserOptions implements Serializable, IRDFParserOptions {
 
         /**
          * Optional boolean property may be used to set
-         * {@link RDFParserBase#setStopAtFirstError(boolean)} (default is
+         * the parser's fatal-error behavior (default is
          * {@value #DEFAULT_STOP_AT_FIRST_ERROR}).
          */
         String STOP_AT_FIRST_ERROR = RDFParserOptions.class.getName()
@@ -89,7 +90,7 @@ public class RDFParserOptions implements Serializable, IRDFParserOptions {
 
         /**
          * Optional boolean property may be used to set
-         * {@link RDFParserBase#setDatatypeHandling(DatatypeHandling)} (default
+         * the parser's datatype settings (default
          * is {@value #DEFAULT_DATATYPE_HANDLING})).
          */
         String DATATYPE_HANDLING = RDFParserOptions.class.getName()
@@ -209,7 +210,7 @@ public class RDFParserOptions implements Serializable, IRDFParserOptions {
     }
 
     /* (non-Javadoc)
-     * @see com.bigdata.rdf.rio.IRDFParserOptions#setDatatypeHandling(org.openrdf.rio.RDFParser.DatatypeHandling)
+     * @see com.bigdata.rdf.rio.IRDFParserOptions#setDatatypeHandling(com.bigdata.rdf.rio.DatatypeHandling)
      */
     @Override
     synchronized public void setDatatypeHandling(
@@ -253,10 +254,7 @@ public class RDFParserOptions implements Serializable, IRDFParserOptions {
      *            The parser.
      */
     synchronized public void apply(final RDFParser p) {
-        p.setDatatypeHandling(datatypeHandling);
-        p.setPreserveBNodeIDs(preserveBNodeIDs);
-        p.setStopAtFirstError(stopAtFirstError);
-        p.setVerifyData(verifyData);
+        applyParserSettings(p, this);
     }
 
     /**
@@ -268,12 +266,38 @@ public class RDFParserOptions implements Serializable, IRDFParserOptions {
      *            The parser.
      */
     public static void apply(final IRDFParserOptions opts, final RDFParser p) {
-        p.setDatatypeHandling(opts.getDatatypeHandling());
-        p.setPreserveBNodeIDs(opts.getPreserveBNodeIDs());
-        p.setStopAtFirstError(opts.getStopAtFirstError());
-        p.setVerifyData(opts.getVerifyData());
+        applyParserSettings(p, opts);
     }
 
+    private static void applyParserSettings(final RDFParser parser,
+            final IRDFParserOptions options) {
+        setPreserveBNodeIDs(parser, options.getPreserveBNodeIDs());
+        setVerifyData(parser, options.getVerifyData());
+        setDatatypeHandling(parser, options.getDatatypeHandling());
+    }
+
+    public static void setPreserveBNodeIDs(final RDFParser parser, final boolean preserve) {
+        parser.getParserConfig().set(BasicParserSettings.PRESERVE_BNODE_IDS, preserve);
+    }
+
+    public static void setVerifyData(final RDFParser parser, final boolean verify) {
+        final ParserConfig config = parser.getParserConfig();
+        // Legacy Sesame never validated IRI syntax strictly, RDF4J 5 does.
+        config.set(BasicParserSettings.VERIFY_URI_SYNTAX, false);
+        config.set(BasicParserSettings.VERIFY_RELATIVE_URIS, verify);
+        config.set(BasicParserSettings.VERIFY_LANGUAGE_TAGS, verify);
+    }
+
+    public static void setDatatypeHandling(final RDFParser parser,
+            final DatatypeHandling handling) {
+        final ParserConfig config = parser.getParserConfig();
+        // Unknown datatypes were never an error for the legacy parsers.
+        config.set(BasicParserSettings.FAIL_ON_UNKNOWN_DATATYPES, false);
+        config.set(BasicParserSettings.VERIFY_DATATYPE_VALUES,
+                handling != DatatypeHandling.IGNORE);
+        config.set(BasicParserSettings.NORMALIZE_DATATYPE_VALUES,
+                handling == DatatypeHandling.NORMALIZE);
+    }
     @Override
     public boolean equals(final Object o) {
 

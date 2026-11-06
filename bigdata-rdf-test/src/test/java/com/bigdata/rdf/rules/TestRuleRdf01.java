@@ -29,8 +29,8 @@ package com.bigdata.rdf.rules;
 
 import java.util.Properties;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.model.BigdataValueFactory;
@@ -79,12 +79,12 @@ public class TestRuleRdf01 extends AbstractRuleTestCase {
             
             final BigdataValueFactory f = store.getValueFactory();
             
-            final URI A = f.createURI("http://www.foo.org/A");
-            final URI B = f.createURI("http://www.foo.org/B");
-            final URI C = f.createURI("http://www.foo.org/C");
+            final IRI A = f.createIRI("http://www.foo.org/A");
+            final IRI B = f.createIRI("http://www.foo.org/B");
+            final IRI C = f.createIRI("http://www.foo.org/C");
     
-            final URI rdfType = RDF.TYPE;
-            final URI rdfProperty = RDF.PROPERTY;
+            final IRI rdfType = RDF.TYPE;
+            final IRI rdfProperty = RDF.PROPERTY;
     
             store.addStatement(A, B, C);
     
@@ -129,14 +129,14 @@ public class TestRuleRdf01 extends AbstractRuleTestCase {
 
             final BigdataValueFactory f = store.getValueFactory();
             
-            final URI A = f.createURI("http://www.foo.org/A");
-            final URI B = f.createURI("http://www.foo.org/B");
-            final URI C = f.createURI("http://www.foo.org/C");
-            final URI D = f.createURI("http://www.foo.org/D");
-            final URI E = f.createURI("http://www.foo.org/E");
+            final IRI A = f.createIRI("http://www.foo.org/A");
+            final IRI B = f.createIRI("http://www.foo.org/B");
+            final IRI C = f.createIRI("http://www.foo.org/C");
+            final IRI D = f.createIRI("http://www.foo.org/D");
+            final IRI E = f.createIRI("http://www.foo.org/E");
 
-            final URI rdfType = RDF.TYPE;
-            final URI rdfProperty = RDF.PROPERTY;
+            final IRI rdfType = RDF.TYPE;
+            final IRI rdfProperty = RDF.PROPERTY;
 
             /*
              * Three statements that will trigger the rule, but two statements

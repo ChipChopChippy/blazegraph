@@ -31,8 +31,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.rdf.vocab.VocabularyDecl;
 
@@ -58,27 +58,27 @@ public class BSBMVocabularyDecl implements VocabularyDecl {
 
     public static final String INSTANCES = "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/";
 
-    public static final URI USD = new URIImpl(VOCABULARY + "USD");
+    public static final IRI USD = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(VOCABULARY + "USD");
     
-    static private final URI[] uris = new URI[]{//
+    static private final IRI[] uris = new IRI[]{//
         // namespace for instance data.
-        new URIImpl(INSTANCES),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(INSTANCES),//
         // namespace for vocabulary
-        new URIImpl(VOCABULARY),//
-        new URIImpl(VOCABULARY + "reviewDate"),//
-        new URIImpl(VOCABULARY + "reviewFor"),//
-        new URIImpl(VOCABULARY + "ProductType"),//
-        new URIImpl(VOCABULARY + "rating1"),//
-        new URIImpl(VOCABULARY + "rating2"),//
-        new URIImpl(VOCABULARY + "rating3"),//
-        new URIImpl(VOCABULARY + "rating4"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(VOCABULARY),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(VOCABULARY + "reviewDate"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(VOCABULARY + "reviewFor"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(VOCABULARY + "ProductType"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(VOCABULARY + "rating1"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(VOCABULARY + "rating2"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(VOCABULARY + "rating3"),//
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(VOCABULARY + "rating4"),//
         USD,//
     };
 
     public BSBMVocabularyDecl() {
     }
     
-    public Iterator<URI> values() {
+    public Iterator<IRI> values() {
 
         return Collections.unmodifiableList(Arrays.asList(uris)).iterator();
         

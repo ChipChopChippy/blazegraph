@@ -107,7 +107,7 @@ public class TestSPOTupleSerializer extends TestCase2 {
     
     private IV<?,?> tid(final long tidIsIgnored) {
         
-        return factory.newTermId(VTE.URI);
+        return factory.newTermId(VTE.IRI);
         
     }
 

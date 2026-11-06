@@ -5,10 +5,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Properties;
 
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.QueryEvaluationException;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.Constant;
@@ -21,7 +21,7 @@ import com.bigdata.bop.joinGraph.IEvaluationPlanFactory;
 import com.bigdata.bop.joinGraph.fast.DefaultEvaluationPlanFactory2;
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.internal.IV;
-import com.bigdata.rdf.model.BigdataURIImpl;
+import com.bigdata.rdf.model.BigdataSimpleIRI;
 import com.bigdata.rdf.rules.RuleContextEnum;
 import com.bigdata.rdf.store.AbstractTripleStore;
 import com.bigdata.rdf.store.AbstractTripleStoreTestCase;
@@ -97,14 +97,14 @@ public class TestSPOStarJoin extends AbstractTripleStoreTestCase {
             
             final ValueFactory vf = store.getValueFactory();
             
-            final BigdataURIImpl fc1 = (BigdataURIImpl) vf.createURI(ns+"fc1");
-            final BigdataURIImpl fc2 = (BigdataURIImpl) vf.createURI(ns+"fc2");
-            final BigdataURIImpl fp1 = (BigdataURIImpl) vf.createURI(ns+"fp1");
-            final BigdataURIImpl fp2 = (BigdataURIImpl) vf.createURI(ns+"fp2");
-            final BigdataURIImpl class1 = (BigdataURIImpl) vf.createURI(ns+"class1");
-            final BigdataURIImpl ontologyClass = (BigdataURIImpl) vf.createURI(ns+"ontologyClass");
-            final BigdataURIImpl frameProperty = (BigdataURIImpl) vf.createURI(ns+"frameProperty");
-            final BigdataURIImpl frameClass = (BigdataURIImpl) vf.createURI(ns+"FrameClass");
+            final BigdataSimpleIRI fc1 = (BigdataSimpleIRI) vf.createIRI(ns+"fc1");
+            final BigdataSimpleIRI fc2 = (BigdataSimpleIRI) vf.createIRI(ns+"fc2");
+            final BigdataSimpleIRI fp1 = (BigdataSimpleIRI) vf.createIRI(ns+"fp1");
+            final BigdataSimpleIRI fp2 = (BigdataSimpleIRI) vf.createIRI(ns+"fp2");
+            final BigdataSimpleIRI class1 = (BigdataSimpleIRI) vf.createIRI(ns+"class1");
+            final BigdataSimpleIRI ontologyClass = (BigdataSimpleIRI) vf.createIRI(ns+"ontologyClass");
+            final BigdataSimpleIRI frameProperty = (BigdataSimpleIRI) vf.createIRI(ns+"frameProperty");
+            final BigdataSimpleIRI frameClass = (BigdataSimpleIRI) vf.createIRI(ns+"FrameClass");
             
             store.addStatement(fc1, RDF.TYPE, frameClass);
             store.addStatement(fc2, RDF.TYPE, frameClass);
@@ -243,17 +243,17 @@ public class TestSPOStarJoin extends AbstractTripleStoreTestCase {
             
             final ValueFactory vf = store.getValueFactory();
             
-            final BigdataURIImpl fp1 = (BigdataURIImpl) vf.createURI(ns+"fp1");
-            final BigdataURIImpl fp2 = (BigdataURIImpl) vf.createURI(ns+"fp2");
-            final BigdataURIImpl ontologyProperty = (BigdataURIImpl) vf.createURI(ns+"ontologyProperty");
-            final BigdataURIImpl multiValued = (BigdataURIImpl) vf.createURI(ns+"multiValued");
-            final BigdataURIImpl propertyRange = (BigdataURIImpl) vf.createURI(ns+"propertyRange");
-            final BigdataURIImpl v1 = (BigdataURIImpl) vf.createURI(ns+"v1");
-            final BigdataURIImpl v2 = (BigdataURIImpl) vf.createURI(ns+"v2");
-            final BigdataURIImpl mv1 = (BigdataURIImpl) vf.createURI(ns+"mv1");
-            final BigdataURIImpl mv2 = (BigdataURIImpl) vf.createURI(ns+"mv2");
-            final BigdataURIImpl r1 = (BigdataURIImpl) vf.createURI(ns+"r1");
-            final BigdataURIImpl r2 = (BigdataURIImpl) vf.createURI(ns+"r2");
+            final BigdataSimpleIRI fp1 = (BigdataSimpleIRI) vf.createIRI(ns+"fp1");
+            final BigdataSimpleIRI fp2 = (BigdataSimpleIRI) vf.createIRI(ns+"fp2");
+            final BigdataSimpleIRI ontologyProperty = (BigdataSimpleIRI) vf.createIRI(ns+"ontologyProperty");
+            final BigdataSimpleIRI multiValued = (BigdataSimpleIRI) vf.createIRI(ns+"multiValued");
+            final BigdataSimpleIRI propertyRange = (BigdataSimpleIRI) vf.createIRI(ns+"propertyRange");
+            final BigdataSimpleIRI v1 = (BigdataSimpleIRI) vf.createIRI(ns+"v1");
+            final BigdataSimpleIRI v2 = (BigdataSimpleIRI) vf.createIRI(ns+"v2");
+            final BigdataSimpleIRI mv1 = (BigdataSimpleIRI) vf.createIRI(ns+"mv1");
+            final BigdataSimpleIRI mv2 = (BigdataSimpleIRI) vf.createIRI(ns+"mv2");
+            final BigdataSimpleIRI r1 = (BigdataSimpleIRI) vf.createIRI(ns+"r1");
+            final BigdataSimpleIRI r2 = (BigdataSimpleIRI) vf.createIRI(ns+"r2");
             
             store.addStatement(fp1, RDF.TYPE, RDFS.RESOURCE);
             store.addStatement(fp1, ontologyProperty, v1);

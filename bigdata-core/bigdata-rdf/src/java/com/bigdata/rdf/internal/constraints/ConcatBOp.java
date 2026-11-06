@@ -25,8 +25,8 @@ package com.bigdata.rdf.internal.constraints;
 
 import java.util.Map;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -70,7 +70,7 @@ public class ConcatBOp extends IVValueExpression<IV> implements INeedsMaterializ
 
     @Override
     public IV get(final IBindingSet bs) {
-        URI datatype = null;
+        IRI datatype = null;
         String lang = null;
         boolean allSame = true;
         final StringBuilder sb = new StringBuilder();
@@ -86,7 +86,20 @@ public class ConcatBOp extends IVValueExpression<IV> implements INeedsMaterializ
             if (allSame) {
                 final Literal lit = asLiteral(v);
                 label = lit.getLabel();
-                if (lit.getDatatype() != null) {
+                if (lit.getLanguage().isPresent()) {
+                    if (datatype != null) {
+                        allSame = false;
+                    } else if (lang == null) {
+                        if (i == 0) {
+                            lang = lit.getLanguage().get();
+                        } else {
+                            allSame = false;
+                        }
+                    } else if (!lang.equals(lit.getLanguage().get())) {
+                        allSame = false;
+                    }
+                } else if (lit.getDatatype() != null
+                        && !org.eclipse.rdf4j.model.vocabulary.XMLSchema.STRING.equals(lit.getDatatype())) {
                     if (lang != null) {
                         allSame = false;
                     } else if (datatype == null) {
@@ -96,18 +109,6 @@ public class ConcatBOp extends IVValueExpression<IV> implements INeedsMaterializ
                             allSame = false;
                         }
                     } else if (!datatype.equals(lit.getDatatype())) {
-                        allSame = false;
-                    }
-                } else if (lit.getLanguage() != null) {
-                    if (datatype != null) {
-                        allSame = false;
-                    } else if (lang == null) {
-                        if (i == 0) {
-                            lang = lit.getLanguage();
-                        } else {
-                            allSame = false;
-                        }
-                    } else if (!lang.equals(lit.getLanguage())) {
                         allSame = false;
                     }
                 } else {

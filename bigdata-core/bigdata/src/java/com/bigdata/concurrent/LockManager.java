@@ -35,8 +35,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.cache.ConcurrentWeakValueCache;
 import com.bigdata.counters.CounterSet;
 import com.bigdata.counters.Instrument;
@@ -78,7 +79,7 @@ import com.bigdata.counters.Instrument;
  */
 public class LockManager</*T,*/R extends Comparable<R>> {
 
-    final protected static Logger log = Logger.getLogger(LockManager.class);
+    final protected static Logger log = LogManager.getLogger(LockManager.class);
 
     /**
      * True iff the {@link #log} level is INFO or less.

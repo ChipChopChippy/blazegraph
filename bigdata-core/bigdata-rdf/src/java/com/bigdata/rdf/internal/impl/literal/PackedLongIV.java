@@ -22,13 +22,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.internal.impl.literal;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.io.LongPacker;
 import com.bigdata.rdf.internal.DTE;
@@ -50,9 +52,9 @@ public class PackedLongIV<V extends BigdataLiteral>
 
     private static final long serialVersionUID = 925868533758851987L;
 
-//  private static final transient Logger log = Logger.getLogger(CompressedTimestampIV.class);
+//  private static final transient Logger log = LogManager.getLogger(CompressedTimestampIV.class);
 
-    public static final URI PACKED_LONG = new URIImpl("http://www.bigdata.com/rdf/datatype#packedLong");
+    public static final IRI PACKED_LONG = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf/datatype#packedLong");
 
 
     /**

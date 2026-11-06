@@ -1,12 +1,14 @@
 package com.bigdata.rdf.sail;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.concurrent.TimeUnit;
 
-import org.openrdf.query.Dataset;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.algebra.evaluation.QueryBindingSet;
-import org.openrdf.repository.sail.SailTupleQuery;
+import org.eclipse.rdf4j.query.Dataset;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.algebra.evaluation.QueryBindingSet;
+import org.eclipse.rdf4j.repository.sail.SailTupleQuery;
 
 import com.bigdata.rdf.sparql.ast.ASTContainer;
 import com.bigdata.rdf.sparql.ast.BindingsClause;
@@ -19,7 +21,7 @@ import com.bigdata.rdf.store.AbstractTripleStore;
 public class BigdataSailTupleQuery extends SailTupleQuery 
         implements BigdataSailQuery {
 
-//    private static final Logger log = Logger.getLogger(BigdataSailTupleQuery.class);
+//    private static final Logger log = LogManager.getLogger(BigdataSailTupleQuery.class);
     
     private final ASTContainer astContainer;
     

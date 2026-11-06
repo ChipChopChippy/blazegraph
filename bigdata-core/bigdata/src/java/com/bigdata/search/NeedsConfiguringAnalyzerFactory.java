@@ -41,14 +41,14 @@ import java.util.UUID;
 import java.util.WeakHashMap;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.core.StopAnalyzer;
 import org.apache.lucene.analysis.pattern.PatternTokenizer;
-import org.apache.lucene.analysis.ru.RussianAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.analysis.util.CharArraySet;
-import org.apache.lucene.util.Version;
+import org.apache.lucene.analysis.CharArraySet;
 
 import com.bigdata.btree.keys.IKeyBuilder;
 import com.bigdata.btree.keys.KeyBuilder;
@@ -66,7 +66,7 @@ import com.bigdata.search.ConfigurableAnalyzerFactory.Options;
  *
  */
 class NeedsConfiguringAnalyzerFactory implements IAnalyzerFactory {
-	final private static transient Logger log = Logger.getLogger(NeedsConfiguringAnalyzerFactory.class);
+	final private static transient Logger log = LogManager.getLogger(NeedsConfiguringAnalyzerFactory.class);
 	
 	/**
 	 * We create only one {@link ConfiguredAnalyzerFactory} per namespace
@@ -168,29 +168,6 @@ class NeedsConfiguringAnalyzerFactory implements IAnalyzerFactory {
 	
 
 	/**
-	 * Used for Analyzer classes with a constructor with signature (Version, Set).
-	 * @author jeremycarroll
-	 *
-	 */
-	private static class VersionSetAnalyzerPair extends AnalyzerPair {
-		public VersionSetAnalyzerPair(ConfigOptionsToAnalyzer lro,
-				Class<? extends Analyzer> cls) throws Exception {
-			super(lro.languageRange, getConstructor(cls, Version.class, Set.class), Version.LUCENE_CURRENT, lro.getStopWords());
-		}
-	}
-
-	/**
-	 * Used for Analyzer classes which do not support stopwords and have a constructor with signature (Version).
-	 * @author jeremycarroll
-	 *
-	 */
-	private static class VersionAnalyzerPair extends AnalyzerPair {
-		public VersionAnalyzerPair(String range, Class<? extends Analyzer> cls) throws Exception {
-			super(range, getConstructor(cls, Version.class).newInstance(Version.LUCENE_CURRENT));
-		}
-	}
-	
-	/**
 	 * Special case code for {@link PatternTokenizer}
 	 * @author jeremycarroll
 	 *
@@ -269,11 +246,9 @@ class NeedsConfiguringAnalyzerFactory implements IAnalyzerFactory {
 			try {
 				return (Set<?>) analyzerClass.getMethod("getDefaultStopSet").invoke(null);
 			} catch (Exception e) {
-				if (StandardAnalyzer.class.equals(analyzerClass)) {
-					return StandardAnalyzer.STOP_WORDS_SET;
-				}
-				if (StopAnalyzer.class.equals(analyzerClass)) {
-					return StopAnalyzer.ENGLISH_STOP_WORDS_SET;
+				if (StandardAnalyzer.class.equals(analyzerClass)
+						|| StopAnalyzer.class.equals(analyzerClass)) {
+					return EnglishAnalyzer.getDefaultStopSet();
 				}
 				throw new RuntimeException("Failed to find stop words from " + clazzName + " for language range "+languageRange);
 			}
@@ -388,25 +363,8 @@ class NeedsConfiguringAnalyzerFactory implements IAnalyzerFactory {
     					cls.getConstructor(CharArraySet.class).newInstance(new CharArraySet(Collections.emptySet(), false)));
             }
             
-            if (hasConstructor(cls, Version.class, Set.class)) {
-
-            	// RussianAnalyzer is missing any way to access stop words.
-            	if (RussianAnalyzer.class.equals(cls)) {
-            		if (useDefaultStopWords()) {
-            		    return new AnalyzerPair(languageRange, new RussianAnalyzer(), new RussianAnalyzer(CharArraySet.EMPTY_SET));
-            		}
-            		if (doNotUseStopWords()) {
-            		    return new AnalyzerPair(languageRange,  new RussianAnalyzer(CharArraySet.EMPTY_SET));	
-            		}
-            	}
-            	return new VersionSetAnalyzerPair(this, cls);
-            }
-            
             if (stopwords != null && !stopwords.equals(AnalyzerOptions.STOPWORDS_VALUE_NONE)) {
             	throw new RuntimeException("Bad option: language range: " + languageRange + " stopwords are not supported by " + className);
-            }
-            if (hasConstructor(cls, Version.class)) {
-            	return new VersionAnalyzerPair(languageRange, cls);
             }
             
             if (hasConstructor(cls)) {

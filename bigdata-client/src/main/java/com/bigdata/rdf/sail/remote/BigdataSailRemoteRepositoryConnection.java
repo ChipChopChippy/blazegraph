@@ -24,8 +24,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sail.remote;
 
-import info.aduna.iteration.CloseableIteration;
-import info.aduna.iteration.Iteration;
+import org.eclipse.rdf4j.common.iteration.CloseableIteration;
+import org.eclipse.rdf4j.common.transaction.IsolationLevel;
+import org.eclipse.rdf4j.common.transaction.IsolationLevels;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,37 +37,38 @@ import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Graph;
-import org.openrdf.model.Namespace;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.LinkedHashModel;
-import org.openrdf.model.impl.StatementImpl;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.BooleanQuery;
-import org.openrdf.query.Dataset;
-import org.openrdf.query.GraphQuery;
-import org.openrdf.query.GraphQueryResult;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.Query;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.Update;
-import org.openrdf.query.UpdateExecutionException;
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.RepositoryResult;
-import org.openrdf.repository.UnknownTransactionStateException;
-import org.openrdf.rio.ParserConfig;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFHandler;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParseException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Namespace;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.LinkedHashModel;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.BooleanQuery;
+import org.eclipse.rdf4j.query.Dataset;
+import org.eclipse.rdf4j.query.GraphQuery;
+import org.eclipse.rdf4j.query.GraphQueryResult;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.Query;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.Update;
+import org.eclipse.rdf4j.query.UpdateExecutionException;
+import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.RepositoryResult;
+import org.eclipse.rdf4j.repository.UnknownTransactionStateException;
+import org.eclipse.rdf4j.rio.ParserConfig;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFHandler;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFParseException;
 
 import com.bigdata.rdf.sail.webapp.client.IPreparedSparqlUpdate;
 import com.bigdata.rdf.sail.webapp.client.IRemoteTx;
@@ -105,7 +107,7 @@ import com.bigdata.rdf.sail.webapp.client.RemoteTransactionNotFoundException;
  */
 public class BigdataSailRemoteRepositoryConnection implements RepositoryConnection {
 
-   private static final transient Logger log = Logger
+   private static final transient Logger log = LogManager
          .getLogger(BigdataSailRemoteRepositoryConnection.class);
 
     private final BigdataSailRemoteRepository repo;
@@ -152,7 +154,7 @@ public class BigdataSailRemoteRepositoryConnection implements RepositoryConnecti
     * Report the fast range count (aka ESTCARD) associated with the specified
     * access path.
     */
-	public long count(final Resource s, final URI p, final Value o, 
+	public long count(final Resource s, final IRI p, final Value o, 
 			final Resource... c) 
 			throws RepositoryException {
 
@@ -175,7 +177,7 @@ public class BigdataSailRemoteRepositoryConnection implements RepositoryConnecti
     */
 	@Override
 	public RepositoryResult<Statement> getStatements(final Resource s,
-            final URI p, final Value o, final boolean includeInferred,
+            final IRI p, final Value o, final boolean includeInferred,
             final Resource... c) throws RepositoryException {
 		
 		try {
@@ -188,7 +190,7 @@ public class BigdataSailRemoteRepositoryConnection implements RepositoryConnecti
 			/*
 			 * Well this was certainly annoying.  is there a better way?
 			 */
-			return new RepositoryResult<Statement>(new CloseableIteration<Statement, RepositoryException>() {
+			return new RepositoryResult<Statement>(new CloseableIteration<Statement>() {
 
 				@Override
 				public boolean hasNext() throws RepositoryException {
@@ -243,7 +245,7 @@ public class BigdataSailRemoteRepositoryConnection implements RepositoryConnecti
     *      overestimate and ignores includeInferred (REST API) </a>
     */
 	@Override
-	public boolean hasStatement(final Resource s, final URI p, final Value o,
+	public boolean hasStatement(final Resource s, final IRI p, final Value o,
             final boolean includeInferred, final Resource... c)
             throws RepositoryException {
 
@@ -329,7 +331,7 @@ public class BigdataSailRemoteRepositoryConnection implements RepositoryConnecti
     public Query prepareQuery(final QueryLanguage ql, final String query)
             throws RepositoryException, MalformedQueryException {
 
-		throw new UnsupportedOperationException("please use the specific operation for your query type: prepare[Boolean/Tuple/Graph]Query");
+		throw new UnsupportedOperationException("please use the specific operation for your query type: prepare[Boolean/Tuple/Model]Query");
 		
 	}
 
@@ -385,11 +387,11 @@ public class BigdataSailRemoteRepositoryConnection implements RepositoryConnecti
 	}
 
 	@Override
-    public <E extends Exception> void add(
-            final Iteration<? extends Statement, E> stmts, final Resource... c)
-            throws RepositoryException, E {
+    public void add(
+            final CloseableIteration<? extends Statement> stmts, final Resource... c)
+            throws RepositoryException {
 		
-		final Graph g = new LinkedHashModel();
+		final Model g = new LinkedHashModel();
 
 		while (stmts.hasNext()) {
 		
@@ -402,10 +404,10 @@ public class BigdataSailRemoteRepositoryConnection implements RepositoryConnecti
 	}
 
 	@Override
-    public void add(final Resource s, final URI p, final Value o,
+    public void add(final Resource s, final IRI p, final Value o,
             final Resource... c) throws RepositoryException {
 		
-		add(new StatementImpl(s, p, o), c);
+		add(SimpleValueFactory.getInstance().createStatement(s, p, o), c);
 		
 	}
 
@@ -421,7 +423,7 @@ public class BigdataSailRemoteRepositoryConnection implements RepositoryConnecti
 
 //		log.warn("single statement updates not recommended");
 		
-		final Graph g = new LinkedHashModel();
+		final Model g = new LinkedHashModel();
 
 		g.add(stmt);
 		
@@ -515,11 +517,11 @@ public class BigdataSailRemoteRepositoryConnection implements RepositoryConnecti
 	}
 
 	@Override
-    public <E extends Exception> void remove(
-            final Iteration<? extends Statement, E> stmts, final Resource... c)
-            throws RepositoryException, E {
+    public void remove(
+            final CloseableIteration<? extends Statement> stmts, final Resource... c)
+            throws RepositoryException {
 
-		final Graph g = new LinkedHashModel();
+		final Model g = new LinkedHashModel();
 
       while (stmts.hasNext()) {
 
@@ -543,7 +545,7 @@ public class BigdataSailRemoteRepositoryConnection implements RepositoryConnecti
 		
 //		log.warn("single statement updates not recommended");
 		
-		final Graph g = new LinkedHashModel();
+		final Model g = new LinkedHashModel();
 	
 		g.add(stmt);
 		
@@ -562,7 +564,7 @@ public class BigdataSailRemoteRepositoryConnection implements RepositoryConnecti
 	}
 
 	@Override
-    public void remove(final Resource s, URI p, Value o, final Resource... c)
+    public void remove(final Resource s, IRI p, Value o, final Resource... c)
             throws RepositoryException {
 
 		final RemoveOp op = new RemoveOp(s, p, o, c);
@@ -607,7 +609,7 @@ public class BigdataSailRemoteRepositoryConnection implements RepositoryConnecti
 
 			final Iterator<Resource> contexts = remote.getContexts().iterator();
 			
-			return new RepositoryResult<Resource>(new CloseableIteration<Resource, RepositoryException>() {
+			return new RepositoryResult<Resource>(new CloseableIteration<Resource>() {
 
 				@Override
 				public boolean hasNext() throws RepositoryException {
@@ -704,7 +706,7 @@ public class BigdataSailRemoteRepositoryConnection implements RepositoryConnecti
 	}
 
 	@Override
-    public void exportStatements(final Resource s, final URI p, final Value o,
+    public void exportStatements(final Resource s, final IRI p, final Value o,
             final boolean includeInferred, final RDFHandler handler,
             final Resource... c) throws RepositoryException,
             RDFHandlerException {
@@ -753,6 +755,16 @@ public class BigdataSailRemoteRepositoryConnection implements RepositoryConnecti
 			 * Only execute() is currently supported.
 			 */
 			return new Update() {
+
+				@Override
+				public int getMaxExecutionTime() {
+					throw new UnsupportedOperationException("Maximum execution time is not supported for remote updates");
+				}
+
+				@Override
+				public void setMaxExecutionTime(int maxExecutionTime) {
+					throw new UnsupportedOperationException("Maximum execution time is not supported for remote updates");
+				}
 
 				@Override
 				public void execute() throws UpdateExecutionException {
@@ -883,6 +895,9 @@ public class BigdataSailRemoteRepositoryConnection implements RepositoryConnecti
     * Note: The monitor of this object is also used as a synchronization point.
     */
 	private final AtomicReference<IRemoteTx> remoteTx = new AtomicReference<IRemoteTx>();
+
+   private volatile IsolationLevel currentIsolationLevel;
+   private volatile IsolationLevel configuredIsolationLevel = IsolationLevels.NONE;
 	
    @Override
    public boolean isOpen() throws RepositoryException {
@@ -973,6 +988,7 @@ public class BigdataSailRemoteRepositoryConnection implements RepositoryConnecti
                      } finally {
                         // Clear the reference since we are closing the conn.
                         remoteTx.set(null/* newValue */);
+                        currentIsolationLevel = null;
                      }
                   }
                }
@@ -1016,6 +1032,10 @@ public class BigdataSailRemoteRepositoryConnection implements RepositoryConnecti
 
    @Override
    public void begin() throws RepositoryException {
+      begin(configuredIsolationLevel);
+   }
+
+   private void beginUnisolated() throws RepositoryException {
       assertOpen(); // non-blocking.
       synchronized (remoteTx) {
          assertOpen();
@@ -1025,9 +1045,22 @@ public class BigdataSailRemoteRepositoryConnection implements RepositoryConnecti
             remoteTx.set(repo.getRemoteRepository()
                   .getRemoteRepositoryManager().getTransactionManager()
                   .createTx(RemoteTransactionManager.UNISOLATED));
+            currentIsolationLevel = IsolationLevels.NONE;
          } catch (RuntimeException e) {
             throw new RepositoryException(e);
          }
+      }
+   }
+
+   @Override
+   public void begin(IsolationLevel level) throws RepositoryException {
+      final IsolationLevel requestedLevel = level == null ? configuredIsolationLevel : level;
+      if (requestedLevel == null || IsolationLevels.NONE.equals(requestedLevel)) {
+         beginUnisolated();
+      } else if (IsolationLevels.READ_COMMITTED.equals(requestedLevel)) {
+         beginReadOnly();
+      } else {
+         throw new RepositoryException("Unsupported isolation level: " + requestedLevel);
       }
    }
 
@@ -1046,6 +1079,7 @@ public class BigdataSailRemoteRepositoryConnection implements RepositoryConnecti
             remoteTx.set(repo.getRemoteRepository()
                   .getRemoteRepositoryManager().getTransactionManager()
                   .createTx(RemoteTransactionManager.READ_COMMITTED));
+            currentIsolationLevel = IsolationLevels.READ_COMMITTED;
          } catch (RuntimeException e) {
             throw new RepositoryException(e);
          }
@@ -1078,6 +1112,7 @@ public class BigdataSailRemoteRepositoryConnection implements RepositoryConnecti
             remoteTx.set(repo.getRemoteRepository()
                   .getRemoteRepositoryManager().getTransactionManager()
                   .createTx(timestamp));
+            currentIsolationLevel = IsolationLevels.READ_COMMITTED;
          } catch (RuntimeException e) {
             throw new RepositoryException(e);
          }
@@ -1094,6 +1129,7 @@ public class BigdataSailRemoteRepositoryConnection implements RepositoryConnecti
             try {
                tx.commit();
                remoteTx.set(null/* newValue */);
+               currentIsolationLevel = null;
             } catch (RemoteTransactionNotFoundException e) {
                throw new UnknownTransactionStateException(e);
             } catch (RuntimeException e) {
@@ -1113,6 +1149,7 @@ public class BigdataSailRemoteRepositoryConnection implements RepositoryConnecti
             try {
                tx.abort();
                remoteTx.set(null/* newValue */);
+               currentIsolationLevel = null;
             } catch (RemoteTransactionNotFoundException e) {
                throw new UnknownTransactionStateException(e);
             } catch (Exception e) {
@@ -1120,6 +1157,23 @@ public class BigdataSailRemoteRepositoryConnection implements RepositoryConnecti
             }
          }
       }
+   }
+
+   @Override
+   public IsolationLevel getIsolationLevel() throws RepositoryException {
+      return currentIsolationLevel == null ? configuredIsolationLevel : currentIsolationLevel;
+   }
+
+   @Override
+   public void setIsolationLevel(IsolationLevel level) throws RepositoryException {
+      if (remoteTx.get() != null) {
+         throw new RepositoryException("Cannot change isolation level during an active transaction");
+      }
+      if (level != null && !IsolationLevels.NONE.equals(level)
+            && !IsolationLevels.READ_COMMITTED.equals(level)) {
+         throw new RepositoryException("Unsupported isolation level: " + level);
+      }
+      configuredIsolationLevel = level;
    }
 
 }

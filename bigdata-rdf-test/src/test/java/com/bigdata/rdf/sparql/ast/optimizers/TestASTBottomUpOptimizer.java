@@ -35,9 +35,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.bop.BOpUtility;
 import com.bigdata.bop.Constant;
@@ -145,11 +145,11 @@ public class TestASTBottomUpOptimizer extends
          * the verify it using equals().
          */
         final BigdataValueFactory f = store.getValueFactory();
-        final BigdataURI x1 = f.createURI("http://example/x1");
-        final BigdataURI x2 = f.createURI("http://example/x2");
-        final BigdataURI x3 = f.createURI("http://example/x3");
-        final BigdataURI p = f.createURI("http://example/p");
-        final BigdataURI q = f.createURI("http://example/q");
+        final BigdataURI x1 = f.createIRI("http://example/x1");
+        final BigdataURI x2 = f.createIRI("http://example/x2");
+        final BigdataURI x3 = f.createIRI("http://example/x3");
+        final BigdataURI p = f.createIRI("http://example/p");
+        final BigdataURI q = f.createIRI("http://example/q");
         final BigdataValue[] values = new BigdataValue[] { x1, x2, x3, p, q };
         store.getLexiconRelation()
                 .addTerms(values, values.length, false/* readOnly */);
@@ -295,13 +295,13 @@ public class TestASTBottomUpOptimizer extends
          * the verify it using equals().
          */
         final BigdataValueFactory f = store.getValueFactory();
-        final BigdataURI x1 = f.createURI("http://example/x1");
-        final BigdataURI x2 = f.createURI("http://example/x2");
-        final BigdataURI x3 = f.createURI("http://example/x3");
-        final BigdataURI p = f.createURI("http://example/p");
-        final BigdataURI q = f.createURI("http://example/q");
-        final BigdataURI c1 = f.createURI("http://example/c1");
-        final BigdataURI c2 = f.createURI("http://example/c2");
+        final BigdataURI x1 = f.createIRI("http://example/x1");
+        final BigdataURI x2 = f.createIRI("http://example/x2");
+        final BigdataURI x3 = f.createIRI("http://example/x3");
+        final BigdataURI p = f.createIRI("http://example/p");
+        final BigdataURI q = f.createIRI("http://example/q");
+        final BigdataURI c1 = f.createIRI("http://example/c1");
+        final BigdataURI c2 = f.createIRI("http://example/c2");
         final BigdataValue[] values = new BigdataValue[] { x1, x2, x3, p, q, c1, c2 };
         store.getLexiconRelation()
                 .addTerms(values, values.length, false/* readOnly */);
@@ -427,9 +427,9 @@ public class TestASTBottomUpOptimizer extends
          * verify it using equals().
          */
         final BigdataValueFactory f = store.getValueFactory();
-        final BigdataURI x = f.createURI("http://example/x");
-        final BigdataURI p = f.createURI("http://example/p");
-        final BigdataURI q = f.createURI("http://example/q");
+        final BigdataURI x = f.createIRI("http://example/x");
+        final BigdataURI p = f.createIRI("http://example/p");
+        final BigdataURI q = f.createIRI("http://example/q");
         final BigdataLiteral ONE = f.createLiteral("1", XSD.INTEGER);
         final BigdataValue[] values = new BigdataValue[] { x, p, q, ONE };
         store.getLexiconRelation()
@@ -619,8 +619,8 @@ public class TestASTBottomUpOptimizer extends
          * the verify it using equals().
          */
         final BigdataValueFactory f = store.getValueFactory();
-        final BigdataURI name = f.createURI("http://example/name");
-        final BigdataURI email = f.createURI("http://example/email");
+        final BigdataURI name = f.createIRI("http://example/name");
+        final BigdataURI email = f.createIRI("http://example/email");
         final BigdataLiteral paul = f.createLiteral("paul");
         final BigdataLiteral george = f.createLiteral("george");
         final BigdataValue[] values = new BigdataValue[] { name, email, paul,
@@ -756,8 +756,8 @@ public class TestASTBottomUpOptimizer extends
          * the verify it using equals().
          */
         final BigdataValueFactory f = store.getValueFactory();
-        final BigdataURI name = f.createURI("http://example/name");
-        final BigdataURI email = f.createURI("http://example/email");
+        final BigdataURI name = f.createIRI("http://example/name");
+        final BigdataURI email = f.createIRI("http://example/email");
         final BigdataLiteral paul = f.createLiteral("paul");
         final BigdataLiteral george = f.createLiteral("george");
         final BigdataValue[] values = new BigdataValue[] { name, email, paul,
@@ -810,8 +810,8 @@ public class TestASTBottomUpOptimizer extends
          * the verify it using equals().
          */
         final BigdataValueFactory f = store.getValueFactory();
-        final BigdataURI name = f.createURI("http://example/name");
-        final BigdataURI email = f.createURI("http://example/email");
+        final BigdataURI name = f.createIRI("http://example/name");
+        final BigdataURI email = f.createIRI("http://example/email");
         final BigdataLiteral paul = f.createLiteral("paul");
         final BigdataLiteral george = f.createLiteral("george");
         final BigdataValue[] values = new BigdataValue[] { name, email, paul,
@@ -864,8 +864,8 @@ public class TestASTBottomUpOptimizer extends
          * the verify it using equals().
          */
         final BigdataValueFactory f = store.getValueFactory();
-        final BigdataURI name = f.createURI("http://example/name");
-        final BigdataURI email = f.createURI("http://example/email");
+        final BigdataURI name = f.createIRI("http://example/name");
+        final BigdataURI email = f.createIRI("http://example/email");
         final BigdataLiteral paul = f.createLiteral("paul");
         final BigdataLiteral george = f.createLiteral("george");
         final BigdataValue[] values = new BigdataValue[] { name, email, paul,
@@ -930,9 +930,9 @@ public class TestASTBottomUpOptimizer extends
          * the verify it using equals().
          */
         final BigdataValueFactory f = store.getValueFactory();
-        final BigdataURI p1 = f.createURI("http://example/p1");
-        final BigdataURI p2 = f.createURI("http://example/p2");
-        final BigdataURI p3 = f.createURI("http://example/p3");
+        final BigdataURI p1 = f.createIRI("http://example/p1");
+        final BigdataURI p2 = f.createIRI("http://example/p2");
+        final BigdataURI p3 = f.createIRI("http://example/p3");
         final BigdataValue[] values = new BigdataValue[] { p1, p2, p3 };
         store.getLexiconRelation().
             addTerms(values, values.length, false/* readOnly */);
@@ -987,8 +987,8 @@ public class TestASTBottomUpOptimizer extends
          * the verify it using equals().
          */
         final BigdataValueFactory f = store.getValueFactory();
-        final BigdataURI x = f.createURI("http://example/x");
-        final BigdataURI p = f.createURI("http://example/p");
+        final BigdataURI x = f.createIRI("http://example/x");
+        final BigdataURI p = f.createIRI("http://example/p");
         final BigdataLiteral ONE = f.createLiteral("1", XSD.INTEGER);
         final BigdataValue[] values = new BigdataValue[] { x, p, ONE };
         store.getLexiconRelation()
@@ -1083,8 +1083,8 @@ public class TestASTBottomUpOptimizer extends
          * the verify it using equals().
          */
         final BigdataValueFactory f = store.getValueFactory();
-        final BigdataURI x = f.createURI("http://example/x");
-        final BigdataURI p = f.createURI("http://example/p");
+        final BigdataURI x = f.createIRI("http://example/x");
+        final BigdataURI p = f.createIRI("http://example/p");
         final BigdataValue[] values = new BigdataValue[] { x, p };
         store.getLexiconRelation()
                 .addTerms(values, values.length, false/* readOnly */);
@@ -1148,8 +1148,8 @@ public class TestASTBottomUpOptimizer extends
          * the verify it using equals().
          */
         final BigdataValueFactory f = store.getValueFactory();
-        final BigdataURI x = f.createURI("http://example/x");
-        final BigdataURI p = f.createURI("http://example/p");
+        final BigdataURI x = f.createIRI("http://example/x");
+        final BigdataURI p = f.createIRI("http://example/p");
         final BigdataLiteral ONE = f.createLiteral("1", XSD.INTEGER);
         final BigdataValue[] values = new BigdataValue[] { x, p, ONE };
         store.getLexiconRelation()
@@ -1265,10 +1265,10 @@ public class TestASTBottomUpOptimizer extends
          * the verify it using equals().
          */
         final BigdataValueFactory f = store.getValueFactory();
-        final BigdataURI x = f.createURI("http://example/x");
-        final BigdataURI y = f.createURI("http://example/y");
-        final BigdataURI p = f.createURI("http://example/p");
-        final BigdataURI q = f.createURI("http://example/q");
+        final BigdataURI x = f.createIRI("http://example/x");
+        final BigdataURI y = f.createIRI("http://example/y");
+        final BigdataURI p = f.createIRI("http://example/p");
+        final BigdataURI q = f.createIRI("http://example/q");
         final BigdataValue[] values = new BigdataValue[] { x, y, p, q };
         store.getLexiconRelation()
                 .addTerms(values, values.length, false/* readOnly */);
@@ -1322,8 +1322,8 @@ public class TestASTBottomUpOptimizer extends
          */
         final IBindingSet[] bsets = new IBindingSet[] {};
 
-        final IV<?,?> p = makeIV(new URIImpl("http://example/p"));
-        final IV<?,?> q = makeIV(new URIImpl("http://example/q"));
+        final IV<?,?> p = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/p"));
+        final IV<?,?> q = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/q"));
 
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -1520,7 +1520,7 @@ public class TestASTBottomUpOptimizer extends
 //        final BigdataValueFactory f = store.getValueFactory();
 //        final BigdataURI rdfType = f.asValue(RDF.TYPE);
 //        final BigdataURI owlClass = f.asValue(OWL.CLASS);
-//        final BigdataURI endpoint1 = f.createURI("http://localhost:18080/openrdf/repositories/endpoint1");
+//        final BigdataURI endpoint1 = f.createIRI("http://localhost:18080/openrdf/repositories/endpoint1");
 //        final BigdataValue[] values = new BigdataValue[] { rdfType, owlClass, endpoint1 };
 //        store.getLexiconRelation()
 //                .addTerms(values, values.length, false/* readOnly */);
@@ -1811,8 +1811,8 @@ public class TestASTBottomUpOptimizer extends
 //         */
 //        final IBindingSet[] bsets = new IBindingSet[] {};
 //
-//        final IV<?,?> p = makeIV(new URIImpl("http://example.com/p"));
-//        final IV<?,?> q = makeIV(new URIImpl("http://example.com/q"));
+//        final IV<?,?> p = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.com/p"));
+//        final IV<?,?> q = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.com/q"));
 //
 //        // The source AST.
 //        final QueryRoot given = new QueryRoot(QueryType.SELECT);

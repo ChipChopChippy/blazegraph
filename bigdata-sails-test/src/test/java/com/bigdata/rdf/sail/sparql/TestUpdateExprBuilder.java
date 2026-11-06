@@ -29,11 +29,11 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.algebra.StatementPattern.Scope;
-import org.openrdf.rio.RDFParser.DatatypeHandling;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
+import com.bigdata.rdf.rio.DatatypeHandling;
 
 import com.bigdata.rdf.internal.IV;
 import com.bigdata.rdf.internal.XSD;
@@ -110,7 +110,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             final RDFParserOptions options = new RDFParserOptions();
             
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/data"))));
+                    .createIRI("http://www.bigdata.com/data"))));
            
         }
         
@@ -145,7 +145,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             final RDFParserOptions options = new RDFParserOptions();
             
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/data"))));
+                    .createIRI("http://www.bigdata.com/data"))));
            
         }
         
@@ -180,10 +180,10 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             final RDFParserOptions options = new RDFParserOptions();
             
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/data"))));
+                    .createIRI("http://www.bigdata.com/data"))));
 
             op.setTargetGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/graph1"))));
+                    .createIRI("http://www.bigdata.com/graph1"))));
 
         }
         
@@ -214,7 +214,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             final RDFParserOptions options = new RDFParserOptions();
             
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/data"))));
+                    .createIRI("http://www.bigdata.com/data"))));
 
         }
         {
@@ -226,7 +226,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             final RDFParserOptions options = new RDFParserOptions();
             
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/data1"))));
+                    .createIRI("http://www.bigdata.com/data1"))));
 
         }
         {
@@ -238,7 +238,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             final RDFParserOptions options = new RDFParserOptions();
             
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/data2"))));
+                    .createIRI("http://www.bigdata.com/data2"))));
 
         }
 
@@ -275,7 +275,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             options.setVerifyData(true);
             
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/data"))));
+                    .createIRI("http://www.bigdata.com/data"))));
            
         }
         
@@ -312,7 +312,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             options.setVerifyData(false);
             
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/data"))));
+                    .createIRI("http://www.bigdata.com/data"))));
            
         }
         
@@ -346,9 +346,8 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             final RDFParserOptions options = new RDFParserOptions();
             
             options.setStopAtFirstError(true);
-            
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/data"))));
+                    .createIRI("http://www.bigdata.com/data"))));
            
         }
         
@@ -382,9 +381,8 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             final RDFParserOptions options = new RDFParserOptions();
             
             options.setStopAtFirstError(false);
-            
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/data"))));
+                    .createIRI("http://www.bigdata.com/data"))));
            
         }
         
@@ -420,7 +418,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             options.setPreserveBNodeIDs(true);
             
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/data"))));
+                    .createIRI("http://www.bigdata.com/data"))));
            
         }
         
@@ -456,7 +454,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             options.setPreserveBNodeIDs(false);
             
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/data"))));
+                    .createIRI("http://www.bigdata.com/data"))));
            
         }
         
@@ -492,7 +490,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             options.setDatatypeHandling(DatatypeHandling.IGNORE);
             
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/data"))));
+                    .createIRI("http://www.bigdata.com/data"))));
            
         }
         
@@ -528,7 +526,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             options.setDatatypeHandling(DatatypeHandling.VERIFY);
             
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/data"))));
+                    .createIRI("http://www.bigdata.com/data"))));
            
         }
         
@@ -564,7 +562,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             options.setDatatypeHandling(DatatypeHandling.VERIFY);
             
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/data"))));
+                    .createIRI("http://www.bigdata.com/data"))));
            
         }
         
@@ -602,7 +600,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             options.setDatatypeHandling(DatatypeHandling.VERIFY);
 
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/data"))));
+                    .createIRI("http://www.bigdata.com/data"))));
 
         }
 
@@ -633,7 +631,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             expected.addChild(op);
             
             op.setTargetGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/data"))));
+                    .createIRI("http://www.bigdata.com/data"))));
            
         }
         
@@ -780,7 +778,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             expected.addChild(op);
             
             op.setTargetGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/data"))));
+                    .createIRI("http://www.bigdata.com/data"))));
            
         }
         
@@ -927,7 +925,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             expected.addChild(op);
             
             op.setTargetGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/graph1"))));
+                    .createIRI("http://www.bigdata.com/graph1"))));
 
         }
         
@@ -958,7 +956,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             op.setSilent(true);
             
             op.setTargetGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/graph1"))));
+                    .createIRI("http://www.bigdata.com/graph1"))));
 
         }
         
@@ -987,10 +985,10 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             expected.addChild(op);
             
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/graph1"))));
+                    .createIRI("http://www.bigdata.com/graph1"))));
 
             op.setTargetGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/graph2"))));
+                    .createIRI("http://www.bigdata.com/graph2"))));
 
         }
         
@@ -1021,10 +1019,10 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             op.setSilent(true);
             
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/graph1"))));
+                    .createIRI("http://www.bigdata.com/graph1"))));
 
             op.setTargetGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/graph2"))));
+                    .createIRI("http://www.bigdata.com/graph2"))));
 
         }
         
@@ -1055,7 +1053,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             op.setSilent(true);
             
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/graph1"))));
+                    .createIRI("http://www.bigdata.com/graph1"))));
 
         }
         
@@ -1086,7 +1084,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             op.setSilent(true);
             
             op.setTargetGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/graph2"))));
+                    .createIRI("http://www.bigdata.com/graph2"))));
 
         }
         
@@ -1119,10 +1117,10 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             expected.addChild(op);
             
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/graph1"))));
+                    .createIRI("http://www.bigdata.com/graph1"))));
 
             op.setTargetGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/graph2"))));
+                    .createIRI("http://www.bigdata.com/graph2"))));
 
         }
         
@@ -1153,10 +1151,10 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             op.setSilent(true);
             
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/graph1"))));
+                    .createIRI("http://www.bigdata.com/graph1"))));
 
             op.setTargetGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/graph2"))));
+                    .createIRI("http://www.bigdata.com/graph2"))));
 
         }
         
@@ -1187,7 +1185,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             op.setSilent(true);
             
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/graph1"))));
+                    .createIRI("http://www.bigdata.com/graph1"))));
 
         }
         
@@ -1218,7 +1216,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             op.setSilent(true);
             
             op.setTargetGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/graph2"))));
+                    .createIRI("http://www.bigdata.com/graph2"))));
 
         }
         
@@ -1251,10 +1249,10 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             expected.addChild(op);
             
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/graph1"))));
+                    .createIRI("http://www.bigdata.com/graph1"))));
 
             op.setTargetGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/graph2"))));
+                    .createIRI("http://www.bigdata.com/graph2"))));
 
         }
         
@@ -1285,10 +1283,10 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             op.setSilent(true);
             
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/graph1"))));
+                    .createIRI("http://www.bigdata.com/graph1"))));
 
             op.setTargetGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/graph2"))));
+                    .createIRI("http://www.bigdata.com/graph2"))));
 
         }
         
@@ -1319,7 +1317,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             op.setSilent(true);
             
             op.setSourceGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/graph1"))));
+                    .createIRI("http://www.bigdata.com/graph1"))));
 
         }
         
@@ -1350,7 +1348,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
             op.setSilent(true);
             
             op.setTargetGraph(new ConstantNode(makeIV(valueFactory
-                    .createURI("http://www.bigdata.com/graph2"))));
+                    .createIRI("http://www.bigdata.com/graph2"))));
 
         }
         
@@ -1392,9 +1390,9 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
 
             expected.addChild(op);
 
-            final BigdataURI book1 = valueFactory.createURI("http://example/book1");
-            final BigdataURI dcCreator = valueFactory.createURI("http://purl.org/dc/elements/1.1/creator");
-            final BigdataURI dcTitle = valueFactory.createURI("http://purl.org/dc/elements/1.1/title");
+            final BigdataURI book1 = valueFactory.createIRI("http://example/book1");
+            final BigdataURI dcCreator = valueFactory.createIRI("http://purl.org/dc/elements/1.1/creator");
+            final BigdataURI dcTitle = valueFactory.createIRI("http://purl.org/dc/elements/1.1/title");
             final BigdataLiteral label1 = valueFactory.createLiteral("A new book");
             final BigdataLiteral label2 = valueFactory.createLiteral("A.N.Other");
 
@@ -1450,9 +1448,9 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
 
             expected.addChild(op);
 
-            final BigdataURI bookstore = valueFactory.createURI("http://example/bookStore");
-            final BigdataURI book1 = valueFactory.createURI("http://example/book1");
-            final BigdataURI price = valueFactory.createURI("http://example.org/ns#price");
+            final BigdataURI bookstore = valueFactory.createIRI("http://example/bookStore");
+            final BigdataURI book1 = valueFactory.createIRI("http://example/book1");
+            final BigdataURI price = valueFactory.createIRI("http://example.org/ns#price");
             final BigdataLiteral i42 = valueFactory.createLiteral("42",XSD.INTEGER);
 
             final BigdataStatement[] data = new BigdataStatement[] { //
@@ -1497,8 +1495,8 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
 
             final BigdataBNode bnode = valueFactory.createBNode("-anon-1");
 //            final BigdataBNode bnode = valueFactory.createBNode("bnode");
-            final BigdataURI rdfType = valueFactory.createURI(RDF.TYPE.toString());
-            final BigdataURI foo = valueFactory.createURI("http://example/Foo");
+            final BigdataURI rdfType = valueFactory.createIRI(RDF.TYPE.toString());
+            final BigdataURI foo = valueFactory.createIRI("http://example/Foo");
 
             final BigdataStatement[] data = new BigdataStatement[] { //
                     valueFactory.createStatement(//
@@ -1553,13 +1551,13 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
 
             expected.addChild(op);
 
-            final BigdataURI book1 = valueFactory.createURI("http://example/book1");
-            final BigdataURI dcCreator = valueFactory.createURI("http://purl.org/dc/elements/1.1/creator");
-            final BigdataURI dcTitle = valueFactory.createURI("http://purl.org/dc/elements/1.1/title");
+            final BigdataURI book1 = valueFactory.createIRI("http://example/book1");
+            final BigdataURI dcCreator = valueFactory.createIRI("http://purl.org/dc/elements/1.1/creator");
+            final BigdataURI dcTitle = valueFactory.createIRI("http://purl.org/dc/elements/1.1/title");
             final BigdataLiteral label1 = valueFactory.createLiteral("A new book");
             final BigdataLiteral label2 = valueFactory.createLiteral("A.N.Other");
-            final BigdataURI bookstore = valueFactory.createURI("http://example/bookStore");
-            final BigdataURI price = valueFactory.createURI("http://example.org/ns#price");
+            final BigdataURI bookstore = valueFactory.createIRI("http://example/bookStore");
+            final BigdataURI price = valueFactory.createIRI("http://example.org/ns#price");
             final BigdataLiteral i42 = valueFactory.createLiteral("42",XSD.INTEGER);
 
             final BigdataStatement[] data = new BigdataStatement[] { //
@@ -1642,13 +1640,13 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
 
             expected.addChild(op);
 
-            final BigdataURI book1 = valueFactory.createURI("http://example/book1");
-            final BigdataURI dcCreator = valueFactory.createURI("http://purl.org/dc/elements/1.1/creator");
-            final BigdataURI dcTitle = valueFactory.createURI("http://purl.org/dc/elements/1.1/title");
+            final BigdataURI book1 = valueFactory.createIRI("http://example/book1");
+            final BigdataURI dcCreator = valueFactory.createIRI("http://purl.org/dc/elements/1.1/creator");
+            final BigdataURI dcTitle = valueFactory.createIRI("http://purl.org/dc/elements/1.1/title");
             final BigdataLiteral label1 = valueFactory.createLiteral("A new book");
             final BigdataLiteral label2 = valueFactory.createLiteral("A.N.Other");
-            final BigdataURI bookstore = valueFactory.createURI("http://example/bookStore");
-            final BigdataURI price = valueFactory.createURI("http://example.org/ns#price");
+            final BigdataURI bookstore = valueFactory.createIRI("http://example/bookStore");
+            final BigdataURI price = valueFactory.createIRI("http://example.org/ns#price");
             final BigdataLiteral i42 = valueFactory.createLiteral("42",XSD.INTEGER);
 
             final BigdataStatement[] data = new BigdataStatement[] { //
@@ -1713,13 +1711,13 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
 
             expected.addChild(op);
 
-            final BigdataURI book1 = valueFactory.createURI("http://example/book1");
-            final BigdataURI dcCreator = valueFactory.createURI("http://purl.org/dc/elements/1.1/creator");
-            final BigdataURI dcTitle = valueFactory.createURI("http://purl.org/dc/elements/1.1/title");
+            final BigdataURI book1 = valueFactory.createIRI("http://example/book1");
+            final BigdataURI dcCreator = valueFactory.createIRI("http://purl.org/dc/elements/1.1/creator");
+            final BigdataURI dcTitle = valueFactory.createIRI("http://purl.org/dc/elements/1.1/title");
             final BigdataLiteral label1 = valueFactory.createLiteral("A new book");
             final BigdataLiteral label2 = valueFactory.createLiteral("A.N.Other");
-            final BigdataURI bookstore = valueFactory.createURI("http://example/bookStore");
-            final BigdataURI price = valueFactory.createURI("http://example.org/ns#price");
+            final BigdataURI bookstore = valueFactory.createIRI("http://example/bookStore");
+            final BigdataURI price = valueFactory.createIRI("http://example.org/ns#price");
             final BigdataLiteral i42 = valueFactory.createLiteral("42",XSD.INTEGER);
 
             final BigdataStatement[] data = new BigdataStatement[] { //
@@ -1779,11 +1777,11 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
                 + "INSERT DATA\n"
                 + "{ GRAPH <http://example/bookStore> { <http://example/book1>  dc:title  \"Fundamentals of Compiler Design\" } }";
 
-        final IV book1 = makeIV(valueFactory.createURI("http://example/book1"));
-        final IV dcTitle = makeIV(valueFactory.createURI("http://purl.org/dc/elements/1.1/title"));
+        final IV book1 = makeIV(valueFactory.createIRI("http://example/book1"));
+        final IV dcTitle = makeIV(valueFactory.createIRI("http://purl.org/dc/elements/1.1/title"));
         final IV label1 = makeIV(valueFactory.createLiteral("Fundamentals of Compiler Desing"));
         final IV label2 = makeIV(valueFactory.createLiteral("Fundamentals of Compiler Design"));
-        final IV bookstore = makeIV(valueFactory.createURI("http://example/bookStore"));
+        final IV bookstore = makeIV(valueFactory.createIRI("http://example/bookStore"));
 
         final UpdateRoot expected = new UpdateRoot();
         {
@@ -1874,8 +1872,8 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
                 + "    }\n"//
                 + "}";
         
-        final IV addresses = makeIV(valueFactory.createURI("http://example/addresses"));
-        final IV givenName = makeIV(valueFactory.createURI("http://xmlns.com/foaf/0.1/givenName"));
+        final IV addresses = makeIV(valueFactory.createIRI("http://example/addresses"));
+        final IV givenName = makeIV(valueFactory.createIRI("http://xmlns.com/foaf/0.1/givenName"));
         final IV label1 = makeIV(valueFactory.createLiteral("Bill"));
         final IV label2 = makeIV(valueFactory.createLiteral("William"));
 
@@ -1979,8 +1977,8 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
                 + "    }\n"//
                 + "}";
         
-        final IV addresses = makeIV(valueFactory.createURI("http://example/addresses"));
-        final IV givenName = makeIV(valueFactory.createURI("http://xmlns.com/foaf/0.1/givenName"));
+        final IV addresses = makeIV(valueFactory.createIRI("http://example/addresses"));
+        final IV givenName = makeIV(valueFactory.createIRI("http://xmlns.com/foaf/0.1/givenName"));
         final IV label1 = makeIV(valueFactory.createLiteral("Bill"));
         final IV label2 = makeIV(valueFactory.createLiteral("William"));
 
@@ -2088,9 +2086,9 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
                 + "    }\n"//
                 + "}";
         
-        final IV addresses = makeIV(valueFactory.createURI("http://example/addresses"));
-        final IV addresses2 = makeIV(valueFactory.createURI("http://example/addresses2"));
-        final IV givenName = makeIV(valueFactory.createURI("http://xmlns.com/foaf/0.1/givenName"));
+        final IV addresses = makeIV(valueFactory.createIRI("http://example/addresses"));
+        final IV addresses2 = makeIV(valueFactory.createIRI("http://example/addresses2"));
+        final IV givenName = makeIV(valueFactory.createIRI("http://xmlns.com/foaf/0.1/givenName"));
         final IV label1 = makeIV(valueFactory.createLiteral("Bill"));
         final IV label2 = makeIV(valueFactory.createLiteral("William"));
 
@@ -2204,8 +2202,8 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
                 + "    }\n"//
                 + "}";
         
-        final IV addresses = makeIV(valueFactory.createURI("http://example/addresses"));
-        final IV givenName = makeIV(valueFactory.createURI("http://xmlns.com/foaf/0.1/givenName"));
+        final IV addresses = makeIV(valueFactory.createIRI("http://example/addresses"));
+        final IV givenName = makeIV(valueFactory.createIRI("http://xmlns.com/foaf/0.1/givenName"));
         final IV label1 = makeIV(valueFactory.createLiteral("Bill"));
         final IV label2 = makeIV(valueFactory.createLiteral("William"));
 
@@ -2322,9 +2320,9 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
                 + "    }\n"//
                 + "}";
         
-        final IV addresses = makeIV(valueFactory.createURI("http://example/addresses"));
-        final IV addresses2 = makeIV(valueFactory.createURI("http://example/addresses2"));
-        final IV givenName = makeIV(valueFactory.createURI("http://xmlns.com/foaf/0.1/givenName"));
+        final IV addresses = makeIV(valueFactory.createIRI("http://example/addresses"));
+        final IV addresses2 = makeIV(valueFactory.createIRI("http://example/addresses2"));
+        final IV givenName = makeIV(valueFactory.createIRI("http://xmlns.com/foaf/0.1/givenName"));
         final IV label1 = makeIV(valueFactory.createLiteral("Bill"));
         final IV label2 = makeIV(valueFactory.createLiteral("William"));
 
@@ -2455,8 +2453,8 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
                 + "    }\n"//
                 + "}";
         
-        final IV addresses = makeIV(valueFactory.createURI("http://example/addresses"));
-        final IV givenName = makeIV(valueFactory.createURI("http://xmlns.com/foaf/0.1/givenName"));
+        final IV addresses = makeIV(valueFactory.createIRI("http://example/addresses"));
+        final IV givenName = makeIV(valueFactory.createIRI("http://xmlns.com/foaf/0.1/givenName"));
         final IV label1 = makeIV(valueFactory.createLiteral("Bill"));
         final IV label2 = makeIV(valueFactory.createLiteral("William"));
 
@@ -2585,8 +2583,8 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
                 + "    }\n"//
                 + "}";
         
-        final IV addresses = makeIV(valueFactory.createURI("http://example/addresses"));
-        final IV givenName = makeIV(valueFactory.createURI("http://xmlns.com/foaf/0.1/givenName"));
+        final IV addresses = makeIV(valueFactory.createIRI("http://example/addresses"));
+        final IV givenName = makeIV(valueFactory.createIRI("http://xmlns.com/foaf/0.1/givenName"));
         final IV label1 = makeIV(valueFactory.createLiteral("Bill"));
         final IV label2 = makeIV(valueFactory.createLiteral("William"));
 
@@ -2697,7 +2695,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
                 + "   ?book ?p ?v\n"//
                 + "}";
         
-        final IV dcDate = makeIV(valueFactory.createURI("http://purl.org/dc/elements/1.1/date"));
+        final IV dcDate = makeIV(valueFactory.createIRI("http://purl.org/dc/elements/1.1/date"));
         final IV dateTime = makeIV(valueFactory.createLiteral("1970-01-01T00:00:00-02:00",XSD.DATETIME));
 
         final UpdateRoot expected = new UpdateRoot();
@@ -2775,10 +2773,10 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
                 + "          ?book ?p ?v\n"//
                 + "} }";
         
-        final IV dcDate = makeIV(valueFactory.createURI("http://purl.org/dc/elements/1.1/date"));
+        final IV dcDate = makeIV(valueFactory.createIRI("http://purl.org/dc/elements/1.1/date"));
         final IV dateTime = makeIV(valueFactory.createLiteral("1970-01-01T00:00:00-02:00",XSD.DATETIME));
-        final IV bookstore = makeIV(valueFactory.createURI("http://example/bookStore"));
-        final IV bookstore2 = makeIV(valueFactory.createURI("http://example/bookStore2"));
+        final IV bookstore = makeIV(valueFactory.createIRI("http://example/bookStore"));
+        final IV bookstore2 = makeIV(valueFactory.createIRI("http://example/bookStore2"));
 
         final UpdateRoot expected = new UpdateRoot();
         {
@@ -2850,7 +2848,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
 
         @SuppressWarnings("rawtypes")
         final IV foafName = makeIV(valueFactory
-                .createURI("http://xmlns.com/foaf/0.1/name"));
+                .createIRI("http://xmlns.com/foaf/0.1/name"));
 
         final UpdateRoot expected = new UpdateRoot();
         {
@@ -2894,7 +2892,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
 
         @SuppressWarnings("rawtypes")
         final IV foafName = makeIV(valueFactory
-                .createURI("http://xmlns.com/foaf/0.1/name"));
+                .createIRI("http://xmlns.com/foaf/0.1/name"));
 
         final UpdateRoot expected = new UpdateRoot();
         {
@@ -3012,7 +3010,7 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
 
         @SuppressWarnings("rawtypes")
         final IV foafName = makeIV(valueFactory
-                .createURI("http://xmlns.com/foaf/0.1/name"));
+                .createIRI("http://xmlns.com/foaf/0.1/name"));
 
         final UpdateRoot expected = new UpdateRoot();
         {
@@ -3095,8 +3093,8 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
               + "    }\n"//
               + "}";
       
-      final IV addresses = makeIV(valueFactory.createURI("http://example/addresses"));
-      final IV givenName = makeIV(valueFactory.createURI("http://xmlns.com/foaf/0.1/givenName"));
+      final IV addresses = makeIV(valueFactory.createIRI("http://example/addresses"));
+      final IV givenName = makeIV(valueFactory.createIRI("http://xmlns.com/foaf/0.1/givenName"));
       final IV label1 = makeIV(valueFactory.createLiteral("Bill"));
       final IV label2 = makeIV(valueFactory.createLiteral("William"));
 
@@ -3257,9 +3255,9 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
                 + "}";
 
         final IV addresses = makeIV(valueFactory
-                .createURI("http://example/addresses"));
+                .createIRI("http://example/addresses"));
         final IV givenName = makeIV(valueFactory
-                .createURI("http://xmlns.com/foaf/0.1/givenName"));
+                .createIRI("http://xmlns.com/foaf/0.1/givenName"));
         final IV label1 = makeIV(valueFactory.createLiteral("Bill"));
         final IV label2 = makeIV(valueFactory.createLiteral("William"));
 
@@ -3419,9 +3417,9 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
               + "    }\n"//
               + "}";
       
-      final IV addresses = makeIV(valueFactory.createURI("http://example/addresses"));
-      final IV addresses2 = makeIV(valueFactory.createURI("http://example/addresses2"));
-      final IV givenName = makeIV(valueFactory.createURI("http://xmlns.com/foaf/0.1/givenName"));
+      final IV addresses = makeIV(valueFactory.createIRI("http://example/addresses"));
+      final IV addresses2 = makeIV(valueFactory.createIRI("http://example/addresses2"));
+      final IV givenName = makeIV(valueFactory.createIRI("http://xmlns.com/foaf/0.1/givenName"));
       final IV label1 = makeIV(valueFactory.createLiteral("Bill"));
       final IV label2 = makeIV(valueFactory.createLiteral("William"));
 
@@ -3579,10 +3577,10 @@ public class TestUpdateExprBuilder extends AbstractBigdataExprBuilderTestCase {
                 "}";
 
         @SuppressWarnings("rawtypes")
-        final IV out = makeIV(valueFactory.createURI("http://example/out"));
+        final IV out = makeIV(valueFactory.createIRI("http://example/out"));
 
         @SuppressWarnings("rawtypes")
-        final IV in = makeIV(valueFactory.createURI("http://example/in"));
+        final IV in = makeIV(valueFactory.createIRI("http://example/in"));
 
         final UpdateRoot expected = new UpdateRoot();
         {

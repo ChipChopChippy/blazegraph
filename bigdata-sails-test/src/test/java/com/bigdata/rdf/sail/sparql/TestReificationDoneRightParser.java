@@ -31,10 +31,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.BigdataStatics;
 import com.bigdata.journal.BufferMode;
@@ -78,7 +79,7 @@ import com.bigdata.rdf.vocab.NoVocabulary;
 public class TestReificationDoneRightParser extends
         AbstractBigdataExprBuilderTestCase {
 
-	private static final Logger log = Logger
+	private static final Logger log = LogManager
 			.getLogger(TestReificationDoneRightParser.class);
 	
     /**
@@ -161,13 +162,13 @@ public class TestReificationDoneRightParser extends
 		{
 
 			final IV<?, ?> dcSource = makeIV(valueFactory
-					.createURI("http://purl.org/dc/elements/1.1/source"));
+					.createIRI("http://purl.org/dc/elements/1.1/source"));
 
 			final IV<?, ?> bought = makeIV(valueFactory
-					.createURI("http://example.com/bought"));
+					.createIRI("http://example.com/bought"));
 
 			final IV<?, ?> sybase = makeIV(valueFactory
-					.createURI("http://example.com/sybase"));
+					.createIRI("http://example.com/sybase"));
 
 			{
             final Map<String, String> prefixDecls = new LinkedHashMap<String, String>(PrefixDeclProcessor.defaultDecls);
@@ -306,16 +307,16 @@ public class TestReificationDoneRightParser extends
         {
 
 			final IV<?, ?> dcSource = makeIV(valueFactory
-					.createURI("http://purl.org/dc/elements/1.1/source"));
+					.createIRI("http://purl.org/dc/elements/1.1/source"));
 
 			final IV<?, ?> SAP = makeIV(valueFactory
-					.createURI("http://example.com/SAP"));
+					.createIRI("http://example.com/SAP"));
 
 			final IV<?, ?> bought = makeIV(valueFactory
-					.createURI("http://example.com/bought"));
+					.createIRI("http://example.com/bought"));
 
 			final IV<?, ?> sybase = makeIV(valueFactory
-					.createURI("http://example.com/sybase"));
+					.createIRI("http://example.com/sybase"));
 
             {
                final Map<String, String> prefixDecls = new LinkedHashMap<String, String>(PrefixDeclProcessor.defaultDecls);
@@ -403,13 +404,13 @@ public class TestReificationDoneRightParser extends
 //			sid2.setSID(true);
 			
 			final IV<?, ?> b = makeIV(valueFactory
-					.createURI("http://example.com/b"));
+					.createIRI("http://example.com/b"));
 
 			final IV<?, ?> c = makeIV(valueFactory
-					.createURI("http://example.com/c"));
+					.createIRI("http://example.com/c"));
 
 			final IV<?, ?> d = makeIV(valueFactory
-					.createURI("http://example.com/d"));
+					.createIRI("http://example.com/d"));
 
 			{
             final Map<String, String> prefixDecls = new LinkedHashMap<String, String>(PrefixDeclProcessor.defaultDecls);
@@ -492,13 +493,13 @@ public class TestReificationDoneRightParser extends
 //			sid2.setSID(true);
 			
 			final IV<?, ?> b = makeIV(valueFactory
-					.createURI("http://example.com/b"));
+					.createIRI("http://example.com/b"));
 
 			final IV<?, ?> c = makeIV(valueFactory
-					.createURI("http://example.com/c"));
+					.createIRI("http://example.com/c"));
 
 			final IV<?, ?> d = makeIV(valueFactory
-					.createURI("http://example.com/d"));
+					.createIRI("http://example.com/d"));
 
 			{
             final Map<String, String> prefixDecls = new LinkedHashMap<String, String>(PrefixDeclProcessor.defaultDecls);
@@ -584,16 +585,16 @@ public class TestReificationDoneRightParser extends
 //			sid.setSID(true);
 			
 			final IV<?, ?> b = makeIV(valueFactory
-					.createURI("http://example.com/b"));
+					.createIRI("http://example.com/b"));
 
 			final IV<?, ?> c = makeIV(valueFactory
-					.createURI("http://example.com/c"));
+					.createIRI("http://example.com/c"));
 
 			final IV<?, ?> d = makeIV(valueFactory
-					.createURI("http://example.com/d"));
+					.createIRI("http://example.com/d"));
 
 			final IV<?, ?> e = makeIV(valueFactory
-					.createURI("http://example.com/e"));
+					.createIRI("http://example.com/e"));
 
 			{
             final Map<String, String> prefixDecls = new LinkedHashMap<String, String>(PrefixDeclProcessor.defaultDecls);
@@ -921,9 +922,9 @@ public class TestReificationDoneRightParser extends
 
             expected.addChild(op);
 
-            final BigdataURI s = valueFactory.createURI("http://example/s");
-            final BigdataURI p = valueFactory.createURI("http://example/p");
-            final BigdataURI order = valueFactory.createURI("http://example/order");
+            final BigdataURI s = valueFactory.createIRI("http://example/s");
+            final BigdataURI p = valueFactory.createIRI("http://example/p");
+            final BigdataURI order = valueFactory.createIRI("http://example/order");
             final BigdataLiteral d = valueFactory.createLiteral("d");
             final BigdataLiteral five = valueFactory.createLiteral(5);
 

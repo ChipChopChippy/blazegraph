@@ -29,16 +29,16 @@ package com.bigdata.rdf.sail;
 import java.net.URL;
 import java.util.Collection;
 import java.util.LinkedList;
-import org.openrdf.model.BNode;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.BNodeImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.algebra.TupleExpr;
-import org.openrdf.repository.sail.SailTupleQuery;
-import org.openrdf.rio.RDFFormat;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleBNode;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.algebra.TupleExpr;
+import org.eclipse.rdf4j.repository.sail.SailTupleQuery;
+import org.eclipse.rdf4j.rio.RDFFormat;
 
 /**
  * Unit tests the quads aspects of the {@link BigdataSail} implementation.
@@ -72,27 +72,27 @@ public class TestJoinScope extends QuadsTestCase {
     /**
      * foaf:name
      */
-    final URI FOAF_NAME = new URIImpl(FOAF+"name"); 
+    final IRI FOAF_NAME = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(FOAF+"name"); 
     
     /**
      * foaf:mbox
      */
-    final URI FOAF_MBOX = new URIImpl(FOAF+"mbox"); 
+    final IRI FOAF_MBOX = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(FOAF+"mbox"); 
     
     /**
      * foaf:nick
      */
-    final URI FOAF_NICK = new URIImpl(FOAF+"nick"); 
+    final IRI FOAF_NICK = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(FOAF+"nick"); 
     
     /**
      * foaf:PersonalProfileDocument
      */
-    final URI FOAF_PPD = new URIImpl(FOAF+"PersonalProfileDocument"); 
+    final IRI FOAF_PPD = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(FOAF+"PersonalProfileDocument"); 
     
     /**
      * foaf:knows
      */
-    final URI FOAF_KNOWS = new URIImpl(FOAF+"knows"); 
+    final IRI FOAF_KNOWS = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(FOAF+"knows"); 
     
     /**
      * The dc: namespace.
@@ -102,13 +102,13 @@ public class TestJoinScope extends QuadsTestCase {
     /**
      * dc:publisher
      */
-    final URI DC_PUBLISHER = new URIImpl(DC+"publisher"); 
+    final IRI DC_PUBLISHER = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(DC+"publisher"); 
     
     
     public void testJoinScope() throws Exception {
 
         final BigdataSail sail = getSail();
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         final BigdataSailRepositoryConnection cxn = 
             (BigdataSailRepositoryConnection) repo.getConnection();
@@ -116,15 +116,15 @@ public class TestJoinScope extends QuadsTestCase {
         
         try {
     
-            final BNode a = new BNodeImpl("_:a");
-            final BNode b = new BNodeImpl("_:b");
-            final URI graphA = new URIImpl("http://www.bigdata.com/rdf#graphA");
-            final URI graphB = new URIImpl("http://www.bigdata.com/rdf#graphB");
-            final URI s = new URIImpl("http://www.bigdata.com/rdf#s");
-            final URI p1 = new URIImpl("http://www.bigdata.com/rdf#p1");
-            final URI o1 = new URIImpl("http://www.bigdata.com/rdf#o1");
-            final URI p2 = new URIImpl("http://www.bigdata.com/rdf#p2");
-            final URI o2 = new URIImpl("http://www.bigdata.com/rdf#o2");
+            final BNode a = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createBNode("_:a");
+            final BNode b = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createBNode("_:b");
+            final IRI graphA = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf#graphA");
+            final IRI graphB = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf#graphB");
+            final IRI s = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf#s");
+            final IRI p1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf#p1");
+            final IRI o1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf#o1");
+            final IRI p2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf#p2");
+            final IRI o2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf#o2");
 
             URL url = new URL("file:/C:/DOCUME~1/mike/LOCALS~1/Temp/sparql2303/testcases-dawg/data-r2/algebra/var-scope-join-1.ttl");
             cxn.add(url, "", RDFFormat.TURTLE);

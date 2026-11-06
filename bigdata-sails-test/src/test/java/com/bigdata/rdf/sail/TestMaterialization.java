@@ -25,22 +25,23 @@ package com.bigdata.rdf.sail;
 
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.sail.SailTupleQuery;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.sail.SailTupleQuery;
 
 import com.bigdata.rdf.store.BD;
 
 public class TestMaterialization extends ProxyBigdataSailTestCase {
 
-    protected static final Logger log = Logger.getLogger(TestMaterialization.class);
+    protected static final Logger log = LogManager.getLogger(TestMaterialization.class);
 
     protected static final boolean INFO = log.isInfoEnabled();
     
@@ -72,7 +73,7 @@ public class TestMaterialization extends ProxyBigdataSailTestCase {
         
       final BigdataSail sail = getSail();
       try {
-      sail.initialize();
+      sail.init();
       final BigdataSailRepository repo = new BigdataSailRepository(sail);
       
       final RepositoryConnection cxn = repo.getConnection();
@@ -85,7 +86,7 @@ public class TestMaterialization extends ProxyBigdataSailTestCase {
           /*
            * Create some terms.
            */
-          final URI X = vf.createURI(BD.NAMESPACE + "X");
+          final IRI X = vf.createIRI(BD.NAMESPACE + "X");
           final Literal label = vf.createLiteral("John");
           
           /*
@@ -127,12 +128,12 @@ public class TestMaterialization extends ProxyBigdataSailTestCase {
               
 //              final Collection<BindingSet> answer = new LinkedList<BindingSet>();
 //              answer.add(createBindingSet(
-//                      new BindingImpl("a", paul),
-//                      new BindingImpl("b", mary)
+//                      new SimpleBinding("a", paul),
+//                      new SimpleBinding("b", mary)
 //                      ));
 //              answer.add(createBindingSet(
-//                      new BindingImpl("a", brad),
-//                      new BindingImpl("b", john)
+//                      new SimpleBinding("a", brad),
+//                      new SimpleBinding("b", john)
 //                      ));
 //
 //              final TupleQueryResult result = tupleQuery.evaluate();
@@ -154,7 +155,7 @@ public class TestMaterialization extends ProxyBigdataSailTestCase {
         
         final BigdataSail sail = getSail();
         try {
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         
         final RepositoryConnection cxn = repo.getConnection();
@@ -167,7 +168,7 @@ public class TestMaterialization extends ProxyBigdataSailTestCase {
             /*
              * Create some terms.
              */
-            final URI X = vf.createURI(BD.NAMESPACE + "X");
+            final IRI X = vf.createIRI(BD.NAMESPACE + "X");
             final Literal label = vf.createLiteral("John");
             
             /*
@@ -212,12 +213,12 @@ public class TestMaterialization extends ProxyBigdataSailTestCase {
                 
 //                final Collection<BindingSet> answer = new LinkedList<BindingSet>();
 //                answer.add(createBindingSet(
-//                        new BindingImpl("a", paul),
-//                        new BindingImpl("b", mary)
+//                        new SimpleBinding("a", paul),
+//                        new SimpleBinding("b", mary)
 //                        ));
 //                answer.add(createBindingSet(
-//                        new BindingImpl("a", brad),
-//                        new BindingImpl("b", john)
+//                        new SimpleBinding("a", brad),
+//                        new SimpleBinding("b", john)
 //                        ));
   //
 //                final TupleQueryResult result = tupleQuery.evaluate();
@@ -239,7 +240,7 @@ public class TestMaterialization extends ProxyBigdataSailTestCase {
         
         final BigdataSail sail = getSail();
         try {
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         
         final RepositoryConnection cxn = repo.getConnection();
@@ -252,7 +253,7 @@ public class TestMaterialization extends ProxyBigdataSailTestCase {
             /*
              * Create some terms.
              */
-            final URI X = vf.createURI(BD.NAMESPACE + "X");
+            final IRI X = vf.createIRI(BD.NAMESPACE + "X");
             final Literal label = vf.createLiteral("John");
             
             /*
@@ -297,12 +298,12 @@ public class TestMaterialization extends ProxyBigdataSailTestCase {
                 
 //                final Collection<BindingSet> answer = new LinkedList<BindingSet>();
 //                answer.add(createBindingSet(
-//                        new BindingImpl("a", paul),
-//                        new BindingImpl("b", mary)
+//                        new SimpleBinding("a", paul),
+//                        new SimpleBinding("b", mary)
 //                        ));
 //                answer.add(createBindingSet(
-//                        new BindingImpl("a", brad),
-//                        new BindingImpl("b", john)
+//                        new SimpleBinding("a", brad),
+//                        new SimpleBinding("b", john)
 //                        ));
   //
 //                final TupleQueryResult result = tupleQuery.evaluate();

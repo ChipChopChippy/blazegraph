@@ -5,8 +5,6 @@
  */
 package com.bigdata.rdf.sail.sparql;
 
-import info.aduna.text.StringUtil;
-
 /**
  * SPARQL-related utility methods.
  * 
@@ -20,14 +18,14 @@ public class SPARQLUtil {
 	 * query.
 	 */
 	public static String encodeString(String s) {
-		s = StringUtil.gsub("\\", "\\\\", s);
-		s = StringUtil.gsub("\t", "\\t", s);
-		s = StringUtil.gsub("\n", "\\n", s);
-		s = StringUtil.gsub("\r", "\\r", s);
-		s = StringUtil.gsub("\b", "\\b", s);
-		s = StringUtil.gsub("\f", "\\f", s);
-		s = StringUtil.gsub("\"", "\\\"", s);
-		s = StringUtil.gsub("'", "\\'", s);
+		s = s.replace("\\", "\\\\");
+		s = s.replace("\t", "\\t");
+		s = s.replace("\n", "\\n");
+		s = s.replace("\r", "\\r");
+		s = s.replace("\b", "\\b");
+		s = s.replace("\f", "\\f");
+		s = s.replace("\"", "\\\"");
+		s = s.replace("'", "\\'");
 		return s;
 	}
 

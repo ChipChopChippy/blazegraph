@@ -268,7 +268,7 @@ public class TestSAMPLE extends TestCase2 {
      */
 //    public void test_sample_with_errors() {
 //        
-//        final BigdataValueFactory f = BigdataValueFactoryImpl.getInstance(getName());
+//        final BigdataValueFactory f = BigdataSimpleValueFactory.getInstance(getName());
 //        
 //        final IVariable<IV> org = Var.var("org");
 //        final IVariable<IV> auth = Var.var("auth");

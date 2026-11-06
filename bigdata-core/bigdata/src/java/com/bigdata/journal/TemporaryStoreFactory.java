@@ -35,8 +35,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.cache.ConcurrentWeakValueCache;
 import com.bigdata.rawstore.WormAddressManager;
 import com.bigdata.util.Bytes;
@@ -51,7 +52,7 @@ import com.bigdata.util.InnerCause;
  */
 public class TemporaryStoreFactory {
 
-    private static final transient Logger log = Logger
+    private static final transient Logger log = LogManager
             .getLogger(TemporaryStoreFactory.class);
     
     /**

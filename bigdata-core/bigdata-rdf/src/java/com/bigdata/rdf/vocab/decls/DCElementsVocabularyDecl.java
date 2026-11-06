@@ -31,8 +31,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.rdf.vocab.VocabularyDecl;
 
@@ -47,24 +47,24 @@ import com.bigdata.rdf.vocab.VocabularyDecl;
 public class DCElementsVocabularyDecl implements VocabularyDecl {
 
     public static final String NAMESPACE = "http://purl.org/dc/elements/1.1/";
-    public static final URI title = new URIImpl(NAMESPACE + "title");
-    public static final URI creator = new URIImpl(NAMESPACE + "creator");
-    public static final URI subject = new URIImpl(NAMESPACE + "subject");
-    public static final URI description = new URIImpl(NAMESPACE + "description");
-    public static final URI publisher = new URIImpl(NAMESPACE + "publisher");
-    public static final URI contributor = new URIImpl(NAMESPACE + "contributor");
-    public static final URI date = new URIImpl(NAMESPACE + "date");
-    public static final URI type = new URIImpl(NAMESPACE + "type");
-    public static final URI format = new URIImpl(NAMESPACE + "format");
-    public static final URI identifier = new URIImpl(NAMESPACE + "identifier");
-    public static final URI source = new URIImpl(NAMESPACE + "source");
-    public static final URI language = new URIImpl(NAMESPACE + "language");
-    public static final URI relation = new URIImpl(NAMESPACE + "relation");
-    public static final URI coverage = new URIImpl(NAMESPACE + "coverage");
-    public static final URI rights = new URIImpl(NAMESPACE + "rights");
+    public static final IRI title = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "title");
+    public static final IRI creator = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "creator");
+    public static final IRI subject = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "subject");
+    public static final IRI description = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "description");
+    public static final IRI publisher = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "publisher");
+    public static final IRI contributor = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "contributor");
+    public static final IRI date = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "date");
+    public static final IRI type = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "type");
+    public static final IRI format = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "format");
+    public static final IRI identifier = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "identifier");
+    public static final IRI source = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "source");
+    public static final IRI language = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "language");
+    public static final IRI relation = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "relation");
+    public static final IRI coverage = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "coverage");
+    public static final IRI rights = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "rights");
         
-    static private final URI[] uris = new URI[]{
-            new URIImpl(NAMESPACE),//
+    static private final IRI[] uris = new IRI[]{
+            org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE),//
             title, creator, subject, description, publisher, contributor, date,
             type, format, identifier, source, language, relation, coverage,
             rights
@@ -73,7 +73,7 @@ public class DCElementsVocabularyDecl implements VocabularyDecl {
     public DCElementsVocabularyDecl() {
     }
     
-    public Iterator<URI> values() {
+    public Iterator<IRI> values() {
 
         return Collections.unmodifiableList(Arrays.asList(uris)).iterator();
         

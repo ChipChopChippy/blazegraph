@@ -29,8 +29,9 @@ package com.bigdata.rdf.sparql.ast.cache;
 
 import java.util.WeakHashMap;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.engine.QueryEngine;
 import com.bigdata.journal.AbstractJournal;
 import com.bigdata.rdf.sparql.ast.QueryHints;
@@ -43,7 +44,7 @@ import com.bigdata.rdf.sparql.ast.QueryHints;
  */
 public class CacheConnectionFactory {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(CacheConnectionFactory.class);
 
     /**

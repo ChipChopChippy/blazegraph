@@ -40,13 +40,15 @@ import junit.extensions.proxy.ProxyTestSuite;
 import junit.framework.Test;
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.server.Server;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParseException;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParseException;
+import org.eclipse.rdf4j.rio.helpers.XMLParserSettings;
 
 import com.bigdata.BigdataStatics;
 import com.bigdata.gom.om.IObjectManager;
@@ -74,7 +76,7 @@ import com.bigdata.util.config.NicUtil;
  */
 public class RemoteGOMTestCase extends TestCase implements IGOMProxy  {
 
-    private static final Logger log = Logger.getLogger(RemoteGOMTestCase.class);
+    private static final Logger log = LogManager.getLogger(RemoteGOMTestCase.class);
 
     protected Server m_server;
 
@@ -161,7 +163,7 @@ public class RemoteGOMTestCase extends TestCase implements IGOMProxy  {
         // instantiate a sail and a Sesame repository
         final BigdataSail sail = new BigdataSail(getProperties());
         repo = new BigdataSailRepository(sail);
-        repo.initialize();
+        repo.init();
 
         //m_cxn = repo.getConnection();
         //m_cxn.setAutoCommit(false);
@@ -284,6 +286,8 @@ public class RemoteGOMTestCase extends TestCase implements IGOMProxy  {
             // view ObjectManager
             final BigdataSailRepositoryConnection m_cxn = repo.getConnection();
             try {
+                m_cxn.getParserConfig().set(
+                        XMLParserSettings.DISALLOW_DOCTYPE_DECL, false);
                 m_cxn.setAutoCommit(false);
                 m_cxn.add(reader, "kb", rdfFormat);
                 m_cxn.commit();

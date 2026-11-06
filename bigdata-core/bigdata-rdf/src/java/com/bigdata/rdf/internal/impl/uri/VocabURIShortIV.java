@@ -26,8 +26,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package com.bigdata.rdf.internal.impl.uri;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.rdf.internal.DTE;
 import com.bigdata.rdf.internal.IV;
@@ -39,16 +39,16 @@ import com.bigdata.rdf.model.BigdataValueFactory;
 import com.bigdata.rdf.vocab.Vocabulary;
 
 /**
- * A fully inlined representation of a URI based on a <code>short</code> code.
- * The flags byte looks like: <code>VTE=URI, inline=true, extension=false,
+ * A fully inlined representation of a IRI based on a <code>short</code> code.
+ * The flags byte looks like: <code>VTE=IRI, inline=true, extension=false,
  * DTE=XSDShort</code>. It is followed by an <code>unsigned short</code> value
- * which is the index of the URI in the {@link Vocabulary} class for the triple
+ * which is the index of the IRI in the {@link Vocabulary} class for the triple
  * store.
  * 
  * @author thompsonbry
  */
 public class VocabURIShortIV<V extends BigdataURI> extends AbstractInlineIV<V, Short> 
-		implements URI {
+		implements IRI {
 
 	/**
 	 * 
@@ -72,7 +72,7 @@ public class VocabURIShortIV<V extends BigdataURI> extends AbstractInlineIV<V, S
 
 	public VocabURIShortIV(final short value) {
 
-		super(VTE.URI, DTE.XSDShort);
+		super(VTE.IRI, DTE.XSDShort);
 
 		this.value = value;
 
@@ -159,7 +159,7 @@ public class VocabURIShortIV<V extends BigdataURI> extends AbstractInlineIV<V, S
 	
 	/**
 	 * Because we only store an index into the vocabulary, we need the
-	 * materialized URI to answer the URI interface methods.
+	 * materialized IRI to answer the IRI interface methods.
 	 */
 	@Override
 	public boolean needsMaterialization() {
@@ -179,7 +179,7 @@ public class VocabURIShortIV<V extends BigdataURI> extends AbstractInlineIV<V, S
 	}
 
 	/**
-	 * Implements {@link URI#getLocalName()}.
+	 * Implements {@link IRI#getLocalName()}.
 	 */
 	@Override
 	public String getLocalName() {
@@ -189,7 +189,7 @@ public class VocabURIShortIV<V extends BigdataURI> extends AbstractInlineIV<V, S
 	}
 
 	/**
-	 * Implements {@link URI#getNamespace()}.
+	 * Implements {@link IRI#getNamespace()}.
 	 */
 	@Override
 	public String getNamespace() {

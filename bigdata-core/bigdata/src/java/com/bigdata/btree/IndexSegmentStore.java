@@ -38,8 +38,9 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.counters.CounterSet;
 import com.bigdata.counters.Instrument;
 import com.bigdata.counters.OneShotInstrument;
@@ -72,7 +73,7 @@ public class IndexSegmentStore extends AbstractRawStore {
     /**
      * Logger.
      */
-    protected static final Logger log = Logger
+    protected static final Logger log = LogManager
             .getLogger(IndexSegmentStore.class);
 
     /**

@@ -42,19 +42,20 @@ import java.util.Properties;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParseException;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.RDFParserFactory;
-import org.openrdf.rio.RDFParserRegistry;
-import org.openrdf.rio.RDFParser.DatatypeHandling;
-import org.openrdf.rio.helpers.RDFHandlerBase;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFParseException;
+import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.RDFParserFactory;
+import org.eclipse.rdf4j.rio.RDFParserRegistry;
+import com.bigdata.rdf.rio.DatatypeHandling;
+import org.eclipse.rdf4j.rio.helpers.AbstractRDFHandler;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpContext;
@@ -120,10 +121,10 @@ import com.bigdata.util.Bytes;
  *          <p>
  *          If we can make the SOURCE_URI a value expression, then we could flow
  *          solutions into the LOAD operation which would be the bindings for
- *          the source URI. Very nice! Then we could hash partition the LOAD
+ *          the source IRI. Very nice! Then we could hash partition the LOAD
  *          operator across a cluster and do a parallel load very easily. If the
  *          source for those solutions was the parse of a single RDF file (or
- *          streamed URI) containing the files to be loaded then we could also
+ *          streamed IRI) containing the files to be loaded then we could also
  *          gain the indirection necessary to load large numbers of files in
  *          parallel on a cluster.
  * 
@@ -156,7 +157,7 @@ import com.bigdata.util.Bytes;
  */
 public class ParseOp extends PipelineOp {
 
-    private static final transient Logger log = Logger.getLogger(ParseOp.class);
+    private static final transient Logger log = LogManager.getLogger(ParseOp.class);
 
     /**
      * 
@@ -183,7 +184,7 @@ public class ParseOp extends PipelineOp {
         String SOURCE_URI = ParseOp.class.getName() + ".sourceUri";
 
         /**
-         * The base URI for that data source (defaults to the
+         * The base IRI for that data source (defaults to the
          * {@link #SOURCE_URI}).
          */
         String BASE_URI = ParseOp.class.getName() + ".baseUri";
@@ -298,10 +299,10 @@ public class ParseOp extends PipelineOp {
         private final BOpContext<IBindingSet> context;
         private final ParserStats stats;
         
-        private final URI sourceUri;
+        private final IRI sourceUri;
         private final String uriStr;
         private final String baseUri;
-        private final URI targetUri;
+        private final IRI targetUri;
         
         /**
          * When true, attempt to resolve the resource against CLASSPATH.
@@ -452,13 +453,13 @@ public class ParseOp extends PipelineOp {
 
             this.stats = (ParserStats) context.getStats();
             
-            this.sourceUri = (URI) op
+            this.sourceUri = (IRI) op
                     .getRequiredProperty(Annotations.SOURCE_URI);
 
-            // String value of that URI.
+            // String value of that IRI.
             this.uriStr = sourceUri.stringValue();
             
-            // base URI defaults to the source URI
+            // base IRI defaults to the source IRI
             this.baseUri = op.getProperty(Annotations.BASE_URI,
                     sourceUri.stringValue());
 
@@ -484,7 +485,7 @@ public class ParseOp extends PipelineOp {
              * BigdataURI from the value factory for the target database - the
              * same factory that is used by the parser.
              */
-            this.targetUri = (URI) database.asValue((URI) op
+            this.targetUri = (IRI) database.asValue((IRI) op
                     .getProperty(Annotations.TARGET_URI));
 
             this.chunkCapacity = op.getChunkCapacity();
@@ -493,7 +494,7 @@ public class ParseOp extends PipelineOp {
              * Note: RDFFormat is not Serializable, so this annotation must be
              * the format name rather than the RDFFormat instance.
              */
-            this.fallback = RDFFormat.valueOf(op.getProperty(
+            this.fallback = com.bigdata.rdf.rio.RDF4JFormatUtil.valueOf(op.getProperty(
                     Annotations.FALLBACK, Annotations.DEFAULT_FALLBACK));
 
             this.stripContext = op.getProperty(Annotations.STRIP_CONTEXT,
@@ -610,7 +611,7 @@ public class ParseOp extends PipelineOp {
                  * The expected format based on the file name component of the
                  * URL.
                  */
-                fmt = RDFFormat.forFileName(uriStr, fallback);
+                fmt = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(uriStr, fallback);
                 
                 String contentEncoding = null;
                 
@@ -672,7 +673,7 @@ public class ParseOp extends PipelineOp {
                             final StringBuilder sb = new StringBuilder();
 
                             final List<String> acceptParams = RDFFormat
-                                    .getAcceptParams(RDFFormat.values(),
+                                    .getAcceptParams(RDFParserRegistry.getInstance().getKeys(),
                                             quads/* requireContext */, fmt/* preferredRDFFormat */);
 
                             for (String acceptParam : acceptParams) {
@@ -714,7 +715,7 @@ public class ParseOp extends PipelineOp {
                                 conn.getContentType()).getMimeType();
 
                         // Figure out the RDFFormat from that.
-                        fmt = RDFFormat.forMIMEType(mimeType, fallback);
+                        fmt = com.bigdata.rdf.rio.RDF4JFormatUtil.forMIMEType(mimeType, fallback);
                         
                         contentEncoding = conn2.getContentEncoding();
                         
@@ -787,11 +788,11 @@ public class ParseOp extends PipelineOp {
          * @throws RDFParseException 
          */
         private void parse(final Reader source, final String baseURL,
-                final RDFFormat fmt, final URI defaultGraph
+                final RDFFormat fmt, final IRI defaultGraph
                 ) throws RDFParseException, RDFHandlerException, IOException {
 
             final RDFParserFactory rdfParserFactory = RDFParserRegistry
-                    .getInstance().get(fmt);
+                    .getInstance().get(fmt).orElse(null);
 
             if (rdfParserFactory == null) {
 
@@ -803,10 +804,10 @@ public class ParseOp extends PipelineOp {
 
             final RDFParser rdfParser = rdfParserFactory.getParser();
             rdfParser.setValueFactory(database.getValueFactory());
-            rdfParser.setVerifyData(parserOptions.getVerifyData());
-            rdfParser.setStopAtFirstError(parserOptions.getStopAtFirstError());
-            rdfParser.setDatatypeHandling(parserOptions.getDatatypeHandling());
-            rdfParser.setPreserveBNodeIDs(parserOptions.getPreserveBNodeIDs());
+            com.bigdata.rdf.rio.RDFParserOptions.setVerifyData(rdfParser, parserOptions.getVerifyData());
+            
+            com.bigdata.rdf.rio.RDFParserOptions.setDatatypeHandling(rdfParser, parserOptions.getDatatypeHandling());
+            com.bigdata.rdf.rio.RDFParserOptions.setPreserveBNodeIDs(rdfParser, parserOptions.getPreserveBNodeIDs());
 
             /*
              * Note: The vector size should be pretty big for this. 100k might
@@ -830,7 +831,7 @@ public class ParseOp extends PipelineOp {
         /**
          * Helper class adds statements to the sail as they are visited by a parser.
          */
-        private class AddStatementHandler extends RDFHandlerBase {
+        private class AddStatementHandler extends AbstractRDFHandler {
 
             private final UnsyncLocalOutputBuffer<IBindingSet> unsyncBuffer;
 

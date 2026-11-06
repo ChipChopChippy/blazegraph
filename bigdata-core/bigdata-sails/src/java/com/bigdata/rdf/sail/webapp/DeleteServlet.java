@@ -32,22 +32,23 @@ import java.util.Set;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicLong;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.RDFParserFactory;
-import org.openrdf.rio.RDFParserRegistry;
-import org.openrdf.rio.helpers.RDFHandlerBase;
-import org.openrdf.sail.SailException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.RDFParserFactory;
+import org.eclipse.rdf4j.rio.RDFParserRegistry;
+import org.eclipse.rdf4j.rio.helpers.AbstractRDFHandler;
+import org.eclipse.rdf4j.sail.SailException;
 
 import com.bigdata.journal.ITx;
 import com.bigdata.rdf.sail.BigdataSail.BigdataSailConnection;
@@ -70,7 +71,7 @@ public class DeleteServlet extends BigdataRDFServlet {
      */
     private static final long serialVersionUID = 1L;
 
-    static private final transient Logger log = Logger
+    static private final transient Logger log = LogManager
             .getLogger(DeleteServlet.class);
 
     /**
@@ -215,7 +216,7 @@ public class DeleteServlet extends BigdataRDFServlet {
          * @param timestamp
          *            The timestamp used to obtain a mutable connection.
          * @param baseURI
-         *            The base URI for the operation.
+         *            The base IRI for the operation.
          * @param bindings 
          */
         public DeleteWithQuerySteamingTask(final HttpServletRequest req,
@@ -317,19 +318,19 @@ public class DeleteServlet extends BigdataRDFServlet {
                   }
 
                   final RDFParserFactory factory = RDFParserRegistry
-                        .getInstance().get(format);
+                        .getInstance().get(format).orElse(null);
 
                   final RDFParser rdfParser = factory.getParser();
 
                   rdfParser.setValueFactory(conn.getTripleStore()
                         .getValueFactory());
 
-                  rdfParser.setVerifyData(false);
+                  com.bigdata.rdf.rio.RDFParserOptions.setVerifyData(rdfParser, false);
 
-                  rdfParser.setStopAtFirstError(true);
+                  
 
-                  rdfParser
-                        .setDatatypeHandling(RDFParser.DatatypeHandling.IGNORE);
+                  com.bigdata.rdf.rio.RDFParserOptions.setDatatypeHandling(
+                        rdfParser, com.bigdata.rdf.rio.DatatypeHandling.IGNORE);
 
                   rdfParser.setRDFHandler(new RemoveStatementHandler(conn, //
                         nmodified /*, defaultDeleteContext*/));
@@ -429,7 +430,7 @@ public class DeleteServlet extends BigdataRDFServlet {
        * @param timestamp
        *           The timestamp used to obtain a mutable connection.
        * @param baseURI
-       *           The base URI for the operation.
+       *           The base IRI for the operation.
        */
       public DeleteWithQueryMaterializedTask(final HttpServletRequest req,
             final HttpServletResponse resp, final String namespace,
@@ -517,18 +518,18 @@ public class DeleteServlet extends BigdataRDFServlet {
                }
 
                final RDFParserFactory factory = RDFParserRegistry.getInstance()
-                     .get(format);
+                     .get(format).orElse(null);
 
                final RDFParser rdfParser = factory.getParser();
 
                rdfParser.setValueFactory(conn.getTripleStore()
                      .getValueFactory());
 
-               rdfParser.setVerifyData(false);
+               com.bigdata.rdf.rio.RDFParserOptions.setVerifyData(rdfParser, false);
 
-               rdfParser.setStopAtFirstError(true);
+               
 
-               rdfParser.setDatatypeHandling(RDFParser.DatatypeHandling.IGNORE);
+               com.bigdata.rdf.rio.RDFParserOptions.setDatatypeHandling(rdfParser, com.bigdata.rdf.rio.DatatypeHandling.IGNORE);
 
                final BufferStatementHandler buffer = new BufferStatementHandler(conn, //
                     nmodified /*, defaultDeleteContext*/);
@@ -656,7 +657,7 @@ public class DeleteServlet extends BigdataRDFServlet {
          * UpdateServlet fails to parse MIMEType when doing conneg. </a>
          */
 
-        final RDFFormat format = RDFFormat.forMIMEType(new MiniMime(
+        final RDFFormat format = com.bigdata.rdf.rio.RDF4JFormatUtil.forMIMEType(new MiniMime(
                 contentType).getMimeType());
 
         if (format == null) {
@@ -669,7 +670,7 @@ public class DeleteServlet extends BigdataRDFServlet {
         }
 
         final RDFParserFactory rdfParserFactory = RDFParserRegistry
-                .getInstance().get(format);
+                .getInstance().get(format).orElse(null);
 
         if (rdfParserFactory == null) {
 
@@ -731,7 +732,7 @@ public class DeleteServlet extends BigdataRDFServlet {
          * @param timestamp
          *            The timestamp used to obtain a mutable connection.
          * @param baseURI
-         *            The base URI for the operation.
+         *            The base IRI for the operation.
          * @param defaultContext
          *            The context(s) for triples without an explicit named graph
          *            when the KB instance is operating in a quads mode.
@@ -788,12 +789,12 @@ public class DeleteServlet extends BigdataRDFServlet {
                 rdfParser.setValueFactory(conn.getTripleStore()
                         .getValueFactory());
 
-                rdfParser.setVerifyData(true);
+                com.bigdata.rdf.rio.RDFParserOptions.setVerifyData(rdfParser, true);
 
-                rdfParser.setStopAtFirstError(true);
+                
 
-                rdfParser
-                        .setDatatypeHandling(RDFParser.DatatypeHandling.IGNORE);
+                com.bigdata.rdf.rio.RDFParserOptions.setDatatypeHandling(
+                       rdfParser, com.bigdata.rdf.rio.DatatypeHandling.IGNORE);
 
                 rdfParser.setRDFHandler(new RemoveStatementHandler(conn, //
                         nmodified, defaultContext));
@@ -846,7 +847,7 @@ public class DeleteServlet extends BigdataRDFServlet {
    /**
     * Helper class buffers statements as they are visited by the parser.
     */
-   static class BufferStatementHandler extends RDFHandlerBase {
+   static class BufferStatementHandler extends AbstractRDFHandler {
 
       private final BigdataSailConnection conn;
       private final AtomicLong nmodified;
@@ -911,7 +912,7 @@ public class DeleteServlet extends BigdataRDFServlet {
     /**
      * Helper class removes statements from the sail as they are visited by a parser.
      */
-    static class RemoveStatementHandler extends RDFHandlerBase {
+    static class RemoveStatementHandler extends AbstractRDFHandler {
 
         private final BigdataSailConnection conn;
         private final AtomicLong nmodified;
@@ -976,7 +977,7 @@ public class DeleteServlet extends BigdataRDFServlet {
         final boolean suppressTruthMaintenance = getBooleanValue(req, QueryServlet.ATTR_TRUTH_MAINTENANCE, false);
 
         final Resource s;
-        final URI p;
+        final IRI p;
         final Value o;
         final Resource[] c;
         try {
@@ -1016,7 +1017,7 @@ public class DeleteServlet extends BigdataRDFServlet {
     private static class DeleteWithAccessPathTask extends AbstractRestApiTask<Void> {
 
         private Resource s;
-        private URI p;
+        private IRI p;
         private final Value o;
         private final Resource[] c;
         private final boolean suppressTruthMaintenance;
@@ -1028,7 +1029,7 @@ public class DeleteServlet extends BigdataRDFServlet {
          * @param timestamp
          *            The timestamp used to obtain a mutable connection.
          * @param baseURI
-         *            The base URI for the operation.
+         *            The base IRI for the operation.
          * @param defaultContext
          *            The context(s) for triples without an explicit named graph
          *            when the KB instance is operating in a quads mode.
@@ -1041,7 +1042,7 @@ public class DeleteServlet extends BigdataRDFServlet {
                 final HttpServletResponse resp, //
                 final String namespace, final long timestamp,//
                 final boolean suppressTruthMaintenance, //
-                final Resource s, final URI p, final Value o, final Resource[] c) {
+                final Resource s, final IRI p, final Value o, final Resource[] c) {
             super(req, resp, namespace, timestamp);
             this.suppressTruthMaintenance = suppressTruthMaintenance;
             this.s = s;

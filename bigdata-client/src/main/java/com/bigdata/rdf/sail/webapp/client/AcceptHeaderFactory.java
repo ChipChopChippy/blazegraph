@@ -32,7 +32,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sail.webapp.client;
 
-import info.aduna.lang.FileFormat;
+import org.eclipse.rdf4j.common.lang.FileFormat;
 
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -40,12 +40,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.openrdf.query.resultio.BooleanQueryResultFormat;
-import org.openrdf.query.resultio.BooleanQueryResultParserRegistry;
-import org.openrdf.query.resultio.TupleQueryResultFormat;
-import org.openrdf.query.resultio.TupleQueryResultParserRegistry;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParserRegistry;
+import org.eclipse.rdf4j.query.resultio.BooleanQueryResultFormat;
+import org.eclipse.rdf4j.query.resultio.BooleanQueryResultParserRegistry;
+import org.eclipse.rdf4j.query.resultio.QueryResultFormat;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultFormat;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultParserRegistry;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParserRegistry;
 
 /**
  * Utility class for generating accept heades modeled on
@@ -181,7 +182,7 @@ public class AcceptHeaderFactory {
        
         // Copy into a Set.
         final Set<RDFFormat> values = new LinkedHashSet<RDFFormat>(
-                RDFFormat.values());
+                RDFParserRegistry.getInstance().getKeys());
 
         final RDFParserRegistry registry = RDFParserRegistry.getInstance();
 
@@ -191,7 +192,7 @@ public class AcceptHeaderFactory {
 
             final RDFFormat format = itr.next();
 
-            if (registry.get(format) == null) {
+            if (!registry.has(format)) {
 
                 /*
                  * Remove any format for which there is no registered parser.
@@ -222,11 +223,14 @@ public class AcceptHeaderFactory {
     public static String getDefaultSolutionsAcceptHeader() {
        
         // Copy into a Set.
-        final Set<TupleQueryResultFormat> values = new LinkedHashSet<TupleQueryResultFormat>(
-                TupleQueryResultFormat.values());
-        
         final TupleQueryResultParserRegistry registry = TupleQueryResultParserRegistry
                 .getInstance();
+        final Set<TupleQueryResultFormat> values = new LinkedHashSet<>();
+        for (QueryResultFormat format : registry.getKeys()) {
+            if (format instanceof TupleQueryResultFormat) {
+                values.add((TupleQueryResultFormat) format);
+            }
+        }
         
         final Iterator<TupleQueryResultFormat> itr = values.iterator();
 
@@ -234,7 +238,7 @@ public class AcceptHeaderFactory {
 
             final TupleQueryResultFormat format = itr.next();
 
-            if (registry.get(format) == null) {
+            if (!registry.get(format).isPresent()) {
 
                 /*
                  * Remove any format for which there is no registered parser.
@@ -264,11 +268,14 @@ public class AcceptHeaderFactory {
     public static String getDefaultBooleanAcceptHeader() {
 
         // Copy into a Set.
-        final Set<BooleanQueryResultFormat> values = new LinkedHashSet<BooleanQueryResultFormat>(
-                BooleanQueryResultFormat.values());
-        
         final BooleanQueryResultParserRegistry registry = BooleanQueryResultParserRegistry
                 .getInstance();
+        final Set<BooleanQueryResultFormat> values = new LinkedHashSet<>();
+        for (QueryResultFormat format : registry.getKeys()) {
+            if (format instanceof BooleanQueryResultFormat) {
+                values.add((BooleanQueryResultFormat) format);
+            }
+        }
         
         final Iterator<BooleanQueryResultFormat> itr = values.iterator();
 
@@ -276,7 +283,7 @@ public class AcceptHeaderFactory {
 
             final BooleanQueryResultFormat format = itr.next();
 
-            if (registry.get(format) == null) {
+            if (!registry.get(format).isPresent()) {
 
                 /*
                  * Remove any format for which there is no registered parser.

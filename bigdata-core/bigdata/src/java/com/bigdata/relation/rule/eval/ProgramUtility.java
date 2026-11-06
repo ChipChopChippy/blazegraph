@@ -28,6 +28,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.relation.rule.eval;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.Iterator;
 
 import com.bigdata.relation.rule.IProgram;
@@ -41,7 +43,7 @@ import com.bigdata.relation.rule.IStep;
  */
 public class ProgramUtility {
     
-//    final protected static Logger log = Logger.getLogger(ProgramUtility.class);
+//    final protected static Logger log = LogManager.getLogger(ProgramUtility.class);
 
 //    private final IResourceLocator resourceLocator;
 //    private final long readTimestamp;

@@ -28,8 +28,9 @@ import java.io.IOException;
 import java.nio.channels.Channel;
 import java.nio.channels.FileChannel;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.io.IBufferAccess;
 import com.bigdata.io.IReopenChannel;
 import com.bigdata.io.writecache.IBackingReader;
@@ -45,7 +46,7 @@ import com.bigdata.quorum.Quorum;
  */
 public class RWWriteCacheService extends WriteCacheService implements IWriteCacheManager {
 
-    protected static final Logger log = Logger.getLogger(RWWriteCacheService.class);
+    protected static final Logger log = LogManager.getLogger(RWWriteCacheService.class);
     
     public RWWriteCacheService(final int nbuffers, final int minCleanListSize, final int readBuffers,
             final boolean prefixWrites, final int compactionThreshold,

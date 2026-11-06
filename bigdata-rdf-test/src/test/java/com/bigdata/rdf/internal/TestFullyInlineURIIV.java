@@ -5,7 +5,7 @@ import java.util.List;
 
 import junit.framework.TestCase2;
 
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.btree.keys.IKeyBuilder;
 import com.bigdata.rdf.internal.impl.uri.FullyInlineURIIV;
@@ -26,16 +26,16 @@ public class TestFullyInlineURIIV extends TestCase2 {
 
 	public void test_InlineURIIV() {
 
-        doTest(new FullyInlineURIIV<BigdataURI>(new URIImpl("http://www.bigdata.com")));
-        doTest(new FullyInlineURIIV<BigdataURI>(new URIImpl("http://www.bigdata.com/")));
-        doTest(new FullyInlineURIIV<BigdataURI>(new URIImpl("http://www.bigdata.com/foo")));
-        doTest(new FullyInlineURIIV<BigdataURI>(new URIImpl("http://www.bigdata.com:80/foo")));
+        doTest(new FullyInlineURIIV<BigdataURI>(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com")));
+        doTest(new FullyInlineURIIV<BigdataURI>(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/")));
+        doTest(new FullyInlineURIIV<BigdataURI>(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/foo")));
+        doTest(new FullyInlineURIIV<BigdataURI>(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com:80/foo")));
 
 	}
 
 	private void doTest(final FullyInlineURIIV<BigdataURI> iv) {
 
-		assertEquals(VTE.URI, iv.getVTE());
+		assertEquals(VTE.IRI, iv.getVTE());
 		
 		assertTrue(iv.isInline());
 		
@@ -64,10 +64,10 @@ public class TestFullyInlineURIIV extends TestCase2 {
         final List<IV<?,?>> ivs = new LinkedList<IV<?,?>>();
         {
 
-            ivs.add(new FullyInlineURIIV<BigdataURI>(new URIImpl("http://www.bigdata.com")));
-            ivs.add(new FullyInlineURIIV<BigdataURI>(new URIImpl("http://www.bigdata.com/")));
-            ivs.add(new FullyInlineURIIV<BigdataURI>(new URIImpl("http://www.bigdata.com/foo")));
-            ivs.add(new FullyInlineURIIV<BigdataURI>(new URIImpl("http://www.bigdata.com:80/foo")));
+            ivs.add(new FullyInlineURIIV<BigdataURI>(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com")));
+            ivs.add(new FullyInlineURIIV<BigdataURI>(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/")));
+            ivs.add(new FullyInlineURIIV<BigdataURI>(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/foo")));
+            ivs.add(new FullyInlineURIIV<BigdataURI>(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com:80/foo")));
 
         }
         

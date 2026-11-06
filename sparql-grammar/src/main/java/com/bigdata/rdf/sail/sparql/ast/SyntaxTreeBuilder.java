@@ -3,12 +3,12 @@ package com.bigdata.rdf.sail.sparql.ast;
 
 import java.io.StringReader;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.XMLSchema;
-import org.openrdf.query.algebra.Compare.CompareOp;
-import org.openrdf.query.algebra.MathExpr.MathOp;
-import org.openrdf.rio.RDFParser.DatatypeHandling;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
+import org.eclipse.rdf4j.query.algebra.Compare.CompareOp;
+import org.eclipse.rdf4j.query.algebra.MathExpr.MathOp;
+import com.bigdata.rdf.rio.DatatypeHandling;
 
 public class SyntaxTreeBuilder/*@bgen(jjtree)*/implements SyntaxTreeBuilderTreeConstants, SyntaxTreeBuilderConstants {/*@bgen(jjtree)*/
   protected JJTSyntaxTreeBuilderState jjtree = new JJTSyntaxTreeBuilderState();
@@ -4487,7 +4487,7 @@ public class SyntaxTreeBuilder/*@bgen(jjtree)*/implements SyntaxTreeBuilderTreeC
       jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
         jjtn000.setValue("-1");
-        jjtn000.setDatatype(XMLSchema.INTEGER);
+        jjtn000.setDatatype(XSD.INTEGER);
     } finally {
       if (jjtc000) {
         jjtree.closeNodeScope(jjtn000, true);
@@ -7253,20 +7253,20 @@ public class SyntaxTreeBuilder/*@bgen(jjtree)*/implements SyntaxTreeBuilderTreeC
  /*@bgen(jjtree) NumericLiteral */
   ASTNumericLiteral jjtn000 = new ASTNumericLiteral(JJTNUMERICLITERAL);
   boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);Token t; URI datatype;
+  jjtree.openNodeScope(jjtn000);Token t; IRI datatype;
     try {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case INTEGER:
         t = jj_consume_token(INTEGER);
-                        datatype = XMLSchema.INTEGER;
+                        datatype = XSD.INTEGER;
         break;
       case DECIMAL:
         t = jj_consume_token(DECIMAL);
-                        datatype = XMLSchema.DECIMAL;
+                        datatype = XSD.DECIMAL;
         break;
       case DOUBLE:
         t = jj_consume_token(DOUBLE);
-                       datatype = XMLSchema.DOUBLE;
+                       datatype = XSD.DOUBLE;
         break;
       default:
         jj_la1[150] = jj_gen;
@@ -7288,20 +7288,20 @@ public class SyntaxTreeBuilder/*@bgen(jjtree)*/implements SyntaxTreeBuilderTreeC
  /*@bgen(jjtree) NumericLiteral */
   ASTNumericLiteral jjtn000 = new ASTNumericLiteral(JJTNUMERICLITERAL);
   boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);Token t; URI datatype;
+  jjtree.openNodeScope(jjtn000);Token t; IRI datatype;
     try {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case INTEGER_POSITIVE:
         t = jj_consume_token(INTEGER_POSITIVE);
-                                 datatype = XMLSchema.INTEGER;
+                                 datatype = XSD.INTEGER;
         break;
       case DECIMAL_POSITIVE:
         t = jj_consume_token(DECIMAL_POSITIVE);
-                                 datatype = XMLSchema.DECIMAL;
+                                 datatype = XSD.DECIMAL;
         break;
       case DOUBLE_POSITIVE:
         t = jj_consume_token(DOUBLE_POSITIVE);
-                                datatype = XMLSchema.DOUBLE;
+                                datatype = XSD.DOUBLE;
         break;
       default:
         jj_la1[151] = jj_gen;
@@ -7323,20 +7323,20 @@ public class SyntaxTreeBuilder/*@bgen(jjtree)*/implements SyntaxTreeBuilderTreeC
  /*@bgen(jjtree) NumericLiteral */
   ASTNumericLiteral jjtn000 = new ASTNumericLiteral(JJTNUMERICLITERAL);
   boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);Token t; URI datatype;
+  jjtree.openNodeScope(jjtn000);Token t; IRI datatype;
     try {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case INTEGER_NEGATIVE:
         t = jj_consume_token(INTEGER_NEGATIVE);
-                                 datatype = XMLSchema.INTEGER;
+                                 datatype = XSD.INTEGER;
         break;
       case DECIMAL_NEGATIVE:
         t = jj_consume_token(DECIMAL_NEGATIVE);
-                                 datatype = XMLSchema.DECIMAL;
+                                 datatype = XSD.DECIMAL;
         break;
       case DOUBLE_NEGATIVE:
         t = jj_consume_token(DOUBLE_NEGATIVE);
-                                datatype = XMLSchema.DOUBLE;
+                                datatype = XSD.DOUBLE;
         break;
       default:
         jj_la1[152] = jj_gen;

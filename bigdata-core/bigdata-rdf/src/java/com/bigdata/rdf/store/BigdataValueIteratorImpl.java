@@ -52,8 +52,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Value;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.rdf.internal.IV;
 import com.bigdata.rdf.model.BigdataValue;
@@ -68,7 +69,7 @@ import com.bigdata.striterator.IChunkedIterator;
  */
 public class BigdataValueIteratorImpl implements BigdataValueIterator {
 
-    final private static Logger log = Logger
+    final private static Logger log = LogManager
             .getLogger(BigdataValueIteratorImpl.class);
 
     /**

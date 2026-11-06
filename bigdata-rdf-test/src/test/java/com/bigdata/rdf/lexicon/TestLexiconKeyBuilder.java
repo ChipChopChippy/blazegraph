@@ -32,14 +32,13 @@ import java.util.Properties;
 
 import junit.framework.TestCase2;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.BNodeImpl;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.impl.ValueFactoryImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.XMLSchema;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleBNode;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.btree.keys.DefaultKeyBuilderFactory;
 import com.bigdata.btree.keys.IKeyBuilder;
@@ -113,16 +112,16 @@ public class TestLexiconKeyBuilder extends TestCase2 {
                 .value2Key(RDF.TYPE)[0]);
         
         assertEquals(ITermIndexCodes.TERM_CODE_BND, fixture
-                .value2Key(new BNodeImpl("foo"))[0]);
+                .value2Key(SimpleValueFactory.getInstance().createBNode("foo"))[0]);
         
         assertEquals(ITermIndexCodes.TERM_CODE_LIT, fixture
-                .value2Key(new LiteralImpl("abc"))[0]);
+                .value2Key(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc"))[0]);
         
         assertEquals(ITermIndexCodes.TERM_CODE_LCL, fixture
-                .value2Key(new LiteralImpl("abc","en"))[0]);        
+                .value2Key(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc","en"))[0]);        
         
         assertEquals(ITermIndexCodes.TERM_CODE_DTL, fixture
-                .value2Key(new LiteralImpl("abc",XSD.BOOLEAN))[0]);        
+                .value2Key(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc",XSD.BOOLEAN))[0]);        
         
     }
 
@@ -137,13 +136,13 @@ public class TestLexiconKeyBuilder extends TestCase2 {
 
         final byte[] uri = fixture.value2Key(RDF.TYPE);
 
-        final byte[] bnd = fixture.value2Key(new BNodeImpl("foo"));
+        final byte[] bnd = fixture.value2Key(SimpleValueFactory.getInstance().createBNode("foo"));
 
-        final byte[] lit = fixture.value2Key(new LiteralImpl("abc"));
+        final byte[] lit = fixture.value2Key(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc"));
 
-        final byte[] lcl = fixture.value2Key(new LiteralImpl("abc", "en"));
+        final byte[] lcl = fixture.value2Key(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc", "en"));
 
-        final byte[] dtl = fixture.value2Key(new LiteralImpl("abc",
+        final byte[] dtl = fixture.value2Key(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc",
                 XSD.BOOLEAN));
 
         // URIs before plain literals.
@@ -242,8 +241,8 @@ public class TestLexiconKeyBuilder extends TestCase2 {
         final String lit1 = "abc";
 //        String lit2 = "abc";
 //        String lit3 = "abce";
-//        final Literal a = new LiteralImpl("foo");
-//        final Literal b = new LiteralImpl("foo", "en");
+//        final Literal a = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("foo");
+//        final Literal b = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("foo", "en");
 
         final byte[] k1 = fixture.plainLiteral2key(lit1);
         final byte[] k2 = fixture.languageCodeLiteral2key(en, lit1);
@@ -257,18 +256,18 @@ public class TestLexiconKeyBuilder extends TestCase2 {
     }
 
     /**
-     * Verify an unknown datatype URI is coded.
+     * Verify an unknown datatype IRI is coded.
      */
     public void test_datatype_unknown() {
 
-        fixture.datatypeLiteral2key(new URIImpl("http://www.bigdata.com/foo"),
+        fixture.datatypeLiteral2key(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/foo"),
                 "foo");
         
     }
     
     public void test_datatypeLiteral_xsd_boolean() {
         
-        final URI datatype = XMLSchema.BOOLEAN;
+        final IRI datatype = XSD.BOOLEAN;
         
         final String lit1 = "true";
         final String lit2 = "false";
@@ -301,7 +300,7 @@ public class TestLexiconKeyBuilder extends TestCase2 {
     
     public void test_datatypeLiteral_xsd_int() {
         
-        final URI datatype = XMLSchema.INT;
+        final IRI datatype = XSD.INT;
         
         // Note: leading zeros are ignored in the xsd:int value space.
         final String lit1 = "-4";
@@ -338,40 +337,40 @@ public class TestLexiconKeyBuilder extends TestCase2 {
     public void test_disjoint_value_space() {
         
         assertFalse(BytesUtil.bytesEqual(//
-                fixture.datatypeLiteral2key(XMLSchema.LONG, "-1"),//
-                fixture.datatypeLiteral2key(XMLSchema.INT, "-1")//
+                fixture.datatypeLiteral2key(XSD.LONG, "-1"),//
+                fixture.datatypeLiteral2key(XSD.INT, "-1")//
                 ));
 
         assertFalse(BytesUtil.bytesEqual(//
-                fixture.datatypeLiteral2key(XMLSchema.LONG, "-1"),//
-                fixture.datatypeLiteral2key(XMLSchema.SHORT, "-1")//
+                fixture.datatypeLiteral2key(XSD.LONG, "-1"),//
+                fixture.datatypeLiteral2key(XSD.SHORT, "-1")//
                 ));
         
         assertFalse(BytesUtil.bytesEqual(//
-                fixture.datatypeLiteral2key(XMLSchema.LONG, "-1"),//
-                fixture.datatypeLiteral2key(XMLSchema.BYTE, "-1")//
+                fixture.datatypeLiteral2key(XSD.LONG, "-1"),//
+                fixture.datatypeLiteral2key(XSD.BYTE, "-1")//
                 ));
 
         assertFalse(BytesUtil.bytesEqual(//
-                fixture.datatypeLiteral2key(XMLSchema.INT, "-1"),//
-                fixture.datatypeLiteral2key(XMLSchema.SHORT, "-1")//
+                fixture.datatypeLiteral2key(XSD.INT, "-1"),//
+                fixture.datatypeLiteral2key(XSD.SHORT, "-1")//
                 ));
         
         assertFalse(BytesUtil.bytesEqual(//
-                fixture.datatypeLiteral2key(XMLSchema.INT, "-1"),//
-                fixture.datatypeLiteral2key(XMLSchema.BYTE, "-1")//
+                fixture.datatypeLiteral2key(XSD.INT, "-1"),//
+                fixture.datatypeLiteral2key(XSD.BYTE, "-1")//
                 ));
 
         assertFalse(BytesUtil.bytesEqual(//
-                fixture.datatypeLiteral2key(XMLSchema.SHORT, "-1"),//
-                fixture.datatypeLiteral2key(XMLSchema.BYTE, "-1")//
+                fixture.datatypeLiteral2key(XSD.SHORT, "-1"),//
+                fixture.datatypeLiteral2key(XSD.BYTE, "-1")//
                 ));
 
     }
     
     public void test_datatypeLiteral_xsd_float() {
         
-        final URI datatype = XMLSchema.FLOAT;
+        final IRI datatype = XSD.FLOAT;
         
         // Note: leading zeros are ignored in the xsd:int value space.
         final String lit1 = "-4.0";
@@ -408,7 +407,7 @@ public class TestLexiconKeyBuilder extends TestCase2 {
     
     public void test_datatypeLiteral_xsd_double() {
         
-        final URI datatype = XMLSchema.DOUBLE;
+        final IRI datatype = XSD.DOUBLE;
         
         // Note: leading zeros are ignored in the xsd:int value space.
         final String lit1 = "-4.0";
@@ -450,9 +449,9 @@ public class TestLexiconKeyBuilder extends TestCase2 {
         
         final String lit1 = "4";
         
-        final byte[] k0 = fixture.datatypeLiteral2key(XMLSchema.INT, lit1);
-        final byte[] k1 = fixture.datatypeLiteral2key(XMLSchema.FLOAT, lit1);
-        final byte[] k2 = fixture.datatypeLiteral2key(XMLSchema.DOUBLE, lit1);
+        final byte[] k0 = fixture.datatypeLiteral2key(XSD.INT, lit1);
+        final byte[] k1 = fixture.datatypeLiteral2key(XSD.FLOAT, lit1);
+        final byte[] k2 = fixture.datatypeLiteral2key(XSD.DOUBLE, lit1);
 
         if (log.isInfoEnabled()) {
             log.info("k0(float:" + lit1 + ") = " + BytesUtil.toString(k0));
@@ -472,8 +471,8 @@ public class TestLexiconKeyBuilder extends TestCase2 {
         
         final String lit1 = "04.21";
         
-        final byte[] k1 = fixture.datatypeLiteral2key(XMLSchema.FLOAT,lit1);
-        final byte[] k2 = fixture.datatypeLiteral2key(XMLSchema.DOUBLE,lit1);
+        final byte[] k1 = fixture.datatypeLiteral2key(XSD.FLOAT,lit1);
+        final byte[] k2 = fixture.datatypeLiteral2key(XSD.DOUBLE,lit1);
 
         if (log.isInfoEnabled()) {
             log.info("k1(float:" + lit1 + ") = " + BytesUtil.toString(k1));
@@ -547,7 +546,7 @@ public class TestLexiconKeyBuilder extends TestCase2 {
     public void test_consistencyIssue() {
 
         final BigdataValueSerializer<Value> fixture = new BigdataValueSerializer<Value>(
-                ValueFactoryImpl.getInstance());
+                SimpleValueFactory.getInstance());
 
         final byte[] newValBytes = new byte[] { 0, 2, 0, 14, 66, 114, 105, 97, 110, 32,
                 77, 99, 67, 97, 114, 116, 104, 121 };

@@ -31,22 +31,24 @@ import java.util.Map;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicLong;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Value;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFHandler;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.RDFParserFactory;
-import org.openrdf.rio.RDFParserRegistry;
+import org.apache.commons.fileupload2.core.DiskFileItem;
+import org.apache.commons.fileupload2.core.DiskFileItemFactory;
+import org.apache.commons.fileupload2.core.FileItem;
+import org.apache.commons.fileupload2.core.FileUploadException;
+import org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletFileUpload;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFHandler;
+import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.RDFParserFactory;
+import org.eclipse.rdf4j.rio.RDFParserRegistry;
 
 import com.bigdata.journal.ITx;
 import com.bigdata.rdf.sail.BigdataSail.BigdataSailConnection;
@@ -72,7 +74,7 @@ public class UpdateServlet extends BigdataRDFServlet {
      */
     private static final long serialVersionUID = 1L;
 
-    static private final transient Logger log = Logger
+    static private final transient Logger log = LogManager
             .getLogger(UpdateServlet.class);
 
     /*
@@ -155,7 +157,7 @@ public class UpdateServlet extends BigdataRDFServlet {
          * UpdateServlet fails to parse MIMEType when doing conneg. </a>
          */
 
-        final RDFFormat requestBodyFormat = RDFFormat.forMIMEType(new MiniMime(
+        final RDFFormat requestBodyFormat = com.bigdata.rdf.rio.RDF4JFormatUtil.forMIMEType(new MiniMime(
                 contentType).getMimeType());
 
         if (requestBodyFormat == null) {
@@ -168,7 +170,7 @@ public class UpdateServlet extends BigdataRDFServlet {
         }
 
         final RDFParserFactory rdfParserFactory = RDFParserRegistry
-                .getInstance().get(requestBodyFormat);
+                .getInstance().get(requestBodyFormat).orElse(null);
 
         if (rdfParserFactory == null) {
 
@@ -420,19 +422,19 @@ public class UpdateServlet extends BigdataRDFServlet {
 						{
 
 							final RDFParserFactory factory = RDFParserRegistry
-									.getInstance().get(deleteQueryFormat);
+									.getInstance().get(deleteQueryFormat).orElse(null);
 
 							final RDFParser rdfParser = factory.getParser();
 
 							rdfParser.setValueFactory(conn.getTripleStore()
 									.getValueFactory());
 
-							rdfParser.setVerifyData(false);
+							com.bigdata.rdf.rio.RDFParserOptions.setVerifyData(rdfParser, false);
 
-							rdfParser.setStopAtFirstError(true);
+							
 
-							rdfParser
-									.setDatatypeHandling(RDFParser.DatatypeHandling.IGNORE);
+							com.bigdata.rdf.rio.RDFParserOptions.setDatatypeHandling(
+									rdfParser, com.bigdata.rdf.rio.DatatypeHandling.IGNORE);
 
 							rdfParser.setRDFHandler(new RemoveStatementHandler(conn,
 									nmodified, defaultContextDelete));
@@ -469,12 +471,12 @@ public class UpdateServlet extends BigdataRDFServlet {
 							rdfParser.setValueFactory(conn.getTripleStore()
 									.getValueFactory());
 
-							rdfParser.setVerifyData(true);
+							com.bigdata.rdf.rio.RDFParserOptions.setVerifyData(rdfParser, true);
 
-							rdfParser.setStopAtFirstError(true);
+							
 
-							rdfParser
-									.setDatatypeHandling(RDFParser.DatatypeHandling.IGNORE);
+							com.bigdata.rdf.rio.RDFParserOptions.setDatatypeHandling(
+									rdfParser, com.bigdata.rdf.rio.DatatypeHandling.IGNORE);
 
 							rdfParser.setRDFHandler(new AddStatementHandler(
 									conn, nmodified,
@@ -682,19 +684,19 @@ public class UpdateServlet extends BigdataRDFServlet {
 	               {
 	
 	                  final RDFParserFactory factory = RDFParserRegistry
-	                        .getInstance().get(deleteQueryFormat);
+	                        .getInstance().get(deleteQueryFormat).orElse(null);
 	
 	                  final RDFParser rdfParser = factory.getParser();
 	
 	                  rdfParser.setValueFactory(conn.getTripleStore()
 	                        .getValueFactory());
 	
-	                  rdfParser.setVerifyData(false);
+	                  com.bigdata.rdf.rio.RDFParserOptions.setVerifyData(rdfParser, false);
 	
-	                  rdfParser.setStopAtFirstError(true);
+	                  
 	
-	                  rdfParser
-	                        .setDatatypeHandling(RDFParser.DatatypeHandling.IGNORE);
+	                  com.bigdata.rdf.rio.RDFParserOptions.setDatatypeHandling(
+	                        rdfParser, com.bigdata.rdf.rio.DatatypeHandling.IGNORE);
 	
 	//                  rdfParser.setRDFHandler(new BufferStatementHandler(conn
 	//                        .getSailConnection(), nmodified, defaultContextDelete));
@@ -736,12 +738,12 @@ public class UpdateServlet extends BigdataRDFServlet {
 	                  rdfParser.setValueFactory(conn.getTripleStore()
 	                        .getValueFactory());
 	
-	                  rdfParser.setVerifyData(true);
+	                  com.bigdata.rdf.rio.RDFParserOptions.setVerifyData(rdfParser, true);
 	
-	                  rdfParser.setStopAtFirstError(true);
+	                  
 	
-	                  rdfParser
-	                        .setDatatypeHandling(RDFParser.DatatypeHandling.IGNORE);
+	                  com.bigdata.rdf.rio.RDFParserOptions.setDatatypeHandling(
+	                        rdfParser, com.bigdata.rdf.rio.DatatypeHandling.IGNORE);
 	
 	                  rdfParser.setRDFHandler(new AddStatementHandler(conn,
 	                        nmodified, defaultContextInsert));
@@ -812,7 +814,7 @@ public class UpdateServlet extends BigdataRDFServlet {
             return;
         }
 
-        if (ServletFileUpload.isMultipartContent(req)) {
+        if (JakartaServletFileUpload.isMultipartContent(req)) {
     		
             doUpdateWithBody(req, resp);
     		
@@ -831,15 +833,16 @@ public class UpdateServlet extends BigdataRDFServlet {
     private void doUpdateWithBody(final HttpServletRequest req,
             final HttpServletResponse resp) throws IOException {
 
-        final DiskFileItemFactory factory = new DiskFileItemFactory();
+        final DiskFileItemFactory factory = DiskFileItemFactory.builder().get();
         
-        final ServletFileUpload upload = new ServletFileUpload(factory);
+        final JakartaServletFileUpload upload =
+                new JakartaServletFileUpload(factory);
         
         FileItem add = null, remove = null;
         
         try {
         
-    	    final List<FileItem> items = upload.parseRequest(req);
+            final List<DiskFileItem> items = upload.parseRequest(req);
 
             for (FileItem item : items) {
 
@@ -1099,23 +1102,23 @@ public class UpdateServlet extends BigdataRDFServlet {
              * UpdateServlet fails to parse MIMEType when doing conneg. </a>
              */
 
-            final RDFFormat format = RDFFormat
-                    .forMIMEType(new MiniMime(contentType).getMimeType());
+            final RDFFormat format = com.bigdata.rdf.rio.RDF4JFormatUtil.forMIMEType(
+                            new MiniMime(contentType).getMimeType());
 
             final RDFParserFactory rdfParserFactory = RDFParserRegistry
-                    .getInstance().get(format);
+                    .getInstance().get(format).orElse(null);
 
             final RDFParser rdfParser = rdfParserFactory.getParser();
 
             rdfParser.setValueFactory(conn.getTripleStore()
                     .getValueFactory());
 
-            rdfParser.setVerifyData(true);
+            com.bigdata.rdf.rio.RDFParserOptions.setVerifyData(rdfParser, true);
 
-            rdfParser.setStopAtFirstError(true);
+            
 
-            rdfParser
-                    .setDatatypeHandling(RDFParser.DatatypeHandling.IGNORE);
+            com.bigdata.rdf.rio.RDFParserOptions.setDatatypeHandling(
+                    rdfParser, com.bigdata.rdf.rio.DatatypeHandling.IGNORE);
 
             rdfParser.setRDFHandler(handler);
 
@@ -1143,8 +1146,8 @@ public class UpdateServlet extends BigdataRDFServlet {
 	        
 	    }
 	
-        final RDFFormat format = RDFFormat
-                .forMIMEType(new MiniMime(contentType).getMimeType());
+        final RDFFormat format = com.bigdata.rdf.rio.RDF4JFormatUtil.forMIMEType(
+                        new MiniMime(contentType).getMimeType());
 
 	    if (format == null) {
 	
@@ -1156,7 +1159,7 @@ public class UpdateServlet extends BigdataRDFServlet {
 	    }
 	    
         final RDFParserFactory rdfParserFactory = RDFParserRegistry
-		        .getInstance().get(format);
+		        .getInstance().get(format).orElse(null);
 		
 		if (rdfParserFactory == null) {
 		

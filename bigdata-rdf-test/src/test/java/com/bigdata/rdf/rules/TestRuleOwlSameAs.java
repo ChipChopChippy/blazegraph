@@ -27,9 +27,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.rules;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.OWL;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.OWL;
 
 import com.bigdata.rdf.rio.IStatementBuffer;
 import com.bigdata.rdf.rio.StatementBuffer;
@@ -85,8 +85,8 @@ public class TestRuleOwlSameAs extends AbstractRuleTestCase {
 
         try {
 
-            URI X = new URIImpl("http://www.foo.org/X");
-            URI Y = new URIImpl("http://www.foo.org/Y");
+            IRI X = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/X");
+            IRI Y = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/Y");
 
             IStatementBuffer buffer = new StatementBuffer(store, 100/* capacity */);
             
@@ -142,9 +142,9 @@ public class TestRuleOwlSameAs extends AbstractRuleTestCase {
 
         try {
 
-            URI X = new URIImpl("http://www.foo.org/X");
-            URI Y = new URIImpl("http://www.foo.org/Y");
-            URI Z = new URIImpl("http://www.foo.org/Z");
+            IRI X = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/X");
+            IRI Y = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/Y");
+            IRI Z = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/Z");
 
             IStatementBuffer buffer = new StatementBuffer(store, 100/* capacity */);
             
@@ -206,10 +206,10 @@ public class TestRuleOwlSameAs extends AbstractRuleTestCase {
 
         try {
 
-            URI A = new URIImpl("http://www.foo.org/A");
-            URI Z = new URIImpl("http://www.foo.org/Z");
-            URI X = new URIImpl("http://www.foo.org/X");
-            URI Y = new URIImpl("http://www.foo.org/Y");
+            IRI A = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/A");
+            IRI Z = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/Z");
+            IRI X = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/X");
+            IRI Y = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/Y");
 
             IStatementBuffer buffer = new StatementBuffer(store, 100/* capacity */);
             
@@ -271,10 +271,10 @@ public class TestRuleOwlSameAs extends AbstractRuleTestCase {
 
         try {
 
-            URI A = new URIImpl("http://www.foo.org/A");
-            URI Z = new URIImpl("http://www.foo.org/Z");
-            URI X = new URIImpl("http://www.foo.org/X");
-            URI Y = new URIImpl("http://www.foo.org/Y");
+            IRI A = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/A");
+            IRI Z = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/Z");
+            IRI X = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/X");
+            IRI Y = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/Y");
 
             {
 

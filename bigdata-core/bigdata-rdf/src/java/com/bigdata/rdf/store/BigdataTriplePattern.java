@@ -24,9 +24,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.rdf.store;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 /**
  * A simple class that represents a triple (or quad) pattern.
@@ -39,19 +39,19 @@ public class BigdataTriplePattern {
 //    private static final long serialVersionUID = 1L;
 
     private final Resource s;
-    private final URI p;
+    private final IRI p;
     private final Value o;
     private final Resource c;
 
     public BigdataTriplePattern(final Resource subject,
-            final URI predicate, final Value object) {
+            final IRI predicate, final Value object) {
 
         this(subject, predicate, object, (Resource) null);
 
     }
 
     public BigdataTriplePattern(final Resource subject,
-            final URI predicate, final Value object,
+            final IRI predicate, final Value object,
             final Resource context) {
 
         this.s = subject;
@@ -70,7 +70,7 @@ public class BigdataTriplePattern {
         
     }
     
-    final public URI getPredicate() {
+    final public IRI getPredicate() {
 
         return p;
         

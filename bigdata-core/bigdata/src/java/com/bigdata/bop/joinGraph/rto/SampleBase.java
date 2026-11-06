@@ -29,8 +29,9 @@ package com.bigdata.bop.joinGraph.rto;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.bop.engine.IChunkMessage;
 import com.bigdata.rwstore.sector.IMemoryManager;
@@ -54,7 +55,7 @@ import com.bigdata.rwstore.sector.IMemoryManager;
  */
 public abstract class SampleBase {
 
-    private static final transient Logger log = Logger
+    private static final transient Logger log = LogManager
             .getLogger(SampleBase.class);
 
 	/**

@@ -25,9 +25,9 @@ package com.bigdata.rdf.internal.constraints;
 
 import java.util.Map;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.query.algebra.evaluation.ValueExprEvaluationException;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.query.algebra.evaluation.ValueExprEvaluationException;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -96,20 +96,20 @@ public class IriBOp extends IVValueExpression<IV> implements INeedsMaterializati
         
         final Literal lit = asLiteral(iv);
 
-        final URI dt = lit.getDatatype();
+        final IRI dt = lit.getDatatype();
 
         if (dt != null && !dt.stringValue().equals(XSD.STRING.stringValue()))
             throw new SparqlTypeErrorException();
 
-//        final BigdataURI uri = getValueFactory().createURI(baseURI+lit.getLabel());
+//        final BigdataURI uri = getValueFactory().createIRI(baseURI+lit.getLabel());
 
         BigdataURI uri = null;
         try {
-            uri = getValueFactory().createURI(lit.getLabel());
+            uri = getValueFactory().createIRI(lit.getLabel());
         }
         catch (IllegalArgumentException e) {
             try {
-                uri = getValueFactory().createURI(baseURI, lit.getLabel());
+                uri = getValueFactory().createIRI(baseURI, lit.getLabel());
             }
             catch (IllegalArgumentException e1) {
                 throw new SparqlTypeErrorException();

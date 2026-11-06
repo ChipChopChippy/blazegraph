@@ -36,13 +36,14 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.journal.IIndexManager;
 import com.bigdata.journal.Journal;
 import com.bigdata.journal.PlatformStatsPlugIn;
@@ -57,7 +58,7 @@ import com.bigdata.util.InnerCause;
  */
 public abstract class AbstractHostLBSPolicy extends AbstractLBSPolicy {
 
-    private static final Logger log = Logger.getLogger(AbstractHostLBSPolicy.class);
+    private static final Logger log = LogManager.getLogger(AbstractHostLBSPolicy.class);
 
     /**
      * 

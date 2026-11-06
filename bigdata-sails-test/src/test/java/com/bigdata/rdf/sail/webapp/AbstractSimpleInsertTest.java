@@ -54,17 +54,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.bigdata.rdf.sail.webapp;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.ValueFactoryImpl;
-import org.openrdf.model.vocabulary.DC;
-import org.openrdf.model.vocabulary.FOAF;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.model.vocabulary.XMLSchema;
-import org.openrdf.repository.RepositoryException;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.DC;
+import org.eclipse.rdf4j.model.vocabulary.FOAF;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
+import org.eclipse.rdf4j.repository.RepositoryException;
 
 import com.bigdata.journal.IIndexManager;
 
@@ -72,8 +72,8 @@ public class AbstractSimpleInsertTest<S extends IIndexManager> extends
 		AbstractTestNanoSparqlClient<S> {
 
 	private static final String EX_NS = "http://example.org/";
-	private ValueFactory f = new ValueFactoryImpl();
-	private URI bob;
+	private ValueFactory f = SimpleValueFactory.getInstance();
+	private IRI bob;
 
 	public AbstractSimpleInsertTest() {
 	}
@@ -87,7 +87,7 @@ public class AbstractSimpleInsertTest<S extends IIndexManager> extends
 	    
 	    super.setUp();
 	
-	    bob = f.createURI(EX_NS, "bob");
+	    bob = f.createIRI(EX_NS, "bob");
 	}
 
 	public void tearDown() throws Exception {
@@ -112,13 +112,13 @@ public class AbstractSimpleInsertTest<S extends IIndexManager> extends
 	    declarations.append("PREFIX dc: <" + DC.NAMESPACE + "> \n");
 	    declarations.append("PREFIX foaf: <" + FOAF.NAMESPACE + "> \n");
 	    declarations.append("PREFIX ex: <" + EX_NS + "> \n");
-	    declarations.append("PREFIX xsd: <" +  XMLSchema.NAMESPACE + "> \n");
+	    declarations.append("PREFIX xsd: <" +  XSD.NAMESPACE + "> \n");
 	    declarations.append("\n");
 	
 	    return declarations.toString();
 	}
 
-	protected boolean hasStatement(final Resource subj, final URI pred, final Value obj, final boolean includeInferred, final Resource... contexts)
+	protected boolean hasStatement(final Resource subj, final IRI pred, final Value obj, final boolean includeInferred, final Resource... contexts)
 			throws RepositoryException {
 			
 			    try {

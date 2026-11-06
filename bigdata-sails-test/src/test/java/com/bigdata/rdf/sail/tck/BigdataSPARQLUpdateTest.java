@@ -33,22 +33,23 @@ import java.net.URL;
 import java.util.Properties;
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.Update;
-import org.openrdf.query.UpdateExecutionException;
-import org.openrdf.query.parser.sparql.SPARQLUpdateTest;
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParseException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.Update;
+import org.eclipse.rdf4j.query.UpdateExecutionException;
+import org.eclipse.rdf4j.query.parser.sparql.SPARQLUpdateTest;
+import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParseException;
 
 import com.bigdata.journal.BufferMode;
 import com.bigdata.journal.IIndexManager;
@@ -68,7 +69,7 @@ import com.bigdata.rdf.sail.BigdataSailUpdate;
  */
 public class BigdataSPARQLUpdateTest extends SPARQLUpdateTest {
 
-    static private final Logger logger = Logger
+    static private final Logger logger = LogManager
             .getLogger(BigdataSPARQLUpdateTest.class);
 
     public BigdataSPARQLUpdateTest() {
@@ -169,7 +170,7 @@ public class BigdataSPARQLUpdateTest extends SPARQLUpdateTest {
     @Override
     protected Repository createRepository() throws Exception {
         Repository repo = newRepository();
-        repo.initialize();
+        repo.init();
         return repo;
     }
 
@@ -219,7 +220,7 @@ public class BigdataSPARQLUpdateTest extends SPARQLUpdateTest {
             InputStream dataset = SPARQLUpdateTest.class.getResourceAsStream(datasetFile);
             try {
 //                con.setAutoCommit(false);
-                con.add(dataset, "", RDFFormat.forFileName(datasetFile));//RDFFormat.TRIG);
+                con.add(dataset, "", com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(datasetFile));//RDFFormat.TRIG);
                 con.commit();
             }
             finally {
@@ -242,8 +243,8 @@ public class BigdataSPARQLUpdateTest extends SPARQLUpdateTest {
 			RepositoryException, MalformedQueryException, QueryEvaluationException {
 
 		// the [in] and [out] graphs.
-        final URI gin = f.createURI("http://example/in");
-        final URI gout = f.createURI("http://example/out");
+        final IRI gin = f.createIRI("http://example/in");
+        final IRI gout = f.createIRI("http://example/out");
 
 //		((BigdataSailRepository) con.getRepository()).getDatabase().addTerms(
 //				new BigdataValue[] { (BigdataValue) gin, (BigdataValue) gout });
@@ -357,8 +358,8 @@ public class BigdataSPARQLUpdateTest extends SPARQLUpdateTest {
 
         operation.execute();
 
-        final URI one = f.createURI("http://example.org/one");
-        final URI two = f.createURI("http://example.org/two");
+        final IRI one = f.createIRI("http://example.org/one");
+        final IRI two = f.createIRI("http://example.org/two");
 
         String msg = "Nothing in graph <one>";
         assertFalse(msg, con.hasStatement(null, null, null, true, one));
@@ -446,13 +447,13 @@ public class BigdataSPARQLUpdateTest extends SPARQLUpdateTest {
             MalformedQueryException, UpdateExecutionException,
             QueryEvaluationException {
         
-//        final URI graphA = f.createURI("http://example.org/graphA");
-//        final URI tempGraph = f.createURI("http://example.org/tmp");
-//        final URI s = f.createURI("http://example/s>");
-//        final URI p = f.createURI("http://example/p>");
-//        final URI x = f.createURI("http://example/x>");
-//        final URI foo = f.createURI("http://example/Foo>");
-//        final URI rdfType = f.createURI(RDF.TYPE.stringValue());
+//        final IRI graphA = f.createIRI("http://example.org/graphA");
+//        final IRI tempGraph = f.createIRI("http://example.org/tmp");
+//        final IRI s = f.createIRI("http://example/s>");
+//        final IRI p = f.createIRI("http://example/p>");
+//        final IRI x = f.createIRI("http://example/x>");
+//        final IRI foo = f.createIRI("http://example/Foo>");
+//        final IRI rdfType = f.createIRI(RDF.TYPE.stringValue());
 //        final Literal two = f.createLiteral("2", XSD.INTEGER);
 
         // replace the standard dataset with one specific to this case.
@@ -578,13 +579,13 @@ public class BigdataSPARQLUpdateTest extends SPARQLUpdateTest {
             MalformedQueryException, UpdateExecutionException,
             QueryEvaluationException {
 
-//        final URI graphA = f.createURI("http://example.org/graphA");
-//        final URI tempGraph = f.createURI("http://example.org/tmp");
-//        final URI s = f.createURI("http://example/s>");
-//        final URI p = f.createURI("http://example/p>");
-//        final URI x = f.createURI("http://example/x>");
-//        final URI foo = f.createURI("http://example/Foo>");
-//        final URI rdfType = f.createURI(RDF.TYPE.stringValue());
+//        final IRI graphA = f.createIRI("http://example.org/graphA");
+//        final IRI tempGraph = f.createIRI("http://example.org/tmp");
+//        final IRI s = f.createIRI("http://example/s>");
+//        final IRI p = f.createIRI("http://example/p>");
+//        final IRI x = f.createIRI("http://example/x>");
+//        final IRI foo = f.createIRI("http://example/Foo>");
+//        final IRI rdfType = f.createIRI(RDF.TYPE.stringValue());
 //        final Literal two = f.createLiteral("2", XSD.INTEGER);
 
         // replace the standard dataset with one specific to this case.
@@ -761,7 +762,7 @@ public class BigdataSPARQLUpdateTest extends SPARQLUpdateTest {
         
         con.prepareUpdate(QueryLanguage.SPARQL, update).execute();
 
-        assertTrue(con.hasStatement(f.createURI(ns, "mike"), RDFS.LABEL,
+        assertTrue(con.hasStatement(f.createIRI(ns, "mike"), RDFS.LABEL,
                 f.createLiteral("Michael Personick"), true));
 
     }

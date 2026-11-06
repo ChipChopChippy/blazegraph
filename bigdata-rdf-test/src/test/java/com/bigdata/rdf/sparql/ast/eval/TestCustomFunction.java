@@ -29,10 +29,10 @@ package com.bigdata.rdf.sparql.ast.eval;
 
 import java.util.Map;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpContextBase;
@@ -82,7 +82,7 @@ public class TestCustomFunction extends AbstractDataDrivenSPARQLTestCase {
      */
     public void test_custom_function_1() throws Exception {
 
-        final URI myFunctionUri = new URIImpl(
+        final IRI myFunctionUri = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://www.bigdata.com/myFunction");
         
         final FunctionRegistry.Factory myFactory = new FunctionRegistry.Factory() {
@@ -126,7 +126,7 @@ public class TestCustomFunction extends AbstractDataDrivenSPARQLTestCase {
      */
     public void test_custom_function_2() throws Exception {
 
-        final URI myFunctionUri = new URIImpl(
+        final IRI myFunctionUri = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://www.bigdata.com/myFunction2");
         
         final FunctionRegistry.Factory myFactory = new MyFilterFactory();
@@ -174,7 +174,7 @@ public class TestCustomFunction extends AbstractDataDrivenSPARQLTestCase {
      */
     public void test_custom_function_3() throws Exception {
 
-        final URI myFunctionUri = new URIImpl(
+        final IRI myFunctionUri = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://www.bigdata.com/myFunction");
         
         final FunctionRegistry.Factory myFactory = new MyFunctionFactory();
@@ -243,7 +243,7 @@ public class TestCustomFunction extends AbstractDataDrivenSPARQLTestCase {
             final Literal lit = asLiteral(arg);
 
             // Concat with self.
-            final Literal lit2 = new LiteralImpl(lit.getLabel() + "-"
+            final Literal lit2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral(lit.getLabel() + "-"
                     + lit.getLabel());
             
             // Convert into an IV.

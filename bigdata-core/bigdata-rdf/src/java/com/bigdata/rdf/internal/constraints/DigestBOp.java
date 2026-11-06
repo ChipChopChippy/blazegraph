@@ -26,7 +26,7 @@ package com.bigdata.rdf.internal.constraints;
 import java.security.MessageDigest;
 import java.util.Map;
 
-import org.openrdf.model.Literal;
+import org.eclipse.rdf4j.model.Literal;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -146,7 +146,7 @@ public class DigestBOp extends IVValueExpression<IV> implements INeedsMaterializ
         //Recreate since they are not thread safe
         MessageDigest md = null;
         final Literal lit = asLiteral(iv);
-        if (lit.getLanguage() == null &&
+        if (!lit.getLanguage().isPresent() &&
             (lit.getDatatype() == null || lit.getDatatype().equals(XSD.STRING))) {
             
             try {

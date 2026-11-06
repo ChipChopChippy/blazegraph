@@ -2,11 +2,11 @@ package com.bigdata.gom.gpo;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
 
 /**
  * The BasicSkin provides standard type wrappers to help with conversions
@@ -27,44 +27,44 @@ public class BasicSkin implements IGenericSkin {
 		((GPO) m_gpo).setMaterialized(false); // forces reload
 	}
 	
-	public void setValue(final URI property, final Value value) {
+	public void setValue(final IRI property, final Value value) {
     	m_gpo.setValue(property, value);
     }
 
-    public void setValue(final URI property, final String value) {
+    public void setValue(final IRI property, final String value) {
     	m_gpo.setValue(property, m_vf.createLiteral(value));
     }
 
-    public void setValue(final URI property, final int value) {
+    public void setValue(final IRI property, final int value) {
     	m_gpo.setValue(property, m_vf.createLiteral(value));
     }
 
-    public void setValue(final URI property, final double value) {
+    public void setValue(final IRI property, final double value) {
     	m_gpo.setValue(property, m_vf.createLiteral(value));
     }
 
-    public void setValue(final URI property, final XMLGregorianCalendar value) {
+    public void setValue(final IRI property, final XMLGregorianCalendar value) {
     	m_gpo.setValue(property, m_vf.createLiteral(value));
     }
     
 	public void setValue(final String property, final Value value) {
-    	m_gpo.setValue(m_vf.createURI(property), value);
+    	m_gpo.setValue(m_vf.createIRI(property), value);
     }
 
     public void setValue(final String property, final String value) {
-    	m_gpo.setValue(m_vf.createURI(property), m_vf.createLiteral(value));
+    	m_gpo.setValue(m_vf.createIRI(property), m_vf.createLiteral(value));
     }
 
     public void setValue(final String property, final int value) {
-    	m_gpo.setValue(m_vf.createURI(property), m_vf.createLiteral(value));
+    	m_gpo.setValue(m_vf.createIRI(property), m_vf.createLiteral(value));
     }
 
     public void setValue(final String property, final double value) {
-    	m_gpo.setValue(m_vf.createURI(property), m_vf.createLiteral(value));
+    	m_gpo.setValue(m_vf.createIRI(property), m_vf.createLiteral(value));
     }
 
     public void setValue(final String property, final XMLGregorianCalendar value) {
-    	m_gpo.setValue(m_vf.createURI(property), m_vf.createLiteral(value));
+    	m_gpo.setValue(m_vf.createIRI(property), m_vf.createLiteral(value));
     }
 
 	@Override
@@ -72,7 +72,7 @@ public class BasicSkin implements IGenericSkin {
 		return m_gpo;
 	}
 
-	public int getIntValue(final URI key) {
+	public int getIntValue(final IRI key) {
 		final Value v = m_gpo.getValue(key);
 		
 		if (v instanceof Literal) {
@@ -82,7 +82,7 @@ public class BasicSkin implements IGenericSkin {
 		}
 	}
 
-	public double getDoubleValue(final URI key) {
+	public double getDoubleValue(final IRI key) {
 		final Value v = m_gpo.getValue(key);
 		
 		if (v instanceof Literal) {
@@ -92,7 +92,7 @@ public class BasicSkin implements IGenericSkin {
 		}
 	}
 
-	public boolean getBooleanValue(final URI key) {
+	public boolean getBooleanValue(final IRI key) {
 		final Value v = m_gpo.getValue(key);
 		
 		if (v instanceof Literal) {
@@ -102,7 +102,7 @@ public class BasicSkin implements IGenericSkin {
 		}
 	}
 
-	public String getStringValue(final URI key) {
+	public String getStringValue(final IRI key) {
 		final Value v = m_gpo.getValue(key);
 		
 		if (v instanceof Literal) {
@@ -112,7 +112,7 @@ public class BasicSkin implements IGenericSkin {
 		}
 	}
 
-	public IGPO getGPOValue(final URI key) {
+	public IGPO getGPOValue(final IRI key) {
 		final Value v = m_gpo.getValue(key);
 		
 		if (v instanceof Resource) {
@@ -123,19 +123,19 @@ public class BasicSkin implements IGenericSkin {
 	}
 
 	public int getInt(final String key) {
-		return getIntValue(m_vf.createURI(key));
+		return getIntValue(m_vf.createIRI(key));
 	}
 
 	public double getDouble(final String key) {
-		return getDoubleValue(m_vf.createURI(key));
+		return getDoubleValue(m_vf.createIRI(key));
 	}
 
 	public boolean getBoolean(final String key) {
-		return getBooleanValue(m_vf.createURI(key));
+		return getBooleanValue(m_vf.createIRI(key));
 	}
 
 	public String getString(final String key) {
-		return getStringValue(m_vf.createURI(key));
+		return getStringValue(m_vf.createIRI(key));
 	}
 
 }

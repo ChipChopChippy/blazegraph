@@ -30,21 +30,22 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.model.vocabulary.XMLSchema;
-import org.openrdf.query.Binding;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.impl.BindingImpl;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
+import org.eclipse.rdf4j.query.Binding;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.impl.SimpleBinding;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.store.BD;
@@ -56,7 +57,7 @@ import com.bigdata.rdf.vocab.NoVocabulary;
  */
 public class TestBOps extends ProxyBigdataSailTestCase {
 
-    private static final Logger log = Logger.getLogger(TestBOps.class);
+    private static final Logger log = LogManager.getLogger(TestBOps.class);
     
     @Override
     public Properties getProperties() {
@@ -90,7 +91,7 @@ public class TestBOps extends ProxyBigdataSailTestCase {
 
         final BigdataSail sail = getSail();
         try {
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         final BigdataSailRepositoryConnection cxn = 
             (BigdataSailRepositoryConnection) repo.getConnection();
@@ -102,13 +103,13 @@ public class TestBOps extends ProxyBigdataSailTestCase {
             
             final String ns = BD.NAMESPACE;
             
-            final URI mike = new URIImpl(ns+"Mike");
-            final URI bryan = new URIImpl(ns+"Bryan");
-            final URI person = new URIImpl(ns+"Person");
-            final URI likes = new URIImpl(ns+"likes");
-            final URI rdf = new URIImpl(ns+"RDF");
-            final Literal l1 = new LiteralImpl("Mike");
-            final Literal l2 = new LiteralImpl("Bryan");
+            final IRI mike = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"Mike");
+            final IRI bryan = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"Bryan");
+            final IRI person = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"Person");
+            final IRI likes = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"likes");
+            final IRI rdf = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"RDF");
+            final Literal l1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Mike");
+            final Literal l2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Bryan");
 /**/
             cxn.setNamespace("ns", ns);
             
@@ -155,14 +156,14 @@ public class TestBOps extends ProxyBigdataSailTestCase {
  
                 final Collection<BindingSet> solution = new LinkedList<BindingSet>();
                 solution.add(createBindingSet(new Binding[] {
-                    new BindingImpl("s", mike),
-                    new BindingImpl("likes", rdf),
-                    new BindingImpl("label", l1)
+                    new SimpleBinding("s", mike),
+                    new SimpleBinding("likes", rdf),
+                    new SimpleBinding("label", l1)
                 }));
                 solution.add(createBindingSet(new Binding[] {
-                    new BindingImpl("s", bryan),
-                    new BindingImpl("likes", rdf),
-                    new BindingImpl("label", l2)
+                    new SimpleBinding("s", bryan),
+                    new SimpleBinding("likes", rdf),
+                    new SimpleBinding("label", l2)
                 }));
                 
                 compare(result, solution);
@@ -181,7 +182,7 @@ public class TestBOps extends ProxyBigdataSailTestCase {
 
         final BigdataSail sail = getSail();
         try {
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         final BigdataSailRepositoryConnection cxn = 
             (BigdataSailRepositoryConnection) repo.getConnection();
@@ -193,13 +194,13 @@ public class TestBOps extends ProxyBigdataSailTestCase {
             
             final String ns = BD.NAMESPACE;
             
-            final URI jill = new URIImpl(ns+"Jill");
-            final URI jane = new URIImpl(ns+"Jane");
-            final URI person = new URIImpl(ns+"Person");
-            final URI age = new URIImpl(ns+"age");
-            final URI IQ = new URIImpl(ns+"IQ");
-            final Literal l1 = new LiteralImpl("Jill");
-            final Literal l2 = new LiteralImpl("Jane");
+            final IRI jill = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"Jill");
+            final IRI jane = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"Jane");
+            final IRI person = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"Person");
+            final IRI age = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"age");
+            final IRI IQ = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"IQ");
+            final Literal l1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Jill");
+            final Literal l2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Jane");
             final Literal age1 = vf.createLiteral(20);
             final Literal age2 = vf.createLiteral(30);
             final Literal IQ1 = vf.createLiteral(130);
@@ -254,10 +255,10 @@ public class TestBOps extends ProxyBigdataSailTestCase {
  
                 final Collection<BindingSet> solution = new LinkedList<BindingSet>();
                 solution.add(createBindingSet(new Binding[] {
-                    new BindingImpl("s", jill),
-                    new BindingImpl("age", age1),
-                    new BindingImpl("iq", IQ1),
-                    new BindingImpl("label", l1)
+                    new SimpleBinding("s", jill),
+                    new SimpleBinding("age", age1),
+                    new SimpleBinding("iq", IQ1),
+                    new SimpleBinding("label", l1)
                 }));
                 
                 compare(result, solution);
@@ -276,7 +277,7 @@ public class TestBOps extends ProxyBigdataSailTestCase {
 
         final BigdataSail sail = getSail();
         try {
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         final BigdataSailRepositoryConnection cxn = 
             (BigdataSailRepositoryConnection) repo.getConnection();
@@ -288,13 +289,13 @@ public class TestBOps extends ProxyBigdataSailTestCase {
             
             final String ns = BD.NAMESPACE;
             
-            final URI mike = new URIImpl(ns+"Mike");
-            final URI bryan = new URIImpl(ns+"Bryan");
-            final URI person = new URIImpl(ns+"Person");
-            final URI likes = new URIImpl(ns+"likes");
-            final URI rdf = new URIImpl(ns+"RDF");
-            final Literal l1 = new LiteralImpl("Mike");
-//            final Literal l2 = new LiteralImpl("Bryan");
+            final IRI mike = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"Mike");
+            final IRI bryan = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"Bryan");
+            final IRI person = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"Person");
+            final IRI likes = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"likes");
+            final IRI rdf = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"RDF");
+            final Literal l1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Mike");
+//            final Literal l2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Bryan");
 /**/
             cxn.setNamespace("ns", ns);
             
@@ -341,14 +342,14 @@ public class TestBOps extends ProxyBigdataSailTestCase {
  
                 final Collection<BindingSet> solution = new LinkedList<BindingSet>();
                 solution.add(createBindingSet(new Binding[] {
-                    new BindingImpl("s", mike),
-                    new BindingImpl("likes", rdf),
-                    new BindingImpl("label", l1)
+                    new SimpleBinding("s", mike),
+                    new SimpleBinding("likes", rdf),
+                    new SimpleBinding("label", l1)
                 }));
                 solution.add(createBindingSet(new Binding[] {
-                    new BindingImpl("s", bryan),
-                    new BindingImpl("likes", rdf),
-//                    new BindingImpl("label", l2)
+                    new SimpleBinding("s", bryan),
+                    new SimpleBinding("likes", rdf),
+//                    new SimpleBinding("label", l2)
                 }));
                 
                 compare(result, solution);
@@ -367,7 +368,7 @@ public class TestBOps extends ProxyBigdataSailTestCase {
 
         final BigdataSail sail = getSail();
         try {
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         final BigdataSailRepositoryConnection cxn = 
             (BigdataSailRepositoryConnection) repo.getConnection();
@@ -381,14 +382,14 @@ public class TestBOps extends ProxyBigdataSailTestCase {
             
             final String ns = BD.NAMESPACE;
             
-            final URI mike = new URIImpl(ns+"Mike");
-            final URI bryan = new URIImpl(ns+"Bryan");
-            final URI martyn = new URIImpl(ns+"Martyn");
-            final URI person = new URIImpl(ns+"Person");
-            final URI p = new URIImpl(ns+"p");
-            final Literal l1 = new LiteralImpl("Mike");
-            final Literal l2 = new LiteralImpl("Bryan");
-            final Literal l3 = new LiteralImpl("Martyn");
+            final IRI mike = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"Mike");
+            final IRI bryan = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"Bryan");
+            final IRI martyn = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"Martyn");
+            final IRI person = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"Person");
+            final IRI p = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"p");
+            final Literal l1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Mike");
+            final Literal l2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Bryan");
+            final Literal l3 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Martyn");
 /**/
             cxn.setNamespace("ns", ns);
             
@@ -435,14 +436,14 @@ public class TestBOps extends ProxyBigdataSailTestCase {
  
                 final Collection<BindingSet> solution = new LinkedList<BindingSet>();
                 solution.add(createBindingSet(new Binding[] {
-                    new BindingImpl("s", mike),
-                    new BindingImpl("p", RDFS.LABEL),
-                    new BindingImpl("label", l1)
+                    new SimpleBinding("s", mike),
+                    new SimpleBinding("p", RDFS.LABEL),
+                    new SimpleBinding("label", l1)
                 }));
                 solution.add(createBindingSet(new Binding[] {
-                    new BindingImpl("s", bryan),
-                    new BindingImpl("p", RDFS.COMMENT),
-                    new BindingImpl("label", l2)
+                    new SimpleBinding("s", bryan),
+                    new SimpleBinding("p", RDFS.COMMENT),
+                    new SimpleBinding("label", l2)
                 }));
                 
                 compare(result, solution);
@@ -461,7 +462,7 @@ public class TestBOps extends ProxyBigdataSailTestCase {
 
         final BigdataSail sail = getSail();
         try {
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         final BigdataSailRepositoryConnection cxn = 
             (BigdataSailRepositoryConnection) repo.getConnection();
@@ -471,21 +472,21 @@ public class TestBOps extends ProxyBigdataSailTestCase {
     
             final String ns = BD.NAMESPACE;            
           
-            final URI foo = new URIImpl(ns+"foo");
-            final URI bar = new URIImpl(ns+"bar");
-            final URI plain = new URIImpl(ns+"plain");
-            final URI language = new URIImpl(ns+"language");
-            final URI string = new URIImpl(ns+"string");
+            final IRI foo = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"foo");
+            final IRI bar = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"bar");
+            final IRI plain = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"plain");
+            final IRI language = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"language");
+            final IRI string = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"string");
             
-            final Literal fooPlain = new LiteralImpl("foo");
-            final Literal fooLanguage = new LiteralImpl("foo", "en");
-            final Literal fooString = new LiteralImpl("foo", XMLSchema.STRING);
-            final Literal barPlain = new LiteralImpl("bar");
-            final Literal barLanguage = new LiteralImpl("bar", "en");
-            final Literal barString = new LiteralImpl("bar", XMLSchema.STRING);
-            final Literal foobarPlain = new LiteralImpl("foobar");
-            final Literal foobarLanguage = new LiteralImpl("foobar", "en");
-            final Literal foobarString = new LiteralImpl("foobar", XMLSchema.STRING);
+            final Literal fooPlain = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("foo");
+            final Literal fooLanguage = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("foo", "en");
+            final Literal fooString = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("foo", XSD.STRING);
+            final Literal barPlain = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("bar");
+            final Literal barLanguage = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("bar", "en");
+            final Literal barString = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("bar", XSD.STRING);
+            final Literal foobarPlain = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("foobar");
+            final Literal foobarLanguage = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("foobar", "en");
+            final Literal foobarString = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("foobar", XSD.STRING);
             
 /**/
             cxn.setNamespace("ns", ns);
@@ -560,7 +561,7 @@ public class TestBOps extends ProxyBigdataSailTestCase {
 //
 //        final BigdataSail sail = getSail();
 //        try {
-//        sail.initialize();
+//        sail.init();
 //        final BigdataSailRepository repo = new BigdataSailRepository(sail);
 //        final BigdataSailRepositoryConnection cxn = 
 //            (BigdataSailRepositoryConnection) repo.getConnection();
@@ -574,15 +575,15 @@ public class TestBOps extends ProxyBigdataSailTestCase {
 //            
 //            final String ns = BD.NAMESPACE;
 //            
-//            final URI mikeA = new URIImpl(ns+"MikeA");
-//            final URI mikeB = new URIImpl(ns+"MikeB");
-//            final URI bryan = new URIImpl(ns+"Bryan");
-//            final URI martyn = new URIImpl(ns+"Martyn");
-//            final URI person = new URIImpl(ns+"Person");
-//            final URI name = new URIImpl(ns+"name");
-//            final Literal l1 = new LiteralImpl("Mike");
-//            final Literal l2 = new LiteralImpl("Bryan");
-//            final Literal l3 = new LiteralImpl("Martyn");
+//            final IRI mikeA = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"MikeA");
+//            final IRI mikeB = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"MikeB");
+//            final IRI bryan = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"Bryan");
+//            final IRI martyn = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"Martyn");
+//            final IRI person = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"Person");
+//            final IRI name = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ns+"name");
+//            final Literal l1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Mike");
+//            final Literal l2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Bryan");
+//            final Literal l3 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Martyn");
 ///**/
 //            cxn.setNamespace("ns", ns);
 //            
@@ -664,14 +665,14 @@ public class TestBOps extends ProxyBigdataSailTestCase {
 // 
 ////                Collection<BindingSet> solution = new LinkedList<BindingSet>();
 ////                solution.add(createBindingSet(new Binding[] {
-////                    new BindingImpl("s", mike),
-////                    new BindingImpl("p", RDFS.LABEL),
-////                    new BindingImpl("label", l1)
+////                    new SimpleBinding("s", mike),
+////                    new SimpleBinding("p", RDFS.LABEL),
+////                    new SimpleBinding("label", l1)
 ////                }));
 ////                solution.add(createBindingSet(new Binding[] {
-////                    new BindingImpl("s", bryan),
-////                    new BindingImpl("p", RDFS.COMMENT),
-////                    new BindingImpl("label", l2)
+////                    new SimpleBinding("s", bryan),
+////                    new SimpleBinding("p", RDFS.COMMENT),
+////                    new SimpleBinding("label", l2)
 ////                }));
 ////                
 ////                compare(result, solution);

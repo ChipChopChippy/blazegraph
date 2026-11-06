@@ -35,8 +35,9 @@ import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.BTree;
 import com.bigdata.btree.Checkpoint;
 import com.bigdata.btree.DefaultTupleSerializer;
@@ -122,7 +123,7 @@ import com.bigdata.util.Bytes;
  */
 public class CounterSetBTree extends BTree {
 
-    protected static transient final Logger log = Logger
+    protected static transient final Logger log = LogManager
             .getLogger(CounterSetBTree.class);
     
     /**

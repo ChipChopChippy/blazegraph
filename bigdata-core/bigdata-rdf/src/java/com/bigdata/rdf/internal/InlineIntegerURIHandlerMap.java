@@ -29,8 +29,9 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.rdf.internal.impl.literal.AbstractLiteralIV;
 import com.bigdata.rdf.model.BigdataLiteral;
 
@@ -47,7 +48,7 @@ import com.bigdata.rdf.model.BigdataLiteral;
  */
 public class InlineIntegerURIHandlerMap extends InlineLocalNameIntegerURIHandler {
 	
-	private static final Logger log = Logger.getLogger(InlineIntegerURIHandlerMap.class);
+	private static final Logger log = LogManager.getLogger(InlineIntegerURIHandlerMap.class);
 	
 	//Precompile Pattern to pick out the prefix and/or suffix around an integer
 	public static final Pattern descriptorPattern = Pattern.compile("(.*[a-zA-Z])\\d+(_.*)");

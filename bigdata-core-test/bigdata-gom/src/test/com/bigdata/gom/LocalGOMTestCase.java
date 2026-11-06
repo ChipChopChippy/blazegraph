@@ -35,11 +35,13 @@ import junit.extensions.proxy.ProxyTestSuite;
 import junit.framework.Test;
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParseException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParseException;
+import org.eclipse.rdf4j.rio.helpers.XMLParserSettings;
 
 import com.bigdata.BigdataStatics;
 import com.bigdata.gom.om.IObjectManager;
@@ -53,7 +55,7 @@ import com.bigdata.rdf.store.AbstractTripleStore;
 
 public class LocalGOMTestCase extends TestCase implements IGOMProxy {
 
-    private static final Logger log = Logger.getLogger(LocalGOMTestCase.class);
+    private static final Logger log = LogManager.getLogger(LocalGOMTestCase.class);
 
     protected BigdataSailRepository m_repo;
     protected BigdataSail m_sail;
@@ -119,7 +121,7 @@ public class LocalGOMTestCase extends TestCase implements IGOMProxy {
         // instantiate a sail and a Sesame repository
         m_sail = new BigdataSail(getProperties());
         m_repo = new BigdataSailRepository(m_sail);
-        m_repo.initialize();
+        m_repo.init();
         m_vf = m_sail.getValueFactory();
         // Note: This uses a mock endpoint URL.
         om = new ObjectManager("http://localhost"
@@ -180,6 +182,8 @@ public class LocalGOMTestCase extends TestCase implements IGOMProxy {
                 final BigdataSailRepositoryConnection cxn = m_repo
                         .getConnection();
                 try {
+                    cxn.getParserConfig().set(
+                            XMLParserSettings.DISALLOW_DOCTYPE_DECL, false);
                     cxn.setAutoCommit(false);
                     cxn.add(reader, "", rdfFormat);
                     cxn.commit();

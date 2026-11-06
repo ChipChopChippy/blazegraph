@@ -26,10 +26,11 @@ package com.bigdata.rdf.internal.constraints;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -41,7 +42,7 @@ import com.bigdata.rdf.internal.XSD;
 import com.bigdata.rdf.internal.impl.literal.AbstractLiteralIV;
 import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.sparql.ast.GlobalAnnotations;
 
 /**
@@ -55,7 +56,7 @@ public class XsdStrBOp extends IVValueExpression<IV>
 	 */
     private static final long serialVersionUID = 3125106876006900339L;
 
-    private static final transient Logger log = Logger.getLogger(XsdStrBOp.class);
+    private static final transient Logger log = LogManager.getLogger(XsdStrBOp.class);
 
     public XsdStrBOp(final IValueExpression<? extends IV> x, final GlobalAnnotations globals) {
 
@@ -113,8 +114,8 @@ public class XsdStrBOp extends IVValueExpression<IV>
                 final BigdataLiteral str = vf.createLiteral(lit.getLabel(), XSD.STRING);
                 return super.asIV(str, bs);
             }
-        } else if (val instanceof URI) {
-            // return new simple literal using URI label
+        } else if (val instanceof IRI) {
+            // return new simple literal using IRI label
             final BigdataLiteral str = vf.createLiteral(val.stringValue(), XSD.STRING);
             return super.asIV(str, bs);
         } else {
@@ -137,8 +138,8 @@ public class XsdStrBOp extends IVValueExpression<IV>
 //        }
 //
 //        if (iv.isURI()) {
-//            // return new xsd:string literal using URI label
-//            final URI uri = (URI) iv.getValue();
+//            // return new xsd:string literal using IRI label
+//            final IRI uri = (IRI) iv.getValue();
 //            final BigdataLiteral str = vf.createLiteral(uri.toString(), XSD.STRING);
 //            return super.asIV(str, bs);
 //        } else if (iv.isLiteral()) {

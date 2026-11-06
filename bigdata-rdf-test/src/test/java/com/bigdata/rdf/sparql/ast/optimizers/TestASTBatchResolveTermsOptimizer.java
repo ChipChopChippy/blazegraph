@@ -29,8 +29,8 @@ package com.bigdata.rdf.sparql.ast.optimizers;
 
 import java.util.Collections;
 
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.bop.Constant;
 import com.bigdata.bop.IBindingSet;
@@ -108,13 +108,13 @@ public class TestASTBatchResolveTermsOptimizer extends AbstractASTEvaluationTest
     		final BigdataValueFactory f = store.getValueFactory();
 
     		// A version where a mock IV is associated with the term. 
-    		final BigdataURI unknown1 = f.createURI("http://example/out");
-    		unknown1.setIV(TermId.mockIV(VTE.URI));
+    		final BigdataURI unknown1 = f.createIRI("http://example/out");
+    		unknown1.setIV(TermId.mockIV(VTE.IRI));
     		assertFalse(unknown1.isRealIV());
     		unknown1.getIV().setValue(unknown1);
     		
     		// A version where a real IV is associated with the term. 
-    		final BigdataURI known1 = f.createURI("http://example/out");
+    		final BigdataURI known1 = f.createIRI("http://example/out");
     		store.addTerms(new BigdataValue[]{known1});
     		assertTrue(known1.isRealIV());
     		
@@ -221,13 +221,13 @@ public class TestASTBatchResolveTermsOptimizer extends AbstractASTEvaluationTest
     		final BigdataValueFactory f = store.getValueFactory();
 
     		// A version where a mock IV is associated with the term. 
-    		final BigdataURI unknown1 = f.createURI("http://example/out");
-    		unknown1.setIV(TermId.mockIV(VTE.URI));
+    		final BigdataURI unknown1 = f.createIRI("http://example/out");
+    		unknown1.setIV(TermId.mockIV(VTE.IRI));
     		assertFalse(unknown1.isRealIV());
     		unknown1.getIV().setValue(unknown1);
     		
     		// A version where a real IV is associated with the term. 
-    		final BigdataURI known1 = f.createURI("http://example/out");
+    		final BigdataURI known1 = f.createIRI("http://example/out");
     		store.addTerms(new BigdataValue[]{known1});
     		assertTrue(known1.isRealIV());
     		

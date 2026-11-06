@@ -26,10 +26,10 @@ package com.bigdata.rdf.internal.constraints;
 
 import java.util.Map;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.query.algebra.Compare.CompareOp;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.algebra.Compare.CompareOp;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -154,7 +154,7 @@ public class SameTermBOp extends XSDBooleanIVValueExpression
     		
     		final Value val2 = asValue(iv2);
     		
-    		if (val1 instanceof URI && val2 instanceof URI) {
+    		if (val1 instanceof IRI && val2 instanceof IRI) {
     			
     			return val1.stringValue().equals(val2.stringValue());
     			

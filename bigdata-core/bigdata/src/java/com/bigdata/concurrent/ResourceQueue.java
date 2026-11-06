@@ -33,8 +33,9 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 /**
  * Unbounded queue of operations waiting to gain an exclusive lock on a
  * resource. By default, the queue imposes a "fair" schedule for access to the
@@ -63,7 +64,7 @@ import org.apache.log4j.Logger;
  */
 public class ResourceQueue<R, T> {
 
-    protected static final Logger log = Logger.getLogger(ResourceQueue.class);
+    protected static final Logger log = LogManager.getLogger(ResourceQueue.class);
     
     protected static final boolean INFO = log.isInfoEnabled();
 

@@ -32,10 +32,10 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.rdf.model.BigdataBNode;
 import com.bigdata.rdf.model.BigdataStatement;
@@ -86,7 +86,7 @@ public interface IStatementBuffer<F extends Statement> extends IBuffer<F> {
      * @param o
      *            The object.
      */
-    public void add(Resource s, URI p, Value o);
+    public void add(Resource s, IRI p, Value o);
 
     /**
      * Add an "explicit" statement to the buffer.
@@ -100,7 +100,7 @@ public interface IStatementBuffer<F extends Statement> extends IBuffer<F> {
      * @param c
      *            The context (optional).
      */
-    public void add(Resource s, URI p, Value o, Resource c);
+    public void add(Resource s, IRI p, Value o, Resource c);
 
     /**
      * Add a statement to the buffer.
@@ -120,7 +120,7 @@ public interface IStatementBuffer<F extends Statement> extends IBuffer<F> {
      * @param type
      *            The statement type (optional).
      */
-    public void add(Resource s, URI p, Value o, Resource c, StatementEnum type);
+    public void add(Resource s, IRI p, Value o, Resource c, StatementEnum type);
 
     /**
      * Set the canonicalizing map for blank nodes based on their ID. This allows

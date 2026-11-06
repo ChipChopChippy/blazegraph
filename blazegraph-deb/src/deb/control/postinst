@@ -22,7 +22,7 @@ case "$1" in
 
         # Update the rules.log location
         sed -i -e "s|log4j.appender.ruleLog.File=.*|log4j.appender.ruleLog.File=$BLZG_LOG/rules.log|" \
-        $BLZG_CONF/log4j.properties
+        $BLZG_CONF/log4j2.properties
 
         touch $BLZG_LOG/rules.log
         chown $BLZG_USER:$BLZG_GROUP $BLZG_LOG/rules.log

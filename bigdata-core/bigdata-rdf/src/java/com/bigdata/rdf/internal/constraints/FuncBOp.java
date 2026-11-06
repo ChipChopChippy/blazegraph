@@ -26,11 +26,12 @@ package com.bigdata.rdf.internal.constraints;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Value;
-import org.openrdf.query.algebra.evaluation.ValueExprEvaluationException;
-import org.openrdf.query.algebra.evaluation.function.Function;
-import org.openrdf.query.algebra.evaluation.function.FunctionRegistry;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.algebra.evaluation.ValueExprEvaluationException;
+import org.eclipse.rdf4j.query.algebra.evaluation.function.Function;
+import org.eclipse.rdf4j.query.algebra.evaluation.function.FunctionRegistry;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -53,7 +54,7 @@ public class FuncBOp extends IVValueExpression<IV> implements
 	 */
 	private static final long serialVersionUID = 2587499644967260639L;
 	
-	private static final transient Logger log = Logger.getLogger(FuncBOp.class);
+	private static final transient Logger log = LogManager.getLogger(FuncBOp.class);
 
 	public interface Annotations extends IVValueExpression.Annotations {
 
@@ -90,7 +91,7 @@ public class FuncBOp extends IVValueExpression<IV> implements
 
             final String funcName = (String) getRequiredProperty(Annotations.FUNCTION);
 
-            funct = FunctionRegistry.getInstance().get(funcName);
+            funct = FunctionRegistry.getInstance().get(funcName).orElse(null);
 
             if (funct == null) {
                 throw new RuntimeException("Unknown function '" + funcName

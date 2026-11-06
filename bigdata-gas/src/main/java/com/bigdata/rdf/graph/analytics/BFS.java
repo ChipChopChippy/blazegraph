@@ -15,15 +15,17 @@
 */
 package com.bigdata.rdf.graph.analytics;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.openrdf.model.Statement;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
 
 import com.bigdata.rdf.graph.BinderBase;
 import com.bigdata.rdf.graph.EdgesEnum;
@@ -48,7 +50,7 @@ import com.bigdata.rdf.graph.impl.BaseGASProgram;
 public class BFS extends BaseGASProgram<BFS.VS, BFS.ES, Void> implements
         IPredecessor<BFS.VS, BFS.ES, Void> {
 
-//    private static final Logger log = Logger.getLogger(BFS.class);
+//    private static final Logger log = LogManager.getLogger(BFS.class);
     
     public static class VS {
 

@@ -27,16 +27,17 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.query.Binding;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.impl.BindingImpl;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.query.Binding;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.impl.SimpleBinding;
 
 import com.bigdata.rdf.ServiceProviderHook;
 import com.bigdata.rdf.axioms.NoAxioms;
@@ -53,7 +54,7 @@ import com.bigdata.rdf.vocab.NoVocabulary;
  */
 public class TestSids extends ProxyBigdataSailTestCase {
 
-    private static final transient Logger log = Logger.getLogger(TestSids.class);
+    private static final transient Logger log = LogManager.getLogger(TestSids.class);
     
     @Override
     public Properties getProperties() {
@@ -89,7 +90,7 @@ public class TestSids extends ProxyBigdataSailTestCase {
         
         try {
 
-            sail.initialize();
+            sail.init();
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             final BigdataSailRepositoryConnection cxn = 
                 (BigdataSailRepositoryConnection) repo.getConnection();
@@ -151,19 +152,19 @@ public class TestSids extends ProxyBigdataSailTestCase {
 	            	
 	                final Collection<BindingSet> solution = new LinkedList<BindingSet>();
 	                solution.add(createBindingSet(new Binding[] {
-	                        new BindingImpl("s", new URIImpl("http://localhost/host1")),
-	                        new BindingImpl("p", new URIImpl("http://mynamespace.com#connectedTo")),
-	                        new BindingImpl("o", new URIImpl("http://localhost/switch1")),
+	                        new SimpleBinding("s", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://localhost/host1")),
+	                        new SimpleBinding("p", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://mynamespace.com#connectedTo")),
+	                        new SimpleBinding("o", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://localhost/switch1")),
 	                }));
 	                solution.add(createBindingSet(new Binding[] {
-	                        new BindingImpl("s", new URIImpl("http://localhost/host1")),
-	                        new BindingImpl("p", RDF.TYPE),
-	                        new BindingImpl("o", new URIImpl("http://domainnamespace.com/host#Host")),
+	                        new SimpleBinding("s", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://localhost/host1")),
+	                        new SimpleBinding("p", RDF.TYPE),
+	                        new SimpleBinding("o", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://domainnamespace.com/host#Host")),
 	                }));
 	                solution.add(createBindingSet(new Binding[] {
-	                        new BindingImpl("s", new URIImpl("http://localhost/switch1")),
-	                        new BindingImpl("p", RDF.TYPE),
-	                        new BindingImpl("o", new URIImpl("http://domainnamespace.com/san#Switch")),
+	                        new SimpleBinding("s", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://localhost/switch1")),
+	                        new SimpleBinding("p", RDF.TYPE),
+	                        new SimpleBinding("o", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://domainnamespace.com/san#Switch")),
 	                }));
                 
 	                compare(result, solution);
@@ -188,7 +189,7 @@ public class TestSids extends ProxyBigdataSailTestCase {
         
         try {
     
-            sail.initialize();
+            sail.init();
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             final BigdataSailRepositoryConnection cxn = 
                 (BigdataSailRepositoryConnection) repo.getConnection();
@@ -199,15 +200,15 @@ public class TestSids extends ProxyBigdataSailTestCase {
 
             final BigdataValueFactory vf = (BigdataValueFactory) sail.getValueFactory();
         	
-        	final URI host1 = vf.createURI("http://localhost/host1");
-        	final URI host = vf.createURI("http://domainnamespace.com/host#Host");
-        	final URI swtch1 = vf.createURI("http://localhost/switch1");
-        	final URI swtch2 = vf.createURI("http://localhost/switch2");
-        	final URI swtch = vf.createURI("http://domainnamespace.com/san#Switch");
-        	final URI connectedTo = vf.createURI("http://mynamespace.com#connectedTo");
-        	final URI creator = vf.createURI("http://mynamespace.com#creator");
-        	final URI src1 = vf.createURI("http://1.com");
-        	final URI src2 = vf.createURI("http://2.com");
+        	final IRI host1 = vf.createIRI("http://localhost/host1");
+        	final IRI host = vf.createIRI("http://domainnamespace.com/host#Host");
+        	final IRI swtch1 = vf.createIRI("http://localhost/switch1");
+        	final IRI swtch2 = vf.createIRI("http://localhost/switch2");
+        	final IRI swtch = vf.createIRI("http://domainnamespace.com/san#Switch");
+        	final IRI connectedTo = vf.createIRI("http://mynamespace.com#connectedTo");
+        	final IRI creator = vf.createIRI("http://mynamespace.com#creator");
+        	final IRI src1 = vf.createIRI("http://1.com");
+        	final IRI src2 = vf.createIRI("http://2.com");
 //        	final BNode sid1 = vf.createBNode("s1");
 //        	final BNode sid2 = vf.createBNode("s2");
 //        	final BNode sid3 = vf.createBNode("s3");
@@ -304,19 +305,19 @@ public class TestSids extends ProxyBigdataSailTestCase {
 	            	
 	                Collection<BindingSet> solution = new LinkedList<BindingSet>();
 	                solution.add(createBindingSet(new Binding[] {
-	                        new BindingImpl("s", new URIImpl("http://localhost/host1")),
-	                        new BindingImpl("p", new URIImpl("http://mynamespace.com#connectedTo")),
-	                        new BindingImpl("o", new URIImpl("http://localhost/switch1")),
+	                        new SimpleBinding("s", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://localhost/host1")),
+	                        new SimpleBinding("p", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://mynamespace.com#connectedTo")),
+	                        new SimpleBinding("o", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://localhost/switch1")),
 	                }));
 	                solution.add(createBindingSet(new Binding[] {
-	                        new BindingImpl("s", new URIImpl("http://localhost/host1")),
-	                        new BindingImpl("p", RDF.TYPE),
-	                        new BindingImpl("o", new URIImpl("http://domainnamespace.com/host#Host")),
+	                        new SimpleBinding("s", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://localhost/host1")),
+	                        new SimpleBinding("p", RDF.TYPE),
+	                        new SimpleBinding("o", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://domainnamespace.com/host#Host")),
 	                }));
 	                solution.add(createBindingSet(new Binding[] {
-	                        new BindingImpl("s", new URIImpl("http://localhost/switch1")),
-	                        new BindingImpl("p", RDF.TYPE),
-	                        new BindingImpl("o", new URIImpl("http://domainnamespace.com/san#Switch")),
+	                        new SimpleBinding("s", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://localhost/switch1")),
+	                        new SimpleBinding("p", RDF.TYPE),
+	                        new SimpleBinding("o", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://domainnamespace.com/san#Switch")),
 	                }));
                 
 	                compare(result, solution);
@@ -348,11 +349,11 @@ public class TestSids extends ProxyBigdataSailTestCase {
 //    
 //        	final ValueFactory vf = sail.getValueFactory();
 //        	
-//        	final URI mike = vf.createURI("http://mynamespace.com/Mike");
-//        	final URI likes = vf.createURI("http://mynamespace.com/likes");
-//        	final URI rdf = vf.createURI("http://mynamespace.com/RDF");
-//        	final URI source = vf.createURI("http://mynamespace.com/source");
-//        	final URI src1 = vf.createURI("http://bigdata.com");
+//        	final IRI mike = vf.createIRI("http://mynamespace.com/Mike");
+//        	final IRI likes = vf.createIRI("http://mynamespace.com/likes");
+//        	final IRI rdf = vf.createIRI("http://mynamespace.com/RDF");
+//        	final IRI source = vf.createIRI("http://mynamespace.com/source");
+//        	final IRI src1 = vf.createIRI("http://bigdata.com");
 //        	
 //        	final Statement s1 = 
 //        		vf.createStatement(mike, likes, rdf, vf.createBNode());
@@ -375,7 +376,7 @@ public class TestSids extends ProxyBigdataSailTestCase {
 //    public void testTM() throws Exception {
 //
 //        final BigdataSail sail = getSail();
-//        sail.initialize();
+//        sail.init();
 //        final BigdataSailRepository repo = new BigdataSailRepository(sail);
 //        final BigdataSailRepositoryConnection cxn = 
 //            (BigdataSailRepositoryConnection) repo.getUnisolatedConnection();
@@ -389,10 +390,10 @@ public class TestSids extends ProxyBigdataSailTestCase {
 //    
 //        	final ValueFactory vf = sail.getValueFactory();
 //        	
-//        	final URI s1 = vf.createURI(BD.NAMESPACE+"s1");
-//        	final URI s2 = vf.createURI(BD.NAMESPACE+"s2");
-//        	final URI p1 = vf.createURI(BD.NAMESPACE+"p1");
-//        	final URI p2 = vf.createURI(BD.NAMESPACE+"p2");
+//        	final IRI s1 = vf.createIRI(BD.NAMESPACE+"s1");
+//        	final IRI s2 = vf.createIRI(BD.NAMESPACE+"s2");
+//        	final IRI p1 = vf.createIRI(BD.NAMESPACE+"p1");
+//        	final IRI p2 = vf.createIRI(BD.NAMESPACE+"p2");
 //        	
 //            cxn.add(p1, RDFS.SUBPROPERTYOF, p2);
 //            cxn.add(s1, p1, s2);
@@ -427,7 +428,7 @@ public class TestSids extends ProxyBigdataSailTestCase {
 //      
 //        {
 //        	final AbstractTripleStore db = sail.getDatabase();
-//        	final BigdataURI baz = db.getLexiconRelation().resolve(new URIImpl("baz"));
+//        	final BigdataURI baz = db.getLexiconRelation().resolve(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("baz"));
 //        	final BigdataStatementIterator it = db.getStatements(null, null, baz);
 //        	while (it.hasNext()) {
 //        	    final BigdataStatement stmt = it.next();
@@ -437,7 +438,7 @@ public class TestSids extends ProxyBigdataSailTestCase {
 //        	}
 //        	{
 //        	final AbstractTripleStore db = sail.getDatabase();
-//        	final BigdataURI baz = db.getLexiconRelation().resolve(new URIImpl("baz"));
+//        	final BigdataURI baz = db.getLexiconRelation().resolve(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("baz"));
 //        	assert(baz.getIV() != null);
 //        	final IAccessPath<ISPO> ap = db.getAccessPath(null, null, baz.getIV());
 //        	final ICloseableIterator<ISPO> it = ap.iterator();

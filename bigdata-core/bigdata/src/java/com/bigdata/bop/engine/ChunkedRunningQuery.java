@@ -44,8 +44,9 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpContext;
 import com.bigdata.bop.BOpUtility;
@@ -91,7 +92,7 @@ import cutthecrap.utils.striterators.ICloseableIterator;
  */
 public class ChunkedRunningQuery extends AbstractRunningQuery {
 
-    private final static transient Logger log = Logger
+    private final static transient Logger log = LogManager
             .getLogger(ChunkedRunningQuery.class);
 
     private final static boolean INFO = log.isInfoEnabled();
@@ -99,7 +100,7 @@ public class ChunkedRunningQuery extends AbstractRunningQuery {
     /**
      * Logger for the {@link ChunkTask}.
      */
-    private final static Logger chunkTaskLog = Logger
+    private final static Logger chunkTaskLog = LogManager
             .getLogger(ChunkTask.class);
     
     /**

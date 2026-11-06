@@ -36,8 +36,9 @@ import java.util.Vector;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.concurrent.TxDag.Edge;
 
 /**
@@ -88,7 +89,7 @@ import com.bigdata.concurrent.TxDag.Edge;
 public class TestTxDag extends TestCase
 {
 
-    public static final Logger log = Logger.getLogger
+    public static final Logger log = LogManager.getLogger
 	( TestTxDag.class
 	  );
 

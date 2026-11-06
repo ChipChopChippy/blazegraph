@@ -1,5 +1,7 @@
 package com.bigdata.bop.fed.shards;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -62,7 +64,7 @@ import com.bigdata.striterator.IKeyOrder;
 public abstract class MapBindingSetsOverShardsBuffer<E extends IBindingSet, F>
         extends AbstractUnsynchronizedArrayBuffer<E> {
 
-//    static transient private final Logger log = Logger.getLogger(MapBindingSetsOverShardsBuffer.class);
+//    static transient private final Logger log = LogManager.getLogger(MapBindingSetsOverShardsBuffer.class);
     
     protected final AbstractScaleOutFederation<?> fed;
     

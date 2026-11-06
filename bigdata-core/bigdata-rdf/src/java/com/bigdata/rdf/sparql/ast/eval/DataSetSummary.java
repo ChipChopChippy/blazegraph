@@ -6,8 +6,8 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.openrdf.model.URI;
-import org.openrdf.query.Dataset;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.query.Dataset;
 
 import com.bigdata.bop.BOpContextBase;
 import com.bigdata.bop.Constant;
@@ -30,7 +30,7 @@ import com.bigdata.service.ResourceService;
 @SuppressWarnings("rawtypes")
 public class DataSetSummary {
 
-    public static Set<IV> toInternalValues(final Set<URI> graphs) {
+    public static Set<IV> toInternalValues(final Set<IRI> graphs) {
 		
         /*
          * Note: Per DAWG tests graph-02 and graph-04, a query against an empty
@@ -45,7 +45,7 @@ public class DataSetSummary {
         
 		final Set<IV> s = new LinkedHashSet<IV>();
 		
-		for (URI uri : graphs) {
+		for (IRI uri : graphs) {
 			
 			IV iv = null;
 			
@@ -66,31 +66,31 @@ public class DataSetSummary {
 	}
 	
     /**
-     * The set of graphs. The {@link URI}s MUST have been resolved against the
+     * The set of graphs. The {@link IRI}s MUST have been resolved against the
      * appropriate {@link LexiconRelation} such that their term identifiers
      * (when the exist) are known. If any term identifier is
      * {@link IRawTripleStore#NULL}, then the corresponding graph does not exist
      * and no access path will be queried for that graph. However, a non-
      * {@link IRawTripleStore#NULL} term identifier may also identify a graph
      * which does not exist, in which case an access path will be created for
-     * that {@link URI}s but will not visit any data.
+     * that {@link IRI}s but will not visit any data.
      */
-//    public final Iterable<? extends URI> graphs;
+//    public final Iterable<? extends IRI> graphs;
 	public final Set<IV> graphs;
 
     /**
      * The #of graphs in {@link #graphs} whose term identifier is known. While
      * this is not proof that there is data in the quad store for a graph having
-     * the corresponding {@link URI}, it does allow the possibility that a graph
-     * could exist for that {@link URI}.
+     * the corresponding {@link IRI}, it does allow the possibility that a graph
+     * could exist for that {@link IRI}.
      */
     public final int nknown;
 
     /**
      * The #of graphs in {@link #graphs} whose term identifier is not known. For
      * QUERY, this is proof that there is no data in the quad store for a graph
-     * having the corresponding {@link URI}. However, for UPDATE it is possible
-     * that a graph could be created for that {@link URI} during an UPDATE
+     * having the corresponding {@link IRI}. However, for UPDATE it is possible
+     * that a graph could be created for that {@link IRI} during an UPDATE
      * operation.
      */
     public final int nunknown;
@@ -107,7 +107,7 @@ public class DataSetSummary {
      * @param graphs
      *            The set of named graphs in the SPARQL DATASET (optional). A
      *            runtime exception will be thrown during evaluation of the if
-     *            the {@link URI}s are not {@link BigdataURI}s. If
+     *            the {@link IRI}s are not {@link BigdataURI}s. If
      *            <code>graphs := null</code>, then the set of named graphs is
      *            understood to be ALL graphs in the quad store.
      * @param update
@@ -252,7 +252,7 @@ public class DataSetSummary {
 
         int nsamples = 0;
 
-//        for (URI uri : graphs) {
+//        for (IRI uri : graphs) {
         for (IV graph : graphs) {
 
             if (nsamples == limit)

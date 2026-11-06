@@ -29,8 +29,9 @@ package com.bigdata.rdf.internal.encoder;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.io.DataOutputBuffer;
 import com.bigdata.rdf.sparql.ast.ISolutionSetStats;
@@ -50,7 +51,7 @@ import cutthecrap.utils.striterators.ICloseableIterator;
  */
 public class SolutionSetStreamEncoder {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(SolutionSetStreamEncoder.class);
 
     /**

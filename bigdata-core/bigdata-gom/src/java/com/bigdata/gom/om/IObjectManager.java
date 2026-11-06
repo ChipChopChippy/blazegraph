@@ -32,11 +32,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.query.BindingSet;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.BindingSet;
 
 import com.bigdata.gom.gpo.IGPO;
 import com.bigdata.rdf.model.BigdataValueFactory;
@@ -159,24 +159,24 @@ public interface IObjectManager extends INativeTransaction {
 	 * Simple save/recall interface that the ObjectManager provides to simplify
 	 * other pattern implementations.  Internally it uses a NameManager GPO
 	 */
-    @Deprecated // Just use the URI directly...
-	void save(URI key, Value value);
+    @Deprecated // Just use the IRI directly...
+	void save(IRI key, Value value);
 
 	/**
 	 * Simple save/recall interface that the ObjectManager provides to simplify
 	 * other pattern implementations.  Internally it uses a NameManager GPO
 	 */
-    @Deprecated // Just use the URI directly...
-	Value recall(URI key);
+    @Deprecated // Just use the IRI directly...
+	Value recall(IRI key);
 	
-	IGPO recallAsGPO(URI key);
+	IGPO recallAsGPO(IRI key);
 	
 	/**
 	 * Return the list of names that have been used to save references. These
 	 * are the properties of the internal NameManager.
 	 */
     @Deprecated // Just use URIs directly...
-	Iterator<URI> getNames();
+	Iterator<IRI> getNames();
 
 	/**
 	 * Remove all assertions involving the specified object.

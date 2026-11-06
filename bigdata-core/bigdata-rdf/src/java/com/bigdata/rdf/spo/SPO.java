@@ -23,10 +23,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.rdf.spo;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.bop.IConstant;
 import com.bigdata.bop.IPredicate;
@@ -39,7 +39,7 @@ import com.bigdata.rdf.internal.NotMaterializedException;
 import com.bigdata.rdf.internal.impl.bnode.SidIV;
 import com.bigdata.rdf.model.BigdataResource;
 import com.bigdata.rdf.model.BigdataStatement;
-import com.bigdata.rdf.model.BigdataStatementImpl;
+import com.bigdata.rdf.model.BigdataSimpleStatement;
 import com.bigdata.rdf.model.BigdataURI;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.StatementEnum;
@@ -527,7 +527,7 @@ public class SPO implements ISPO, java.io.Serializable {
      * and the same {@link StatementEnum} are the same.
      * <p>
      * Note: This is NOT the same test as
-     * {@link BigdataStatementImpl#equals(Object)} since the latter is
+     * {@link BigdataSimpleStatement#equals(Object)} since the latter is
      * implemented per the {@link Statement} interface.
      */
     public boolean equals(final ISPO stmt2) {
@@ -873,8 +873,8 @@ public class SPO implements ISPO, java.io.Serializable {
      * a {@link NotMaterializedException}.
      */
     @Override
-    public URI getPredicate() {
-        return (URI) p();
+    public IRI getPredicate() {
+        return (IRI) p();
     }
 
     /**

@@ -32,8 +32,9 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.URI;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpUtility;
@@ -91,12 +92,12 @@ import com.bigdata.rdf.store.BD;
 public class ASTALPServiceOptimizer extends AbstractJoinGroupOptimizer
         implements IASTOptimizer {
 
-    private static final transient Logger log = Logger.getLogger(ASTALPServiceOptimizer.class);
+    private static final transient Logger log = LogManager.getLogger(ASTALPServiceOptimizer.class);
 
     /**
-     * The well-known URI of the ALP SERVICE extension {@value #ALP}.
+     * The well-known IRI of the ALP SERVICE extension {@value #ALP}.
      */
-    public static final URI ALP = BD.ALP_SERVICE;
+    public static final IRI ALP = BD.ALP_SERVICE;
 
     /**
      * 

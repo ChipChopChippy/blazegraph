@@ -31,8 +31,8 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.rdf.internal.impl.literal.IPv4AddrIV;
 
@@ -40,13 +40,13 @@ public class SimpleBlueprintsValueFactory extends DefaultBlueprintsValueFactory 
 
     public static final String ID = "id:";
     
-    public static final URI VERTEX = new URIImpl("bigdata:Vertex");
+    public static final IRI VERTEX = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("bigdata:Vertex");
     
-    public static final URI EDGE = new URIImpl("bigdata:Edge");
+    public static final IRI EDGE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("bigdata:Edge");
     
-    public static final URI TYPE = new URIImpl("bigdata:type");
+    public static final IRI TYPE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("bigdata:type");
     
-    public static final URI LABEL = new URIImpl("bigdata:label");
+    public static final IRI LABEL = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("bigdata:label");
     
     public static final SimpleBlueprintsValueFactory INSTANCE =
             new SimpleBlueprintsValueFactory();
@@ -59,7 +59,7 @@ public class SimpleBlueprintsValueFactory extends DefaultBlueprintsValueFactory 
      * Override to allow for colons in the id without URLEncoding them.
      */
     @Override
-    public URI toPropertyURI(final String property) {
+    public IRI toPropertyURI(final String property) {
         return toURI(property);
     }
 
@@ -67,7 +67,7 @@ public class SimpleBlueprintsValueFactory extends DefaultBlueprintsValueFactory 
      * Override to allow for colons in the id without URLEncoding them.
      */
     @Override
-    public URI toVertexURI(final Object key) {
+    public IRI toVertexURI(final Object key) {
         return toURI(key.toString());
     }
 
@@ -75,20 +75,20 @@ public class SimpleBlueprintsValueFactory extends DefaultBlueprintsValueFactory 
      * Override to allow for colons in the id without URLEncoding them.
      */
     @Override
-    public URI toEdgeURI(final Object key) {
+    public IRI toEdgeURI(final Object key) {
         return toURI(key.toString());
     }
     
-    public URI toURI(final String id) {
+    public IRI toURI(final String id) {
         if (!id.contains(":")) {
-            return vf.createURI(ID+tokenizeColons(id));
+            return vf.createIRI(ID+tokenizeColons(id));
         } else {
-            return vf.createURI(tokenizeColons(id));
+            return vf.createIRI(tokenizeColons(id));
         }
     }
 
     /**
-     * URLEncode everything but the colon characters into the URI.
+     * URLEncode everything but the colon characters into the IRI.
      */
     protected static String tokenizeColons(final String id) {
 
@@ -128,7 +128,7 @@ public class SimpleBlueprintsValueFactory extends DefaultBlueprintsValueFactory 
      * Gracefully handle round-tripping the colons.
      */
     @Override
-    public String fromURI(final URI uri) {
+    public String fromURI(final IRI uri) {
 
         if (uri == null) {
             throw new IllegalArgumentException();

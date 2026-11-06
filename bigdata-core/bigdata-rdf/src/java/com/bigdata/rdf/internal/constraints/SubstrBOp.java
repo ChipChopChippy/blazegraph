@@ -26,8 +26,8 @@ package com.bigdata.rdf.internal.constraints;
 
 import java.util.Map;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -136,9 +136,9 @@ public class SubstrBOp extends IVValueExpression<IV> implements INeedsMaterializ
          * Generate appropriate literal.
          */
 
-        final String lang = lit.getLanguage();
+        final String lang = lit.getLanguage().orElse(null);
         
-        final URI dt = lit.getDatatype();
+        final IRI dt = lit.getDatatype();
         
         if (lang != null) {
 

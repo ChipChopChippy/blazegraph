@@ -27,17 +27,17 @@ import java.util.Arrays;
 
 import junit.framework.Test;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.impl.ValueFactoryImpl;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.GraphQueryResult;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.GraphQueryResult;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
 
 import com.bigdata.journal.IIndexManager;
 import com.bigdata.rdf.sail.webapp.client.RemoteRepository.AddOp;
@@ -51,10 +51,10 @@ import com.bigdata.rdf.sail.webapp.client.RemoteRepository.AddOp;
 public class Test_Ticket_1207<S extends IIndexManager> extends
 		AbstractTestNanoSparqlClient<S> {
 
-	private final Resource s = new URIImpl("http://test/s");
-	private final URI p = new URIImpl("http://test/p");
-	private final URI p1 = new URIImpl("http://test/p1");
-	private final Value o = new URIImpl("http://test/o");
+	private final Resource s = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://test/s");
+	private final IRI p = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://test/p");
+	private final IRI p1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://test/p1");
+	private final Value o = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://test/o");
 
 	public Test_Ticket_1207() {
 
@@ -79,7 +79,7 @@ public class Test_Ticket_1207<S extends IIndexManager> extends
     */
    public void test_ticket_1207() throws Exception {
 
-      final ValueFactoryImpl vf = ValueFactoryImpl.getInstance();
+      final SimpleValueFactory vf = SimpleValueFactory.getInstance();
       final Statement[] a = new Statement[] { 
 			vf.createStatement(s, p, o),
 			vf.createStatement(p, RDFS.SUBPROPERTYOF, p1)

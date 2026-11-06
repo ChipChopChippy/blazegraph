@@ -26,6 +26,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package com.bigdata.btree;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -46,7 +48,7 @@ import com.bigdata.journal.ICommitter;
  */
 public class ReadWriteLockManager implements IReadWriteLockManager {
 
-//    private static final Logger log = Logger.getLogger(ReadWriteLockManager.class);
+//    private static final Logger log = LogManager.getLogger(ReadWriteLockManager.class);
 
     /**
      * The #of milliseconds that the class will wait for a read or write lock. A

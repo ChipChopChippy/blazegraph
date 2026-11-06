@@ -31,9 +31,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.URI;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -80,13 +81,13 @@ import com.bigdata.service.fts.FTS;
 public abstract class ASTSearchOptimizerBase implements IASTOptimizer {
 
     private static final Logger log = 
-       Logger.getLogger(ASTSearchOptimizerBase.class);
+       LogManager.getLogger(ASTSearchOptimizerBase.class);
     
     
     /**
      * The known search URIs.
      */
-    private Set<URI> searchUrisInternal;
+    private Set<IRI> searchUrisInternal;
     
     /**
      * The known search URIs.
@@ -96,7 +97,7 @@ public abstract class ASTSearchOptimizerBase implements IASTOptimizer {
     /**
      * The known search URIs.
      */
-    private URI searchPredicate;
+    private IRI searchPredicate;
 
     protected ASTSearchOptimizerBase() {
        searchUrisInternal = getSearchUris();
@@ -107,7 +108,7 @@ public abstract class ASTSearchOptimizerBase implements IASTOptimizer {
     /**
      * Get the search URIs fields.
      */
-    abstract protected Set<URI> getSearchUris();
+    abstract protected Set<IRI> getSearchUris();
 
     /**
      * Get the namespace variables.
@@ -117,7 +118,7 @@ public abstract class ASTSearchOptimizerBase implements IASTOptimizer {
     /**
      * Get the search predicate variables.
      */
-    abstract protected URI getSearchPredicate();
+    abstract protected IRI getSearchPredicate();
 
     
     @SuppressWarnings("unchecked")
@@ -180,7 +181,7 @@ public abstract class ASTSearchOptimizerBase implements IASTOptimizer {
             final GroupNodeBase<IGroupMemberNode> group) {
 
         // lazily allocate iff we find some search predicates in this group.
-        Map<IVariable<?>, Map<URI, StatementPatternNode>> tmp = null;
+        Map<IVariable<?>, Map<IRI, StatementPatternNode>> tmp = null;
 
         {
 
@@ -201,16 +202,16 @@ public abstract class ASTSearchOptimizerBase implements IASTOptimizer {
 
                     /**
                      * This test only allows a binding for the predicate to
-                     * be a URI.
+                     * be a IRI.
                      * 
                      * @see <a href=
                      *      "https://sourceforge.net/apps/trac/bigdata/ticket/633"
                      *      > ClassCastException when binding non-uri values to
                      *      a variable that occurs in predicate position.<a>
                      */
-                    if (p.isConstant() && p.getValue() instanceof URI) {
+                    if (p.isConstant() && p.getValue() instanceof IRI) {
                         
-                        final URI uri = (URI) ((ConstantNode) p).getValue();
+                        final IRI uri = (IRI) ((ConstantNode) p).getValue();
 
                         if (uri != null // Must be a known value.
                                 && uri.stringValue().startsWith(namespace)) {
@@ -235,15 +236,15 @@ public abstract class ASTSearchOptimizerBase implements IASTOptimizer {
 
                             // Lazily allocate map.
                             if (tmp == null) {
-                                tmp = new LinkedHashMap<IVariable<?>, Map<URI, StatementPatternNode>>();
+                                tmp = new LinkedHashMap<IVariable<?>, Map<IRI, StatementPatternNode>>();
                             }
 
                             // Lazily allocate set for that searchVar.
-                            Map<URI, StatementPatternNode> statementPatterns = tmp
+                            Map<IRI, StatementPatternNode> statementPatterns = tmp
                                     .get(searchVar);
                             if (statementPatterns == null) {
                                 tmp.put(searchVar,
-                                        statementPatterns = new LinkedHashMap<URI, StatementPatternNode>());
+                                        statementPatterns = new LinkedHashMap<IRI, StatementPatternNode>());
                             }
 
                             // Add search predicate to set for that searchVar.
@@ -272,12 +273,12 @@ public abstract class ASTSearchOptimizerBase implements IASTOptimizer {
         
         if (tmp != null) {
 
-            for (Map.Entry<IVariable<?>, Map<URI, StatementPatternNode>> e : tmp
+            for (Map.Entry<IVariable<?>, Map<IRI, StatementPatternNode>> e : tmp
                     .entrySet()) {
 
                 final IVariable<?> searchVar = e.getKey();
                 
-                final Map<URI, StatementPatternNode> statementPatterns = e
+                final Map<IRI, StatementPatternNode> statementPatterns = e
                         .getValue();
 
                 /*
@@ -444,7 +445,7 @@ public abstract class ASTSearchOptimizerBase implements IASTOptimizer {
             final QueryBase queryBase,
             final GroupNodeBase<IGroupMemberNode> group,
             IVariable<?> searchVar,
-            final Map<URI, StatementPatternNode> statementPatterns) {
+            final Map<IRI, StatementPatternNode> statementPatterns) {
         
         final JoinGroupNode groupNode = new JoinGroupNode();
         
@@ -456,7 +457,7 @@ public abstract class ASTSearchOptimizerBase implements IASTOptimizer {
 
         @SuppressWarnings("unchecked")
         final TermId<BigdataURI> iv = (TermId<BigdataURI>) TermId
-                .mockIV(VTE.URI);
+                .mockIV(VTE.IRI);
 
         iv.setValue(ctx.db.getValueFactory().asValue(searchPredicate));
 
@@ -474,7 +475,7 @@ public abstract class ASTSearchOptimizerBase implements IASTOptimizer {
      */
     private void removeSearchPredicates(
             final GroupNodeBase<IGroupMemberNode> group,
-            final Map<URI, StatementPatternNode> statementPatterns) {
+            final Map<IRI, StatementPatternNode> statementPatterns) {
 
         for(StatementPatternNode sp : statementPatterns.values()) {
 

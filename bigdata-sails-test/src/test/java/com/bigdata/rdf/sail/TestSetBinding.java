@@ -28,18 +28,19 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.Value;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.impl.AbstractQuery;
-import org.openrdf.query.impl.BindingImpl;
-import org.openrdf.repository.RepositoryResult;
-import org.openrdf.rio.RDFFormat;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.impl.AbstractQuery;
+import org.eclipse.rdf4j.query.impl.SimpleBinding;
+import org.eclipse.rdf4j.repository.RepositoryResult;
+import org.eclipse.rdf4j.rio.RDFFormat;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.model.BigdataLiteral;
@@ -54,7 +55,7 @@ import com.bigdata.rdf.model.BigdataValueFactory;
  */
 public class TestSetBinding extends ProxyBigdataSailTestCase {
 
-    private static final Logger log = Logger.getLogger(TestSetBinding.class);
+    private static final Logger log = LogManager.getLogger(TestSetBinding.class);
 
     @Override
     public Properties getProperties() {
@@ -88,7 +89,7 @@ public class TestSetBinding extends ProxyBigdataSailTestCase {
 
         try {
 
-            sail.initialize();
+            sail.init();
 
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
 
@@ -170,11 +171,11 @@ public class TestSetBinding extends ProxyBigdataSailTestCase {
 
                     final Collection<BindingSet> answer = new LinkedList<BindingSet>();
 
-                    answer.add(createBindingSet(new BindingImpl("name", buffy),
-                            new BindingImpl("weight", w1)));
+                    answer.add(createBindingSet(new SimpleBinding("name", buffy),
+                            new SimpleBinding("weight", w1)));
                     
-                    answer.add(createBindingSet(new BindingImpl("name",
-                            snowball), new BindingImpl("weight", w2)));
+                    answer.add(createBindingSet(new SimpleBinding("name",
+                            snowball), new SimpleBinding("weight", w2)));
 
                     final TupleQueryResult result = tupleQuery.evaluate();
 
@@ -189,8 +190,8 @@ public class TestSetBinding extends ProxyBigdataSailTestCase {
 
                     final Collection<BindingSet> answer = new LinkedList<BindingSet>();
 
-                    answer.add(createBindingSet(new BindingImpl("name",
-                            snowball), new BindingImpl("weight", w2)));
+                    answer.add(createBindingSet(new SimpleBinding("name",
+                            snowball), new SimpleBinding("weight", w2)));
 
                     tupleQuery.setBinding("name", snowball);
 

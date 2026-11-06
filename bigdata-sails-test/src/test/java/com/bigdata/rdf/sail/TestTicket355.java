@@ -26,18 +26,18 @@ package com.bigdata.rdf.sail;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.openrdf.model.ValueFactory;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParseException;
-import org.openrdf.sail.memory.MemoryStore;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.sail.SailRepository;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFParseException;
+import org.eclipse.rdf4j.sail.memory.MemoryStore;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.vocab.NoVocabulary;
@@ -124,12 +124,12 @@ public class TestTicket355 extends QuadsTestCase {
 			QueryEvaluationException, RDFParseException, IOException,
 			RDFHandlerException {
 		try {
-			repo.initialize();
+			repo.init();
 			final RepositoryConnection conn = repo.getConnection();
 			conn.setAutoCommit(false);
 			try {
 				final ValueFactory vf = conn.getValueFactory();
-				conn.add(vf.createURI("os:subject"), vf.createURI("os:prop"), vf.createLiteral("value"));
+				conn.add(vf.createIRI("os:subject"), vf.createIRI("os:prop"), vf.createLiteral("value"));
 				conn.commit();
 
 				String query = "SELECT ?subj WHERE { "

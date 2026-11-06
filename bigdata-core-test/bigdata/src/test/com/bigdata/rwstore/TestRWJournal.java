@@ -43,6 +43,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import junit.extensions.proxy.ProxyTestSuite;
 import junit.framework.Test;
 
+import org.apache.system.SystemUtil;
+
 import com.bigdata.btree.BTree;
 import com.bigdata.btree.BloomFilter;
 import com.bigdata.btree.IIndex;
@@ -644,7 +646,8 @@ public class TestRWJournal extends AbstractJournalTestCase {
 
 			properties.setProperty(Options.READ_CACHE_BUFFER_COUNT, "20");
 
-			properties.setProperty(RWStore.Options.READ_BLOBS_ASYNC, "true");
+			properties.setProperty(RWStore.Options.READ_BLOBS_ASYNC,
+					SystemUtil.isWindows() ? "false" : "true");
 			
 			// Size of META_BITS_BLOCKS
 			properties.setProperty(RWStore.Options.META_BITS_SIZE, "9");

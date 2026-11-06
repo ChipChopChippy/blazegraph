@@ -25,11 +25,11 @@ package com.bigdata.blueprints;
 import java.util.Collection;
 import java.util.UUID;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.StatementImpl;
-import org.openrdf.query.impl.AbstractQuery;
-import org.openrdf.repository.RepositoryConnection;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.query.impl.AbstractQuery;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
 
 import com.bigdata.rdf.changesets.IChangeLog;
 import com.bigdata.rdf.changesets.IChangeRecord;
@@ -134,7 +134,7 @@ public class BigdataGraphBulkLoad extends BigdataGraph implements
 		if (key == null)
 			throw new IllegalArgumentException();
 
-		final URI uri = factory.toVertexURI(key.toString());
+		final IRI uri = factory.toVertexURI(key.toString());
 
 		try {
 
@@ -189,7 +189,7 @@ public class BigdataGraphBulkLoad extends BigdataGraph implements
 //	 * @see {@link BigdataElement}
 //	 */
 //	@Override
-//	public void setProperty(final URI uri, final URI prop, final Literal val) {
+//	public void setProperty(final IRI uri, final IRI prop, final Literal val) {
 //
 //		try {
 //
@@ -216,7 +216,7 @@ public class BigdataGraphBulkLoad extends BigdataGraph implements
 	 * @see {@link BigdataElement}
 	 */
 	@Override
-	public void setProperty(final URI uri, final URI prop,
+	public void setProperty(final IRI uri, final IRI prop,
 			final Collection<Literal> vals) {
 
 		try {
@@ -250,7 +250,7 @@ public class BigdataGraphBulkLoad extends BigdataGraph implements
 			final String vid = key != null ? key.toString() : UUID.randomUUID()
 					.toString();
 
-			final URI uri = factory.toVertexURI(vid);
+			final IRI uri = factory.toVertexURI(vid);
 
 			// do we need to check this?
 			// if (cxn().hasStatement(vertexURI, TYPE, VERTEX, false)) {
@@ -297,7 +297,7 @@ public class BigdataGraphBulkLoad extends BigdataGraph implements
 		final String eid = key != null ? key.toString() : UUID.randomUUID()
 				.toString();
 
-		final URI edgeURI = factory.toEdgeURI(eid);
+		final IRI edgeURI = factory.toEdgeURI(eid);
 
 		try {
 
@@ -307,15 +307,15 @@ public class BigdataGraphBulkLoad extends BigdataGraph implements
 			// " already exists");
 			// }
 
-			final URI fromURI = factory.toVertexURI(from.getId().toString());
-			final URI toURI = factory.toVertexURI(to.getId().toString());
+			final IRI fromURI = factory.toVertexURI(from.getId().toString());
+			final IRI toURI = factory.toVertexURI(to.getId().toString());
 
 			final RepositoryConnection cxn = cxn();
 			cxn.add(fromURI, edgeURI, toURI);
 			cxn.add(edgeURI, TYPE, EDGE);
 			cxn.add(edgeURI, LABEL, factory.toLiteral(label));
 
-			return new BigdataEdge(new StatementImpl(fromURI, edgeURI, toURI),
+			return new BigdataEdge(SimpleValueFactory.getInstance().createStatement(fromURI, edgeURI, toURI),
 					this);
 
 		} catch (RuntimeException e) {

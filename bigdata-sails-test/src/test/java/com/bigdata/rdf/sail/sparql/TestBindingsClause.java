@@ -31,9 +31,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.bop.Constant;
 import com.bigdata.bop.IBindingSet;
@@ -64,7 +65,7 @@ import com.bigdata.util.InnerCause;
  */
 public class TestBindingsClause extends AbstractBigdataExprBuilderTestCase {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(TestBindingsClause.class);
     
     public TestBindingsClause() {
@@ -106,9 +107,9 @@ public class TestBindingsClause extends AbstractBigdataExprBuilderTestCase {
                 "}"//
                 ;
 
-        final IV<?,?> title = makeIV(valueFactory.createURI("http://example.org/book/title"));
-        final IV<?,?> price = makeIV(valueFactory.createURI("http://example.org/book/price"));
-        final IV<?,?> book1 = makeIV(valueFactory.createURI("http://example.org/book/book1"));
+        final IV<?,?> title = makeIV(valueFactory.createIRI("http://example.org/book/title"));
+        final IV<?,?> price = makeIV(valueFactory.createIRI("http://example.org/book/price"));
+        final IV<?,?> book1 = makeIV(valueFactory.createIRI("http://example.org/book/book1"));
 
         final QueryRoot expected = new QueryRoot(QueryType.SELECT);
         {
@@ -189,9 +190,9 @@ public class TestBindingsClause extends AbstractBigdataExprBuilderTestCase {
                 "}"//
                 ;
 
-        final IV<?,?> title = makeIV(valueFactory.createURI("http://example.org/book/title"));
-        final IV<?,?> price = makeIV(valueFactory.createURI("http://example.org/book/price"));
-//        final IV<?,?> book1 = makeIV(valueFactory.createURI("http://example.org/book/book1"));
+        final IV<?,?> title = makeIV(valueFactory.createIRI("http://example.org/book/title"));
+        final IV<?,?> price = makeIV(valueFactory.createIRI("http://example.org/book/price"));
+//        final IV<?,?> book1 = makeIV(valueFactory.createIRI("http://example.org/book/book1"));
 
         final QueryRoot expected = new QueryRoot(QueryType.SELECT);
         {
@@ -275,9 +276,9 @@ public class TestBindingsClause extends AbstractBigdataExprBuilderTestCase {
                 "}"//
                 ;
 
-        final IV<?,?> title = makeIV(valueFactory.createURI("http://example.org/book/title"));
-        final IV<?,?> price = makeIV(valueFactory.createURI("http://example.org/book/price"));
-        final IV<?,?> book1 = makeIV(valueFactory.createURI("http://example.org/book/book1"));
+        final IV<?,?> title = makeIV(valueFactory.createIRI("http://example.org/book/title"));
+        final IV<?,?> price = makeIV(valueFactory.createIRI("http://example.org/book/price"));
+        final IV<?,?> book1 = makeIV(valueFactory.createIRI("http://example.org/book/book1"));
 
         final QueryRoot expected = new QueryRoot(QueryType.SELECT);
         {
@@ -365,11 +366,11 @@ public class TestBindingsClause extends AbstractBigdataExprBuilderTestCase {
                 "}"//
                 ;
 
-        final IV<?,?> title = makeIV(valueFactory.createURI("http://example.org/book/title"));
-        final IV<?,?> price = makeIV(valueFactory.createURI("http://example.org/book/price"));
-        final IV<?,?> book1 = makeIV(valueFactory.createURI("http://example.org/book/book1"));
-        final IV<?,?> book2 = makeIV(valueFactory.createURI("http://example.org/book/book2"));
-        final IV<?,?> title1 = makeIV(valueFactory.createURI("http://example.org/book/title1"));
+        final IV<?,?> title = makeIV(valueFactory.createIRI("http://example.org/book/title"));
+        final IV<?,?> price = makeIV(valueFactory.createIRI("http://example.org/book/price"));
+        final IV<?,?> book1 = makeIV(valueFactory.createIRI("http://example.org/book/book1"));
+        final IV<?,?> book2 = makeIV(valueFactory.createIRI("http://example.org/book/book2"));
+        final IV<?,?> title1 = makeIV(valueFactory.createIRI("http://example.org/book/title1"));
 
         final QueryRoot expected = new QueryRoot(QueryType.SELECT);
         {
@@ -457,8 +458,8 @@ public class TestBindingsClause extends AbstractBigdataExprBuilderTestCase {
                 "}"//
                 ;
 
-        final IV<?,?> title = makeIV(valueFactory.createURI("http://example.org/book/title"));
-        final IV<?,?> price = makeIV(valueFactory.createURI("http://example.org/book/price"));
+        final IV<?,?> title = makeIV(valueFactory.createIRI("http://example.org/book/title"));
+        final IV<?,?> price = makeIV(valueFactory.createIRI("http://example.org/book/price"));
 
         final QueryRoot expected = new QueryRoot(QueryType.SELECT);
         {

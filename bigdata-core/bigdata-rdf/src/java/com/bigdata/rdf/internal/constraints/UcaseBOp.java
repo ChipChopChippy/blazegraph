@@ -25,7 +25,7 @@ package com.bigdata.rdf.internal.constraints;
 
 import java.util.Map;
 
-import org.openrdf.model.Literal;
+import org.eclipse.rdf4j.model.Literal;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -63,8 +63,8 @@ public class UcaseBOp extends IVValueExpression<IV> implements INeedsMaterializa
     public IV get(final IBindingSet bs) throws SparqlTypeErrorException {
         final Literal lit = getAndCheckLiteralValue(0, bs);
 
-        if (lit.getLanguage() != null) {
-            final BigdataLiteral str = getValueFactory().createLiteral(lit.getLabel().toUpperCase(), lit.getLanguage());
+        if (lit.getLanguage().isPresent()) {
+            final BigdataLiteral str = getValueFactory().createLiteral(            lit.getLabel().toUpperCase(), lit.getLanguage().get());
             return super.asIV(str, bs);
         } else if (lit.getDatatype() != null) {
             final BigdataLiteral str = getValueFactory().createLiteral(lit.getLabel().toUpperCase(), lit.getDatatype());

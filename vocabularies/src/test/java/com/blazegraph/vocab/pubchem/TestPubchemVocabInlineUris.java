@@ -72,8 +72,8 @@ public class TestPubchemVocabInlineUris extends AbstractTripleStoreTestCase {
 			final StatementBuffer<BigdataStatement> sb = new StatementBuffer<BigdataStatement>(
 					store, PubChemInlineURIFactory.uris.length/* capacity */);
 			
-			BigdataURI pred = vf.createURI("http://semanticscience.org/resource/CHEMINF_000461");
-			BigdataURI obj = vf.createURI("http://rdf.ncbi.nlm.nih.gov/pubchem/compound/CID1726184");
+			BigdataURI pred = vf.createIRI("http://semanticscience.org/resource/CHEMINF_000461");
+			BigdataURI obj = vf.createIRI("http://rdf.ncbi.nlm.nih.gov/pubchem/compound/CID1726184");
 			
 			for (int i = 0; i < PubChemInlineURIFactory.uris.length; i++) {
 
@@ -82,7 +82,7 @@ public class TestPubchemVocabInlineUris extends AbstractTripleStoreTestCase {
 
 				final int test = rand.nextInt(999999);
 
-				final BigdataURI uri = vf.createURI(uriStr+prefix+test);
+				final BigdataURI uri = vf.createIRI(uriStr+prefix+test);
 
 				uriList.push(uri);
 				sb.add(uri, pred, obj);
@@ -96,7 +96,7 @@ public class TestPubchemVocabInlineUris extends AbstractTripleStoreTestCase {
 
 				final int test = rand.nextInt(999999);
 
-				final BigdataURI uri = vf.createURI(uriStr+prefix+test+suffix);
+				final BigdataURI uri = vf.createIRI(uriStr+prefix+test+suffix);
 
 				uriList.push(uri);
 				sb.add(uri, pred, obj);
@@ -106,27 +106,27 @@ public class TestPubchemVocabInlineUris extends AbstractTripleStoreTestCase {
 				
 				 // http://www.bioassayontology.org/bao#BAO_0002877 fixed width 7
 				BigdataURI uri = null;
-				uri = vf.createURI("http://www.bioassayontology.org/bao#BAO_002877");
+				uri = vf.createIRI("http://www.bioassayontology.org/bao#BAO_002877");
 				uriList.push(uri);
 				sb.add(uri, pred, obj);
 
 				// http://purl.obolibrary.org/obo/PR_000005253 //fixed width 9
-				uri = vf.createURI("http://purl.obolibrary.org/obo/PR_000005253");
+				uri = vf.createIRI("http://purl.obolibrary.org/obo/PR_000005253");
 				uriList.push(uri);
 				sb.add(uri, pred, obj);
 
 				// http://purl.obolibrary.org/obo/IAO_0000136 //fixed width 7
-				uri = vf.createURI("http://purl.obolibrary.org/obo/IAO_0000136");
+				uri = vf.createIRI("http://purl.obolibrary.org/obo/IAO_0000136");
 				uriList.push(uri);
 				sb.add(uri, pred, obj);
 
 				// http://purl.obolibrary.org/obo/OBI_0000299 //fixed width 7
-				uri = vf.createURI("http://purl.obolibrary.org/obo/OBI_0000299");
+				uri = vf.createIRI("http://purl.obolibrary.org/obo/OBI_0000299");
 				uriList.push(uri);
 				sb.add(uri, pred, obj);
 				
 				//http://purl.obolibrary.org/obo/CHEBI_74763
-				uri = vf.createURI("http://purl.obolibrary.org/obo/CHEBI_74763");
+				uri = vf.createIRI("http://purl.obolibrary.org/obo/CHEBI_74763");
 				uriList.push(uri);
 				sb.add(uri, pred, obj);
 				

@@ -30,8 +30,9 @@ package com.bigdata.rdf.rules;
 
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.joinGraph.IEvaluationPlanFactory;
 import com.bigdata.journal.IIndexManager;
 import com.bigdata.rdf.axioms.Axioms;
@@ -56,7 +57,7 @@ public class RDFJoinNexusFactory extends AbstractJoinNexusFactory {
      */
     private static final long serialVersionUID = 1L;
 
-    protected static final transient Logger log = Logger.getLogger(RDFJoinNexusFactory.class);
+    protected static final transient Logger log = LogManager.getLogger(RDFJoinNexusFactory.class);
 
     final RuleContextEnum ruleContext;
     final boolean justify;

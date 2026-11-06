@@ -27,11 +27,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeoutException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.journal.IIndexManager;
 import com.bigdata.quorum.AsynchronousQuorumCloseException;
 
@@ -47,7 +48,7 @@ public class HAStatusServletUtilProxy {
 	
 	private static final String WITHOUT_JINI_MSG = "Running without the bigdata-jini package.  See BLZG-1370.";
 	
-    static private final transient Logger log = Logger.getLogger(HAStatusServletUtilProxy.class);
+    static private final transient Logger log = LogManager.getLogger(HAStatusServletUtilProxy.class);
     
     protected HAStatusServletUtilProxy(IIndexManager indexManager) {
     } 

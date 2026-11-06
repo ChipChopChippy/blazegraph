@@ -30,17 +30,18 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.query.Binding;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.impl.BindingImpl;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.query.Binding;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.impl.SimpleBinding;
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.vocab.NoVocabulary;
 
@@ -49,7 +50,7 @@ import com.bigdata.rdf.vocab.NoVocabulary;
  */
 public class TestInlineValues extends ProxyBigdataSailTestCase {
 
-	protected static final Logger log = Logger.getLogger(TestInlineValues.class);
+	protected static final Logger log = LogManager.getLogger(TestInlineValues.class);
 	
     @Override
     public Properties getProperties() {
@@ -82,7 +83,7 @@ public class TestInlineValues extends ProxyBigdataSailTestCase {
     public void testInlineValuesLT() throws Exception {
 
         final BigdataSail sail = getSail();
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         final BigdataSailRepositoryConnection cxn = 
             (BigdataSailRepositoryConnection) repo.getConnection();
@@ -92,10 +93,10 @@ public class TestInlineValues extends ProxyBigdataSailTestCase {
     
             final ValueFactory vf = sail.getValueFactory();
             
-            URI A = vf.createURI("_:A");
-            URI B = vf.createURI("_:B");
-            URI X = vf.createURI("_:X");
-            URI AGE = vf.createURI("_:AGE");
+            IRI A = vf.createIRI("_:A");
+            IRI B = vf.createIRI("_:B");
+            IRI X = vf.createIRI("_:X");
+            IRI AGE = vf.createIRI("_:AGE");
             Literal _25 = vf.createLiteral(25);
             Literal _45 = vf.createLiteral(45);
 
@@ -131,8 +132,8 @@ public class TestInlineValues extends ProxyBigdataSailTestCase {
  
                 Collection<BindingSet> solution = new LinkedList<BindingSet>();
                 solution.add(createBindingSet(new Binding[] {
-                    new BindingImpl("s", A),
-                    new BindingImpl("age", _25)
+                    new SimpleBinding("s", A),
+                    new SimpleBinding("age", _25)
                 }));
                 
                 compare(result, solution);
@@ -149,7 +150,7 @@ public class TestInlineValues extends ProxyBigdataSailTestCase {
     public void testInlineValuesGT() throws Exception {
 
         final BigdataSail sail = getSail();
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         final BigdataSailRepositoryConnection cxn = 
             (BigdataSailRepositoryConnection) repo.getConnection();
@@ -159,10 +160,10 @@ public class TestInlineValues extends ProxyBigdataSailTestCase {
     
             final ValueFactory vf = sail.getValueFactory();
             
-            URI A = vf.createURI("_:A");
-            URI B = vf.createURI("_:B");
-            URI X = vf.createURI("_:X");
-            URI AGE = vf.createURI("_:AGE");
+            IRI A = vf.createIRI("_:A");
+            IRI B = vf.createIRI("_:B");
+            IRI X = vf.createIRI("_:X");
+            IRI AGE = vf.createIRI("_:AGE");
             Literal _25 = vf.createLiteral(25);
             Literal _45 = vf.createLiteral(45);
 
@@ -198,8 +199,8 @@ public class TestInlineValues extends ProxyBigdataSailTestCase {
  
                 Collection<BindingSet> solution = new LinkedList<BindingSet>();
                 solution.add(createBindingSet(new Binding[] {
-                    new BindingImpl("s", B),
-                    new BindingImpl("age", _45)
+                    new SimpleBinding("s", B),
+                    new SimpleBinding("age", _45)
                 }));
                 
                 compare(result, solution);
@@ -216,7 +217,7 @@ public class TestInlineValues extends ProxyBigdataSailTestCase {
     public void testIsLiteral() throws Exception {
 
         final BigdataSail sail = getSail();
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         final BigdataSailRepositoryConnection cxn = 
             (BigdataSailRepositoryConnection) repo.getConnection();
@@ -226,10 +227,10 @@ public class TestInlineValues extends ProxyBigdataSailTestCase {
     
             final ValueFactory vf = sail.getValueFactory();
             
-            URI A = vf.createURI("_:A");
-            URI B = vf.createURI("_:B");
-            URI X = vf.createURI("_:X");
-            URI AGE = vf.createURI("_:AGE");
+            IRI A = vf.createIRI("_:A");
+            IRI B = vf.createIRI("_:B");
+            IRI X = vf.createIRI("_:X");
+            IRI AGE = vf.createIRI("_:AGE");
             Literal _25 = vf.createLiteral(25);
             Literal _45 = vf.createLiteral(45);
 
@@ -277,12 +278,12 @@ public class TestInlineValues extends ProxyBigdataSailTestCase {
  
                 Collection<BindingSet> solution = new LinkedList<BindingSet>();
                 solution.add(createBindingSet(new Binding[] {
-                    new BindingImpl("s", A),
-                    new BindingImpl("age", _25)
+                    new SimpleBinding("s", A),
+                    new SimpleBinding("age", _25)
                 }));
                 solution.add(createBindingSet(new Binding[] {
-                    new BindingImpl("s", B),
-                    new BindingImpl("age", _45)
+                    new SimpleBinding("s", B),
+                    new SimpleBinding("age", _45)
                 }));
                 
                 compare(result, solution);
@@ -317,12 +318,12 @@ public class TestInlineValues extends ProxyBigdataSailTestCase {
  
                 Collection<BindingSet> solution = new LinkedList<BindingSet>();
                 solution.add(createBindingSet(new Binding[] {
-                    new BindingImpl("s", A),
-                    new BindingImpl("age", _25)
+                    new SimpleBinding("s", A),
+                    new SimpleBinding("age", _25)
                 }));
                 solution.add(createBindingSet(new Binding[] {
-                    new BindingImpl("s", B),
-                    new BindingImpl("age", _45)
+                    new SimpleBinding("s", B),
+                    new SimpleBinding("age", _45)
                 }));
                 
                 compare(result, solution);

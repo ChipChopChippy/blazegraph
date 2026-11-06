@@ -27,8 +27,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package com.bigdata.rdf.sail.tck;
 
-import info.aduna.io.IOUtil;
-import info.aduna.iteration.Iterations;
+
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.common.io.IOUtil;
+import org.eclipse.rdf4j.common.iteration.Iterations;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -45,31 +47,31 @@ import java.util.Set;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.util.ModelUtil;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.BooleanQuery;
-import org.openrdf.query.Dataset;
-import org.openrdf.query.GraphQuery;
-import org.openrdf.query.GraphQueryResult;
-import org.openrdf.query.Query;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.QueryResults;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.impl.MutableTupleQueryResult;
-import org.openrdf.query.parser.sparql.manifest.ManifestTest;
-import org.openrdf.query.parser.sparql.manifest.SPARQL11ManifestTest;
-import org.openrdf.query.parser.sparql.manifest.SPARQLQueryTest;
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.dataset.DatasetRepository;
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.rio.helpers.BasicParserSettings;
-import org.openrdf.sail.memory.MemoryStore;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.util.ModelUtil;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.BooleanQuery;
+import org.eclipse.rdf4j.query.Dataset;
+import org.eclipse.rdf4j.query.GraphQuery;
+import org.eclipse.rdf4j.query.GraphQueryResult;
+import org.eclipse.rdf4j.query.Query;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.QueryResults;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.impl.MutableTupleQueryResult;
+import org.eclipse.rdf4j.query.parser.sparql.manifest.ManifestTest;
+import org.eclipse.rdf4j.query.parser.sparql.manifest.SPARQL11ManifestTest;
+import org.eclipse.rdf4j.query.parser.sparql.manifest.SPARQLQueryTest;
+import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.dataset.DatasetRepository;
+import org.eclipse.rdf4j.repository.sail.SailRepository;
+import org.eclipse.rdf4j.rio.helpers.BasicParserSettings;
+import org.eclipse.rdf4j.sail.memory.MemoryStore;
 
 import com.bigdata.BigdataStatics;
 import com.bigdata.btree.keys.CollatorEnum;
@@ -96,7 +98,7 @@ extends SPARQLQueryTest // Sesame TupleExpr based evaluation
 //extends SPARQLASTQueryTest // Bigdata native AST based evaluation
 {
 
-//    static private final Logger log = Logger.getLogger(BigdataSparqlTest.class);
+//    static private final Logger log = LogManager.getLogger(BigdataSparqlTest.class);
     
     /**
      * We cannot use inlining for these test because we do normalization on
@@ -163,6 +165,15 @@ extends SPARQLQueryTest // Sesame TupleExpr based evaluation
 //            "http://www.w3.org/2001/sw/DataAccess/tests/data-r2/expr-builtin/manifest#dawg-datatype-2",
 
         "http://www.w3.org/2001/sw/DataAccess/tests/data-r2/syntax-sparql1/manifest#sparql11-wildcard-cycles-04",
+
+        /*
+         * RDF 1.1 semantics (RDF4J 5): xsd:string literals are accepted by
+         * STRDT/STRLANG, and date comparison differs from the RDF 1.0 era
+         * expectations in the TCK data.
+         */
+        "http://www.w3.org/2009/sparql/docs/tests/data-sparql11/functions/manifest#strdt03",
+        "http://www.w3.org/2009/sparql/docs/tests/data-sparql11/functions/manifest#strlang03",
+        "http://www.w3.org/2001/sw/DataAccess/tests/data-r2/open-world/manifest#date-2",
         //"http://www.w3.org/2001/sw/DataAccess/tests/data-r2/syntax-sparql1/manifest#sparql11-subquery-04", // BLZG-618
         
         
@@ -878,7 +889,7 @@ The following two are covered by: https://jira.blazegraph.com/browse/BLZG-1721
      * @param suite
      *            The test suite.
      * @param testURI
-     *            The test URI (these are defined by the DAWG).
+     *            The test IRI (these are defined by the DAWG).
      *            
      * @return An instance of this class which will run just that one test.
      * 
@@ -1115,7 +1126,7 @@ The following two are covered by: https://jira.blazegraph.com/browse/BLZG-1721
     @Override
     protected Repository createRepository() throws Exception {
         Repository repo = newRepository();
-        repo.initialize();
+        repo.init();
         return repo;
     }
     
@@ -1147,7 +1158,7 @@ The following two are covered by: https://jira.blazegraph.com/browse/BLZG-1721
         final StringBuilder sb = new StringBuilder();
 
         if (dataset != null) {
-            Set<URI> graphURIs = new HashSet<URI>();
+            Set<IRI> graphURIs = new HashSet<IRI>();
             graphURIs.addAll(dataset.getDefaultGraphs());
             graphURIs.addAll(dataset.getNamedGraphs());
     
@@ -1250,12 +1261,12 @@ The following two are covered by: https://jira.blazegraph.com/browse/BLZG-1721
 //        RepositoryConnection con = dataRep.getConnection();
 //        try {
             // Merge default and named graphs to filter duplicates
-            Set<URI> graphURIs = new HashSet<URI>();
+            Set<IRI> graphURIs = new HashSet<IRI>();
             graphURIs.addAll(dataset.getDefaultGraphs());
             graphURIs.addAll(dataset.getNamedGraphs());
 
             for (Resource graphURI : graphURIs) {
-                upload(((URI)graphURI), graphURI);
+                upload(((IRI)graphURI), graphURI);
             }
 //        }
 //        finally {

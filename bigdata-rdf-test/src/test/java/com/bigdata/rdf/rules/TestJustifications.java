@@ -30,8 +30,8 @@ package com.bigdata.rdf.rules;
 import java.util.Arrays;
 import java.util.Properties;
 
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.bop.Constant;
 import com.bigdata.bop.IBindingSet;
@@ -124,9 +124,9 @@ public class TestJustifications extends AbstractRuleTestCase {
              * the explicit statement that is the support for the rule.
              */
 
-            final IV U = store.addTerm(new URIImpl("http://www.bigdata.com/U"));
-            final IV A = store.addTerm(new URIImpl("http://www.bigdata.com/A"));
-            final IV Y = store.addTerm(new URIImpl("http://www.bigdata.com/Y"));
+            final IV U = store.addTerm(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/U"));
+            final IV A = store.addTerm(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/A"));
+            final IV Y = store.addTerm(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/Y"));
 
             store.addStatements(new SPO[] {//
                     new SPO(U, A, Y, StatementEnum.Explicit) //

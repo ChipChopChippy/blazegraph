@@ -26,10 +26,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.rdf.graph.EdgesEnum;
 import com.bigdata.rdf.graph.IGASContext;
@@ -48,7 +49,7 @@ import cutthecrap.utils.striterators.IFilter;
 
 public class GASContext<VS, ES, ST> implements IGASContext<VS, ES, ST> {
 
-    private static final Logger log = Logger.getLogger(GASContext.class);
+    private static final Logger log = LogManager.getLogger(GASContext.class);
 
     private final GASEngine gasEngine;
 
@@ -89,12 +90,12 @@ public class GASContext<VS, ES, ST> implements IGASContext<VS, ES, ST> {
     /**
      * An optional constraint on the type of the visited links.
      */
-    private final AtomicReference<URI> linkType = new AtomicReference<URI>(null);
+    private final AtomicReference<IRI> linkType = new AtomicReference<IRI>(null);
     
     /**
      * An optional constraint on the type of the visited link attributes.
      */
-    private final AtomicReference<URI> linkAttributeType = new AtomicReference<URI>(null);
+    private final AtomicReference<IRI> linkAttributeType = new AtomicReference<IRI>(null);
     
     /**
      * An optional {@link IReducer} that will executed after the
@@ -907,28 +908,28 @@ public class GASContext<VS, ES, ST> implements IGASContext<VS, ES, ST> {
     }
 
     @Override
-    public URI getLinkType() {
+    public IRI getLinkType() {
         
         return linkType.get();
         
     }
 
     @Override
-    public void setLinkType(final URI linkType) {
+    public void setLinkType(final IRI linkType) {
         
         this.linkType.set(linkType);
         
     }
 
     @Override
-    public URI getLinkAttributeType() {
+    public IRI getLinkAttributeType() {
         
         return linkAttributeType.get();
         
     }
 
     @Override
-    public void setLinkAttributeType(final URI linkAttributeType) {
+    public void setLinkAttributeType(final IRI linkAttributeType) {
         
         this.linkAttributeType.set(linkAttributeType);
         
@@ -1015,11 +1016,11 @@ public class GASContext<VS, ES, ST> implements IGASContext<VS, ES, ST> {
      * Note: For bigdata, the visited edges can be decoded to recover the
      * original link as well. 
      * 
-     * @see IGASState#isLinkAttrib(Statement, URI)
+     * @see IGASState#isLinkAttrib(Statement, IRI)
      * @see IGASState#decodeStatement(Value)
      */
     protected IFilter getLinkAttribFilter(final IGASContext<VS, ES, ST> ctx,
-            final URI linkAttribType) {
+            final IRI linkAttribType) {
 
         return new LinkAttribFilter(ctx, linkAttribType);
 
@@ -1034,10 +1035,10 @@ public class GASContext<VS, ES, ST> implements IGASContext<VS, ES, ST> {
         private static final long serialVersionUID = 1L;
 
         private final IGASState<VS, ES, ST> gasState;
-        private final URI linkAttribType;
+        private final IRI linkAttribType;
         
         public LinkAttribFilter(final IGASContext<VS, ES, ST> ctx,
-                final URI linkAttribType) {
+                final IRI linkAttribType) {
             if (linkAttribType == null)
                 throw new IllegalArgumentException();
             this.gasState = ctx.getGASState();

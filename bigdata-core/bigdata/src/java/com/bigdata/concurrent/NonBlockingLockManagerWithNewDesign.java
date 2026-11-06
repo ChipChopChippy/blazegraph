@@ -55,8 +55,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.cache.ConcurrentWeakValueCacheWithTimeout;
 import com.bigdata.counters.CounterSet;
 import com.bigdata.counters.ICounterSetAccess;
@@ -135,7 +136,7 @@ import com.bigdata.util.concurrent.WriteTaskCounters;
 public abstract class NonBlockingLockManagerWithNewDesign</* T, */R extends Comparable<R>>
         implements ICounterSetAccess {
 
-    final protected static Logger log = Logger
+    final protected static Logger log = LogManager
             .getLogger(NonBlockingLockManagerWithNewDesign.class);
 
     final private static boolean INFO = log.isInfoEnabled();

@@ -28,15 +28,16 @@ import java.util.LinkedList;
 import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.impl.BindingImpl;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.sail.SailTupleQuery;
-import org.openrdf.rio.RDFFormat;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.impl.SimpleBinding;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.sail.SailTupleQuery;
+import org.eclipse.rdf4j.rio.RDFFormat;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.vocab.NoVocabulary;
@@ -64,7 +65,7 @@ import com.bigdata.rdf.vocab.NoVocabulary;
  */
 public class TestTicket693 extends QuadsTestCase {
 
-    protected static final Logger log = Logger.getLogger(TestTicket693.class);
+    protected static final Logger log = LogManager.getLogger(TestTicket693.class);
 
     /**
      * Please set your database properties here, except for your journal file,
@@ -163,7 +164,7 @@ bigdata results:
 	  		{
 	  			final Collection<BindingSet> answer = new LinkedList<BindingSet>();
 	            answer.add(createBindingSet(
-	            		new BindingImpl("sub", new URIImpl("http://example.org/B"))
+	            		new SimpleBinding("sub", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/B"))
 	            		));
 
 	            final String query = "SELECT * WHERE { ?sub rdfs:subClassOf <http://example.org/A> . } ";
@@ -195,19 +196,19 @@ bigdata results:
 	  		{
 	  			final Collection<BindingSet> answer = new LinkedList<BindingSet>();
 	            answer.add(createBindingSet(
-	            		new BindingImpl("sub", new URIImpl("http://example.org/A"))
+	            		new SimpleBinding("sub", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/A"))
 	            		));
 	            answer.add(createBindingSet(
-	            		new BindingImpl("sub", new URIImpl("http://example.org/B"))
+	            		new SimpleBinding("sub", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/B"))
 	            		));
 	            answer.add(createBindingSet(
-	            		new BindingImpl("sub", new URIImpl("http://example.org/C"))
+	            		new SimpleBinding("sub", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/C"))
 	            		));
 	            answer.add(createBindingSet(
-	            		new BindingImpl("sub", new URIImpl("http://example.org/D"))
+	            		new SimpleBinding("sub", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/D"))
 	            		));
 	            answer.add(createBindingSet(
-	            		new BindingImpl("sub", new URIImpl("http://example.org/E"))
+	            		new SimpleBinding("sub", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/E"))
 	            		));
 
 	            final String query = "SELECT * WHERE { ?sub rdfs:subClassOf* <http://example.org/A> . } ";
@@ -239,10 +240,10 @@ bigdata results:
 	  		{
 	  			final Collection<BindingSet> answer = new LinkedList<BindingSet>();
 	            answer.add(createBindingSet(
-	            		new BindingImpl("sub", new URIImpl("http://example.org/A"))
+	            		new SimpleBinding("sub", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/A"))
 	            		));
 	            answer.add(createBindingSet(
-	            		new BindingImpl("sub", new URIImpl("http://example.org/B"))
+	            		new SimpleBinding("sub", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/B"))
 	            		));
 
 	            final String query = "SELECT * WHERE { ?sub rdfs:subClassOf? <http://example.org/A> . } ";
@@ -274,16 +275,16 @@ bigdata results:
 	  		{
 	  			final Collection<BindingSet> answer = new LinkedList<BindingSet>();
 	            answer.add(createBindingSet(
-	            		new BindingImpl("sub", new URIImpl("http://example.org/B"))
+	            		new SimpleBinding("sub", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/B"))
 	            		));
 	            answer.add(createBindingSet(
-	            		new BindingImpl("sub", new URIImpl("http://example.org/C"))
+	            		new SimpleBinding("sub", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/C"))
 	            		));
 	            answer.add(createBindingSet(
-	            		new BindingImpl("sub", new URIImpl("http://example.org/D"))
+	            		new SimpleBinding("sub", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/D"))
 	            		));
 	            answer.add(createBindingSet(
-	            		new BindingImpl("sub", new URIImpl("http://example.org/E"))
+	            		new SimpleBinding("sub", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/E"))
 	            		));
 
 	            final String query = "SELECT * WHERE { ?sub rdfs:subClassOf+ <http://example.org/A> . } ";

@@ -34,8 +34,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.BOpContext;
 import com.bigdata.bop.Constant;
 import com.bigdata.bop.IBindingSet;
@@ -68,7 +69,7 @@ import cutthecrap.utils.striterators.ICloseableIterator;
  */
 public class JVMPipelinedHashJoinUtility extends JVMHashJoinUtility implements PipelinedHashJoinUtility {
 
-   private static final Logger log = Logger.getLogger(JVMPipelinedHashJoinUtility.class);
+   private static final Logger log = LogManager.getLogger(JVMPipelinedHashJoinUtility.class);
 
    /**
     * The #of distinct projections from the given input bindings
@@ -105,6 +106,13 @@ public class JVMPipelinedHashJoinUtility extends JVMHashJoinUtility implements P
     * See {@link PipelinedHashIndexAndSolutionSetJoinOp#distinctProjectionsWithoutSubqueryResult}
     */
    final Set<IBindingSet> distinctProjectionsWithoutSubqueryResult = new HashSet<IBindingSet>();
+
+   /**
+    * Distinct projections for which the subquery has already returned a
+    * result. Subquery solutions can contain variables beyond the projection,
+    * so comparing the full solution with the projection is insufficient.
+    */
+   final Set<IBindingSet> distinctProjectionsWithSubqueryResult = new HashSet<IBindingSet>();
    
    /**
     * Set to true if processing binding sets are passed in via 
@@ -210,7 +218,8 @@ public class JVMPipelinedHashJoinUtility extends JVMHashJoinUtility implements P
                  */
                 final Bucket b = rightSolutions.getBucket(bsetDistinct);
 
-                if (b != null && b.contains(bsetDistinct)) {
+                if (distinctProjectionsWithSubqueryResult.contains(bsetDistinct)
+                        || (b != null && b.contains(bsetDistinct))) {
 
                     /**
                      * If the hash index contains already contains the solution, this means that we evaluated
@@ -319,7 +328,9 @@ public class JVMPipelinedHashJoinUtility extends JVMHashJoinUtility implements P
                          * processed later on); This is how we discover the set
                          * of distinct projections that did not join.
                          */
-                        distinctProjectionBuffer.remove(solution.copy(projectInVars));
+                        final IBindingSet projection = solution.copy(projectInVars);
+                        distinctProjectionsWithSubqueryResult.add(projection);
+                        distinctProjectionBuffer.remove(projection);
 
                         nResultsFromSubqueries.increment();
                     }

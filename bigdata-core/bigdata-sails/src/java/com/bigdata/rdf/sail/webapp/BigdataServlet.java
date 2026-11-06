@@ -33,13 +33,14 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
 
 import com.bigdata.ha.HAStatusEnum;
 import com.bigdata.journal.AbstractJournal;
@@ -63,7 +64,7 @@ abstract public class BigdataServlet extends HttpServlet implements IMimeTypes {
      */
     private static final long serialVersionUID = 1L;
 
-    private static final transient Logger log = Logger.getLogger(BigdataServlet.class); 
+    private static final transient Logger log = LogManager.getLogger(BigdataServlet.class);
 
     /**
      * The name of the {@link ServletContext} attribute whose value is the

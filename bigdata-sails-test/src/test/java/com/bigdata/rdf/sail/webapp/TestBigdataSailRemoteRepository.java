@@ -28,32 +28,32 @@ import java.util.Properties;
 
 import junit.framework.Test;
 
-import org.openrdf.model.Graph;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.LinkedHashModel;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.StatementImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.DC;
-import org.openrdf.model.vocabulary.FOAF;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.model.vocabulary.XMLSchema;
-import org.openrdf.query.BooleanQuery;
-import org.openrdf.query.GraphQuery;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.UpdateExecutionException;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.RepositoryResult;
-import org.openrdf.rio.RDFFormat;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.LinkedHashModel;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.DC;
+import org.eclipse.rdf4j.model.vocabulary.FOAF;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
+import org.eclipse.rdf4j.query.BooleanQuery;
+import org.eclipse.rdf4j.query.GraphQuery;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.UpdateExecutionException;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.RepositoryResult;
+import org.eclipse.rdf4j.rio.RDFFormat;
 
 import com.bigdata.journal.IIndexManager;
 import com.bigdata.rdf.sail.BigdataSail;
@@ -157,7 +157,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
    }
 
    /**
-    * The URI for the default prefix (":") in SPARQL QUERY and UPDATE requests.
+    * The IRI for the default prefix (":") in SPARQL QUERY and UPDATE requests.
     */
    protected static final String DEFAULT_PREFIX = "http://bigdata.com/";
    
@@ -172,7 +172,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
       declarations.append("PREFIX rdf: <" + RDF.NAMESPACE + "> \n");
       declarations.append("PREFIX rdfs: <" + RDFS.NAMESPACE + "> \n");
       declarations.append("PREFIX foaf: <" + FOAF.NAMESPACE + "> \n");
-      declarations.append("PREFIX xsd: <" + XMLSchema.NAMESPACE + "> \n");
+      declarations.append("PREFIX xsd: <" + XSD.NAMESPACE + "> \n");
       declarations.append("PREFIX dc: <" + DC.NAMESPACE + "> \n");
       declarations.append("PREFIX ex: <" + "http://example.org/" + "> \n");
       declarations.append("\n");
@@ -184,7 +184,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
     protected void doInsertWithBodyTest(final String method, final int ntriples,
             /*final String servlet,*/ final RDFFormat format) throws Exception {
 
-        final Graph g = genNTRIPLES2(ntriples);
+        final Model g = genNTRIPLES2(ntriples);
         cxn.add(g);
         assertEquals(ntriples, getExactSize());
         
@@ -199,8 +199,8 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
 
 	@Override
     protected long doInsertByBody(final String method,
-            /*final String servlet,*/ final RDFFormat rdfFormat, final Graph g,
-            final URI defaultContext) throws Exception {
+            /*final String servlet,*/ final RDFFormat rdfFormat, final Model g,
+            final IRI defaultContext) throws Exception {
 		
 		final long start = getExactSize();
 		
@@ -213,10 +213,10 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
 	@Override
     protected long doDeleteWithAccessPath(//
 //          final String servlet,//
-          final URI s,//
-          final URI p,//
+          final IRI s,//
+          final IRI p,//
           final Value o,//
-          final URI... c//
+          final IRI... c//
           ) throws Exception {
 
 		final long start = getExactSize();
@@ -228,10 +228,10 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
 	}
 	
     protected RepositoryResult<Statement> doGetWithAccessPath(//
-          final URI s,//
-          final URI p,//
+          final IRI s,//
+          final IRI p,//
           final Value o,//
-          final URI... c//
+          final IRI... c//
           ) throws Exception {
 
 		return cxn.getStatements(s, p, o, false/*includeInferred*/, c);
@@ -344,10 +344,10 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
         final String resource = packagePath
                 + "insert_triples_with_defaultContext.ttl";
 
-        final Graph g = loadGraphFromResource(resource);
+        final Model g = loadGraphFromResource(resource);
 
         // Load the resource into the KB.
-        doInsertByBody("POST", RDFFormat.TURTLE, g, new URIImpl(
+        doInsertByBody("POST", RDFFormat.TURTLE, g, org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://example.org"));
         
         // Verify that the data were inserted into the appropriate context.
@@ -368,7 +368,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
         {
         	final File file = new File(packagePath
                     + "insert_triples_with_defaultContext.ttl");
-        	cxn.add(file, "", RDFFormat.TURTLE, new URIImpl("http://example.org"));
+        	cxn.add(file, "", RDFFormat.TURTLE, org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org"));
             assertEquals(7, getExactSize());
         }
 
@@ -423,12 +423,12 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
      */
     public void test_INSERT_veryLargeLiteral() throws Exception {
 
-        final Graph g = new LinkedHashModel();
+        final Model g = new LinkedHashModel();
         
-        final URI s = new URIImpl("http://www.bigdata.com/");
-        final URI p = RDFS.LABEL;
+        final IRI s = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/");
+        final IRI p = RDFS.LABEL;
         final Literal o = getVeryLargeLiteral();
-        final Statement stmt = new StatementImpl(s, p, o);
+        final Statement stmt = SimpleValueFactory.getInstance().createStatement(s, p, o);
         g.add(stmt);
         
         // Load the resource into the KB.
@@ -437,7 +437,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
                 doInsertByBody("POST", RDFFormat.RDFXML, g, null/* defaultContext */));
 
         // Read back the data into a graph.
-        final Graph g2;
+        final Model g2;
         {
             final String queryStr = "DESCRIBE <" + s.stringValue() + ">";
             final GraphQuery query = cxn.prepareGraphQuery(QueryLanguage.SPARQL, queryStr);
@@ -447,12 +447,12 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
         
         assertEquals(1, g2.size());
         
-        assertTrue(g2.match(s, p, o).hasNext());
+        assertTrue(g2.filter(s, p, o).iterator().hasNext());
         
     }
     
     /**
-     * Test ability to load data from a URI.
+     * Test ability to load data from a IRI.
      */
     public void test_INSERT_LOAD_FROM_URI() throws Exception {
 
@@ -539,7 +539,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
 
         final long mutationResult = doDeleteWithAccessPath(//
 //                requestPath,//
-                new URIImpl("http://www.bigdata.com/Mike"),// s
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/Mike"),// s
                 null,// p
                 null
         );
@@ -559,7 +559,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
         final long mutationResult = doDeleteWithAccessPath(//
 //                requestPath,//
                 null,// s
-                new URIImpl("http://www.w3.org/2000/01/rdf-schema#label"),// p
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.w3.org/2000/01/rdf-schema#label"),// p
                 null// o
         );
 
@@ -568,7 +568,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
     }
     
     /**
-     * Delete everything with a specific object (a URI).
+     * Delete everything with a specific object (a IRI).
      */
     public void test_DELETE_accessPath_delete_o_URI() throws Exception {
 
@@ -579,7 +579,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
 //                requestPath,//
                 null,// s
                 null,// p
-                new URIImpl("http://xmlns.com/foaf/0.1/Person")// o
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://xmlns.com/foaf/0.1/Person")// o
         );
 
         assertEquals(3, mutationResult);
@@ -598,7 +598,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
 //                requestPath,//
                 null,// s
                 null,// p
-                new URIImpl("http://www.bigdata.com/Bryan")// o
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/Bryan")// o
         );
 
         assertEquals(1, mutationResult);
@@ -606,7 +606,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
     }
     
     /**
-     * Delete everything with a specific predicate and object (a URI).
+     * Delete everything with a specific predicate and object (a IRI).
      */
     public void test_DELETE_accessPath_delete_p_o_URI() throws Exception {
 
@@ -617,7 +617,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
 //                requestPath,//
                 null,// s
                 RDF.TYPE,// p
-                new URIImpl("http://xmlns.com/foaf/0.1/Person")// o
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://xmlns.com/foaf/0.1/Person")// o
         );
 
         assertEquals(3, mutationResult);
@@ -636,7 +636,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
 //                requestPath,//
                 null,// s
                 RDFS.LABEL,// p
-                new LiteralImpl("Bryan")// o
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Bryan")// o
         );
 
         assertEquals(1, mutationResult);
@@ -655,7 +655,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
 //                requestPath,//
                 null,// s
                 null,// p
-                new URIImpl("http://xmlns.com/foaf/0.1/XXX")// o
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://xmlns.com/foaf/0.1/XXX")// o
         );
 
         assertEquals(0, mutationResult);
@@ -678,7 +678,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
                 null,// s
                 null,// p
                 null,// o
-                new URIImpl("http://www.bigdata.com/") // c
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/") // c
         );
 
         assertEquals(3, mutationResult);
@@ -701,7 +701,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
                 null,// s
                 null,// p
                 null,// o
-                new URIImpl("http://www.bigdata.com/c1") // c
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/c1") // c
         );
 
         assertEquals(2, mutationResult);
@@ -724,7 +724,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
                 null,// s
                 null,// p
                 null,// o
-                new URIImpl("http://xmlns.com/foaf/0.1/XXX") // c
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://xmlns.com/foaf/0.1/XXX") // c
         );
 
         assertEquals(0, mutationResult);
@@ -760,7 +760,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
 
         final long result = countResults(doGetWithAccessPath(//
 //                requestPath,//
-                new URIImpl("http://www.bigdata.com/Mike"),// s
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/Mike"),// s
                 null,// p
                 null
         ));
@@ -780,7 +780,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
         final long result = countResults(doGetWithAccessPath(//
 //                requestPath,//
                 null,// s
-                new URIImpl("http://www.w3.org/2000/01/rdf-schema#label"),// p
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.w3.org/2000/01/rdf-schema#label"),// p
                 null// o
         ));
 
@@ -789,7 +789,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
     }
     
     /**
-     * Get everything with a specific object (a URI).
+     * Get everything with a specific object (a IRI).
      */
     public void test_GET_accessPath_delete_o_URI() throws Exception {
 
@@ -800,7 +800,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
 //                requestPath,//
                 null,// s
                 null,// p
-                new URIImpl("http://xmlns.com/foaf/0.1/Person")// o
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://xmlns.com/foaf/0.1/Person")// o
         ));
 
         assertEquals(3, result);
@@ -819,7 +819,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
 //                requestPath,//
                 null,// s
                 null,// p
-                new URIImpl("http://www.bigdata.com/Bryan")// o
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/Bryan")// o
         ));
 
         assertEquals(1, result);
@@ -827,7 +827,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
     }
     
     /**
-     * Get everything with a specific predicate and object (a URI).
+     * Get everything with a specific predicate and object (a IRI).
      */
     public void test_GET_accessPath_delete_p_o_URI() throws Exception {
 
@@ -838,7 +838,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
 //                requestPath,//
                 null,// s
                 RDF.TYPE,// p
-                new URIImpl("http://xmlns.com/foaf/0.1/Person")// o
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://xmlns.com/foaf/0.1/Person")// o
         ));
 
         assertEquals(3, result);
@@ -857,7 +857,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
 //                requestPath,//
                 null,// s
                 RDFS.LABEL,// p
-                new LiteralImpl("Bryan")// o
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Bryan")// o
         ));
 
         assertEquals(1, result);
@@ -876,7 +876,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
 //                requestPath,//
                 null,// s
                 null,// p
-                new URIImpl("http://xmlns.com/foaf/0.1/XXX")// o
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://xmlns.com/foaf/0.1/XXX")// o
         ));
 
         assertEquals(0, result);
@@ -899,7 +899,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
                 null,// s
                 null,// p
                 null,// o
-                new URIImpl("http://www.bigdata.com/") // c
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/") // c
         ));
 
         assertEquals(3, result);
@@ -922,7 +922,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
                 null,// s
                 null,// p
                 null,// o
-                new URIImpl("http://www.bigdata.com/c1") // c
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/c1") // c
         ));
 
         assertEquals(2, result);
@@ -945,7 +945,7 @@ public class TestBigdataSailRemoteRepository<S extends IIndexManager> extends
                 null,// s
                 null,// p
                 null,// o
-                new URIImpl("http://xmlns.com/foaf/0.1/XXX") // c
+                org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://xmlns.com/foaf/0.1/XXX") // c
         ));
 
         assertEquals(0, result);
@@ -1045,9 +1045,9 @@ if(true) return; // FIXME (***) TX TEST DISABLED
 
          assertTrue(cxn.isActive());
 
-         final URI a = cxn.getValueFactory().createURI(DEFAULT_PREFIX + "a");
-         final URI b = cxn.getValueFactory().createURI(DEFAULT_PREFIX + "b");
-         final URI c = cxn.getValueFactory().createURI(DEFAULT_PREFIX + "c");
+         final IRI a = cxn.getValueFactory().createIRI(DEFAULT_PREFIX + "a");
+         final IRI b = cxn.getValueFactory().createIRI(DEFAULT_PREFIX + "b");
+         final IRI c = cxn.getValueFactory().createIRI(DEFAULT_PREFIX + "c");
          
          assertFalse(cxn.hasStatement(a, b, c, true/* includeInferred */));
          
@@ -1097,9 +1097,9 @@ if(true) return; // FIXME (***) TX TEST DISABLED
 
          assertTrue(cxn.isActive());
 
-         final URI a = cxn.getValueFactory().createURI(DEFAULT_PREFIX + "a");
-         final URI b = cxn.getValueFactory().createURI(DEFAULT_PREFIX + "b");
-         final URI c = cxn.getValueFactory().createURI(DEFAULT_PREFIX + "c");
+         final IRI a = cxn.getValueFactory().createIRI(DEFAULT_PREFIX + "a");
+         final IRI b = cxn.getValueFactory().createIRI(DEFAULT_PREFIX + "b");
+         final IRI c = cxn.getValueFactory().createIRI(DEFAULT_PREFIX + "c");
          
          assertFalse(cxn.hasStatement(a, b, c, true/* includeInferred */));
          

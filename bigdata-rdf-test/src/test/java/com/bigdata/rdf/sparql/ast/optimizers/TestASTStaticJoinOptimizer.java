@@ -30,9 +30,9 @@ package com.bigdata.rdf.sparql.ast.optimizers;
 import static com.bigdata.rdf.sparql.ast.optimizers.AbstractOptimizerTestCase.HelperFlag.DISTINCT;
 import static com.bigdata.rdf.sparql.ast.optimizers.AbstractOptimizerTestCase.HelperFlag.OPTIONAL;
 
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.rdf.internal.IV;
@@ -134,9 +134,9 @@ public class TestASTStaticJoinOptimizer extends AbstractOptimizerTestCase
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV a = makeIV(new URIImpl("http://example/a"));
+        final IV a = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/a"));
 
-        final IV b = makeIV(new URIImpl("http://example/b"));
+        final IV b = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/b"));
         
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -225,9 +225,9 @@ public class TestASTStaticJoinOptimizer extends AbstractOptimizerTestCase
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV a = makeIV(new URIImpl("http://example/a"));
+        final IV a = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/a"));
 
-        final IV b = makeIV(new URIImpl("http://example/b"));
+        final IV b = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/b"));
         
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -328,15 +328,15 @@ public class TestASTStaticJoinOptimizer extends AbstractOptimizerTestCase
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV a = makeIV(new URIImpl("http://example/a"));
+        final IV a = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/a"));
 
-        final IV b = makeIV(new URIImpl("http://example/b"));
+        final IV b = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/b"));
         
-        final IV c = makeIV(new URIImpl("http://example/c"));
+        final IV c = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/c"));
         
-        final IV d = makeIV(new URIImpl("http://example/d"));
+        final IV d = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/d"));
 
-        final IV e = makeIV(new URIImpl("http://example/e"));
+        final IV e = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/e"));
         
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -455,15 +455,15 @@ public class TestASTStaticJoinOptimizer extends AbstractOptimizerTestCase
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV a = makeIV(new URIImpl("http://example/a"));
+        final IV a = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/a"));
 
-        final IV b = makeIV(new URIImpl("http://example/b"));
+        final IV b = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/b"));
         
-        final IV c = makeIV(new URIImpl("http://example/c"));
+        final IV c = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/c"));
         
-        final IV d = makeIV(new URIImpl("http://example/d"));
+        final IV d = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/d"));
         
-        final IV e = makeIV(new URIImpl("http://example/e"));
+        final IV e = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/e"));
         
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -597,19 +597,19 @@ public class TestASTStaticJoinOptimizer extends AbstractOptimizerTestCase
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV a = makeIV(new URIImpl("http://example/a"));
+        final IV a = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/a"));
 
-        final IV b = makeIV(new URIImpl("http://example/b"));
+        final IV b = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/b"));
         
-        final IV c = makeIV(new URIImpl("http://example/c"));
+        final IV c = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/c"));
         
-        final IV d = makeIV(new URIImpl("http://example/d"));
+        final IV d = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/d"));
         
-        final IV e = makeIV(new URIImpl("http://example/e"));
+        final IV e = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/e"));
         
-        final IV f = makeIV(new URIImpl("http://example/f"));
+        final IV f = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/f"));
         
-        final IV g = makeIV(new URIImpl("http://example/g"));
+        final IV g = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/g"));
         
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -730,22 +730,22 @@ public class TestASTStaticJoinOptimizer extends AbstractOptimizerTestCase
 
         final IV search = makeIV(BDS.SEARCH);
 
-        final IV foo = makeIV(new LiteralImpl("foo"));
+        final IV foo = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("foo"));
 
-        final IV a = makeIV(new URIImpl("http://example/a"));
+        final IV a = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/a"));
 
-        final IV b = makeIV(new URIImpl("http://example/b"));
+        final IV b = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/b"));
         
         final IV serviceRef = makeIV(BDS.SEARCH);
         
 //        @SuppressWarnings("rawtypes")
-//        final IV c = makeIV(new URIImpl("http://example/c"));
+//        final IV c = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/c"));
 //        
 //        @SuppressWarnings("rawtypes")
-//        final IV d = makeIV(new URIImpl("http://example/d"));
+//        final IV d = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/d"));
 //        
 //        @SuppressWarnings("rawtypes")
-//        final IV e = makeIV(new URIImpl("http://example/e"));
+//        final IV e = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/e"));
         
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -858,21 +858,21 @@ public class TestASTStaticJoinOptimizer extends AbstractOptimizerTestCase
 
         final IV search = makeIV(BDS.SEARCH);
 
-        final IV foo = makeIV(new LiteralImpl("foo"));
+        final IV foo = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("foo"));
 
-        final IV a = makeIV(new URIImpl("http://example/a"));
+        final IV a = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/a"));
 
-        final IV b = makeIV(new URIImpl("http://example/b"));
+        final IV b = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/b"));
         
-        final IV c = makeIV(new URIImpl("http://example/c"));
+        final IV c = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/c"));
         
-        final IV d = makeIV(new URIImpl("http://example/d"));
+        final IV d = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/d"));
         
-        final IV e = makeIV(new URIImpl("http://example/e"));
+        final IV e = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/e"));
         
-        final IV f = makeIV(new URIImpl("http://example/f"));
+        final IV f = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/f"));
         
-        final IV g = makeIV(new URIImpl("http://example/g"));
+        final IV g = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/g"));
 
         final IV serviceRef = makeIV(BDS.SEARCH);
 
@@ -1011,17 +1011,17 @@ public class TestASTStaticJoinOptimizer extends AbstractOptimizerTestCase
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV a = makeIV(new URIImpl("http://example/a"));
+        final IV a = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/a"));
 
-        final IV b = makeIV(new URIImpl("http://example/b"));
+        final IV b = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/b"));
         
-        final IV c = makeIV(new URIImpl("http://example/c"));
+        final IV c = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/c"));
         
-        final IV d = makeIV(new URIImpl("http://example/d"));
+        final IV d = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/d"));
         
-        final IV e = makeIV(new URIImpl("http://example/e"));
+        final IV e = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/e"));
         
-        final IV f = makeIV(new URIImpl("http://example/f"));
+        final IV f = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/f"));
         
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -1117,17 +1117,17 @@ public class TestASTStaticJoinOptimizer extends AbstractOptimizerTestCase
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV a = makeIV(new URIImpl("http://example/a"));
+        final IV a = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/a"));
 
-//        final IV b = makeIV(new URIImpl("http://example/b"));
+//        final IV b = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/b"));
 //        
-//        final IV c = makeIV(new URIImpl("http://example/c"));
+//        final IV c = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/c"));
         
-        final IV d = makeIV(new URIImpl("http://example/d"));
+        final IV d = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/d"));
         
-        final IV e = makeIV(new URIImpl("http://example/e"));
+        final IV e = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/e"));
         
-//        final IV f = makeIV(new URIImpl("http://example/f"));
+//        final IV f = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/f"));
         
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -1205,17 +1205,17 @@ public class TestASTStaticJoinOptimizer extends AbstractOptimizerTestCase
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV a = makeIV(new URIImpl("http://example/a"));
+        final IV a = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/a"));
 
-        final IV b = makeIV(new URIImpl("http://example/b"));
+        final IV b = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/b"));
         
-//        final IV c = makeIV(new URIImpl("http://example/c"));
+//        final IV c = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/c"));
         
-        final IV d = makeIV(new URIImpl("http://example/d"));
+        final IV d = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/d"));
         
-        final IV e = makeIV(new URIImpl("http://example/e"));
+        final IV e = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/e"));
         
-//        final IV f = makeIV(new URIImpl("http://example/f"));
+//        final IV f = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/f"));
         
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -1369,17 +1369,17 @@ public class TestASTStaticJoinOptimizer extends AbstractOptimizerTestCase
 
 //        final IV search = makeIV(BDS.SEARCH);
 //
-//        final IV foo = makeIV(new LiteralImpl("foo"));
+//        final IV foo = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("foo"));
 
-        final IV a = makeIV(new URIImpl("http://example/a"));
+        final IV a = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/a"));
 
-        final IV b = makeIV(new URIImpl("http://example/b"));
+        final IV b = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/b"));
         
-        final IV c = makeIV(new URIImpl("http://example/c"));
+        final IV c = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/c"));
         
-        final IV d = makeIV(new URIImpl("http://example/d"));
+        final IV d = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/d"));
         
-        final IV e = makeIV(new URIImpl("http://example/e"));
+        final IV e = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/e"));
         
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -1535,14 +1535,14 @@ public class TestASTStaticJoinOptimizer extends AbstractOptimizerTestCase
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV country = makeIV(new URIImpl("http://example/country"));
-        final IV producer = makeIV(new URIImpl("http://example/producer"));
-        final IV reviewFor = makeIV(new URIImpl("http://example/reviewFor"));
-        final IV reviewer = makeIV(new URIImpl("http://example/reviewer"));
-        final IV RU = makeIV(new URIImpl("http://example/RU"));
-        final IV US = makeIV(new URIImpl("http://example/US"));
+        final IV country = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/country"));
+        final IV producer = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/producer"));
+        final IV reviewFor = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/reviewFor"));
+        final IV reviewer = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/reviewer"));
+        final IV RU = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/RU"));
+        final IV US = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/US"));
         final IV type = makeIV(RDF.TYPE);
-        final IV productType = makeIV(new URIImpl("http://example/ProductType"));
+        final IV productType = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/ProductType"));
         
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -1638,17 +1638,17 @@ public class TestASTStaticJoinOptimizer extends AbstractOptimizerTestCase
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV a = makeIV(new URIImpl("http://example/a"));
+        final IV a = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/a"));
 
-        final IV b = makeIV(new URIImpl("http://example/b"));
+        final IV b = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/b"));
         
-        final IV c = makeIV(new URIImpl("http://example/c"));
+        final IV c = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/c"));
         
-        final IV d = makeIV(new URIImpl("http://example/d"));
+        final IV d = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/d"));
         
-        final IV e = makeIV(new URIImpl("http://example/e"));
+        final IV e = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/e"));
         
-        final IV f = makeIV(new URIImpl("http://example/f"));
+        final IV f = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/f"));
         
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -1945,17 +1945,17 @@ where {
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV a = makeIV(new URIImpl("http://example/a"));
+        final IV a = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/a"));
 
-        final IV b = makeIV(new URIImpl("http://example/b"));
+        final IV b = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/b"));
         
-        final IV c = makeIV(new URIImpl("http://example/c"));
+        final IV c = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/c"));
         
-        final IV d = makeIV(new URIImpl("http://example/d"));
+        final IV d = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/d"));
         
-        final IV e = makeIV(new URIImpl("http://example/e"));
+        final IV e = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/e"));
         
-        final IV f = makeIV(new URIImpl("http://example/f"));
+        final IV f = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/f"));
         
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);

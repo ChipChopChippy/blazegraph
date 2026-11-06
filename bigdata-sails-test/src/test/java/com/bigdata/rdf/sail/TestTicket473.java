@@ -32,18 +32,19 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.RDFParserFactory;
-import org.openrdf.rio.RDFParserRegistry;
-import org.openrdf.rio.helpers.RDFHandlerBase;
-import org.openrdf.sail.SailException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.RDFParserFactory;
+import org.eclipse.rdf4j.rio.RDFParserRegistry;
+import org.eclipse.rdf4j.rio.helpers.AbstractRDFHandler;
+import org.eclipse.rdf4j.sail.SailException;
 
 import com.bigdata.btree.BTree;
 import com.bigdata.btree.IndexMetadata;
@@ -71,7 +72,7 @@ import com.bigdata.service.AbstractTransactionService;
  */
 public class TestTicket473 extends TestCase {
 
-    private static final Logger log = Logger.getLogger(TestTicket473.class);
+    private static final Logger log = LogManager.getLogger(TestTicket473.class);
     
     /**
      * 
@@ -128,7 +129,7 @@ public class TestTicket473 extends TestCase {
                 log.info("Opening sail");
                 sail = getSail(getProperties());
                 try {
-                    sail.initialize();
+                    sail.init();
                     loadOntology(sail,
                             "data/lehigh/univ-bench.owl");
                     doTicket473Commit(sail);
@@ -154,16 +155,16 @@ public class TestTicket473 extends TestCase {
 
             final ValueFactory vf = conn.getValueFactory();
 
-            final URI pred = vf.createURI("http://foo.bar/ontoloty/hasGate");
+            final IRI pred = vf.createIRI("http://foo.bar/ontoloty/hasGate");
 
             for (int r = 0; r < 10; r++) {
                 for (int i = 0; i < 10; i++) {
                     
-                    final URI subj = vf.createURI("http://foo.bar/note/" + r + "_"
+                    final IRI subj = vf.createIRI("http://foo.bar/note/" + r + "_"
                             + i);
 
-                    final URI obj = vf
-                            .createURI("http://foo.bar/gate/" + r + "_" + i);
+                    final IRI obj = vf
+                            .createIRI("http://foo.bar/gate/" + r + "_" + i);
                     
                     conn.add(subj, pred, obj, (Resource) null);
                     
@@ -198,20 +199,20 @@ public class TestTicket473 extends TestCase {
 
         try {
 
-            final RDFFormat format = RDFFormat.forFileName(fileName);
+            final RDFFormat format = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(fileName);
 
             final RDFParserFactory rdfParserFactory = RDFParserRegistry
-                    .getInstance().get(format);
+                    .getInstance().get(format).orElse(null);
 
             final RDFParser rdfParser = rdfParserFactory.getParser();
 
             rdfParser.setValueFactory(conn.getTripleStore().getValueFactory());
 
-            rdfParser.setVerifyData(true);
+            com.bigdata.rdf.rio.RDFParserOptions.setVerifyData(rdfParser, true);
 
-            rdfParser.setStopAtFirstError(true);
+            
 
-            rdfParser.setDatatypeHandling(RDFParser.DatatypeHandling.IGNORE);
+            com.bigdata.rdf.rio.RDFParserOptions.setDatatypeHandling(rdfParser, com.bigdata.rdf.rio.DatatypeHandling.IGNORE);
 
             rdfParser.setRDFHandler(new AddStatementHandler(conn, nmodified,
                     defaultContext));
@@ -254,7 +255,7 @@ public class TestTicket473 extends TestCase {
     /**
      * Helper class adds statements to the sail as they are visited by a parser.
      */
-    private static class AddStatementHandler extends RDFHandlerBase {
+    private static class AddStatementHandler extends AbstractRDFHandler {
 
         private final BigdataSailConnection conn;
         private final AtomicLong nmodified;

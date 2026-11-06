@@ -4,9 +4,10 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Statement;
-import org.openrdf.rio.RDFFormat;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.rio.RDFFormat;
 
 import com.bigdata.rdf.rio.RDFParserOptions;
 import com.bigdata.rdf.store.AbstractTripleStore;
@@ -23,7 +24,7 @@ import com.bigdata.rdf.store.AbstractTripleStore;
 public class AbstractRDFTaskFactory<S extends Statement,T extends Runnable> implements
         ITaskFactory<T> {
 
-    protected static final Logger log = Logger
+    protected static final Logger log = LogManager
             .getLogger(RDFLoadTaskFactory.class);
 
     /**
@@ -141,8 +142,8 @@ public class AbstractRDFTaskFactory<S extends Statement,T extends Runnable> impl
 
         final RDFFormat rdfFormat = //
         fallback == null //
-        ? RDFFormat.forFileName(filename) //
-                : RDFFormat.forFileName(filename, fallback)//
+        ? com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(filename) //
+                : com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(filename, fallback)//
         ;
 
         return rdfFormat;

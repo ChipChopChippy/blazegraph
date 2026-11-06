@@ -27,6 +27,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.internal.constraints;
 
+
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.Constant;
 import com.bigdata.bop.bindingSet.ListBindingSet;
 import com.bigdata.journal.ITx;
@@ -46,7 +48,7 @@ import com.bigdata.rdf.store.ProxyTestCase;
  */
 public class TestStrBeforeBOp extends ProxyTestCase {
 
-//	private static final Logger log = Logger.getLogger(TestSubstrBOp.class);
+//	private static final Logger log = LogManager.getLogger(TestSubstrBOp.class);
 	
     /**
      * 

@@ -32,10 +32,11 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.apache.log4j.Logger;
-import org.eclipse.jetty.client.api.Request;
-import org.eclipse.jetty.client.api.Response;
-import org.eclipse.jetty.client.util.InputStreamResponseListener;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.jetty.client.InputStreamResponseListener;
+import org.eclipse.jetty.client.Request;
+import org.eclipse.jetty.client.Response;
 import org.eclipse.jetty.http.HttpFields;
 import org.eclipse.jetty.http.HttpHeader;
 
@@ -44,7 +45,7 @@ import org.eclipse.jetty.http.HttpHeader;
  */
 public class JettyResponseListener extends InputStreamResponseListener {
 	
-    private static final transient Logger log = Logger
+    private static final transient Logger log = LogManager
             .getLogger(JettyResponseListener.class);
     
     private final long queryTimeoutMillis;

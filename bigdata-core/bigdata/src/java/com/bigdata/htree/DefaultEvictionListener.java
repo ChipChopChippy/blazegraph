@@ -26,6 +26,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package com.bigdata.htree;
 
+
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.EvictionError;
 import com.bigdata.btree.IEvictionListener;
 import com.bigdata.btree.PO;
@@ -40,7 +42,7 @@ import com.bigdata.cache.IHardReferenceQueue;
 public class DefaultEvictionListener implements
         IEvictionListener {
 
-//	private static final Logger log = Logger.getLogger(DefaultEvictionListener.class);
+//	private static final Logger log = LogManager.getLogger(DefaultEvictionListener.class);
 
 	@Override
     public void evicted(final IHardReferenceQueue<PO> cache, final PO ref) {

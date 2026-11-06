@@ -28,10 +28,10 @@ package com.bigdata.rdf.sail;
 
 import java.util.Properties;
 
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.RepositoryResult;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.RepositoryResult;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.model.BigdataStatement;
@@ -110,16 +110,16 @@ public class TestTicket1086 extends ProxyBigdataSailTestCase {
 
         try {
 
-            sail.initialize();
+            sail.init();
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             cxn = (BigdataSailRepositoryConnection) repo.getConnection();
 
             final BigdataValueFactory vf = (BigdataValueFactory) sail
                   .getValueFactory();
-            final URI s = vf.createURI("http://test/s");
-            final URI p = vf.createURI("http://test/p");
-            final URI o = vf.createURI("http://test/o");
-            final URI c = vf.createURI("http://test/c");
+            final IRI s = vf.createIRI("http://test/s");
+            final IRI p = vf.createIRI("http://test/p");
+            final IRI o = vf.createIRI("http://test/o");
+            final IRI c = vf.createIRI("http://test/c");
 
             BigdataStatement stmt = vf.createStatement(s, p, o, c);
             cxn.add(stmt); 
@@ -152,16 +152,16 @@ public class TestTicket1086 extends ProxyBigdataSailTestCase {
       boolean exceptionEncountered = false;
       try {
 
-         sail.initialize();
+         sail.init();
          final BigdataSailRepository repo = new BigdataSailRepository(sail);
          cxn = (BigdataSailRepositoryConnection) repo.getConnection();
 
          final BigdataValueFactory vf = (BigdataValueFactory) sail
                .getValueFactory();
-         final URI s = vf.createURI("http://test/s");
-         final URI p = vf.createURI("http://test/p");
-         final URI o = vf.createURI("http://test/o");
-         final URI c = vf.createURI("http://test/c");
+         final IRI s = vf.createIRI("http://test/s");
+         final IRI p = vf.createIRI("http://test/p");
+         final IRI o = vf.createIRI("http://test/o");
+         final IRI c = vf.createIRI("http://test/c");
 
          BigdataStatement stmt = vf.createStatement(s, p, o, c);
          cxn.add(stmt);

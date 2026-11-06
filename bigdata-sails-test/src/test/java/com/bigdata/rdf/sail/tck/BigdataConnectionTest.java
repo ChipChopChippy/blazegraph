@@ -41,14 +41,15 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.QueryInterruptedException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryConnectionTest;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.QueryInterruptedException;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.RepositoryConnectionTest;
 
 import com.bigdata.bop.fed.QueryEngineFactory;
 import com.bigdata.btree.keys.CollatorEnum;
@@ -106,7 +107,7 @@ public class BigdataConnectionTest extends RepositoryConnectionTest {
 //			super.testExclusiveNullContext();
 //	}
 //
-    private static final Logger log = Logger.getLogger(BigdataConnectionTest.class);
+    private static final Logger log = LogManager.getLogger(BigdataConnectionTest.class);
     
 	public BigdataConnectionTest(String name) {
 		super(name);
@@ -253,7 +254,7 @@ public class BigdataConnectionTest extends RepositoryConnectionTest {
 //		assertTrue(testCon.isEmpty());
 //		assertTrue(testCon2.isEmpty());
 //		testCon.setAutoCommit(false);
-//		testCon.add(vf.createBNode(), vf.createURI("urn:pred"), vf.createBNode());
+//		testCon.add(vf.createBNode(), vf.createIRI("urn:pred"), vf.createBNode());
 //		assertFalse(testCon.isEmpty());
 //		assertTrue(testCon2.isEmpty());
 //		testCon.commit();
@@ -276,10 +277,10 @@ public class BigdataConnectionTest extends RepositoryConnectionTest {
 //		assertEquals(0, testCon.size());
 //		assertEquals(0, testCon2.size());
 //		testCon.setAutoCommit(false);
-//		testCon.add(vf.createBNode(), vf.createURI("urn:pred"), vf.createBNode());
+//		testCon.add(vf.createBNode(), vf.createIRI("urn:pred"), vf.createBNode());
 //		assertEquals(1, testCon.size());
 //		assertEquals(0, testCon2.size());
-//		testCon.add(vf.createBNode(), vf.createURI("urn:pred"), vf.createBNode());
+//		testCon.add(vf.createBNode(), vf.createIRI("urn:pred"), vf.createBNode());
 //		assertEquals(2, testCon.size());
 //		assertEquals(0, testCon2.size());
 //		testCon.commit();

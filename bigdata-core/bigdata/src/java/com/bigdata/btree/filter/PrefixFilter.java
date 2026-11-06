@@ -3,8 +3,9 @@ package com.bigdata.btree.filter;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.ITuple;
 import com.bigdata.btree.ITupleCursor;
 import com.bigdata.btree.ITupleIterator;
@@ -111,7 +112,7 @@ import cutthecrap.utils.striterators.FilterBase;
  */
 public class PrefixFilter<E> extends FilterBase implements ITupleFilter<E> {
     
-    protected transient static final Logger log = Logger
+    protected transient static final Logger log = LogManager
             .getLogger(PrefixFilter.class);
 
     private static final long serialVersionUID = 1828228416774862469L;

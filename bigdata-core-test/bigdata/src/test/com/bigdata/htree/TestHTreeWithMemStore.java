@@ -31,8 +31,9 @@ import java.util.UUID;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.BTreeCounters;
 import com.bigdata.btree.BaseIndexStats;
 import com.bigdata.btree.DefaultTupleSerializer;
@@ -59,7 +60,7 @@ import com.bigdata.util.BytesUtil;
  */
 public class TestHTreeWithMemStore extends TestCase {
 
-    private final static Logger log = Logger.getLogger(TestHTreeWithMemStore.class);
+    private final static Logger log = LogManager.getLogger(TestHTreeWithMemStore.class);
 
     public TestHTreeWithMemStore() {
     }

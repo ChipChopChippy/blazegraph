@@ -9,11 +9,12 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.repository.sail.SailTupleQuery;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.repository.sail.SailTupleQuery;
 
 import com.bigdata.journal.Journal;
 import com.bigdata.rdf.sail.BigdataSail;
@@ -29,7 +30,7 @@ import com.bigdata.rdf.sail.BigdataSailRepositoryConnection;
  */
 public class RunQuery {
 
-	private static final transient Logger log = Logger.getLogger(RunQuery.class);
+	private static final transient Logger log = LogManager.getLogger(RunQuery.class);
 
 	private static void usage() {
 
@@ -141,7 +142,7 @@ public class RunQuery {
 			
 			final BigdataSail sail = new BigdataSail(properties);
 			final BigdataSailRepository repository = new BigdataSailRepository(sail);
-			repository.initialize();
+			repository.init();
 			
 			try {
 				

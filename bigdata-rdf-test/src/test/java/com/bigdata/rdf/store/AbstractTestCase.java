@@ -43,10 +43,10 @@ import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import junit.framework.TestCase2;
 
-import org.openrdf.model.Statement;
-import org.openrdf.model.Value;
-import org.openrdf.rio.RDFHandler;
-import org.openrdf.rio.helpers.RDFHandlerBase;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.rio.RDFHandler;
+import org.eclipse.rdf4j.rio.helpers.AbstractRDFHandler;
 
 import com.bigdata.btree.IIndex;
 import com.bigdata.btree.ITupleIterator;
@@ -1010,7 +1010,7 @@ abstract public class AbstractTestCase
         
         public RDFHandler newRDFHandler() {
 
-            return new RDFHandlerBase() {
+            return new AbstractRDFHandler() {
 
                 public void handleStatement(final Statement stmt) {
                     

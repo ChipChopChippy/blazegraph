@@ -49,9 +49,10 @@ import java.util.Set;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipInputStream;
 
-import org.apache.log4j.Logger;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParseException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParseException;
 
 import com.bigdata.Banner;
 import com.bigdata.counters.CounterSet;
@@ -92,7 +93,7 @@ public class DataLoader {
     /**
      * Logger.
      */
-    protected static final transient Logger log = Logger.getLogger(DataLoader.class);
+    protected static final transient Logger log = LogManager.getLogger(DataLoader.class);
 
     private final RDFParserOptions parserOptions;
     
@@ -1295,7 +1296,7 @@ public class DataLoader {
 
                 final File f = files[i];
 
-//                final RDFFormat fmt = RDFFormat.forFileName(f.toString(),
+//                final RDFFormat fmt = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(f.toString(),
 //                        rdfFormat);
 
                 loadFiles(totals, depth + 1, f, baseURI, rdfFormat, defaultGraph, filter,
@@ -1309,14 +1310,14 @@ public class DataLoader {
         
         final String n = file.getName();
         
-        RDFFormat fmt = RDFFormat.forFileName(n);
+        RDFFormat fmt = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(n);
 
         if (fmt == null && n.endsWith(".zip")) {
-            fmt = RDFFormat.forFileName(n.substring(0, n.length() - 4));
+            fmt = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(n.substring(0, n.length() - 4));
         }
 
         if (fmt == null && n.endsWith(".gz")) {
-            fmt = RDFFormat.forFileName(n.substring(0, n.length() - 3));
+            fmt = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(n.substring(0, n.length() - 3));
         }
 
         if (fmt == null) // fallback
@@ -1592,7 +1593,22 @@ public class DataLoader {
 				
 				if (source instanceof Reader) {
 
-					loader.loadRdf((Reader) source, baseURI, rdfFormat, defaultGraph, parserOptions);
+					if (fileIfSourceIsFile != null) {
+
+						/*
+						 * Durable queue renames happen as part of didGood()/didFail()
+						 * below. Close file-backed readers before recording the outcome:
+						 * Windows does not permit renaming an open file.
+						 */
+						try (Reader reader = (Reader) source) {
+							loader.loadRdf(reader, baseURI, rdfFormat, defaultGraph, parserOptions);
+						}
+
+					} else {
+
+						loader.loadRdf((Reader) source, baseURI, rdfFormat, defaultGraph, parserOptions);
+
+					}
 
 				} else if (source instanceof InputStream) {
 
@@ -1965,7 +1981,7 @@ public class DataLoader {
 
                 } else if (arg.equals("-format")) {
 
-                    rdfFormat = RDFFormat.valueOf(args[++i]);
+                    rdfFormat = com.bigdata.rdf.rio.RDF4JFormatUtil.valueOf(args[++i]);
 
                 } else if (arg.equals("-baseURI")) {
 
@@ -2289,10 +2305,10 @@ public class DataLoader {
             }
 
             // if recognizable as RDF.
-            boolean isRDF = RDFFormat.forFileName(name) != null
-                    || (name.endsWith(".zip") && RDFFormat.forFileName(name
+            boolean isRDF = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(name) != null
+                    || (name.endsWith(".zip") && com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(name
                             .substring(0, name.length() - 4)) != null)
-                    || (name.endsWith(".gz") && RDFFormat.forFileName(name
+                    || (name.endsWith(".gz") && com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(name
                             .substring(0, name.length() - 3)) != null);
 
 			if (log.isDebugEnabled())

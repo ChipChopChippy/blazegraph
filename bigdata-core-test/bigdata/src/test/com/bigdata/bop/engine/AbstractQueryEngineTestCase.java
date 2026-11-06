@@ -58,8 +58,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.bigdata.bop.engine;
 
-import info.aduna.iteration.Iterations;
-import info.aduna.text.StringUtil;
+import org.eclipse.rdf4j.common.text.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,14 +74,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase2;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Statement;
-import org.openrdf.model.util.ModelUtil;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryResultUtil;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.impl.MutableTupleQueryResult;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.impl.MutableTupleQueryResult;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -103,7 +102,7 @@ import cutthecrap.utils.striterators.ICloseableIterator;
  */
 abstract public class AbstractQueryEngineTestCase extends TestCase2 {
 
-    protected static final Logger log = Logger
+    protected static final Logger log = LogManager
             .getLogger(AbstractQueryEngineTestCase.class);
     
     public AbstractQueryEngineTestCase() {
@@ -719,6 +718,68 @@ abstract public class AbstractQueryEngineTestCase extends TestCase2 {
 	 *             if the results are not the same.
 	 * @throws QueryEvaluationException
 	 */
+	private static boolean isSubset(final List<BindingSet> subset,
+			final List<BindingSet> superset) {
+		final List<BindingSet> remaining = new ArrayList<BindingSet>(superset);
+		for (final BindingSet bindingSet : subset) {
+			if (!remaining.remove(bindingSet)) {
+				BindingSet match = null;
+				for (final BindingSet b : remaining) {
+					if (sameBindings(bindingSet, b)) {
+						match = b;
+						break;
+					}
+				}
+				if (match == null)
+					return false;
+				remaining.remove(match);
+			}
+		}
+		return true;
+	}
+
+	/** Bindings equal, treating lexical variants of the same temporal or numeric literal value as equal. */
+	private static boolean sameBindings(final BindingSet a, final BindingSet b) {
+		if (!a.getBindingNames().equals(b.getBindingNames()))
+			return false;
+		for (final org.eclipse.rdf4j.query.Binding x : a) {
+			final org.eclipse.rdf4j.model.Value u = x.getValue();
+			final org.eclipse.rdf4j.model.Value v = b.getValue(x.getName());
+			if (u.equals(v))
+				continue;
+			if (u instanceof org.eclipse.rdf4j.model.BNode && v instanceof org.eclipse.rdf4j.model.BNode)
+				continue;
+			if (!(u instanceof Literal) || !(v instanceof Literal))
+				return false;
+			final Literal l1 = (Literal) u, l2 = (Literal) v;
+			if (l1.getDatatype() == null || !l1.getDatatype().equals(l2.getDatatype()))
+				return false;
+			try {
+				if (l1.getCoreDatatype().isXSDDatatype() && l1.getCoreDatatype().asXSDDatatype().get().isCalendarDatatype()) {
+					if (!l1.calendarValue().equals(l2.calendarValue()))
+						return false;
+				} else if (l1.getCoreDatatype().isXSDDatatype() && l1.getCoreDatatype().asXSDDatatype().get().isNumericDatatype()) {
+					if (l1.decimalValue().compareTo(l2.decimalValue()) != 0)
+						return false;
+				} else
+					return false;
+			} catch (RuntimeException ex) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static List<BindingSet> toBindingSetList(
+			final MutableTupleQueryResult result) {
+		final List<BindingSet> bindingSets = new ArrayList<BindingSet>();
+		result.beforeFirst();
+		while (result.hasNext()) {
+			bindingSets.add(result.next());
+		}
+		return bindingSets;
+	}
+
 	static public void compareTupleQueryResults(
 		final String name,//
 		final String testURI, //
@@ -739,27 +800,18 @@ abstract public class AbstractQueryEngineTestCase extends TestCase2 {
     
     final MutableTupleQueryResult expectedResultTable = new MutableTupleQueryResult(expectedResult);
 
+    final List<BindingSet> queryBindings = toBindingSetList(queryResultTable);
+    final List<BindingSet> expectedBindings = toBindingSetList(expectedResultTable);
     boolean resultsEqual;
     if (laxCardinality) {
-        resultsEqual = QueryResultUtil.isSubset(queryResultTable, expectedResultTable);
+        resultsEqual = isSubset(queryBindings, expectedBindings);
     }
     else {
-        resultsEqual = QueryResultUtil.equals(queryResultTable, expectedResultTable);
+        resultsEqual = queryBindings.size() == expectedBindings.size()
+                && isSubset(queryBindings, expectedBindings);
         
         if (checkOrder) {
-            // also check the order in which solutions occur.
-            queryResultTable.beforeFirst();
-            expectedResultTable.beforeFirst();
-
-            while (queryResultTable.hasNext()) {
-                final BindingSet bs = queryResultTable.next();
-                final BindingSet expectedBs = expectedResultTable.next();
-                
-                if (! bs.equals(expectedBs)) {
-                    resultsEqual = false;
-                    break;
-                }
-            }
+            resultsEqual = queryBindings.equals(expectedBindings);
         }
     }
 
@@ -793,12 +845,6 @@ abstract public class AbstractQueryEngineTestCase extends TestCase2 {
     }
 
     if (!resultsEqual) {
-
-        queryResultTable.beforeFirst();
-        expectedResultTable.beforeFirst();
-
-        final List<BindingSet> queryBindings = Iterations.asList(queryResultTable);
-        final List<BindingSet> expectedBindings = Iterations.asList(expectedResultTable);
 
         final List<BindingSet> missingBindings = new ArrayList<BindingSet>(expectedBindings);
         missingBindings.removeAll(queryBindings);
@@ -890,7 +936,7 @@ abstract public class AbstractQueryEngineTestCase extends TestCase2 {
         else {
             queryResultTable.beforeFirst();
 
-            List<BindingSet> queryBindings = Iterations.asList(queryResultTable);
+            List<BindingSet> queryBindings = toBindingSetList(queryResultTable);
             StringBuilder message = new StringBuilder(128);
 
             message.append("\n============ ");
@@ -909,6 +955,38 @@ abstract public class AbstractQueryEngineTestCase extends TestCase2 {
         */
     }
 
+		static private org.eclipse.rdf4j.model.Value plain(final org.eclipse.rdf4j.model.ValueFactory vf, final org.eclipse.rdf4j.model.Value v) {
+		if (!(v instanceof Literal))
+			return v;
+		final Literal l = (Literal) v;
+		if (l.getLanguage().isPresent())
+			return vf.createLiteral(l.getLabel(), l.getLanguage().get());
+		if (l.getDatatype() == null)
+			return vf.createLiteral(l.getLabel());
+		return vf.createLiteral(l.getLabel(), l.getDatatype());
+	}
+
+/**
+	 * Graph comparison up to blank node renaming, ignoring the context position
+	 * (the comparison has always been on triples).
+	 */
+	static private boolean isomorphicIgnoringContext(
+			final Set<Statement> a, final Set<Statement> b) {
+
+		final org.eclipse.rdf4j.model.ValueFactory vf = org.eclipse.rdf4j.model.impl.SimpleValueFactory
+				.getInstance();
+
+		final java.util.Set<Statement> ta = new java.util.LinkedHashSet<Statement>();
+		for (Statement st : a)
+			ta.add(vf.createStatement(st.getSubject(), st.getPredicate(), plain(vf, st.getObject())));
+
+		final java.util.Set<Statement> tb = new java.util.LinkedHashSet<Statement>();
+		for (Statement st : b)
+			tb.add(vf.createStatement(st.getSubject(), st.getPredicate(), plain(vf, st.getObject())));
+
+		return org.eclipse.rdf4j.model.util.Models.isomorphic(ta, tb);
+
+	}
 	/**
 	 * Compare the expected and actual query results for a graph query.
 	 * 
@@ -926,7 +1004,8 @@ abstract public class AbstractQueryEngineTestCase extends TestCase2 {
 			final Set<Statement> queryResult,
 			final Set<Statement> expectedResult) {
 
-		if (!ModelUtil.equals(expectedResult, queryResult)) {
+		if (!expectedResult.equals(queryResult)
+				&& !isomorphicIgnoringContext(queryResult, expectedResult)) {
 			// Don't use RepositoryUtil.difference, it reports incorrect diffs
 			/*
 			 * Collection<? extends Statement> unexpectedStatements =

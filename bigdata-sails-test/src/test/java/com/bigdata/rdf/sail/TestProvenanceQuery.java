@@ -31,26 +31,27 @@ import java.io.Writer;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.XMLSchema;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFWriter;
-import org.openrdf.rio.RDFWriterFactory;
-import org.openrdf.rio.RDFWriterRegistry;
-import org.openrdf.sail.SailConnection;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFWriter;
+import org.eclipse.rdf4j.rio.RDFWriterFactory;
+import org.eclipse.rdf4j.rio.RDFWriterRegistry;
+import org.eclipse.rdf4j.sail.SailConnection;
 
 import com.bigdata.rdf.ServiceProviderHook;
-import com.bigdata.rdf.model.BigdataStatementImpl;
+import com.bigdata.rdf.model.BigdataSimpleStatement;
 import com.bigdata.rdf.sail.BigdataSail.BigdataSailConnection;
 import com.bigdata.rdf.store.BigdataStatementIterator;
 import com.bigdata.rdf.store.DataLoader;
@@ -64,7 +65,7 @@ import com.bigdata.rdf.store.DataLoader;
  */
 public class TestProvenanceQuery extends ProxyBigdataSailTestCase {
 
-	private final transient static Logger log = Logger.getLogger(TestProvenanceQuery.class);
+	private final transient static Logger log = LogManager.getLogger(TestProvenanceQuery.class);
 	
     public TestProvenanceQuery() {
         
@@ -82,7 +83,7 @@ public class TestProvenanceQuery extends ProxyBigdataSailTestCase {
         
         try {
         
-            sail.initialize();
+            sail.init();
             
             /*
              * Load data into the sail.
@@ -141,7 +142,7 @@ public class TestProvenanceQuery extends ProxyBigdataSailTestCase {
             
             //                final RDFXMLWriter rdfWriter = new RDFXMLWriter(w);
                             final RDFWriterFactory writerFactory = RDFWriterRegistry
-                                    .getInstance().get(RDFFormat.RDFXML);
+                                    .getInstance().get(RDFFormat.RDFXML).orElse(null);
                             
                             assertNotNull(writerFactory);
                             
@@ -151,7 +152,7 @@ public class TestProvenanceQuery extends ProxyBigdataSailTestCase {
             
                             while (itr.hasNext()) {
             
-                                final BigdataStatementImpl stmt = (BigdataStatementImpl) itr
+                                final BigdataSimpleStatement stmt = (BigdataSimpleStatement) itr
                                         .next();
             
                                 // only write the explicit statements.
@@ -187,15 +188,15 @@ public class TestProvenanceQuery extends ProxyBigdataSailTestCase {
     
             try {
     
-                final URI y = new URIImpl("http://www.foo.org/y");
+                final IRI y = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/y");
                 
-                final URI B = new URIImpl("http://www.foo.org/B");
+                final IRI B = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/B");
     
-                final URI dcCreator = new URIImpl("http://purl.org/dc/terms/creator");
+                final IRI dcCreator = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://purl.org/dc/terms/creator");
     
-                final Literal bryan = new LiteralImpl("bryan", XMLSchema.STRING);
+                final Literal bryan = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("bryan", XSD.STRING);
                 
-                final Literal mike = new LiteralImpl("mike", XMLSchema.STRING);
+                final Literal mike = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("mike", XSD.STRING);
     
                 /*
                  * This is a hand-coded query.
@@ -229,11 +230,11 @@ public class TestProvenanceQuery extends ProxyBigdataSailTestCase {
                  * Note: a [null] DataSet will cause context to be ignored when the
                  * query is processed.
                  */
-    //            final DatasetImpl dataSet = null; //new DatasetImpl();
+    //            final SimpleDataset dataSet = null; //new SimpleDataset();
     //
     //            final BindingSet bindingSet = new QueryBindingSet();
     //
-    //            final CloseableIteration<? extends BindingSet, QueryEvaluationException> itr = conn
+    //            final CloseableIteration<? extends BindingSet> itr = conn
     //                    .evaluate(tupleExpr, dataSet, bindingSet, true/* includeInferred */);
     
                 final TupleQuery tq = new BigdataSailRepository(sail).getReadOnlyConnection().prepareTupleQuery(QueryLanguage.SPARQL, q);

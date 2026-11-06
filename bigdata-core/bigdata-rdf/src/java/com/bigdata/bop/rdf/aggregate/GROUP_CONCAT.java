@@ -35,7 +35,7 @@ import com.bigdata.rdf.internal.IV;
 import com.bigdata.rdf.internal.constraints.INeedsMaterialization;
 import com.bigdata.rdf.internal.constraints.IVValueExpression;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.sparql.ast.DummyConstantNode;
 
 /**
@@ -163,7 +163,7 @@ public class GROUP_CONCAT extends AggregateBase<IV> implements INeedsMaterializa
     private BigdataValueFactory getValueFactory(){
         if (vf == null) {
             final String namespace = (String) getRequiredProperty(Annotations.NAMESPACE);
-            vf = BigdataValueFactoryImpl.getInstance(namespace);
+            vf = BigdataSimpleValueFactory.getInstance(namespace);
         }
         return vf;
     }

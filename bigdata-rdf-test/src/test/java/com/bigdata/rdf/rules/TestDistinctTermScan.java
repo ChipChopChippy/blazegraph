@@ -49,8 +49,8 @@ package com.bigdata.rdf.rules;
 
 import java.util.Arrays;
 import java.util.Properties;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.internal.IV;
 import com.bigdata.rdf.rio.IStatementBuffer;
@@ -97,11 +97,11 @@ public class TestDistinctTermScan extends AbstractRuleTestCase {
         try {
 
 
-            URI A = new URIImpl("http://www.foo.org/A");
-            URI B = new URIImpl("http://www.foo.org/B");
-            URI C = new URIImpl("http://www.foo.org/C");
-            URI D = new URIImpl("http://www.foo.org/D");
-            URI E = new URIImpl("http://www.foo.org/E");
+            IRI A = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/A");
+            IRI B = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/B");
+            IRI C = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/C");
+            IRI D = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/D");
+            IRI E = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/E");
 
             {
                 IStatementBuffer buffer = new StatementBuffer(store, 100/* capacity */);

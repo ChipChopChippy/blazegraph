@@ -34,8 +34,9 @@ import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 import java.util.Random;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
@@ -71,7 +72,7 @@ import com.bigdata.util.Bytes;
  */
 public class TestRandomAccessFileSynchronousWrites extends TestCase {
 
-    protected static final Logger log = Logger
+    protected static final Logger log = LogManager
             .getLogger(TestRandomAccessFileSynchronousWrites.class);
 
     public TestRandomAccessFileSynchronousWrites() {

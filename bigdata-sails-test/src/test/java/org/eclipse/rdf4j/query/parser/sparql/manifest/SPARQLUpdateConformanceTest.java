@@ -1,0 +1,454 @@
+/* 
+ * Licensed to Aduna under one or more contributor license agreements.  
+ * See the NOTICE.txt file distributed with this work for additional 
+ * information regarding copyright ownership. 
+ *
+ * Aduna licenses this file to you under the terms of the Aduna BSD 
+ * License (the "License"); you may not use this file except in compliance 
+ * with the License. See the LICENSE.txt file distributed with this work 
+ * for the full License.
+ *
+ * Unless required by applicable law or agreed to in writing, software 
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+ * implied. See the License for the specific language governing permissions
+ * and limitations under the License.
+ */
+package org.eclipse.rdf4j.query.parser.sparql.manifest;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.eclipse.rdf4j.common.io.IOUtil;
+import org.eclipse.rdf4j.common.iteration.Iterations;
+import org.eclipse.rdf4j.common.text.StringUtil;
+
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.util.ModelUtil;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.Dataset;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.Update;
+import org.eclipse.rdf4j.query.impl.SimpleDataset;
+import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.contextaware.ContextAwareConnection;
+import org.eclipse.rdf4j.repository.contextaware.ContextAwareRepository;
+import org.eclipse.rdf4j.repository.sail.SailRepository;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.sail.memory.MemoryStore;
+
+/**
+ * A SPARQL 1.1 Update test, created by reading in a W3C working-group style manifest.  
+ *
+ * @author Jeen Broekstra
+ */
+public abstract class SPARQLUpdateConformanceTest extends TestCase {
+
+	/*-----------*
+	 * Constants *
+	 *-----------*/
+
+	protected static final Logger logger = LoggerFactory.getLogger(SPARQLUpdateConformanceTest.class);
+
+	protected final String testURI;
+
+	protected final String requestFileURL;
+
+	/*-----------*
+	 * Variables *
+	 *-----------*/
+
+	protected Repository dataRep;
+
+	protected Repository expectedResultRepo;
+
+	protected IRI inputDefaultGraph;
+
+	protected Map<String, IRI> inputNamedGraphs;
+
+	protected IRI resultDefaultGraph;
+
+	protected Map<String, IRI> resultNamedGraphs;
+
+	protected final Dataset dataset;
+
+	/*--------------*
+	 * Constructors *
+	 *--------------*/
+
+	public SPARQLUpdateConformanceTest(String testURI, String name, String requestFile, IRI defaultGraphURI,
+			Map<String, IRI> inputNamedGraphs, IRI resultDefaultGraphURI, Map<String, IRI> resultNamedGraphs)
+	{
+		super(name);
+
+		this.testURI = testURI;
+		this.requestFileURL = requestFile;
+		this.inputDefaultGraph = defaultGraphURI;
+		this.inputNamedGraphs = inputNamedGraphs;
+		this.resultDefaultGraph = resultDefaultGraphURI;
+		this.resultNamedGraphs = resultNamedGraphs;
+
+		if (this.inputNamedGraphs.size() > 0) {
+			SimpleDataset ds = new SimpleDataset();
+			ds.addDefaultGraph(null);
+			ds.addDefaultRemoveGraph(null);
+			ds.setDefaultInsertGraph(null);
+
+			for (String ng : inputNamedGraphs.keySet()) {
+				IRI namedGraph = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(ng);
+				ds.addNamedGraph(namedGraph);
+			}
+			this.dataset = ds;
+		}
+		else {
+			this.dataset = null;
+		}
+	}
+
+	/*---------*
+	 * Methods *
+	 *---------*/
+
+	@Override
+	protected void setUp()
+		throws Exception
+	{
+		dataRep = createRepository();
+
+		URL graphURL = null;
+		RepositoryConnection conn = dataRep.getConnection();
+		try {
+			conn.clear();
+
+			if (inputDefaultGraph != null) {
+				graphURL = new URL(inputDefaultGraph.stringValue());
+				conn.add(graphURL, null, com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(graphURL.toString()));
+			}
+
+			for (String ng : inputNamedGraphs.keySet()) {
+				graphURL = new URL(inputNamedGraphs.get(ng).stringValue());
+				conn.add(graphURL, null, com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(graphURL.toString()),
+						dataRep.getValueFactory().createIRI(ng));
+			}
+		}
+		finally {
+			conn.close();
+		}
+
+		expectedResultRepo = createRepository();
+
+		conn = expectedResultRepo.getConnection();
+
+		try {
+			conn.clear();
+
+			if (resultDefaultGraph != null) {
+				graphURL = new URL(resultDefaultGraph.stringValue());
+				conn.add(graphURL, null, com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(graphURL.toString()));
+			}
+
+			for (String ng : resultNamedGraphs.keySet()) {
+				graphURL = new URL(resultNamedGraphs.get(ng).stringValue());
+				conn.add(graphURL, null, com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(graphURL.toString()),
+						dataRep.getValueFactory().createIRI(ng));
+			}
+		}
+		finally {
+			conn.close();
+		}
+
+	}
+
+	protected Repository createRepository()
+		throws Exception
+	{
+		Repository repo = newRepository();
+		repo.init();
+		RepositoryConnection con = repo.getConnection();
+		try {
+			con.clear();
+			con.clearNamespaces();
+		}
+		finally {
+			con.close();
+		}
+		return repo;
+	}
+
+	protected abstract Repository newRepository()
+		throws Exception;
+
+	@Override
+	protected void tearDown()
+		throws Exception
+	{
+		if (dataRep != null) {
+			dataRep.shutDown();
+			dataRep = null;
+		}
+		
+		if (expectedResultRepo != null) {
+			expectedResultRepo.shutDown();
+			expectedResultRepo = null;
+		}
+	}
+
+	@Override
+	protected void runTest()
+		throws Exception
+	{
+		RepositoryConnection con = dataRep.getConnection();
+		RepositoryConnection erCon = expectedResultRepo.getConnection();
+		try {
+			String updateString = readUpdateString();
+
+			con.begin();
+//			con.setReadContexts((IRI)null);
+			
+			Update update = con.prepareUpdate(QueryLanguage.SPARQL, updateString, requestFileURL);
+			if (this.dataset != null) {
+				update.setDataset(this.dataset);
+			}
+			update.execute();
+
+			con.commit();
+			
+			// check default graph
+			logger.info("checking default graph");
+			compareGraphs(Iterations.asList(con.getStatements(null, null, null, true, (Resource)null)),
+					Iterations.asList(erCon.getStatements(null, null, null, true, (Resource)null)));
+
+			for (String namedGraph : inputNamedGraphs.keySet()) {
+				logger.info("checking named graph {}", namedGraph);
+				IRI contextURI = con.getValueFactory().createIRI(namedGraph.replaceAll("\"", ""));
+				compareGraphs(Iterations.asList(con.getStatements(null, null, null, true, contextURI)),
+						Iterations.asList(erCon.getStatements(null, null, null, true, contextURI)));
+			}
+		}
+		catch(Exception e) {
+			if(con.isActive()) {
+				con.rollback();
+			}
+			throw e;
+		}
+		finally {
+			con.close();
+			erCon.close();
+		}
+	}
+
+	protected void compareGraphs(Iterable<? extends Statement> actual, Iterable<? extends Statement> expected)
+		throws Exception
+	{
+		if (!ModelUtil.equals(expected, actual)) {
+            StringBuilder message = new StringBuilder(128);
+            message.append("\n=========================================\n");
+            message.append(getName());
+            message.append("\n");
+            message.append(testURI);
+            message.append("\n=========================================\n");
+            
+            message.append("Expected results: \n");
+            for (Statement bs : expected) {
+                message.append(bs);
+                message.append("\n");
+            }
+            message.append("=========================================\n");
+
+            message.append("Bigdata results: \n");
+            for (Statement bs : actual) {
+                message.append(bs);
+                message.append("\n");
+            }
+            message.append("=========================================\n");
+
+            final String queryStr = readUpdateString();
+            message.append("Query:\n"+queryStr);
+            message.append("\n=========================================\n");
+
+//            message.append("Data:\n"+readInputData(dataset));
+//            message.append("\n=========================================\n");
+
+            logger.error(message.toString());
+            fail(message.toString());
+		}
+	}
+
+	protected String readUpdateString()
+		throws IOException
+	{
+		InputStream stream = new URL(requestFileURL).openStream();
+		try {
+			return IOUtil.readString(new InputStreamReader(stream, "UTF-8"));
+		}
+		finally {
+			stream.close();
+		}
+	}
+
+	public interface Factory {
+
+		SPARQLUpdateConformanceTest createSPARQLUpdateConformanceTest(String testURI, String name,
+				String requestFile, IRI defaultGraphURI, Map<String, IRI> inputNamedGraphs,
+				IRI resultDefaultGraphURI, Map<String, IRI> resultNamedGraphs);
+
+	}
+
+	public static TestSuite suite(String manifestFileURL, Factory factory)
+		throws Exception
+	{
+		return suite(manifestFileURL, factory, true);
+	}
+
+	public static TestSuite suite(String manifestFileURL, Factory factory, boolean approvedOnly)
+		throws Exception
+	{
+		logger.info("Building test suite for {}", manifestFileURL);
+
+		TestSuite suite = new TestSuite(factory.getClass().getName());
+
+		// Read manifest and create declared test cases
+		Repository manifestRep = new SailRepository(new MemoryStore());
+		manifestRep.init();
+		RepositoryConnection con = manifestRep.getConnection();
+
+		ManifestTest.addTurtle(con, new URL(manifestFileURL), manifestFileURL);
+
+		suite.setName(getManifestName(manifestRep, con, manifestFileURL));
+
+		// Extract test case information from the manifest file. Note that we only
+		// select those test cases that are mentioned in the list.
+		StringBuilder query = new StringBuilder(512);
+		query.append("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> ");
+		query.append("PREFIX mf: <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#> ");
+		query.append("PREFIX dawgt: <http://www.w3.org/2001/sw/DataAccess/tests/test-dawg#> ");
+		query.append("PREFIX ut: <http://www.w3.org/2009/sparql/tests/test-update#> ");
+		query.append("SELECT DISTINCT ?testURI ?testName ?result ?action ?requestFile ?defaultGraph ?resultDefaultGraph ");
+		query.append("WHERE { [] rdf:first ?testURI . ?testURI a mf:UpdateEvaluationTest . ");
+		if (approvedOnly) {
+			query.append(" ?testURI dawgt:approval dawgt:Approved . ");
+		}
+		query.append(" ?testURI mf:name ?testName ; mf:action ?action ; mf:result ?result . ");
+		query.append(" ?action ut:request ?requestFile . ");
+		query.append(" OPTIONAL { ?action ut:data ?defaultGraph } ");
+		query.append(" OPTIONAL { ?result ut:data ?resultDefaultGraph } } ");
+
+		TupleQuery testCaseQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query.toString());
+
+		query.setLength(0);
+		query.append("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> ");
+		query.append("PREFIX ut: <http://www.w3.org/2009/sparql/tests/test-update#> ");
+		query.append("SELECT DISTINCT ?namedGraphData ?namedGraphLabel ");
+		query.append("WHERE { ?graphDef ut:graphData [ ut:graph ?namedGraphData ; rdfs:label ?namedGraphLabel ] } ");
+
+		TupleQuery namedGraphsQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query.toString());
+
+		logger.debug("evaluating query..");
+		TupleQueryResult testCases = testCaseQuery.evaluate();
+		while (testCases.hasNext()) {
+			BindingSet bindingSet = testCases.next();
+
+			IRI testURI = (IRI)bindingSet.getValue("testURI");
+			String testName = bindingSet.getValue("testName").toString();
+			Value result = bindingSet.getValue("result");
+			Value action = bindingSet.getValue("action");
+			IRI requestFile = (IRI)bindingSet.getValue("requestFile");
+			IRI defaultGraphURI = (IRI)bindingSet.getValue("defaultGraph");
+			IRI resultDefaultGraphURI = (IRI)bindingSet.getValue("resultDefaultGraph");
+
+			logger.debug("found test case : {}", testName);
+
+			// Query input named graphs
+			namedGraphsQuery.setBinding("graphDef", action);
+			TupleQueryResult inputNamedGraphsResult = namedGraphsQuery.evaluate();
+
+			HashMap<String, IRI> inputNamedGraphs = new HashMap<String, IRI>();
+
+			if (inputNamedGraphsResult.hasNext()) {
+				while (inputNamedGraphsResult.hasNext()) {
+					BindingSet graphBindings = inputNamedGraphsResult.next();
+					IRI namedGraphData = (IRI)graphBindings.getValue("namedGraphData");
+					String namedGraphLabel = ((Literal)graphBindings.getValue("namedGraphLabel")).getLabel();
+					logger.debug(" adding named graph : {}", namedGraphLabel);
+					inputNamedGraphs.put(namedGraphLabel, namedGraphData);
+				}
+			}
+
+			// Query result named graphs
+			namedGraphsQuery.setBinding("graphDef", result);
+			TupleQueryResult resultNamedGraphsResult = namedGraphsQuery.evaluate();
+
+			HashMap<String, IRI> resultNamedGraphs = new HashMap<String, IRI>();
+
+			if (resultNamedGraphsResult.hasNext()) {
+				while (resultNamedGraphsResult.hasNext()) {
+					BindingSet graphBindings = resultNamedGraphsResult.next();
+					IRI namedGraphData = (IRI)graphBindings.getValue("namedGraphData");
+					String namedGraphLabel = ((Literal)graphBindings.getValue("namedGraphLabel")).getLabel();
+					logger.debug(" adding named graph : {}", namedGraphLabel);
+					resultNamedGraphs.put(namedGraphLabel, namedGraphData);
+				}
+			}
+
+			SPARQLUpdateConformanceTest test = factory.createSPARQLUpdateConformanceTest(testURI.toString(),
+					testName, requestFile.toString(), defaultGraphURI, inputNamedGraphs, resultDefaultGraphURI,
+					resultNamedGraphs);
+
+			if (test != null) {
+				suite.addTest(test);
+			}
+		}
+
+		testCases.close();
+		con.close();
+
+		manifestRep.shutDown();
+		logger.info("Created test suite with " + suite.countTestCases() + " test cases.");
+		return suite;
+	}
+
+	protected static String getManifestName(Repository manifestRep, RepositoryConnection con,
+			String manifestFileURL)
+		throws QueryEvaluationException, RepositoryException, MalformedQueryException
+	{
+		// Try to extract suite name from manifest file
+		TupleQuery manifestNameQuery = con.prepareTupleQuery(QueryLanguage.SPARQL,
+				"SELECT ?ManifestName WHERE { ?ManifestURL <http://www.w3.org/2000/01/rdf-schema#label> ?ManifestName }");
+		manifestNameQuery.setBinding("ManifestURL", manifestRep.getValueFactory().createIRI(manifestFileURL));
+		TupleQueryResult manifestNames = manifestNameQuery.evaluate();
+		try {
+			if (manifestNames.hasNext()) {
+				return manifestNames.next().getValue("ManifestName").stringValue();
+			}
+		}
+		finally {
+			manifestNames.close();
+		}
+
+		// Derive name from manifest URL
+		int lastSlashIdx = manifestFileURL.lastIndexOf('/');
+		int secLastSlashIdx = manifestFileURL.lastIndexOf('/', lastSlashIdx - 1);
+		return manifestFileURL.substring(secLastSlashIdx + 1, lastSlashIdx);
+	}
+}

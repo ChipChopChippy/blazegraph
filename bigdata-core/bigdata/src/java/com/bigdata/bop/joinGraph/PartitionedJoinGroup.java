@@ -9,8 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpUtility;
 import com.bigdata.bop.Bind;
@@ -54,7 +55,7 @@ import com.bigdata.rdf.sparql.ast.StaticAnalysis_CanJoin;
  */
 public class PartitionedJoinGroup {
 
-    private static final transient Logger log = Logger
+    private static final transient Logger log = LogManager
             .getLogger(PartitionedJoinGroup.class);
 
     /**

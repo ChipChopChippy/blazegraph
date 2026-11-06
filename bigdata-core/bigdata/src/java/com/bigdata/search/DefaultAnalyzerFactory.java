@@ -37,13 +37,14 @@ import org.apache.lucene.analysis.cjk.CJKAnalyzer;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.analysis.cz.CzechAnalyzer;
 import org.apache.lucene.analysis.de.GermanAnalyzer;
+import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.el.GreekAnalyzer;
 import org.apache.lucene.analysis.fr.FrenchAnalyzer;
 import org.apache.lucene.analysis.nl.DutchAnalyzer;
 import org.apache.lucene.analysis.ru.RussianAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.th.ThaiAnalyzer;
-import org.apache.lucene.analysis.util.CharArraySet;
+import org.apache.lucene.analysis.CharArraySet;
 
 import com.bigdata.btree.keys.IKeyBuilder;
 import com.bigdata.btree.keys.KeyBuilder;
@@ -357,7 +358,7 @@ public class DefaultAnalyzerFactory implements IAnalyzerFactory {
             AnalyzerConstructor a = new AnalyzerConstructor() {
                 public Analyzer newInstance(final boolean filterStopwords) {
                     return filterStopwords ?
-                		new StandardAnalyzer() :
+                		new StandardAnalyzer(EnglishAnalyzer.getDefaultStopSet()) :
                 		new StandardAnalyzer(emptyStopwords);
                 }
             };

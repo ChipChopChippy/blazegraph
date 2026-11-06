@@ -99,13 +99,13 @@ public class TestSPOValueCoders extends TestCase2 {
 
     private IV<?, ?> getTermId() {
 
-        return factory.newTermId(VTE.URI);
+        return factory.newTermId(VTE.IRI);
 
     }
 
     private IV<?, ?> getTermId(final long tidIsIgnored) {
 
-        return factory.newTermId(VTE.URI);
+        return factory.newTermId(VTE.IRI);
 
     }
     

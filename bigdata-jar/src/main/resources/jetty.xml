@@ -141,7 +141,7 @@
                   <Call name="addHandler">
                     <Arg>
                         <!-- This is the bigdata web application. -->
-                        <New id="WebAppContext" class="org.eclipse.jetty.webapp.WebAppContext">
+                        <New id="WebAppContext" class="org.eclipse.jetty.ee11.webapp.WebAppContext">
 			             <Set name="war"><SystemProperty name="jetty.home" default="."/></Set>
                          <Set name="contextPath">/bigdata</Set>
                          <Set name="descriptor">WEB-INF/web.xml</Set>

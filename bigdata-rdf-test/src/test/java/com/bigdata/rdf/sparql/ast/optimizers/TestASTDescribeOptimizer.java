@@ -27,14 +27,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sparql.ast.optimizers;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataStatement;
-import com.bigdata.rdf.model.BigdataStatementImpl;
+import com.bigdata.rdf.model.BigdataSimpleStatement;
 import com.bigdata.rdf.model.BigdataURI;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
@@ -66,7 +67,7 @@ import com.bigdata.rdf.vocab.decls.FOAFVocabularyDecl;
  */
 public class TestASTDescribeOptimizer extends AbstractASTEvaluationTestCase {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(TestASTDescribeOptimizer.class);
 
     public TestASTDescribeOptimizer() {
@@ -95,49 +96,49 @@ public class TestASTDescribeOptimizer extends AbstractASTEvaluationTestCase {
         // Add some data.
         {
 
-            final BigdataURI g = f.createURI("http://www.bigdata.com");
+            final BigdataURI g = f.createIRI("http://www.bigdata.com");
             
             final BigdataStatement[] stmts = new BigdataStatement[] {//
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/Mike"),
-                            f.createURI(RDF.TYPE.toString()),
-                            f.createURI(FOAFVocabularyDecl.Person.toString()),//
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/Mike"),
+                            f.createIRI(RDF.TYPE.toString()),
+                            f.createIRI(FOAFVocabularyDecl.Person.toString()),//
                             g, // context
                             StatementEnum.Explicit,//
                             false// userFlag
                     ),
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/Bryan"),
-                            f.createURI(RDF.TYPE.toString()),
-                            f.createURI(FOAFVocabularyDecl.Person.toString()),//
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/Bryan"),
+                            f.createIRI(RDF.TYPE.toString()),
+                            f.createIRI(FOAFVocabularyDecl.Person.toString()),//
                             g, // context
                             StatementEnum.Explicit,//
                             false// userFlag
                     ),
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/Mike"),
-                            f.createURI(RDFS.LABEL.toString()),
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/Mike"),
+                            f.createIRI(RDFS.LABEL.toString()),
                             f.createLiteral("Mike"),//
                             g, // context
                             StatementEnum.Explicit,//
                             false// userFlag
                     ),
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/Bryan"),
-                            f.createURI(RDFS.LABEL.toString()),
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/Bryan"),
+                            f.createIRI(RDFS.LABEL.toString()),
                             f.createLiteral("Bryan"), //
                             g, // context
                             StatementEnum.Explicit,//
                             false// userFlag
                     ),
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/DC"),
-                            f.createURI(RDFS.LABEL.toString()),
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/DC"),
+                            f.createIRI(RDFS.LABEL.toString()),
                             f.createLiteral("DC"),//
                             g, // context
                             StatementEnum.Explicit,//
@@ -160,18 +161,18 @@ public class TestASTDescribeOptimizer extends AbstractASTEvaluationTestCase {
 
         }
 
-        final BigdataURI rdfType = f.createURI(RDF.TYPE.toString());
+        final BigdataURI rdfType = f.createIRI(RDF.TYPE.toString());
 
-        final BigdataURI rdfsLabel = f.createURI(RDFS.LABEL.toString());
+        final BigdataURI rdfsLabel = f.createIRI(RDFS.LABEL.toString());
 
-        final BigdataURI foafPerson = f.createURI(FOAFVocabularyDecl.Person
+        final BigdataURI foafPerson = f.createIRI(FOAFVocabularyDecl.Person
                 .toString());
 
         final BigdataURI mikeURI = f
-                .createURI("http://www.bigdata.com/Mike");
+                .createIRI("http://www.bigdata.com/Mike");
 
         final BigdataURI bryanURI = f
-                .createURI("http://www.bigdata.com/Bryan");
+                .createIRI("http://www.bigdata.com/Bryan");
 
         final BigdataLiteral mikeLabel = f.createLiteral("Mike");
 
@@ -310,49 +311,49 @@ public class TestASTDescribeOptimizer extends AbstractASTEvaluationTestCase {
         // Add some data.
         {
 
-            final BigdataURI g = f.createURI("http://www.bigdata.com");
+            final BigdataURI g = f.createIRI("http://www.bigdata.com");
             
             final BigdataStatement[] stmts = new BigdataStatement[] {//
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/Mike"),
-                            f.createURI(RDF.TYPE.toString()),
-                            f.createURI(FOAFVocabularyDecl.Person.toString()),//
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/Mike"),
+                            f.createIRI(RDF.TYPE.toString()),
+                            f.createIRI(FOAFVocabularyDecl.Person.toString()),//
                             g, // context
                             StatementEnum.Explicit,//
                             false// userFlag
                     ),
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/Bryan"),
-                            f.createURI(RDF.TYPE.toString()),
-                            f.createURI(FOAFVocabularyDecl.Person.toString()),//
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/Bryan"),
+                            f.createIRI(RDF.TYPE.toString()),
+                            f.createIRI(FOAFVocabularyDecl.Person.toString()),//
                             g, // context
                             StatementEnum.Explicit,//
                             false// userFlag
                     ),
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/Mike"),
-                            f.createURI(RDFS.LABEL.toString()),
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/Mike"),
+                            f.createIRI(RDFS.LABEL.toString()),
                             f.createLiteral("Mike"),//
                             g, // context
                             StatementEnum.Explicit,//
                             false// userFlag
                     ),
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/Bryan"),
-                            f.createURI(RDFS.LABEL.toString()),
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/Bryan"),
+                            f.createIRI(RDFS.LABEL.toString()),
                             f.createLiteral("Bryan"), //
                             g, // context
                             StatementEnum.Explicit,//
                             false// userFlag
                     ),
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/DC"),
-                            f.createURI(RDFS.LABEL.toString()),
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/DC"),
+                            f.createIRI(RDFS.LABEL.toString()),
                             f.createLiteral("DC"),//
                             g, // context
                             StatementEnum.Explicit,//
@@ -375,18 +376,18 @@ public class TestASTDescribeOptimizer extends AbstractASTEvaluationTestCase {
 
         }
 
-        final BigdataURI rdfType = f.createURI(RDF.TYPE.toString());
+        final BigdataURI rdfType = f.createIRI(RDF.TYPE.toString());
 
-        final BigdataURI rdfsLabel = f.createURI(RDFS.LABEL.toString());
+        final BigdataURI rdfsLabel = f.createIRI(RDFS.LABEL.toString());
 
-        final BigdataURI foafPerson = f.createURI(FOAFVocabularyDecl.Person
+        final BigdataURI foafPerson = f.createIRI(FOAFVocabularyDecl.Person
                 .toString());
 
         final BigdataURI mikeURI = f
-                .createURI("http://www.bigdata.com/Mike");
+                .createIRI("http://www.bigdata.com/Mike");
 
         final BigdataURI bryanURI = f
-                .createURI("http://www.bigdata.com/Bryan");
+                .createIRI("http://www.bigdata.com/Bryan");
 
         final BigdataLiteral mikeLabel = f.createLiteral("Mike");
 
@@ -528,49 +529,49 @@ public class TestASTDescribeOptimizer extends AbstractASTEvaluationTestCase {
         // Add some data.
         {
 
-            final BigdataURI g = f.createURI("http://www.bigdata.com");
+            final BigdataURI g = f.createIRI("http://www.bigdata.com");
             
             final BigdataStatement[] stmts = new BigdataStatement[] {//
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/Mike"),
-                            f.createURI(RDF.TYPE.toString()),
-                            f.createURI(FOAFVocabularyDecl.Person.toString()),//
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/Mike"),
+                            f.createIRI(RDF.TYPE.toString()),
+                            f.createIRI(FOAFVocabularyDecl.Person.toString()),//
                             g, // context
                             StatementEnum.Explicit,//
                             false// userFlag
                     ),
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/Bryan"),
-                            f.createURI(RDF.TYPE.toString()),
-                            f.createURI(FOAFVocabularyDecl.Person.toString()),//
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/Bryan"),
+                            f.createIRI(RDF.TYPE.toString()),
+                            f.createIRI(FOAFVocabularyDecl.Person.toString()),//
                             g, // context
                             StatementEnum.Explicit,//
                             false// userFlag
                     ),
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/Mike"),
-                            f.createURI(RDFS.LABEL.toString()),
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/Mike"),
+                            f.createIRI(RDFS.LABEL.toString()),
                             f.createLiteral("Mike"),//
                             g, // context
                             StatementEnum.Explicit,//
                             false// userFlag
                     ),
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/Bryan"),
-                            f.createURI(RDFS.LABEL.toString()),
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/Bryan"),
+                            f.createIRI(RDFS.LABEL.toString()),
                             f.createLiteral("Bryan"), //
                             g, // context
                             StatementEnum.Explicit,//
                             false// userFlag
                     ),
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/DC"),
-                            f.createURI(RDFS.LABEL.toString()),
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/DC"),
+                            f.createIRI(RDFS.LABEL.toString()),
                             f.createLiteral("DC"),//
                             g, // context
                             StatementEnum.Explicit,//
@@ -593,24 +594,24 @@ public class TestASTDescribeOptimizer extends AbstractASTEvaluationTestCase {
 
         }
 
-        final BigdataURI rdfType = f.createURI(RDF.TYPE.toString());
+        final BigdataURI rdfType = f.createIRI(RDF.TYPE.toString());
 
-        final BigdataURI rdfsLabel = f.createURI(RDFS.LABEL.toString());
+        final BigdataURI rdfsLabel = f.createIRI(RDFS.LABEL.toString());
 
-        final BigdataURI foafPerson = f.createURI(FOAFVocabularyDecl.Person
+        final BigdataURI foafPerson = f.createIRI(FOAFVocabularyDecl.Person
                 .toString());
 
         final BigdataURI mikeURI = f
-                .createURI("http://www.bigdata.com/Mike");
+                .createIRI("http://www.bigdata.com/Mike");
 
         final BigdataURI bryanURI = f
-                .createURI("http://www.bigdata.com/Bryan");
+                .createIRI("http://www.bigdata.com/Bryan");
 
         final BigdataLiteral mikeLabel = f.createLiteral("Mike");
 
         final BigdataLiteral bryanLabel = f.createLiteral("Bryan");
 
-        final BigdataURI rdfSubject = f.createURI(RDF.SUBJECT.toString());
+        final BigdataURI rdfSubject = f.createIRI(RDF.SUBJECT.toString());
 
         final BigdataValue[] values = new BigdataValue[] { rdfType,
                 rdfsLabel, foafPerson, mikeURI, bryanURI, mikeLabel,
@@ -754,49 +755,49 @@ public class TestASTDescribeOptimizer extends AbstractASTEvaluationTestCase {
         // Add some data.
         {
 
-            final BigdataURI g = f.createURI("http://www.bigdata.com");
+            final BigdataURI g = f.createIRI("http://www.bigdata.com");
             
             final BigdataStatement[] stmts = new BigdataStatement[] {//
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/Mike"),
-                            f.createURI(RDF.TYPE.toString()),
-                            f.createURI(FOAFVocabularyDecl.Person.toString()), //
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/Mike"),
+                            f.createIRI(RDF.TYPE.toString()),
+                            f.createIRI(FOAFVocabularyDecl.Person.toString()), //
                             g, // context
                             StatementEnum.Explicit,//
                             false// userFlag
                     ),
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/Bryan"),
-                            f.createURI(RDF.TYPE.toString()),
-                            f.createURI(FOAFVocabularyDecl.Person.toString()),//
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/Bryan"),
+                            f.createIRI(RDF.TYPE.toString()),
+                            f.createIRI(FOAFVocabularyDecl.Person.toString()),//
                             g, // context
                             StatementEnum.Explicit,//
                             false// userFlag
                     ),
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/Mike"),
-                            f.createURI(RDFS.LABEL.toString()),
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/Mike"),
+                            f.createIRI(RDFS.LABEL.toString()),
                             f.createLiteral("Mike"),//
                             g, // context
                             StatementEnum.Explicit,//
                             false// userFlag
                     ),
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/Bryan"),
-                            f.createURI(RDFS.LABEL.toString()),
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/Bryan"),
+                            f.createIRI(RDFS.LABEL.toString()),
                             f.createLiteral("Bryan"),//
                             g, // context
                             StatementEnum.Explicit,//
                             false// userFlag
                     ),
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/DC"),
-                            f.createURI(RDFS.LABEL.toString()),
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/DC"),
+                            f.createIRI(RDFS.LABEL.toString()),
                             f.createLiteral("DC"),//
                             g, // context
                             StatementEnum.Explicit,//
@@ -819,24 +820,24 @@ public class TestASTDescribeOptimizer extends AbstractASTEvaluationTestCase {
 
         }
 
-        final BigdataURI rdfType = f.createURI(RDF.TYPE.toString());
+        final BigdataURI rdfType = f.createIRI(RDF.TYPE.toString());
 
-        final BigdataURI rdfsLabel = f.createURI(RDFS.LABEL.toString());
+        final BigdataURI rdfsLabel = f.createIRI(RDFS.LABEL.toString());
 
-        final BigdataURI foafPerson = f.createURI(FOAFVocabularyDecl.Person
+        final BigdataURI foafPerson = f.createIRI(FOAFVocabularyDecl.Person
                 .toString());
 
         final BigdataURI mikeURI = f
-                .createURI("http://www.bigdata.com/Mike");
+                .createIRI("http://www.bigdata.com/Mike");
 
         final BigdataURI bryanURI = f
-                .createURI("http://www.bigdata.com/Bryan");
+                .createIRI("http://www.bigdata.com/Bryan");
 
         final BigdataLiteral mikeLabel = f.createLiteral("Mike");
 
         final BigdataLiteral bryanLabel = f.createLiteral("Bryan");
 
-        final BigdataURI dcURI = f.createURI("http://www.bigdata.com/DC");
+        final BigdataURI dcURI = f.createIRI("http://www.bigdata.com/DC");
 
         final BigdataValue[] values = new BigdataValue[] { rdfType,
                 rdfsLabel, foafPerson, mikeURI, bryanURI, mikeLabel,
@@ -998,49 +999,49 @@ public class TestASTDescribeOptimizer extends AbstractASTEvaluationTestCase {
         // Add some data.
         {
 
-            final BigdataURI g = f.createURI("http://www.bigdata.com");
+            final BigdataURI g = f.createIRI("http://www.bigdata.com");
             
             final BigdataStatement[] stmts = new BigdataStatement[] {//
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/Mike"),
-                            f.createURI(RDF.TYPE.toString()),
-                            f.createURI(FOAFVocabularyDecl.Person.toString()),//
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/Mike"),
+                            f.createIRI(RDF.TYPE.toString()),
+                            f.createIRI(FOAFVocabularyDecl.Person.toString()),//
                             g, // context
                             StatementEnum.Explicit,//
                             false// userFlag
                     ),
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/Bryan"),
-                            f.createURI(RDF.TYPE.toString()),
-                            f.createURI(FOAFVocabularyDecl.Person.toString()),//
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/Bryan"),
+                            f.createIRI(RDF.TYPE.toString()),
+                            f.createIRI(FOAFVocabularyDecl.Person.toString()),//
                             g, // context
                             StatementEnum.Explicit,//
                             false// userFlag
                     ),
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/Mike"),
-                            f.createURI(RDFS.LABEL.toString()),
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/Mike"),
+                            f.createIRI(RDFS.LABEL.toString()),
                             f.createLiteral("Mike"),//
                             g, // context
                             StatementEnum.Explicit,//
                             false// userFlag
                     ),
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/Bryan"),
-                            f.createURI(RDFS.LABEL.toString()),
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/Bryan"),
+                            f.createIRI(RDFS.LABEL.toString()),
                             f.createLiteral("Bryan"),//
                             g, // context
                             StatementEnum.Explicit,//
                             false// userFlag
                     ),
 
-                    new BigdataStatementImpl(
-                            f.createURI("http://www.bigdata.com/DC"),
-                            f.createURI(RDFS.LABEL.toString()),
+                    new BigdataSimpleStatement(
+                            f.createIRI("http://www.bigdata.com/DC"),
+                            f.createIRI(RDFS.LABEL.toString()),
                             f.createLiteral("DC"),//
                             g, // context
                             StatementEnum.Explicit,//
@@ -1063,24 +1064,24 @@ public class TestASTDescribeOptimizer extends AbstractASTEvaluationTestCase {
 
         }
 
-        final BigdataURI rdfType = f.createURI(RDF.TYPE.toString());
+        final BigdataURI rdfType = f.createIRI(RDF.TYPE.toString());
 
-        final BigdataURI rdfsLabel = f.createURI(RDFS.LABEL.toString());
+        final BigdataURI rdfsLabel = f.createIRI(RDFS.LABEL.toString());
 
-        final BigdataURI foafPerson = f.createURI(FOAFVocabularyDecl.Person
+        final BigdataURI foafPerson = f.createIRI(FOAFVocabularyDecl.Person
                 .toString());
 
         final BigdataURI mikeURI = f
-                .createURI("http://www.bigdata.com/Mike");
+                .createIRI("http://www.bigdata.com/Mike");
 
         final BigdataURI bryanURI = f
-                .createURI("http://www.bigdata.com/Bryan");
+                .createIRI("http://www.bigdata.com/Bryan");
 
         final BigdataLiteral mikeLabel = f.createLiteral("Mike");
 
         final BigdataLiteral bryanLabel = f.createLiteral("Bryan");
 
-        final BigdataURI dcURI = f.createURI("http://www.bigdata.com/DC");
+        final BigdataURI dcURI = f.createIRI("http://www.bigdata.com/DC");
 
         final BigdataValue[] values = new BigdataValue[] { rdfType,
                 rdfsLabel, foafPerson, mikeURI, bryanURI, mikeLabel,

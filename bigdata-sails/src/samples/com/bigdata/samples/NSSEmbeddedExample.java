@@ -3,7 +3,8 @@ package com.bigdata.samples;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.eclipse.jetty.server.Server;
 
 import com.bigdata.journal.IIndexManager;
@@ -18,7 +19,7 @@ import com.bigdata.rdf.sail.webapp.NanoSparqlServer;
  */
 public class NSSEmbeddedExample implements Runnable {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(NSSEmbeddedExample.class);
 
     private int port;

@@ -29,9 +29,9 @@ package com.bigdata.rdf.sparql.ast.eval;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.openrdf.query.Dataset;
-import org.openrdf.query.algebra.evaluation.QueryBindingSet;
-import org.openrdf.sail.SailException;
+import org.eclipse.rdf4j.query.Dataset;
+import org.eclipse.rdf4j.query.algebra.evaluation.QueryBindingSet;
+import org.eclipse.rdf4j.sail.SailException;
 
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.journal.ITx;

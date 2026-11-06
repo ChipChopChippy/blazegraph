@@ -27,9 +27,10 @@ import java.io.PrintStream;
 import java.lang.ref.Reference;
 import java.util.Iterator;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.BTree;
 import com.bigdata.btree.PO;
 import com.bigdata.btree.data.IAbstractNodeData;
@@ -44,7 +45,7 @@ import com.bigdata.util.BytesUtil;
 abstract class AbstractPage extends PO implements // IAbstractNode?,
 		IAbstractNodeData {
 
-    protected static final Logger log = Logger.getLogger(AbstractPage.class);
+    protected static final Logger log = LogManager.getLogger(AbstractPage.class);
 
     /**
      * True iff the {@link #log} level is INFO or less.

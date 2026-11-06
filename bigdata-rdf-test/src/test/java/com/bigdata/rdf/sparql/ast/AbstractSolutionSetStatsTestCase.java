@@ -47,7 +47,7 @@ import com.bigdata.rdf.internal.IVCache;
 import com.bigdata.rdf.internal.impl.literal.XSDNumericIV;
 import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 //import org.semanticweb.yars.nx.namespace.XSD;
 
 /**
@@ -150,7 +150,7 @@ abstract public class AbstractSolutionSetStatsTestCase extends TestCase2 {
 
     		namespace = getName();
     		
-    		f = BigdataValueFactoryImpl.getInstance(namespace);
+    		f = BigdataSimpleValueFactory.getInstance(namespace);
     	
     }
     

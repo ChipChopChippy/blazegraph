@@ -16,7 +16,7 @@ export JETTY_DIR=${INSTALL_DIR}/var/jetty
 export CONFIG_DIR=${INSTALL_DIR}/var/config
 
 export LOGGING_CONFIG=${CONFIG_DIR}/logging/logging.properties
-export LOG4J_CONFIG=${JETTY_DIR}/WEB-INF/classes/log4j.properties
+export LOG4J_CONFIG=${JETTY_DIR}/WEB-INF/classes/log4j2.properties
 
 
 export LOG_DIR=${BD_HOME}/var/log
@@ -51,7 +51,7 @@ export JETTY_OPTS="\
  -Djetty.resourceBase=${JETTY_RESOURCE_BASE}\
  -DJETTY_XML=${JETTY_XML}\
  -Djava.util.logging.config.file=${LOGGING_CONFIG}\
- -Dlog4j.configuration=${LOG4J_CONFIG}\
+ -Dlog4j2.configurationFile=${LOG4J_CONFIG}\
 "
 
 export JAVA_OPTS="\

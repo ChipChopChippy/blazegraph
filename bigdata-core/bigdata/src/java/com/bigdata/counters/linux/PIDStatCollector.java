@@ -28,6 +28,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.counters.linux;
 
+
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.counters.*;
 import com.bigdata.counters.linux.SarCpuUtilizationCollector.DI;
 import com.bigdata.util.Bytes;
@@ -56,7 +58,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class PIDStatCollector extends AbstractProcessCollector implements
         ICounterHierarchy, IProcessCounters {
 
-//    static protected final Logger log = Logger.getLogger(PIDStatCollector.class);
+//    static protected final Logger log = LogManager.getLogger(PIDStatCollector.class);
 //
 //    /**
 //     * True iff the {@link #log} level is DEBUG or less.

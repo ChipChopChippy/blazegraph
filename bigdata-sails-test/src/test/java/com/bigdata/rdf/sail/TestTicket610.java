@@ -22,20 +22,22 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
 package com.bigdata.rdf.sail;
+import org.eclipse.rdf4j.model.Statement;
 
 import java.util.Arrays;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Model;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.LinkedHashModel;
-import org.openrdf.model.impl.StatementImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.OWL;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.repository.RepositoryConnection;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.LinkedHashModel;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.OWL;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
 
 import com.bigdata.rdf.axioms.OwlAxioms;
 import com.bigdata.rdf.store.AbstractTripleStore;
@@ -49,7 +51,7 @@ import com.bigdata.rdf.store.AbstractTripleStore;
  */
 public class TestTicket610 extends ProxyBigdataSailTestCase {
 
-    protected static final Logger log = Logger.getLogger(TestTicket610.class);
+    protected static final Logger log = LogManager.getLogger(TestTicket610.class);
 
     @Override
     public Properties getProperties() {
@@ -71,12 +73,12 @@ public class TestTicket610 extends ProxyBigdataSailTestCase {
     
     public void testBug() throws Exception {
     	
-        final URI a = new URIImpl(":a");
-        final URI b = new URIImpl(":b");
+        final IRI a = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(":a");
+        final IRI b = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(":b");
         
-        final Model data = new LinkedHashModel(Arrays.asList(new StatementImpl[] {
-        		new StatementImpl(a, RDF.TYPE, OWL.TRANSITIVEPROPERTY),
-        		new StatementImpl(b, RDFS.SUBPROPERTYOF, a),
+        final Model data = new LinkedHashModel(Arrays.asList(new Statement[] {
+        		SimpleValueFactory.getInstance().createStatement(a, RDF.TYPE, OWL.TRANSITIVEPROPERTY),
+        		SimpleValueFactory.getInstance().createStatement(b, RDFS.SUBPROPERTYOF, a),
         }));
 	  	
         /*
@@ -86,7 +88,7 @@ public class TestTicket610 extends ProxyBigdataSailTestCase {
 	  	
 	  	try {
 	  	
-	  		sail.initialize();
+	  		sail.init();
 	  		
   			final BigdataSailRepository bigdataRepo = new BigdataSailRepository(sail);
   			

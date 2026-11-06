@@ -24,10 +24,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.rules;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.OWL;
-import org.openrdf.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.OWL;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.rdf.rio.IStatementBuffer;
 import com.bigdata.rdf.rio.StatementBuffer;
@@ -71,10 +71,10 @@ public class TestRuleOwlFunctionalProperty extends AbstractRuleTestCase {
 
         try {
 
-            URI john = new URIImpl("http://www.foo.org/john");
-            URI mary = new URIImpl("http://www.foo.org/mary");
-            URI susie = new URIImpl("http://www.foo.org/susie");
-            URI wife = new URIImpl("http://www.foo.org/wife");
+            IRI john = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/john");
+            IRI mary = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/mary");
+            IRI susie = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/susie");
+            IRI wife = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/wife");
 
             IStatementBuffer buffer = new StatementBuffer(store, 100/* capacity */);
             
@@ -161,10 +161,10 @@ public class TestRuleOwlFunctionalProperty extends AbstractRuleTestCase {
 
         try {
 
-            URI john = new URIImpl("http://www.foo.org/john");
-            URI paul = new URIImpl("http://www.foo.org/paul");
-            URI mary = new URIImpl("http://www.foo.org/mary");
-            URI wife = new URIImpl("http://www.foo.org/wife");
+            IRI john = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/john");
+            IRI paul = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/paul");
+            IRI mary = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/mary");
+            IRI wife = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.foo.org/wife");
 
             IStatementBuffer buffer = new StatementBuffer(store, 100/* capacity */);
             

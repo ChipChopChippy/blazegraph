@@ -31,9 +31,10 @@ import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.data.IAbstractNodeData;
 import com.bigdata.btree.data.IKeysData;
 import com.bigdata.btree.filter.EmptyTupleIterator;
@@ -76,7 +77,7 @@ public abstract class AbstractNode<T extends AbstractNode
      * @see BTree#log
      * @see BTree#dumpLog
      */
-    protected static final Logger log = Logger.getLogger(AbstractNode.class);
+    protected static final Logger log = LogManager.getLogger(AbstractNode.class);
     
     /**
      * True iff the {@link #log} level is DEBUG or less.
@@ -1267,7 +1268,7 @@ public abstract class AbstractNode<T extends AbstractNode
      */
     public boolean dump(final PrintStream out) {
 
-        return dump(BTree.dumpLog.getEffectiveLevel(), out);
+        return dump(((org.apache.logging.log4j.core.Logger) BTree.dumpLog).getLevel(), out);
 
     }
 

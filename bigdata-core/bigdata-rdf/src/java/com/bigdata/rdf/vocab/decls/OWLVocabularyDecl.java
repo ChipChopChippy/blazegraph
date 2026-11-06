@@ -31,9 +31,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.OWL;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.OWL;
 
 import com.bigdata.rdf.vocab.VocabularyDecl;
 
@@ -47,8 +47,8 @@ import com.bigdata.rdf.vocab.VocabularyDecl;
  */
 public class OWLVocabularyDecl implements VocabularyDecl {
 
-    static private final URI[] uris = new URI[]{
-        new URIImpl(OWL.NAMESPACE), //
+    static private final IRI[] uris = new IRI[]{
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(OWL.NAMESPACE), //
         OWL.ALLDIFFERENT, //
         OWL.ALLVALUESFROM, //
         OWL.ANNOTATIONPROPERTY, //
@@ -92,7 +92,7 @@ public class OWLVocabularyDecl implements VocabularyDecl {
     public OWLVocabularyDecl() {
     }
     
-    public Iterator<URI> values() {
+    public Iterator<IRI> values() {
 
         return Collections.unmodifiableList(Arrays.asList(uris)).iterator();
         

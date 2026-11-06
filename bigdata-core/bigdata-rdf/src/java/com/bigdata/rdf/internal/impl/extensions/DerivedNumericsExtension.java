@@ -30,11 +30,12 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.datatypes.XMLDatatypeUtil;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.datatypes.XMLDatatypeUtil;
 
 import com.bigdata.rdf.internal.IDatatypeURIResolver;
 import com.bigdata.rdf.internal.IExtension;
@@ -59,7 +60,7 @@ import com.bigdata.rdf.model.BigdataValueFactory;
  */
 public class DerivedNumericsExtension<V extends BigdataValue> implements IExtension<V> {
 
-	private static final transient Logger log = Logger.getLogger(DerivedNumericsExtension.class);
+	private static final transient Logger log = LogManager.getLogger(DerivedNumericsExtension.class);
 	
 	
     private final Map<IV,BigdataURI> datatypes;
@@ -74,7 +75,7 @@ public class DerivedNumericsExtension<V extends BigdataValue> implements IExtens
         
     }
     
-    private void resolve(final IDatatypeURIResolver resolver, final URI uri) {
+    private void resolve(final IDatatypeURIResolver resolver, final IRI uri) {
     	
     	if (log.isDebugEnabled()) {
     		log.debug("resolving: " + uri);
@@ -102,7 +103,7 @@ public class DerivedNumericsExtension<V extends BigdataValue> implements IExtens
         
         final Literal lit = (Literal) value;
         
-        final URI dt = lit.getDatatype();
+        final IRI dt = lit.getDatatype();
         
         if (dt == null)
             throw new IllegalArgumentException();
@@ -111,7 +112,7 @@ public class DerivedNumericsExtension<V extends BigdataValue> implements IExtens
         
         BigdataURI resolvedDT = null;
         for (BigdataURI val : datatypes.values()) {
-            // Note: URI.stringValue() is efficient....
+            // Note: IRI.stringValue() is efficient....
             if (val.stringValue().equals(dts)) {
                 resolvedDT = val;
             }

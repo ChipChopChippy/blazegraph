@@ -37,26 +37,27 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Graph;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.LinkedHashModel;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.StatementImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.GraphQuery;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.impl.BindingImpl;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.rio.helpers.StatementCollector;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.LinkedHashModel;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.GraphQuery;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.impl.SimpleBinding;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 
 import com.bigdata.journal.BufferMode;
 import com.bigdata.rdf.internal.IV;
@@ -78,7 +79,7 @@ import com.bigdata.search.TestSearch;
  */
 public class TestSearchQuery extends ProxyBigdataSailTestCase {
 
-    private static final Logger log = Logger.getLogger(TestSearchQuery.class);
+    private static final Logger log = LogManager.getLogger(TestSearchQuery.class);
 	
     public TestSearchQuery() {
         
@@ -133,7 +134,7 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //
 //        try {
 //
-//            sail.initialize();
+//            sail.init();
 //            
 ////            if (!sail.database.getStatementIdentifiers()) {
 ////
@@ -151,14 +152,14 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //                final StatementBuffer<Statement> sb = new StatementBuffer<Statement>(
 //                        sail.database, 100/* capacity */);
 //
-//                sb.add(new URIImpl("http://www.bigdata.com/A"), RDFS.LABEL,
-//                        new LiteralImpl("Yellow Rose"));
+//                sb.add(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/A"), RDFS.LABEL,
+//                        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Yellow Rose"));
 //
-//                sb.add(new URIImpl("http://www.bigdata.com/B"), RDFS.LABEL,
-//                        new LiteralImpl("Red Rose"));
+//                sb.add(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/B"), RDFS.LABEL,
+//                        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Red Rose"));
 //
-//                sb.add(new URIImpl("http://www.bigdata.com/C"), RDFS.LABEL,
-//                        new LiteralImpl("Old Yellow House"));
+//                sb.add(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/C"), RDFS.LABEL,
+//                        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Old Yellow House"));
 //
 //                sb.flush();
 //
@@ -188,7 +189,7 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //            // re-open the SAIL.
 //            sail = reopenSail(sail);
 //
-//            sail.initialize();
+//            sail.init();
 //
 //            if (log.isInfoEnabled())
 //                log
@@ -229,7 +230,7 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //            final StatementPattern sp = new StatementPattern(//
 //                    new Var("X"),//
 //                    new Var("1", BDS.SEARCH),//
-//                    new Var("2", new LiteralImpl("Yellow"))//
+//                    new Var("2", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Yellow"))//
 //                    );
 //            final TupleExpr tupleExpr = 
 //                new QueryRoot(
@@ -243,11 +244,11 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //             * Note: a [null] DataSet will cause context to be ignored when the
 //             * query is processed.
 //             */
-//            final DatasetImpl dataSet = null; //new DatasetImpl();
+//            final SimpleDataset dataSet = null; //new SimpleDataset();
 //
 //            final BindingSet bindingSet = new QueryBindingSet();
 //
-//            final CloseableIteration<? extends BindingSet, QueryEvaluationException> itr = conn
+//            final CloseableIteration<? extends BindingSet> itr = conn
 //                    .evaluate(tupleExpr, dataSet, bindingSet, true/* includeInferred */);
 //
 //            try {
@@ -263,9 +264,9 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //
 //				// Note: Whether or not this solution is present depends on the
 //				// default value for minCosine.
-//                expected.add(new LiteralImpl("Yellow Rose"));
+//                expected.add(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Yellow Rose"));
 //
-//                expected.add(new LiteralImpl("Old Yellow House"));
+//                expected.add(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Old Yellow House"));
 //
 //                /*
 //                 * Verify that the query results is the correct solutions.
@@ -320,14 +321,14 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 
         final boolean doYouWantMeToBreak = true;
         
-        final URI SYSTAP =
-            new URIImpl(
+        final IRI SYSTAP =
+            org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                         "http://bigdata.com/elm#a479c37c-407e-4f4a-be30-5a643a54561f");
         
-        final URI ORGANIZATION = new URIImpl(
+        final IRI ORGANIZATION = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://bigdata.com/domain#Organization");
         
-        final URI ENTITY = new URIImpl("http://bigdata.com/system#Entity");
+        final IRI ENTITY = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://bigdata.com/system#Entity");
         
         final String query = "construct {"+//
 		"?s <" + RDF.TYPE + "> <" + ENTITY + "> ."+//
@@ -339,23 +340,23 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 		" }";
 
         // the ontology (nothing is indexed for full text search).
-        final Graph test_restart_1 = new LinkedHashModel();
+        final Model test_restart_1 = new LinkedHashModel();
         {
 
-            test_restart_1.add(new StatementImpl(ORGANIZATION, RDFS.SUBCLASSOF,
+            test_restart_1.add(SimpleValueFactory.getInstance().createStatement(ORGANIZATION, RDFS.SUBCLASSOF,
                     ENTITY));
 
         }
 
         // the entity data (the rdfs:label gets indexed for full text search)
-		final Graph test_restart_2 = new LinkedHashModel();
+		final Model test_restart_2 = new LinkedHashModel();
         {
             
             test_restart_2
-                    .add(new StatementImpl(SYSTAP, RDF.TYPE, ENTITY));
+                    .add(SimpleValueFactory.getInstance().createStatement(SYSTAP, RDF.TYPE, ENTITY));
          
-            test_restart_2.add(new StatementImpl(SYSTAP, RDFS.LABEL,
-                    new LiteralImpl("SYSTAP")));
+            test_restart_2.add(SimpleValueFactory.getInstance().createStatement(SYSTAP, RDFS.LABEL,
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("SYSTAP")));
         }
         
         final File file;
@@ -399,7 +400,7 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
                         sail);
 
                 // note: initializes the SAIL.
-                repo.initialize();
+                repo.init();
 
                 { // load ontology and optionally the entity data.
                     boolean ok = false;
@@ -452,7 +453,7 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
                         	if(log.isInfoEnabled())
                         		log.info(stmt);
                         }
-                        assertTrue(results.contains(new StatementImpl(SYSTAP,
+                        assertTrue(results.contains(SimpleValueFactory.getInstance().createStatement(SYSTAP,
                                 RDF.TYPE, ENTITY)));
                     } finally {
                         cxn.close();
@@ -472,7 +473,7 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
                 final BigdataSailRepository repo = new BigdataSailRepository(
                         sail);
 
-                repo.initialize();
+                repo.init();
 
                 { // run the query again
 //                    final String query = "construct { ?s <" + RDF.TYPE + "> <"
@@ -492,7 +493,7 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
                             	log.info(stmt);
                         }
                         assertTrue("Lost commit?", results
-                                .contains(new StatementImpl(SYSTAP, RDF.TYPE,
+                                .contains(SimpleValueFactory.getInstance().createStatement(SYSTAP, RDF.TYPE,
                                         ENTITY)));
                     } finally {
                         cxn.close();
@@ -522,7 +523,7 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //            return;
 //        }
 //        
-//        sail.initialize();
+//        sail.init();
 //        final BigdataSailRepository repo = new BigdataSailRepository(sail);
 //        final BigdataSailRepositoryConnection cxn = 
 //            (BigdataSailRepositoryConnection) repo.getConnection();
@@ -530,12 +531,12 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //
 //            cxn.setAutoCommit(false);
 //            
-//            final BNode a = new BNodeImpl("_:a");
-//            final BNode b = new BNodeImpl("_:b");
-//            final Literal alice = new LiteralImpl("Alice");
-//            final Literal bob = new LiteralImpl("Bob");
-//            final URI graphA = new URIImpl("http://www.bigdata.com/graphA");
-//            final URI graphB = new URIImpl("http://www.bigdata.com/graphB");
+//            final BNode a = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createBNode("_:a");
+//            final BNode b = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createBNode("_:b");
+//            final Literal alice = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Alice");
+//            final Literal bob = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Bob");
+//            final IRI graphA = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/graphA");
+//            final IRI graphB = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/graphB");
 //            
 ///**/            
 //            cxn.add(
@@ -546,7 +547,7 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //                    );
 //            
 //            /*
-//             * Graph B.
+//             * Model B.
 //             */
 //            cxn.add(
 //                    b,
@@ -583,7 +584,7 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //                TupleQueryResult result = tupleQuery.evaluate();
 //
 //                Collection<BindingSet> answer = new LinkedList<BindingSet>();
-//                answer.add(createBindingSet(new BindingImpl("s", alice)));
+//                answer.add(createBindingSet(new SimpleBinding("s", alice)));
 //                
 //                compare(result, answer);
 //            }
@@ -603,7 +604,7 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //                TupleQueryResult result = tupleQuery.evaluate();
 //
 //                Collection<BindingSet> answer = new LinkedList<BindingSet>();
-//                answer.add(createBindingSet(new BindingImpl("s", alice)));
+//                answer.add(createBindingSet(new SimpleBinding("s", alice)));
 //                
 //                compare(result, answer);
 //            }
@@ -623,7 +624,7 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //                TupleQueryResult result = tupleQuery.evaluate();
 //
 //                Collection<BindingSet> answer = new LinkedList<BindingSet>();
-//                //answer.add(createBindingSet(new BindingImpl("s", alice)));
+//                //answer.add(createBindingSet(new SimpleBinding("s", alice)));
 //                
 //                compare(result, answer);
 //            }
@@ -644,7 +645,7 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //                TupleQueryResult result = tupleQuery.evaluate();
 //
 //                Collection<BindingSet> answer = new LinkedList<BindingSet>();
-//                //answer.add(createBindingSet(new BindingImpl("s", alice)));
+//                //answer.add(createBindingSet(new SimpleBinding("s", alice)));
 //                
 //                compare(result, answer);
 //            }
@@ -665,7 +666,7 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //                TupleQueryResult result = tupleQuery.evaluate();
 //
 //                Collection<BindingSet> answer = new LinkedList<BindingSet>();
-//                //answer.add(createBindingSet(new BindingImpl("s", alice)));
+//                //answer.add(createBindingSet(new SimpleBinding("s", alice)));
 //                
 //                compare(result, answer);
 //            }
@@ -690,7 +691,7 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
         final BigdataSail sail = getSail();
         try {
             
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         final BigdataSailRepositoryConnection cxn = 
             (BigdataSailRepositoryConnection) repo.getConnection();
@@ -701,14 +702,14 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 
             final ValueFactory vf = sail.getValueFactory();
 
-        	final URI s1 = vf.createURI(BDS.NAMESPACE+"s1");
-        	final URI s2 = vf.createURI(BDS.NAMESPACE+"s2");
-        	final URI s3 = vf.createURI(BDS.NAMESPACE+"s3");
-        	final URI s4 = vf.createURI(BDS.NAMESPACE+"s4");
-        	final URI s5 = vf.createURI(BDS.NAMESPACE+"s5");
-        	final URI s6 = vf.createURI(BDS.NAMESPACE+"s6");
-        	final URI s7 = vf.createURI(BDS.NAMESPACE+"s7");
-        	final URI s8 = vf.createURI(BDS.NAMESPACE+"s8");
+        	final IRI s1 = vf.createIRI(BDS.NAMESPACE+"s1");
+        	final IRI s2 = vf.createIRI(BDS.NAMESPACE+"s2");
+        	final IRI s3 = vf.createIRI(BDS.NAMESPACE+"s3");
+        	final IRI s4 = vf.createIRI(BDS.NAMESPACE+"s4");
+        	final IRI s5 = vf.createIRI(BDS.NAMESPACE+"s5");
+        	final IRI s6 = vf.createIRI(BDS.NAMESPACE+"s6");
+        	final IRI s7 = vf.createIRI(BDS.NAMESPACE+"s7");
+        	final IRI s8 = vf.createIRI(BDS.NAMESPACE+"s8");
         	final Literal l1 = vf.createLiteral("how");
         	final Literal l2 = vf.createLiteral("now");
         	final Literal l3 = vf.createLiteral("brown");
@@ -744,7 +745,7 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
             literals.put(((BigdataValue)l7).getIV(), l7);
             literals.put(((BigdataValue)l8).getIV(), l8);
             
-            final Map<IV, URI> uris = new LinkedHashMap<IV, URI>();
+            final Map<IV, IRI> uris = new LinkedHashMap<IV, IRI>();
             uris.put(((BigdataValue)l1).getIV(), s1);
             uris.put(((BigdataValue)l2).getIV(), s2);
             uris.put(((BigdataValue)l3).getIV(), s3);
@@ -808,12 +809,12 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
                 	final IHit<?> hit = hits.next();
                 	final IV id = (IV<?, ?>)hit.getDocId();
                 	final Literal score = vf.createLiteral(hit.getCosine());
-                	final URI s = uris.get(id);
+                	final IRI s = uris.get(id);
                 	final Literal o = literals.get(id);
                     final BindingSet bs = createBindingSet(
-                    		new BindingImpl("s", s),
-                    		new BindingImpl("o", o),
-                    		new BindingImpl("score", score));
+                    		new SimpleBinding("s", s),
+                    		new SimpleBinding("o", o),
+                    		new SimpleBinding("score", score));
                 	if(log.isInfoEnabled())
                 		log.info(bs);
                     answer.add(bs);
@@ -881,12 +882,12 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
                 	final IHit<?> hit = hits.next();
                 	final IV id = (IV<?, ?>)hit.getDocId();
                 	final Literal score = vf.createLiteral(hit.getCosine());
-                	final URI s = uris.get(id);
+                	final IRI s = uris.get(id);
                 	final Literal o = literals.get(id);
                     final BindingSet bs = createBindingSet(
-                    		new BindingImpl("s", s),
-                    		new BindingImpl("o", o),
-                    		new BindingImpl("score", score));
+                    		new SimpleBinding("s", s),
+                    		new SimpleBinding("o", o),
+                    		new SimpleBinding("score", score));
                     if(log.isInfoEnabled())
                 		log.info(bs);
                     answer.add(bs);
@@ -957,12 +958,12 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
                 	final IHit<?> hit = hits.next();
                 	final IV id = (IV<?, ?>) hit.getDocId();
                 	final Literal score = vf.createLiteral(hit.getCosine());
-                	final URI s = uris.get(id);
+                	final IRI s = uris.get(id);
                 	final Literal o = literals.get(id);
                     final BindingSet bs = createBindingSet(
-                    		new BindingImpl("s", s),
-                    		new BindingImpl("o", o),
-                    		new BindingImpl("score", score));
+                    		new SimpleBinding("s", s),
+                    		new SimpleBinding("o", o),
+                    		new SimpleBinding("score", score));
                     if(log.isInfoEnabled())
                 		log.info(bs);
                     answer.add(bs);
@@ -1037,14 +1038,14 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
                 	final IHit<?> hit = hits.next();
                 	final IV id = (IV<?, ?>) hit.getDocId();
                 	final Literal score = vf.createLiteral(hit.getCosine());
-                	final URI s = uris.get(id);
+                	final IRI s = uris.get(id);
                 	final Literal o = literals.get(id);
                 	if (!o.getLabel().contains(searchQuery))
                 		continue;
                     final BindingSet bs = createBindingSet(
-                    		new BindingImpl("s", s),
-                    		new BindingImpl("o", o),
-                    		new BindingImpl("score", score));
+                    		new SimpleBinding("s", s),
+                    		new SimpleBinding("o", o),
+                    		new SimpleBinding("score", score));
                     if(log.isInfoEnabled())
                         log.info(bs);
                     answer.add(bs);
@@ -1119,12 +1120,12 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
                 	final IHit<?> hit = hits.next();
                 	final IV id = (IV<?, ?>) hit.getDocId();
                 	final Literal score = vf.createLiteral(hit.getCosine());
-                	final URI s = uris.get(id);
+                	final IRI s = uris.get(id);
                 	final Literal o = literals.get(id);
                     final BindingSet bs = createBindingSet(
-                    		new BindingImpl("s", s),
-                    		new BindingImpl("o", o),
-                    		new BindingImpl("score", score));
+                    		new SimpleBinding("s", s),
+                    		new SimpleBinding("o", o),
+                    		new SimpleBinding("score", score));
                     if(log.isInfoEnabled())
                         log.info(bs);
                     answer.add(bs);
@@ -1199,12 +1200,12 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
                 	final IHit<?> hit = hits.next();
                 	final IV id = (IV<?, ?>) hit.getDocId();
                 	final Literal score = vf.createLiteral(hit.getCosine());
-                	final URI s = uris.get(id);
+                	final IRI s = uris.get(id);
                 	final Literal o = literals.get(id);
                     final BindingSet bs = createBindingSet(
-                    		new BindingImpl("s", s),
-                    		new BindingImpl("o", o),
-                    		new BindingImpl("score", score));
+                    		new SimpleBinding("s", s),
+                    		new SimpleBinding("o", o),
+                    		new SimpleBinding("score", score));
                     if(log.isInfoEnabled())
                         log.info(bs);
                     answer.add(bs);
@@ -1274,11 +1275,11 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
                 while (hits.hasNext()) {
                 	final IHit<?> hit = hits.next();
                 	final IV id = (IV<?, ?>) hit.getDocId();
-                	final URI s = uris.get(id);
+                	final IRI s = uris.get(id);
                 	final Literal o = literals.get(id);
                     final BindingSet bs = createBindingSet(
-                    		new BindingImpl("s", s),
-                    		new BindingImpl("o", o));
+                    		new SimpleBinding("s", s),
+                    		new SimpleBinding("o", o));
                     if(log.isInfoEnabled())
                         log.info(bs);
                     answer.add(bs);
@@ -1350,12 +1351,12 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
                 	final IHit<?> hit = hits.next();
                 	final IV id = (IV<?, ?>) hit.getDocId();
                 	final Literal score = vf.createLiteral(hit.getCosine());
-                	final URI s = uris.get(id);
+                	final IRI s = uris.get(id);
                 	final Literal o = literals.get(id);
                     final BindingSet bs = createBindingSet(
-                    		new BindingImpl("s", s),
-                    		new BindingImpl("o", o),
-                    		new BindingImpl("score", score));
+                    		new SimpleBinding("s", s),
+                    		new SimpleBinding("o", o),
+                    		new SimpleBinding("score", score));
                     if(log.isInfoEnabled())
                         log.info(bs);
                     answer.add(bs);
@@ -1400,7 +1401,7 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //        final BigdataSail sail = getSail();
 //        try {
 //            
-//        sail.initialize();
+//        sail.init();
 //        final BigdataSailRepository repo = new BigdataSailRepository(sail);
 //        final BigdataSailRepositoryConnection cxn = 
 //            (BigdataSailRepositoryConnection) repo.getConnection();
@@ -1411,14 +1412,14 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //
 //            final ValueFactory vf = sail.getValueFactory();
 //
-//        	final URI s1 = vf.createURI(BDS.NAMESPACE+"s1");
-//        	final URI s2 = vf.createURI(BDS.NAMESPACE+"s2");
-//        	final URI s3 = vf.createURI(BDS.NAMESPACE+"s3");
-//        	final URI s4 = vf.createURI(BDS.NAMESPACE+"s4");
-//        	final URI s5 = vf.createURI(BDS.NAMESPACE+"s5");
-//        	final URI s6 = vf.createURI(BDS.NAMESPACE+"s6");
-//        	final URI s7 = vf.createURI(BDS.NAMESPACE+"s7");
-//        	final URI s8 = vf.createURI(BDS.NAMESPACE+"s8");
+//        	final IRI s1 = vf.createIRI(BDS.NAMESPACE+"s1");
+//        	final IRI s2 = vf.createIRI(BDS.NAMESPACE+"s2");
+//        	final IRI s3 = vf.createIRI(BDS.NAMESPACE+"s3");
+//        	final IRI s4 = vf.createIRI(BDS.NAMESPACE+"s4");
+//        	final IRI s5 = vf.createIRI(BDS.NAMESPACE+"s5");
+//        	final IRI s6 = vf.createIRI(BDS.NAMESPACE+"s6");
+//        	final IRI s7 = vf.createIRI(BDS.NAMESPACE+"s7");
+//        	final IRI s8 = vf.createIRI(BDS.NAMESPACE+"s8");
 //        	final Literal l1 = vf.createLiteral("how");
 //        	final Literal l2 = vf.createLiteral("now");
 //        	final Literal l3 = vf.createLiteral("brown");
@@ -1456,7 +1457,7 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //            literals.put(((BigdataURI)s7).getIV(), l7);
 //            literals.put(((BigdataURI)s8).getIV(), l8);
 //            
-//            final Map<IV, URI> uris = new LinkedHashMap<IV, URI>();
+//            final Map<IV, IRI> uris = new LinkedHashMap<IV, IRI>();
 //            uris.put(((BigdataURI)s1).getIV(), s1);
 //            uris.put(((BigdataURI)s2).getIV(), s2);
 //            uris.put(((BigdataURI)s3).getIV(), s3);
@@ -1524,10 +1525,10 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //                	final IHit hit = hits.next();
 //                	final IV id = (IV)hit.getDocId();
 //                	final Literal score = vf.createLiteral(hit.getCosine());
-//                	final URI s = uris.get(id);
+//                	final IRI s = uris.get(id);
 //                    final BindingSet bs = createBindingSet(
-//                    		new BindingImpl("s", s),
-//                    		new BindingImpl("score", score));
+//                    		new SimpleBinding("s", s),
+//                    		new SimpleBinding("score", score));
 //                	if(log.isInfoEnabled())
 //                		log.info(bs);
 //                    answer.add(bs);
@@ -1592,12 +1593,12 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //                	final IHit hit = hits.next();
 //                	final IV id = (IV)hit.getDocId();
 //                	final Literal score = vf.createLiteral(hit.getCosine());
-//                	final URI s = uris.get(id);
+//                	final IRI s = uris.get(id);
 //                	final Literal o = literals.get(id);
 //                    final BindingSet bs = createBindingSet(
-//                    		new BindingImpl("s", s),
-////                    		new BindingImpl("o", o),
-//                    		new BindingImpl("score", score));
+//                    		new SimpleBinding("s", s),
+////                    		new SimpleBinding("o", o),
+//                    		new SimpleBinding("score", score));
 //                    if(log.isInfoEnabled())
 //                		log.info(bs);
 //                    answer.add(bs);
@@ -1666,12 +1667,12 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //                	final IHit hit = hits.next();
 //                	final IV id = (IV) hit.getDocId();
 //                	final Literal score = vf.createLiteral(hit.getCosine());
-//                	final URI s = uris.get(id);
+//                	final IRI s = uris.get(id);
 //                	final Literal o = literals.get(id);
 //                    final BindingSet bs = createBindingSet(
-//                    		new BindingImpl("s", s),
-////                    		new BindingImpl("o", o),
-//                    		new BindingImpl("score", score));
+//                    		new SimpleBinding("s", s),
+////                    		new SimpleBinding("o", o),
+//                    		new SimpleBinding("score", score));
 //                    if(log.isInfoEnabled())
 //                		log.info(bs);
 //                    answer.add(bs);
@@ -1745,14 +1746,14 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //                	final IHit hit = hits.next();
 //                	final IV id = (IV) hit.getDocId();
 //                	final Literal score = vf.createLiteral(hit.getCosine());
-//                	final URI s = uris.get(id);
+//                	final IRI s = uris.get(id);
 //                	final Literal o = literals.get(id);
 //                	if (!o.getLabel().contains(searchQuery))
 //                		continue;
 //                    final BindingSet bs = createBindingSet(
-//                    		new BindingImpl("s", s),
-////                    		new BindingImpl("o", o),
-//                    		new BindingImpl("score", score));
+//                    		new SimpleBinding("s", s),
+////                    		new SimpleBinding("o", o),
+//                    		new SimpleBinding("score", score));
 //                    if(log.isInfoEnabled())
 //                        log.info(bs);
 //                    answer.add(bs);
@@ -1825,12 +1826,12 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //                	final IHit hit = hits.next();
 //                	final IV id = (IV) hit.getDocId();
 //                	final Literal score = vf.createLiteral(hit.getCosine());
-//                	final URI s = uris.get(id);
+//                	final IRI s = uris.get(id);
 //                	final Literal o = literals.get(id);
 //                    final BindingSet bs = createBindingSet(
-//                    		new BindingImpl("s", s),
-////                    		new BindingImpl("o", o),
-//                    		new BindingImpl("score", score));
+//                    		new SimpleBinding("s", s),
+////                    		new SimpleBinding("o", o),
+//                    		new SimpleBinding("score", score));
 //                    if(log.isInfoEnabled())
 //                        log.info(bs);
 //                    answer.add(bs);
@@ -1903,12 +1904,12 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //                	final IHit hit = hits.next();
 //                	final IV id = (IV) hit.getDocId();
 //                	final Literal score = vf.createLiteral(hit.getCosine());
-//                	final URI s = uris.get(id);
+//                	final IRI s = uris.get(id);
 //                	final Literal o = literals.get(id);
 //                    final BindingSet bs = createBindingSet(
-//                    		new BindingImpl("s", s),
-////                    		new BindingImpl("o", o),
-//                    		new BindingImpl("score", score));
+//                    		new SimpleBinding("s", s),
+////                    		new SimpleBinding("o", o),
+//                    		new SimpleBinding("score", score));
 //                    if(log.isInfoEnabled())
 //                        log.info(bs);
 //                    answer.add(bs);
@@ -1976,11 +1977,11 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //                while (hits.hasNext()) {
 //                	final IHit hit = hits.next();
 //                	final IV id = (IV) hit.getDocId();
-//                	final URI s = uris.get(id);
+//                	final IRI s = uris.get(id);
 //                	final Literal o = literals.get(id);
 //                    final BindingSet bs = createBindingSet(
-//                    		new BindingImpl("s", s)
-////                    		new BindingImpl("o", o)
+//                    		new SimpleBinding("s", s)
+////                    		new SimpleBinding("o", o)
 //                    		);
 //                    if(log.isInfoEnabled())
 //                        log.info(bs);
@@ -2051,12 +2052,12 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //                	final IHit hit = hits.next();
 //                	final IV id = (IV) hit.getDocId();
 //                	final Literal score = vf.createLiteral(hit.getCosine());
-//                	final URI s = uris.get(id);
+//                	final IRI s = uris.get(id);
 //                	final Literal o = literals.get(id);
 //                    final BindingSet bs = createBindingSet(
-//                    		new BindingImpl("s", s),
-////                    		new BindingImpl("o", o),
-//                    		new BindingImpl("score", score));
+//                    		new SimpleBinding("s", s),
+////                    		new SimpleBinding("o", o),
+//                    		new SimpleBinding("score", score));
 //                    if(log.isInfoEnabled())
 //                        log.info(bs);
 //                    answer.add(bs);
@@ -2110,7 +2111,7 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
         final BigdataSail sail = getSail();
         try {
             
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         final BigdataSailRepositoryConnection cxn = 
             (BigdataSailRepositoryConnection) repo.getConnection();
@@ -2121,14 +2122,14 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 
             final ValueFactory vf = sail.getValueFactory();
 
-        	final URI s1 = vf.createURI(BDS.NAMESPACE+"s1");
-        	final URI s2 = vf.createURI(BDS.NAMESPACE+"s2");
-        	final URI s3 = vf.createURI(BDS.NAMESPACE+"s3");
-        	final URI s4 = vf.createURI(BDS.NAMESPACE+"s4");
-        	final URI s5 = vf.createURI(BDS.NAMESPACE+"s5");
-        	final URI s6 = vf.createURI(BDS.NAMESPACE+"s6");
-        	final URI s7 = vf.createURI(BDS.NAMESPACE+"s7");
-        	final URI s8 = vf.createURI(BDS.NAMESPACE+"s8");
+        	final IRI s1 = vf.createIRI(BDS.NAMESPACE+"s1");
+        	final IRI s2 = vf.createIRI(BDS.NAMESPACE+"s2");
+        	final IRI s3 = vf.createIRI(BDS.NAMESPACE+"s3");
+        	final IRI s4 = vf.createIRI(BDS.NAMESPACE+"s4");
+        	final IRI s5 = vf.createIRI(BDS.NAMESPACE+"s5");
+        	final IRI s6 = vf.createIRI(BDS.NAMESPACE+"s6");
+        	final IRI s7 = vf.createIRI(BDS.NAMESPACE+"s7");
+        	final IRI s8 = vf.createIRI(BDS.NAMESPACE+"s8");
         	final Literal l1 = vf.createLiteral("how");
         	final Literal l2 = vf.createLiteral("now");
         	final Literal l3 = vf.createLiteral("brown");
@@ -2164,7 +2165,7 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
             literals.put(((BigdataValue)l7).getIV(), l7);
             literals.put(((BigdataValue)l8).getIV(), l8);
             
-            final Map<IV, URI> uris = new LinkedHashMap<IV, URI>();
+            final Map<IV, IRI> uris = new LinkedHashMap<IV, IRI>();
             uris.put(((BigdataValue)l1).getIV(), s1);
             uris.put(((BigdataValue)l2).getIV(), s2);
             uris.put(((BigdataValue)l3).getIV(), s3);
@@ -2195,7 +2196,7 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
                 final TupleQuery tupleQuery = 
                     cxn.prepareTupleQuery(QueryLanguage.SPARQL, query);
                 tupleQuery.setIncludeInferred(true /* includeInferred */);
-                tupleQuery.setBinding("searchQuery", new LiteralImpl(searchQuery));
+                tupleQuery.setBinding("searchQuery", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral(searchQuery));
                 
                 TupleQueryResult result = tupleQuery.evaluate();
                 try {
@@ -2237,12 +2238,12 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
                 	final IHit<?> hit = hits.next();
                 	final IV id = (IV<?, ?>)hit.getDocId();
                 	final Literal score = vf.createLiteral(hit.getCosine());
-                	final URI s = uris.get(id);
+                	final IRI s = uris.get(id);
                 	final Literal o = literals.get(id);
                     final BindingSet bs = createBindingSet(
-                    		new BindingImpl("s", s),
-                    		new BindingImpl("o", o),
-                    		new BindingImpl("score", score));
+                    		new SimpleBinding("s", s),
+                    		new SimpleBinding("o", o),
+                    		new SimpleBinding("score", score));
                 	if(log.isInfoEnabled())
                 		log.info(bs);
                     answer.add(bs);
@@ -2269,7 +2270,7 @@ public class TestSearchQuery extends ProxyBigdataSailTestCase {
 //        
 //        try {
 //            
-//        sail.initialize();
+//        sail.init();
 //        final BigdataSailRepository repo = new BigdataSailRepository(sail);
 //        final BigdataSailRepositoryConnection cxn = 
 //            (BigdataSailRepositoryConnection) repo.getConnection();
@@ -2500,7 +2501,7 @@ LIMIT 10 OFFSET 0
         final BigdataSail sail = getSail();
         try {
             
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         final BigdataSailRepositoryConnection cxn = 
             (BigdataSailRepositoryConnection) repo.getConnection();
@@ -2511,14 +2512,14 @@ LIMIT 10 OFFSET 0
 
             final ValueFactory vf = sail.getValueFactory();
 
-        	final URI s1 = vf.createURI(BDS.NAMESPACE+"s1");
-        	final URI s2 = vf.createURI(BDS.NAMESPACE+"s2");
-        	final URI s3 = vf.createURI(BDS.NAMESPACE+"s3");
-        	final URI s4 = vf.createURI(BDS.NAMESPACE+"s4");
-        	final URI s5 = vf.createURI(BDS.NAMESPACE+"s5");
-        	final URI s6 = vf.createURI(BDS.NAMESPACE+"s6");
-        	final URI s7 = vf.createURI(BDS.NAMESPACE+"s7");
-        	final URI s8 = vf.createURI(BDS.NAMESPACE+"s8");
+        	final IRI s1 = vf.createIRI(BDS.NAMESPACE+"s1");
+        	final IRI s2 = vf.createIRI(BDS.NAMESPACE+"s2");
+        	final IRI s3 = vf.createIRI(BDS.NAMESPACE+"s3");
+        	final IRI s4 = vf.createIRI(BDS.NAMESPACE+"s4");
+        	final IRI s5 = vf.createIRI(BDS.NAMESPACE+"s5");
+        	final IRI s6 = vf.createIRI(BDS.NAMESPACE+"s6");
+        	final IRI s7 = vf.createIRI(BDS.NAMESPACE+"s7");
+        	final IRI s8 = vf.createIRI(BDS.NAMESPACE+"s8");
         	final Literal l1 = vf.createLiteral("0");
         	final Literal l2 = vf.createLiteral("0 0");
         	final Literal l3 = vf.createLiteral("0 1 0");
@@ -2554,7 +2555,7 @@ LIMIT 10 OFFSET 0
             literals.put(((BigdataValue)l7).getIV(), l7);
             literals.put(((BigdataValue)l8).getIV(), l8);
             
-            final Map<IV, URI> uris = new LinkedHashMap<IV, URI>();
+            final Map<IV, IRI> uris = new LinkedHashMap<IV, IRI>();
             uris.put(((BigdataValue)l1).getIV(), s1);
             uris.put(((BigdataValue)l2).getIV(), s2);
             uris.put(((BigdataValue)l3).getIV(), s3);
@@ -2624,12 +2625,12 @@ LIMIT 10 OFFSET 0
                 	final IHit<?> hit = hits.next();
                 	final IV id = (IV<?, ?>)hit.getDocId();
                 	final Literal score = vf.createLiteral(hit.getCosine());
-                	final URI s = uris.get(id);
+                	final IRI s = uris.get(id);
                 	final Literal o = literals.get(id);
                     final BindingSet bs = createBindingSet(
-                    		new BindingImpl("s", s),
-                    		new BindingImpl("o", o),
-                    		new BindingImpl("score", score));
+                    		new SimpleBinding("s", s),
+                    		new SimpleBinding("o", o),
+                    		new SimpleBinding("score", score));
                 	if(log.isInfoEnabled())
                 		log.info(bs);
                     answer.add(bs);

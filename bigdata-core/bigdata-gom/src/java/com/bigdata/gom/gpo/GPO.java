@@ -9,23 +9,24 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.BNode;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.StatementImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.BindingSet;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.BindingSet;
 
 import com.bigdata.gom.om.IObjectManager;
 import com.bigdata.gom.om.ObjectMgrModel;
 import com.bigdata.gom.skin.GenericSkinRegistry;
-import com.bigdata.rdf.model.BigdataLiteralImpl;
+import com.bigdata.rdf.model.BigdataSimpleLiteral;
 import com.bigdata.rdf.model.BigdataResource;
 import com.bigdata.rdf.model.BigdataStatement;
 
@@ -71,7 +72,7 @@ import cutthecrap.utils.striterators.ICloseableIterator;
  */
 public class GPO implements IGPO {
 
-	private static final Logger log = Logger.getLogger(GPO.class);
+	private static final Logger log = LogManager.getLogger(GPO.class);
 
 	// final private ReentrantReadWriteLock m_lock = new ReentrantReadWriteLock();
 	
@@ -178,7 +179,7 @@ public class GPO implements IGPO {
 		/**
 		 * This is the predicate.
 		 */
-		private final URI m_key;
+		private final IRI m_key;
 		/**
 		 * This is the next entry for a different predicate.
 		 */
@@ -207,7 +208,7 @@ public class GPO implements IGPO {
 		 */
 		private int m_size = 0;
 
-		GPOEntry(final URI key) {
+		GPOEntry(final IRI key) {
 
 			if (key == null)
 				throw new IllegalArgumentException();
@@ -475,8 +476,8 @@ public class GPO implements IGPO {
 	 *            The property.
 	 * @return The {@link GPOEntry} and never <code>null</code>.
 	 */
-	GPOEntry establishEntry(final URI key) {
-		final URI fkey = m_om.internKey(key);
+	GPOEntry establishEntry(final IRI key) {
+		final IRI fkey = m_om.internKey(key);
 		if (m_headEntry == null) {
 			m_headEntry = m_tailEntry = new GPOEntry(fkey);
 		} else {
@@ -501,8 +502,8 @@ public class GPO implements IGPO {
 	 *            The link property.
 	 * @return The {@link GPOEntry} and never <code>null</code>.
 	 */
-	GPOEntry establishLinkEntry(final URI key) {
-		final URI fkey = m_om.internKey(key);
+	GPOEntry establishLinkEntry(final IRI key) {
+		final IRI fkey = m_om.internKey(key);
 		if (m_headLinkEntry == null) {
 			m_headLinkEntry = m_tailLinkEntry = new GPOEntry(fkey);
 		} else {
@@ -525,10 +526,10 @@ public class GPO implements IGPO {
 	 * @param key
 	 * @return the found entry, if any
 	 */
-	GPOEntry getEntry(final URI key) {
+	GPOEntry getEntry(final IRI key) {
 		checkLive();
 
-		final URI fkey = m_om.internKey(key);
+		final IRI fkey = m_om.internKey(key);
 		GPOEntry entry = m_headEntry;
 		while (entry != null) {
 			if (entry.m_key == fkey) {
@@ -545,10 +546,10 @@ public class GPO implements IGPO {
 	 * @param key
 	 * @return the found link entry, if any
 	 */
-	GPOEntry getLinkEntry(final URI key) {
+	GPOEntry getLinkEntry(final IRI key) {
 		checkLive();
 
-		final URI fkey = m_om.internKey(key);
+		final IRI fkey = m_om.internKey(key);
 		GPOEntry entry = m_headLinkEntry;
 		while (entry != null) {
 			if (entry.m_key == fkey) {
@@ -708,7 +709,7 @@ public class GPO implements IGPO {
 
 	/** All ?y where (?y,p,self). */
 	@Override
-	public ILinkSet getLinksIn(final URI property) {
+	public ILinkSet getLinksIn(final IRI property) {
 		// materialize fully load links in from Describe cache
 		materialize();
 
@@ -746,7 +747,7 @@ public class GPO implements IGPO {
 
 	/** All ?y where (self,p,?y). */
 	@Override
-	public ILinkSet getLinksOut(final URI property) {
+	public ILinkSet getLinksOut(final IRI property) {
 
 		materialize();
 
@@ -754,11 +755,11 @@ public class GPO implements IGPO {
 	}
 
 	@Override
-	public Map<URI, Long> getReverseLinkProperties() {
+	public Map<IRI, Long> getReverseLinkProperties() {
 
 		materialize();
 
-		final Map<URI, Long> ret = new HashMap<URI, Long>();
+		final Map<IRI, Long> ret = new HashMap<IRI, Long>();
 
 		final String query = "SELECT ?p (COUNT(?o) AS ?count)\n"
 				+ "WHERE { ?o ?p <" + getId().toString() + "> }\n"
@@ -768,7 +769,7 @@ public class GPO implements IGPO {
 
 		while (res.hasNext()) {
 			final BindingSet bs = res.next();
-			final URI pred = (URI) bs.getBinding("p").getValue();
+			final IRI pred = (IRI) bs.getBinding("p").getValue();
 			final Long count = ((Literal) bs.getBinding("count")
 					.getValue()).longValue();
 			ret.put(pred, count);
@@ -801,13 +802,13 @@ public class GPO implements IGPO {
 //		}
 	}
 
-	private Statement makeStatement(final Resource id, final URI key,
+	private Statement makeStatement(final Resource id, final IRI key,
 			final Value value) {
 		return m_om.getValueFactory().createStatement(id, key, value);
 	}
 
 	@Override
-	public Value getValue(final URI property) {
+	public Value getValue(final IRI property) {
 //		final Lock readLock = m_lock.readLock();
 //		readLock.lock();
 //		try {
@@ -821,7 +822,7 @@ public class GPO implements IGPO {
 	}
 
 	@Override
-	public Set<Value> getValues(URI property) {
+	public Set<Value> getValues(IRI property) {
 //		final Lock readLock = m_lock.readLock();
 //		readLock.lock();
 //		try {
@@ -844,7 +845,7 @@ public class GPO implements IGPO {
 	}
 
 	@Override
-	public boolean isBound(URI property) {
+	public boolean isBound(IRI property) {
 		materialize();
 
 		return getValue(property) != null;
@@ -887,7 +888,7 @@ public class GPO implements IGPO {
 		dirty();	
 	}
 
-	public void initValue(final URI predicate, final Value object) {
+	public void initValue(final IRI predicate, final Value object) {
 
 		if (predicate == null)
 			throw new IllegalArgumentException();
@@ -903,7 +904,7 @@ public class GPO implements IGPO {
 
 	}
 
-	public void initLinkValue(final URI predicate, final Resource object) {
+	public void initLinkValue(final IRI predicate, final Resource object) {
 
 		if (predicate == null)
 			throw new IllegalArgumentException();
@@ -920,7 +921,7 @@ public class GPO implements IGPO {
 	}
 
 	@Override
-	public void setValue(final URI property, final Value newValue) {
+	public void setValue(final IRI property, final Value newValue) {
 
 		if (property == null)
 			throw new IllegalArgumentException();
@@ -958,7 +959,7 @@ public class GPO implements IGPO {
      * exist. However, that conditional test needs to be efficient.
      */
     @Override
-    public IGPO getLink(final URI property, final IGPO target) {
+    public IGPO getLink(final IRI property, final IGPO target) {
 
 //        if (getValue(property) != target.getId()) {
 //
@@ -969,7 +970,7 @@ public class GPO implements IGPO {
     	
     	final GPOEntry entry = getEntry(property);
      	if (entry != null && entry.contains(target.getId())) {
-            return m_om.getGPO(new StatementImpl(m_id, property, target.getId()));
+            return m_om.getGPO(SimpleValueFactory.getInstance().createStatement(m_id, property, target.getId()));
     	}
     
         return null;
@@ -977,14 +978,14 @@ public class GPO implements IGPO {
     }
 
 //    @Override
-//    public void addLink(final URI property, final IGPO target) {
+//    public void addLink(final IRI property, final IGPO target) {
 //
 //        addValue(property, target.getId());
 //
 //    }
 	
 	@Override
-	public void addValue(final URI property, final Value value) {
+	public void addValue(final IRI property, final Value value) {
 
 		if (property == null)
 			throw new IllegalArgumentException();
@@ -1017,7 +1018,7 @@ public class GPO implements IGPO {
 	 * @param property
 	 * @param resource
 	 */
-	private void removeLinkSetMember(final URI property, final Resource resource) {
+	private void removeLinkSetMember(final IRI property, final Resource resource) {
 		
 		materialize();
 		
@@ -1032,7 +1033,7 @@ public class GPO implements IGPO {
 	 * @param property
 	 * @param resource
 	 */
-	private void addLinkSetMember(final URI property, final Resource resource) {
+	private void addLinkSetMember(final IRI property, final Resource resource) {
 		
 		materialize();
 		
@@ -1041,7 +1042,7 @@ public class GPO implements IGPO {
 	}
 	
 	@Override
-	public void removeValue(final URI property, final Value value) {
+	public void removeValue(final IRI property, final Value value) {
 
 		if (property == null)
 			throw new IllegalArgumentException();
@@ -1072,7 +1073,7 @@ public class GPO implements IGPO {
 	}
 
 	@Override
-	public void removeValues(final URI property) {
+	public void removeValues(final IRI property) {
 
 		if (property == null)
 			throw new IllegalArgumentException();
@@ -1167,7 +1168,7 @@ public class GPO implements IGPO {
 	public IGPO getType() {
 		materialize();
 
-		final URI tid = (URI) getValue(new URIImpl("attr:/type"));
+		final IRI tid = (IRI) getValue(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("attr:/type"));
 		if (tid != null) {
 			return m_om.getGPO(tid);
 		} else {
@@ -1322,17 +1323,17 @@ public class GPO implements IGPO {
 		return ret;
 	}
 
-	public Iterator<URI> getPropertyURIs() {
+	public Iterator<IRI> getPropertyURIs() {
 //		final Lock readLock = m_lock.readLock();
 //		readLock.lock();
 //		try {
 			materialize();
 
 			if (m_headEntry == null) {
-				return new EmptyIterator<URI>();
+				return new EmptyIterator<IRI>();
 			}
 
-			ArrayList<URI> properties = new ArrayList<URI>();
+			ArrayList<IRI> properties = new ArrayList<IRI>();
 			GPOEntry entry = m_headEntry;
 			while (entry != null) {
 				properties.add(entry.m_key);

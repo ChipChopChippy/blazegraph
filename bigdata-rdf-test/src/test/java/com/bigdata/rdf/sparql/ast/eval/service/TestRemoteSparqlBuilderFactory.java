@@ -34,13 +34,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.openrdf.model.BNode;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.BNodeImpl;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.vocabulary.DC;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.impl.MapBindingSet;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.vocabulary.DC;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.impl.MapBindingSet;
 
 import com.bigdata.bop.IVariable;
 import com.bigdata.bop.Var;
@@ -132,7 +132,7 @@ public class TestRemoteSparqlBuilderFactory extends
     public void test_service_001() throws Exception {
         
         final BigdataURI serviceURI = valueFactory
-                .createURI("http://www.bigdata.com/myService");
+                .createIRI("http://www.bigdata.com/myService");
 
         final GraphPatternGroup<IGroupMemberNode> groupNode = new JoinGroupNode();
         {
@@ -197,7 +197,7 @@ public class TestRemoteSparqlBuilderFactory extends
     public void test_service_001b() throws Exception {
         
         final BigdataURI serviceURI = valueFactory
-                .createURI("http://www.bigdata.com/myService");
+                .createIRI("http://www.bigdata.com/myService");
 
         final GraphPatternGroup<IGroupMemberNode> groupNode = new JoinGroupNode();
         {
@@ -267,15 +267,15 @@ public class TestRemoteSparqlBuilderFactory extends
          * Resolve IVs that we will use below.
          */
         final BigdataURI dcCreator = valueFactory.asValue(DC.CREATOR);
-        final BigdataURI book1 = valueFactory.createURI("http://example.org/book/book1");
-        final BigdataURI book2 = valueFactory.createURI("http://example.org/book/book2");
-        final BigdataURI author1 = valueFactory.createURI("http://example.org/author/author1");
-        final BigdataURI author2 = valueFactory.createURI("http://example.org/author/author2");
+        final BigdataURI book1 = valueFactory.createIRI("http://example.org/book/book1");
+        final BigdataURI book2 = valueFactory.createIRI("http://example.org/book/book2");
+        final BigdataURI author1 = valueFactory.createIRI("http://example.org/author/author1");
+        final BigdataURI author2 = valueFactory.createIRI("http://example.org/author/author2");
 
         addResolveIVs(dcCreator, book1, book2, author1, author2);
 
         final BigdataURI serviceURI = valueFactory
-                .createURI("http://www.bigdata.com/myService");
+                .createIRI("http://www.bigdata.com/myService");
 
         final GraphPatternGroup<IGroupMemberNode> groupNode = new JoinGroupNode();
         {
@@ -359,8 +359,8 @@ public class TestRemoteSparqlBuilderFactory extends
          * Resolve IVs that we will use below.
          */
         final BigdataURI dcCreator = valueFactory.asValue(DC.CREATOR);
-        final BigdataURI book1 = valueFactory.createURI("http://example.org/book/book1");
-        final BigdataURI book2 = valueFactory.createURI("http://example.org/book/book2");
+        final BigdataURI book1 = valueFactory.createIRI("http://example.org/book/book1");
+        final BigdataURI book2 = valueFactory.createIRI("http://example.org/book/book2");
         final BigdataLiteral book3 = valueFactory.createLiteral("Semantic Web Primer");
         final BigdataLiteral book4 = valueFactory.createLiteral("Semantic Web Primer", "DE");
         final BigdataLiteral book5 = valueFactory.createLiteral("12", XSD.INT);
@@ -369,7 +369,7 @@ public class TestRemoteSparqlBuilderFactory extends
         addResolveIVs(dcCreator, book1, book2, book3, book4, book5, book6);
 
         final BigdataURI serviceURI = valueFactory
-                .createURI("http://www.bigdata.com/myService");
+                .createIRI("http://www.bigdata.com/myService");
 
         final GraphPatternGroup<IGroupMemberNode> groupNode = new JoinGroupNode();
         {
@@ -465,7 +465,7 @@ public class TestRemoteSparqlBuilderFactory extends
     public void test_service_004() throws Exception {
         
         final BigdataURI serviceURI = valueFactory
-                .createURI("http://www.bigdata.com/myService");
+                .createIRI("http://www.bigdata.com/myService");
 
         final GraphPatternGroup<IGroupMemberNode> groupNode = new JoinGroupNode();
         {
@@ -501,7 +501,7 @@ public class TestRemoteSparqlBuilderFactory extends
          */
         {
             final MapBindingSet bset = new MapBindingSet();
-            bset.addBinding("s", new BNodeImpl("abc"));
+            bset.addBinding("s", SimpleValueFactory.getInstance().createBNode("abc"));
             bindingSets.add(bset);
         }
 
@@ -539,7 +539,7 @@ public class TestRemoteSparqlBuilderFactory extends
     public void test_service_005() throws Exception {
         
         final BigdataURI serviceURI = valueFactory
-                .createURI("http://www.bigdata.com/myService");
+                .createIRI("http://www.bigdata.com/myService");
 
         final GraphPatternGroup<IGroupMemberNode> groupNode = new JoinGroupNode();
         {
@@ -580,7 +580,7 @@ public class TestRemoteSparqlBuilderFactory extends
          */
         {
             final MapBindingSet bset = new MapBindingSet();
-            final BNode tmp = new BNodeImpl("abc");
+            final BNode tmp = SimpleValueFactory.getInstance().createBNode("abc");
             bset.addBinding("s", tmp);
             bset.addBinding("o", tmp);
             bindingSets.add(bset);
@@ -625,7 +625,7 @@ public class TestRemoteSparqlBuilderFactory extends
     public void test_service_006() throws Exception {
         
         final BigdataURI serviceURI = valueFactory
-                .createURI("http://www.bigdata.com/myService");
+                .createIRI("http://www.bigdata.com/myService");
 
         final GraphPatternGroup<IGroupMemberNode> groupNode = new JoinGroupNode();
         {
@@ -671,7 +671,7 @@ public class TestRemoteSparqlBuilderFactory extends
          */
         {
             final MapBindingSet bset = new MapBindingSet();
-            final BNode tmp = new BNodeImpl("abc");
+            final BNode tmp = SimpleValueFactory.getInstance().createBNode("abc");
             bset.addBinding("s", tmp);
             bset.addBinding("o", tmp);
             bset.addBinding("o1", tmp);
@@ -713,7 +713,7 @@ public class TestRemoteSparqlBuilderFactory extends
     public void test_service_007() throws Exception {
 
         final BigdataURI serviceURI = valueFactory
-                .createURI("http://www.bigdata.com/myService");
+                .createIRI("http://www.bigdata.com/myService");
 
         final GraphPatternGroup<IGroupMemberNode> groupNode = new JoinGroupNode();
         {
@@ -754,14 +754,14 @@ public class TestRemoteSparqlBuilderFactory extends
          */
         {
             final MapBindingSet bset = new MapBindingSet();
-            final BNode tmp = new BNodeImpl("abc");
+            final BNode tmp = SimpleValueFactory.getInstance().createBNode("abc");
             bset.addBinding("s", tmp);
             bset.addBinding("o", tmp);
             bindingSets.add(bset);
         }
         { // A 2nd solution is required to force the correlated var/bnode issue.
             final MapBindingSet bset = new MapBindingSet();
-            bset.addBinding("s", new LiteralImpl("Semantic Web Primer"));
+            bset.addBinding("s", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Semantic Web Primer"));
             bindingSets.add(bset);
         }
 
@@ -814,7 +814,7 @@ public class TestRemoteSparqlBuilderFactory extends
     public void test_service_008() throws Exception {
         
         final BigdataURI serviceURI = valueFactory
-                .createURI("http://www.bigdata.com/myService");
+                .createIRI("http://www.bigdata.com/myService");
 
         final GraphPatternGroup<IGroupMemberNode> groupNode = new JoinGroupNode();
         {
@@ -855,15 +855,15 @@ public class TestRemoteSparqlBuilderFactory extends
          */
         { // Note: Blank nodes ARE correlated for this solution.
             final MapBindingSet bset = new MapBindingSet();
-            final BNode tmp = new BNodeImpl("abc");
+            final BNode tmp = SimpleValueFactory.getInstance().createBNode("abc");
             bset.addBinding("s", tmp);
             bset.addBinding("o", tmp);
             bindingSets.add(bset);
         }
         { // Note: Blank nodes are NOT correlated for this solution.
             final MapBindingSet bset = new MapBindingSet();
-            final BNode tmp1 = new BNodeImpl("foo");
-            final BNode tmp2 = new BNodeImpl("bar");
+            final BNode tmp1 = SimpleValueFactory.getInstance().createBNode("foo");
+            final BNode tmp2 = SimpleValueFactory.getInstance().createBNode("bar");
             bset.addBinding("s", tmp1);
             bset.addBinding("o", tmp2);
             bindingSets.add(bset);
@@ -905,7 +905,7 @@ public class TestRemoteSparqlBuilderFactory extends
     public void test_service_009() throws Exception {
         
         final BigdataURI serviceURI = valueFactory
-                .createURI("http://www.bigdata.com/myService");
+                .createIRI("http://www.bigdata.com/myService");
         
         final String exprImage = "SERVICE <" + serviceURI + "> { ?s ?p ?o }";
         
@@ -937,7 +937,7 @@ public class TestRemoteSparqlBuilderFactory extends
        
         { 
         	final MapBindingSet bset = new MapBindingSet();
-            final BigdataURI tmp1 = valueFactory.createURI("p:p1");
+            final BigdataURI tmp1 = valueFactory.createIRI("p:p1");
             // @see https://jira.blazegraph.com/browse/BLZG-1951 (Strings in federated query not escaped)
             // this literal tests proper escaping of string literals in prepared SPARQL.
             final BigdataLiteral tmp2 = valueFactory.createLiteral("\"lit1\"");

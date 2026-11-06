@@ -1,7 +1,7 @@
 package com.bigdata.rdf.internal.impl.uri;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.rdf.internal.ILexiconConfiguration;
 import com.bigdata.rdf.internal.IV;
@@ -16,8 +16,8 @@ import com.bigdata.rdf.model.BigdataValueFactory;
 import com.bigdata.rdf.vocab.Vocabulary;
 
 /**
- * Class provides support for fully inline {@link URI}s for which a
- * {@link Vocabulary} item was registered for the {@link URI} <em>namespace</em>
+ * Class provides support for fully inline {@link IRI}s for which a
+ * {@link Vocabulary} item was registered for the {@link IRI} <em>namespace</em>
  * . An {@link URIExtensionIV} <strong>always</strong> has the <em>inline</em>
  * and <em>extension</em> bits set. {@link URIExtensionIV} are fully inline
  * since the <code>namespace</code> can be materialized from the
@@ -28,7 +28,7 @@ import com.bigdata.rdf.vocab.Vocabulary;
  */
 public class URIExtensionIV<V extends BigdataURI> 
     	extends AbstractInlineExtensionIV<V, Object> 
-		implements URI { 
+		implements IRI { 
 
     /**
      * 
@@ -83,7 +83,7 @@ public class URIExtensionIV<V extends BigdataURI>
     		final AbstractLiteralIV<BigdataLiteral, ?> delegateIV, 
     		final IV<?,?> namespaceIV) {
         
-        super(VTE.URI, true/* extension */, delegateIV.getDTE());
+        super(VTE.IRI, true/* extension */, delegateIV.getDTE());
 
         if (namespaceIV == null)
             throw new IllegalArgumentException();
@@ -117,11 +117,11 @@ public class URIExtensionIV<V extends BigdataURI>
     
     @Override
     public Object getInlineValue() { 
-        return new URIImpl(stringValue());
+        return org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(stringValue());
     }
     
     /**
-     * Extension IV is the <code>namespace</code> for the {@link URI}.
+     * Extension IV is the <code>namespace</code> for the {@link IRI}.
      */
     @Override
     public IV<BigdataURI, ?> getExtensionIV() {
@@ -156,7 +156,7 @@ public class URIExtensionIV<V extends BigdataURI>
     }
     
     ////////////////////////
-    // OpenRDF URI methods
+    // OpenRDF IRI methods
     ////////////////////////
     
     @Override
@@ -179,7 +179,7 @@ public class URIExtensionIV<V extends BigdataURI>
     }
     
     //
-    // End of OpenRDF URI methods.
+    // End of OpenRDF IRI methods.
     //
     
     @Override
@@ -226,12 +226,12 @@ public class URIExtensionIV<V extends BigdataURI>
 //
 //            v = setValue((V) config.asValueFromVocab(this));
 
-			final URI namespace = namespaceIV.asValue(lex);
+			final IRI namespace = namespaceIV.asValue(lex);
 			
 			final String localName = lex.getLexiconConfiguration()
 					.getInlineURILocalNameFromDelegate(namespace, delegateIV);
 			
-			v = setValue((V) f.createURI(namespace.stringValue(), localName));
+			v = setValue((V) f.createIRI(namespace.stringValue(), localName));
 			
 			v.setIV(this);
 

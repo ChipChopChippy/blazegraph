@@ -32,20 +32,21 @@ import java.util.Vector;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.zip.GZIPInputStream;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.RDFParserFactory;
-import org.openrdf.rio.RDFParserRegistry;
-import org.openrdf.rio.helpers.RDFHandlerBase;
-import org.openrdf.sail.SailException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.RDFParserFactory;
+import org.eclipse.rdf4j.rio.RDFParserRegistry;
+import org.eclipse.rdf4j.rio.helpers.AbstractRDFHandler;
+import org.eclipse.rdf4j.sail.SailException;
 
 import com.bigdata.journal.ITx;
 import com.bigdata.rdf.sail.BigdataSail.BigdataSailConnection;
@@ -65,7 +66,7 @@ public class InsertServlet extends BigdataRDFServlet {
      */
     private static final long serialVersionUID = 1L;
     
-    static private final transient Logger log = Logger.getLogger(InsertServlet.class); 
+    static private final transient Logger log = LogManager.getLogger(InsertServlet.class);
 
     public InsertServlet() {
         
@@ -155,7 +156,7 @@ public class InsertServlet extends BigdataRDFServlet {
 
 		final String mimeTypeStr = new MiniMime(contentType).getMimeType();
 
-		final RDFFormat format = RDFFormat.forMIMEType(mimeTypeStr);
+		final RDFFormat format = com.bigdata.rdf.rio.RDF4JFormatUtil.forMIMEType(mimeTypeStr);
 
         if (format == null) {
 
@@ -170,7 +171,7 @@ public class InsertServlet extends BigdataRDFServlet {
             log.info("RDFFormat=" + format);
         
         final RDFParserFactory rdfParserFactory = RDFParserRegistry
-                .getInstance().get(format);
+                .getInstance().get(format).orElse(null);
 
         if (rdfParserFactory == null) {
 
@@ -292,12 +293,12 @@ public class InsertServlet extends BigdataRDFServlet {
                 rdfParser.setValueFactory(conn.getTripleStore()
                         .getValueFactory());
 
-                rdfParser.setVerifyData(true);
+                com.bigdata.rdf.rio.RDFParserOptions.setVerifyData(rdfParser, true);
 
-                rdfParser.setStopAtFirstError(true);
+                
 
-                rdfParser
-                        .setDatatypeHandling(RDFParser.DatatypeHandling.IGNORE);
+                com.bigdata.rdf.rio.RDFParserOptions.setDatatypeHandling(
+                        rdfParser, com.bigdata.rdf.rio.DatatypeHandling.IGNORE);
 
                 rdfParser.setRDFHandler(new AddStatementHandler(conn
                         .getSailConnection(), nmodified, defaultContext));
@@ -465,9 +466,9 @@ public class InsertServlet extends BigdataRDFServlet {
 
                         // Use the default context if one was given and otherwise
                         // the URI from which the data are being read.
-//                        final Resource defactoContext = defaultContext == null ? new URIImpl(
+//                        final Resource defactoContext = defaultContext == null ? org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
 //                                url.toExternalForm()) : defaultContext;
-                    final Resource[] defactoContext = defaultContext.length == 0 ? new Resource[] { new URIImpl(
+                    final Resource[] defactoContext = defaultContext.length == 0 ? new Resource[] { org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                             url.toExternalForm()) } : defaultContext;
 
                     URLConnection hconn = null;
@@ -498,7 +499,7 @@ public class InsertServlet extends BigdataRDFServlet {
 
                         final String contentType = hconn.getContentType();
 
-                        RDFFormat format = RDFFormat.forMIMEType(new MiniMime(
+                        RDFFormat format = com.bigdata.rdf.rio.RDF4JFormatUtil.forMIMEType(new MiniMime(
                                 contentType).getMimeType());
                         
                         final String fileName = url.getPath();
@@ -524,7 +525,7 @@ public class InsertServlet extends BigdataRDFServlet {
                         }
 
                         final RDFParserFactory rdfParserFactory = RDFParserRegistry
-                                .getInstance().get(format);
+                                .getInstance().get(format).orElse(null);
 
                         if (rdfParserFactory == null) {
                         
@@ -541,12 +542,12 @@ public class InsertServlet extends BigdataRDFServlet {
                         rdfParser.setValueFactory(conn.getTripleStore()
                                 .getValueFactory());
 
-                        rdfParser.setVerifyData(true);
+                        com.bigdata.rdf.rio.RDFParserOptions.setVerifyData(rdfParser, true);
 
-                        rdfParser.setStopAtFirstError(true);
+                        
 
-                        rdfParser
-                                .setDatatypeHandling(RDFParser.DatatypeHandling.IGNORE);
+                        com.bigdata.rdf.rio.RDFParserOptions.setDatatypeHandling(
+                                rdfParser, com.bigdata.rdf.rio.DatatypeHandling.IGNORE);
 
                         rdfParser
                                 .setRDFHandler(new AddStatementHandler(conn
@@ -619,7 +620,7 @@ public class InsertServlet extends BigdataRDFServlet {
 	/**
      * Helper class adds statements to the sail as they are visited by a parser.
      */
-    static class AddStatementHandler extends RDFHandlerBase {
+    static class AddStatementHandler extends AbstractRDFHandler {
 
         private final BigdataSailConnection conn;
         private final AtomicLong nmodified;

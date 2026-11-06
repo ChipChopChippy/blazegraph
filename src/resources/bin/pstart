@@ -145,8 +145,8 @@ class BigdataServiceBase:
         self.properties['bigdata.codebase.host'] = "${bigdata.codebase.host}"
         self.properties['bigdata.codebase.port'] = "8081"
 
-        self.properties['log4j.configuration'] = os.path.join( \
-            self.appHome,  "var", "config", "logging", "log4j.properties")
+        self.properties['log4j2.configurationFile'] = os.path.join( \
+            self.appHome,  "var", "config", "logging", "log4j2.properties")
         self.properties['log4j.primary.configuration'] = os.path.join( \
             self.appHome,  "var", "config", "logging", \
             serviceName + "-logging.properties")
@@ -216,7 +216,10 @@ class BigdataServiceBase:
         # Calculate the service starter classpath
         starterClasspath = [
             os.path.join(self.appHome, "lib", "start.jar"),
-            os.path.join(self.appHome, "lib", "log4j.jar"),
+            os.path.join(self.appHome, "lib", "log4j-api.jar"),
+            os.path.join(self.appHome, "lib", "log4j-core.jar"),
+            os.path.join(self.appHome, "lib", "log4j-slf4j-impl.jar"),
+            os.path.join(self.appHome, "lib", "slf4j-api.jar"),
             os.path.join(self.appHome, "lib", "bigdata.jar"),
             os.path.join(self.appHome, "lib", "zookeeper.jar"),
             os.path.join(self.appHome, "lib", "jsk-lib.jar") ]

@@ -27,8 +27,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sparql.ast.optimizers;
 
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.rdf.internal.IV;
@@ -97,19 +97,19 @@ public class TestASTRunFirstRunLastOptimizer extends AbstractASTEvaluationTestCa
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV a = makeIV(new URIImpl("http://example/a"));
+        final IV a = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/a"));
         
-        final IV b = makeIV(new URIImpl("http://example/b"));
+        final IV b = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/b"));
         
-        final IV c = makeIV(new URIImpl("http://example/c"));
+        final IV c = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/c"));
 
-        final IV d = makeIV(new URIImpl("http://example/d"));
+        final IV d = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/d"));
 
-        final IV e = makeIV(new URIImpl("http://example/e"));
+        final IV e = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/e"));
 
-        final IV f = makeIV(new URIImpl("http://example/f"));
+        final IV f = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/f"));
 
-        final IV g = makeIV(new URIImpl("http://example/g"));
+        final IV g = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/g"));
 
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -125,7 +125,7 @@ public class TestASTRunFirstRunLastOptimizer extends AbstractASTEvaluationTestCa
             		new FunctionNode(FunctionRegistry.GT, null,
             				new ValueExpressionNode[] {
             					new VarNode("x"),
-            					new ConstantNode(makeIV(new LiteralImpl("0", XSD.INTEGER)))
+            					new ConstantNode(makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("0", XSD.INTEGER)))
             		})));
             
             where.addChild(new StatementPatternNode(new VarNode("a"),
@@ -162,7 +162,7 @@ public class TestASTRunFirstRunLastOptimizer extends AbstractASTEvaluationTestCa
             		new FunctionNode(FunctionRegistry.GT, null,
             				new ValueExpressionNode[] {
             					new VarNode("y"),
-            					new ConstantNode(makeIV(new LiteralImpl("0", XSD.INTEGER)))
+            					new ConstantNode(makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("0", XSD.INTEGER)))
             		})));
             
             // post-filter
@@ -170,7 +170,7 @@ public class TestASTRunFirstRunLastOptimizer extends AbstractASTEvaluationTestCa
             		new FunctionNode(FunctionRegistry.GT, null,
             				new ValueExpressionNode[] {
             					new VarNode("z"),
-            					new ConstantNode(makeIV(new LiteralImpl("0", XSD.INTEGER)))
+            					new ConstantNode(makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("0", XSD.INTEGER)))
             		})));
             
             given.setProjection(projection);
@@ -192,7 +192,7 @@ public class TestASTRunFirstRunLastOptimizer extends AbstractASTEvaluationTestCa
             		new FunctionNode(FunctionRegistry.GT, null,
             				new ValueExpressionNode[] {
             					new VarNode("x"),
-            					new ConstantNode(makeIV(new LiteralImpl("0", XSD.INTEGER)))
+            					new ConstantNode(makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("0", XSD.INTEGER)))
             		})));
             
             final StatementPatternNode eSPN = new StatementPatternNode(new VarNode("e"),
@@ -229,7 +229,7 @@ public class TestASTRunFirstRunLastOptimizer extends AbstractASTEvaluationTestCa
             		new FunctionNode(FunctionRegistry.GT, null,
             				new ValueExpressionNode[] {
             					new VarNode("y"),
-            					new ConstantNode(makeIV(new LiteralImpl("0", XSD.INTEGER)))
+            					new ConstantNode(makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("0", XSD.INTEGER)))
             		})));
             
             // post-filter
@@ -237,7 +237,7 @@ public class TestASTRunFirstRunLastOptimizer extends AbstractASTEvaluationTestCa
             		new FunctionNode(FunctionRegistry.GT, null,
             				new ValueExpressionNode[] {
             					new VarNode("z"),
-            					new ConstantNode(makeIV(new LiteralImpl("0", XSD.INTEGER)))
+            					new ConstantNode(makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("0", XSD.INTEGER)))
             		})));
 
             expected.setProjection(projection);
@@ -286,21 +286,21 @@ public class TestASTRunFirstRunLastOptimizer extends AbstractASTEvaluationTestCa
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV serviceURI = makeIV(new URIImpl("http://example/service"));
+        final IV serviceURI = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/service"));
 
-        final IV a = makeIV(new URIImpl("http://example/a"));
+        final IV a = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/a"));
         
-        final IV b = makeIV(new URIImpl("http://example/b"));
+        final IV b = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/b"));
         
-        final IV c = makeIV(new URIImpl("http://example/c"));
+        final IV c = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/c"));
 
-        final IV d = makeIV(new URIImpl("http://example/d"));
+        final IV d = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/d"));
 
-        final IV e = makeIV(new URIImpl("http://example/e"));
+        final IV e = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/e"));
 
-        final IV f = makeIV(new URIImpl("http://example/f"));
+        final IV f = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/f"));
 
-        final IV g = makeIV(new URIImpl("http://example/g"));
+        final IV g = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/g"));
 
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -316,7 +316,7 @@ public class TestASTRunFirstRunLastOptimizer extends AbstractASTEvaluationTestCa
                     new FunctionNode(FunctionRegistry.GT, null,
                             new ValueExpressionNode[] {
                                 new VarNode("x"),
-                                new ConstantNode(makeIV(new LiteralImpl("0", XSD.INTEGER)))
+                                new ConstantNode(makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("0", XSD.INTEGER)))
                     })));
 
             where.addChild(new StatementPatternNode(new VarNode("a"),
@@ -366,7 +366,7 @@ public class TestASTRunFirstRunLastOptimizer extends AbstractASTEvaluationTestCa
                     new FunctionNode(FunctionRegistry.GT, null,
                             new ValueExpressionNode[] {
                                 new VarNode("y"),
-                                new ConstantNode(makeIV(new LiteralImpl("0", XSD.INTEGER)))
+                                new ConstantNode(makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("0", XSD.INTEGER)))
                     })));
             
             // post-filter
@@ -374,7 +374,7 @@ public class TestASTRunFirstRunLastOptimizer extends AbstractASTEvaluationTestCa
                     new FunctionNode(FunctionRegistry.GT, null,
                             new ValueExpressionNode[] {
                                 new VarNode("z"),
-                                new ConstantNode(makeIV(new LiteralImpl("0", XSD.INTEGER)))
+                                new ConstantNode(makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("0", XSD.INTEGER)))
                     })));
             
             given.setProjection(projection);
@@ -396,7 +396,7 @@ public class TestASTRunFirstRunLastOptimizer extends AbstractASTEvaluationTestCa
                     new FunctionNode(FunctionRegistry.GT, null,
                             new ValueExpressionNode[] {
                                 new VarNode("x"),
-                                new ConstantNode(makeIV(new LiteralImpl("0", XSD.INTEGER)))
+                                new ConstantNode(makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("0", XSD.INTEGER)))
                     })));
             
             {
@@ -449,7 +449,7 @@ public class TestASTRunFirstRunLastOptimizer extends AbstractASTEvaluationTestCa
                     new FunctionNode(FunctionRegistry.GT, null,
                             new ValueExpressionNode[] {
                                 new VarNode("y"),
-                                new ConstantNode(makeIV(new LiteralImpl("0", XSD.INTEGER)))
+                                new ConstantNode(makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("0", XSD.INTEGER)))
                     })));
             
             // post-filter
@@ -457,7 +457,7 @@ public class TestASTRunFirstRunLastOptimizer extends AbstractASTEvaluationTestCa
                     new FunctionNode(FunctionRegistry.GT, null,
                             new ValueExpressionNode[] {
                                 new VarNode("z"),
-                                new ConstantNode(makeIV(new LiteralImpl("0", XSD.INTEGER)))
+                                new ConstantNode(makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("0", XSD.INTEGER)))
                     })));
 
             expected.setProjection(projection);

@@ -27,8 +27,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sparql.ast.optimizers;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.rdf.sparql.ast.AbstractASTEvaluationTestCase;
 
 /**
@@ -40,7 +41,7 @@ import com.bigdata.rdf.sparql.ast.AbstractASTEvaluationTestCase;
 public class TestASTLiftPreFiltersOptimizer extends
         AbstractASTEvaluationTestCase {
 
-    private final static Logger log = Logger
+    private final static Logger log = LogManager
             .getLogger(TestASTLiftPreFiltersOptimizer.class);
     
     public TestASTLiftPreFiltersOptimizer() {

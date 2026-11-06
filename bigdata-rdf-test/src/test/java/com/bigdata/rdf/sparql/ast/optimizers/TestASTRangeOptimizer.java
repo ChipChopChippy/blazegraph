@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sparql.ast.optimizers;
 
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.rdf.internal.IV;
@@ -79,7 +79,7 @@ public class TestASTRangeOptimizer extends AbstractASTEvaluationTestCase {
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV p = makeIV(new URIImpl("http://example/p"));
+        final IV p = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/p"));
         
         final IV lower = new XSDNumericIV(25);
 
@@ -203,7 +203,7 @@ public class TestASTRangeOptimizer extends AbstractASTEvaluationTestCase {
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV p = makeIV(new URIImpl("http://example/p"));
+        final IV p = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/p"));
         
         final IV lower = new XSDNumericIV(25);
 
@@ -322,7 +322,7 @@ public class TestASTRangeOptimizer extends AbstractASTEvaluationTestCase {
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV p = makeIV(new URIImpl("http://example/p"));
+        final IV p = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/p"));
         
 //        final IV lower = new XSDNumericIV(25);
 
@@ -440,7 +440,7 @@ public class TestASTRangeOptimizer extends AbstractASTEvaluationTestCase {
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV p = makeIV(new URIImpl("http://example/p"));
+        final IV p = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/p"));
         
         final IV lower = new XSDNumericIV(25);
 
@@ -553,7 +553,7 @@ public class TestASTRangeOptimizer extends AbstractASTEvaluationTestCase {
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV p = makeIV(new URIImpl("http://example/p"));
+        final IV p = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/p"));
         
         final IV lower = new XSDNumericIV(25);
 
@@ -675,8 +675,8 @@ public class TestASTRangeOptimizer extends AbstractASTEvaluationTestCase {
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV s1 = makeIV(new URIImpl("http://example/s1"));
-        final IV p = makeIV(new URIImpl("http://example/p"));
+        final IV s1 = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/s1"));
+        final IV p = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/p"));
         
         final IV ten = new XSDNumericIV(10);
 
@@ -814,10 +814,10 @@ public class TestASTRangeOptimizer extends AbstractASTEvaluationTestCase {
          */
         final IBindingSet[] bsets = new IBindingSet[]{};
 
-        final IV s1 = makeIV(new URIImpl("http://example/s1"));
-        final IV s2 = makeIV(new URIImpl("http://example/s2"));
-        final IV s3 = makeIV(new URIImpl("http://example/s3"));
-        final IV p = makeIV(new URIImpl("http://example/p"));
+        final IV s1 = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/s1"));
+        final IV s2 = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/s2"));
+        final IV s3 = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/s3"));
+        final IV p = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/p"));
         
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);

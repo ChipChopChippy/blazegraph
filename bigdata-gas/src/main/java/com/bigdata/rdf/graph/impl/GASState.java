@@ -22,13 +22,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.query.algebra.evaluation.util.ValueComparator;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.algebra.evaluation.util.ValueComparator;
 
 import com.bigdata.rdf.graph.Factory;
 import com.bigdata.rdf.graph.IGASContext;
@@ -43,7 +44,7 @@ import com.bigdata.rdf.graph.util.GASUtil;
 
 public class GASState<VS, ES, ST> implements IGASState<VS, ES, ST> {
 
-    private static final Logger log = Logger.getLogger(GASState.class);
+    private static final Logger log = LogManager.getLogger(GASState.class);
 
     // /**
     // * The {@link GASEngine} on which the {@link IGASProgram} will be run.
@@ -396,7 +397,7 @@ public class GASState<VS, ES, ST> implements IGASState<VS, ES, ST> {
      * 
      * The IV interface classes can actually declare multiple interfaces that
      * are distinct in the openrdf model. For example, a TermId can be any kind
-     * of Value and implements the URI, BNode, and Literal interfaces. Thus,
+     * of Value and implements the IRI, BNode, and Literal interfaces. Thus,
      * interface testing on a TermId IV is not diagnostic. However, the IVs are
      * explicitly marked with isURI(), isBNode(), and isLiteral() methods. These
      * methods must be used in preference to interface tests (instanceof tests
@@ -453,7 +454,7 @@ public class GASState<VS, ES, ST> implements IGASState<VS, ES, ST> {
      */
     @Override
     public boolean isLinkAttrib(final Statement e,
-            final URI linkAttribType) {
+            final IRI linkAttribType) {
         return false;
     }
 

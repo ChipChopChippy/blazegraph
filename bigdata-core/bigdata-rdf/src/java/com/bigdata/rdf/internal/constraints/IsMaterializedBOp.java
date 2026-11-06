@@ -26,8 +26,9 @@ package com.bigdata.rdf.internal.constraints;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.bop.IVariable;
@@ -46,7 +47,7 @@ public class IsMaterializedBOp extends XSDBooleanIVValueExpression {
 	 */
     private static final long serialVersionUID = -7552628930845996572L;
 
-    private static final transient Logger log = Logger
+    private static final transient Logger log = LogManager
             .getLogger(IsMaterializedBOp.class);
 
     public interface Annotations extends XSDBooleanIVValueExpression.Annotations {

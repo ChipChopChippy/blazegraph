@@ -7,15 +7,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.openrdf.model.Graph;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Resource;
-import org.openrdf.model.util.GraphUtil;
-import org.openrdf.model.util.GraphUtilException;
-import org.openrdf.repository.config.RepositoryConfigException;
-import org.openrdf.repository.config.RepositoryImplConfigBase;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.util.Models;
+import org.eclipse.rdf4j.repository.config.RepositoryConfigException;
+import org.eclipse.rdf4j.repository.config.AbstractRepositoryImplConfig;
 
-public class BigdataRepositoryConfig extends RepositoryImplConfigBase {
+public class BigdataRepositoryConfig extends AbstractRepositoryImplConfig {
 
 	/*-----------*
 	 * Variables *
@@ -58,35 +57,28 @@ public class BigdataRepositoryConfig extends RepositoryImplConfigBase {
     }
     
 	@Override
-	public Resource export(Graph graph)
+	public Resource export(Model graph)
 	{
 		Resource implNode = super.export(graph);
 
 		if (propertiesFile != null) {
 			graph.add(implNode, BigdataConfigSchema.PROPERTIES, 
-                    graph.getValueFactory().createLiteral(propertiesFile));
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance()
+                            .createLiteral(propertiesFile));
 		}
 
 		return implNode;
 	}
 
 	@Override
-	public void parse(Graph graph, Resource implNode)
+	public void parse(Model graph, Resource implNode)
 		throws RepositoryConfigException
 	{
 		super.parse(graph, implNode);
 
-		try {
-			Literal propertiesLit = GraphUtil.getOptionalObjectLiteral(
-                    graph, implNode, BigdataConfigSchema.PROPERTIES);
-			if (propertiesLit != null) {
-				setPropertiesFile((propertiesLit).getLabel());
-			} else {
-                throw new RepositoryConfigException("Properties file required");
-            }
-		}
-		catch (GraphUtilException e) {
-			throw new RepositoryConfigException(e.getMessage(), e);
-		}
+        Literal propertiesLit = Models.objectLiteral(
+                graph.filter(implNode, BigdataConfigSchema.PROPERTIES, null))
+                .orElseThrow(() -> new RepositoryConfigException("Properties file required"));
+        setPropertiesFile(propertiesLit.getLabel());
 	}
 }

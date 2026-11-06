@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IConstant;
@@ -71,7 +71,7 @@ public class ServiceNode extends GroupMemberNodeBase<IGroupMemberNode>
             IJoinNode.Annotations, IGraphPatternContainer.Annotations {
 
         /**
-         * The {@link TermNode} for the SERVICE URI (either a simple variable or
+         * The {@link TermNode} for the SERVICE IRI (either a simple variable or
          * a simple constant).
          */
         String SERVICE_REF = "serviceRef";
@@ -150,7 +150,7 @@ public class ServiceNode extends GroupMemberNodeBase<IGroupMemberNode>
      * Construct a function node in the AST.
      * 
      * @param serviceRef
-     *            The value expression for the SERVICE URI.
+     *            The value expression for the SERVICE IRI.
      * @param groupNode
      *            The graph pattern used to invoke the service.
      *            
@@ -443,7 +443,7 @@ public class ServiceNode extends GroupMemberNodeBase<IGroupMemberNode>
        final IVariableOrConstant<?> serviceRef = 
           getServiceRef().getValueExpression();
        
-       URI serviceUri = null; // will be set if there is a URI
+       IRI serviceUri = null; // will be set if there is a IRI
        if (serviceRef!=null && serviceRef instanceof IConstant) {
           final IConstant<?> serviceRefConst = (IConstant<?>)serviceRef;
           final Object val = serviceRefConst.get();
@@ -451,8 +451,8 @@ public class ServiceNode extends GroupMemberNodeBase<IGroupMemberNode>
           if (val instanceof TermId<?>) {
              final TermId<?> valTerm = (TermId<?>)val;
              final BigdataValue bdVal = valTerm.getValue();
-             if (bdVal!=null && bdVal instanceof URI) {
-                serviceUri = (URI)bdVal;
+             if (bdVal!=null && bdVal instanceof IRI) {
+                serviceUri = (IRI)bdVal;
              }
           }
        }

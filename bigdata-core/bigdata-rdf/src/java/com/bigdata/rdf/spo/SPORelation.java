@@ -44,8 +44,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.Constant;
 import com.bigdata.bop.IBindingSet;
@@ -128,7 +129,7 @@ import cutthecrap.utils.striterators.Striterator;
  */
 public class SPORelation extends AbstractRelation<ISPO> {
 
-    protected static final transient Logger log = Logger
+    protected static final transient Logger log = LogManager
             .getLogger(SPORelation.class);
 
     private final Set<String> indexNames;

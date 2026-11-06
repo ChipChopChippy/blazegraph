@@ -34,12 +34,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.openrdf.model.BNode;
-import org.openrdf.model.Graph;
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.rdf.internal.IV;
 import com.bigdata.rdf.internal.NotMaterializedException;
@@ -70,7 +70,7 @@ public class VoID {
      * The graph in which the service description is accumulated (from the
      * constructor).
      */
-    private final Graph g;
+    private final Model g;
     
     /**
      * The KB instance that is being described (from the constructor).
@@ -116,7 +116,7 @@ public class VoID {
      *            (the bigdata namespace of the dataset is obtained from the
      *            <i>tripleStore</i>).
      */
-    public VoID(final Graph g, final AbstractTripleStore tripleStore,
+    public VoID(final Model g, final AbstractTripleStore tripleStore,
             final String[] serviceURI, final Resource aDataset) {
 
         if (g == null)
@@ -144,7 +144,7 @@ public class VoID {
         
         this.serviceURI = serviceURI;
         
-        this.f = g.getValueFactory();
+        this.f = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance();
         
         this.aDataset = aDataset;
     
@@ -190,11 +190,11 @@ public class VoID {
         for (String uri : serviceURI) {
             g.add(aDataset,
                     VoidVocabularyDecl.sparqlEndpoint,
-                    f.createURI(uri + "/" + ConnectOptions.urlEncode(namespace)
+                    f.createIRI(uri + "/" + ConnectOptions.urlEncode(namespace)
                             + "/sparql"));
         }
 
-        // any URI is considered to be an entity.
+        // any IRI is considered to be an entity.
         g.add(aDataset, VoidVocabularyDecl.uriRegexPattern,
                 f.createLiteral("^.*"));
 
@@ -328,7 +328,7 @@ public class VoID {
             // property partitions.
             for (IVCount tmp : predicatePartitionCounts) {
 
-                final URI p = (URI) tmp.getValue();
+                final IRI p = (IRI) tmp.getValue();
 
                 String namespace = p.getNamespace();
 
@@ -354,7 +354,7 @@ public class VoID {
         for (String namespace : a) {
 
             g.add(aDataset, VoidVocabularyDecl.vocabulary,
-                    f.createURI(namespace));
+                    f.createIRI(namespace));
 
         }
 
@@ -374,8 +374,8 @@ public class VoID {
             final IVCount[] predicatePartitionCounts,
             final IVCount[] classPartitionCounts) {
 
-        // The graph is a Graph.
-        g.add(graph, RDF.TYPE, SD.Graph);
+        // The graph is a Model.
+        g.add(graph, RDF.TYPE, SD.Model);
 
         // #of triples in the default graph
         g.add(graph, VoidVocabularyDecl.triples,
@@ -398,7 +398,7 @@ public class VoID {
 
             final BNode propertyPartition = f.createBNode();
 
-            final URI p = (URI) tmp.getValue();
+            final IRI p = (IRI) tmp.getValue();
 
             g.add(graph, VoidVocabularyDecl.propertyPartition,
                     propertyPartition);

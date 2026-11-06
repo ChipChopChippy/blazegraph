@@ -30,8 +30,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.relation.accesspath.IElementFilter;
 
 import cutthecrap.utils.striterators.Filter;
@@ -46,7 +47,7 @@ import cutthecrap.utils.striterators.Striterator;
  */
 public class ChunkedWrappedIterator<E> implements IChunkedOrderedIterator<E> {
 
-    private static transient final Logger log = Logger.getLogger(ChunkedWrappedIterator.class);
+    private static transient final Logger log = LogManager.getLogger(ChunkedWrappedIterator.class);
 
     private volatile boolean open = true;
 

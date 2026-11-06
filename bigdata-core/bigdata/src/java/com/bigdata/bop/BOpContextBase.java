@@ -27,6 +27,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package com.bigdata.bop;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 
@@ -46,7 +48,7 @@ import com.bigdata.service.IBigdataFederation;
  */
 public class BOpContextBase {
 
-//    static private final transient Logger log = Logger.getLogger(BOpContextBase.class);
+//    static private final transient Logger log = LogManager.getLogger(BOpContextBase.class);
 
     /**
      * The federation iff running in scale-out.

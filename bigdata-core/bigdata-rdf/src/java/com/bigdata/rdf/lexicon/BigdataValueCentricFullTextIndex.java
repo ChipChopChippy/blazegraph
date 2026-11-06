@@ -36,8 +36,9 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
 
 import com.bigdata.btree.DefaultTupleSerializer;
 import com.bigdata.btree.IndexMetadata;
@@ -65,7 +66,7 @@ import com.bigdata.search.TokenBuffer;
 public class BigdataValueCentricFullTextIndex extends FullTextIndex implements
         IValueCentricTextIndexer<Hit> {
 
-    final private static transient Logger log = Logger
+    final private static transient Logger log = LogManager
             .getLogger(BigdataValueCentricFullTextIndex.class);
 
     static public BigdataValueCentricFullTextIndex getInstance(
@@ -274,7 +275,7 @@ public class BigdataValueCentricFullTextIndex extends FullTextIndex implements
 
             }
 
-            final String languageCode = lit.getLanguage();
+            final String languageCode = lit.getLanguage().orElse(null);
 
             // Note: May be null (we will index plain literals).
             // if(languageCode==null) continue;

@@ -45,17 +45,18 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.vocabulary.OWL;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.model.vocabulary.XMLSchema;
-import org.openrdf.rio.rdfxml.RDFXMLParser;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.vocabulary.OWL;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
+import org.eclipse.rdf4j.rio.rdfxml.RDFXMLParser;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.Constant;
@@ -115,7 +116,7 @@ import com.bigdata.rdf.model.BigdataStatement;
 import com.bigdata.rdf.model.BigdataURI;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.rio.IStatementBuffer;
 import com.bigdata.rdf.rio.StatementBuffer;
 import com.bigdata.rdf.rules.BaseClosure;
@@ -201,7 +202,7 @@ abstract public class AbstractTripleStore extends
         AbstractResource<IDatabase<AbstractTripleStore>> implements ITripleStore,
         IRawTripleStore, IMutableDatabase<AbstractTripleStore> {
 
-    final static private Logger log = Logger.getLogger(AbstractTripleStore.class);
+    final static private Logger log = LogManager.getLogger(AbstractTripleStore.class);
     
     final protected static boolean INFO = log.isInfoEnabled();
     final protected static boolean DEBUG = log.isDebugEnabled();
@@ -467,7 +468,7 @@ abstract public class AbstractTripleStore extends
     }
     
     /**
-     * The {@link BigdataValueFactoryImpl} for namespace of the
+     * The {@link BigdataSimpleValueFactory} for namespace of the
      * {@link LexiconRelation} associated with this {@link AbstractTripleStore}.
      * 
      * @throws UnsupportedOperationException
@@ -672,7 +673,7 @@ abstract public class AbstractTripleStore extends
          * extension. You can trivially define a concrete instance of this class
          * which provides any (reasonable) number of {@link VocabularyDecl}
          * instances. Each {@link VocabularyDecl} declares the namespace(s) and
-         * the {@link URI}s for some ontology. A number of such classes have
+         * the {@link IRI}s for some ontology. A number of such classes have
          * been created and are combined by the
          * {@link #DEFAULT_VOCABULARY_CLASS}. You can create your own
          * {@link VocabularyDecl} classes and combine them within your own
@@ -690,7 +691,7 @@ abstract public class AbstractTripleStore extends
          * to time as additional {@link VocabularyDecl} are created and bundled
          * into a new default {@link Vocabulary}. However, a deployed concrete
          * instance of the default {@link Vocabulary} class MUST NOT be modified
-         * since that could introduce inconsistencies into the URI to IV mapping
+         * since that could introduce inconsistencies into the IRI to IV mapping
          * which it provides for {@link AbstractTripleStore}s created using that
          * class.
          */
@@ -935,7 +936,7 @@ abstract public class AbstractTripleStore extends
 		String VALUE_FACTORY_CLASS = AbstractTripleStore.class.getName()
 				+ ".valueFactoryClass";
 
-		String DEFAULT_VALUE_FACTORY_CLASS = BigdataValueFactoryImpl.class
+		String DEFAULT_VALUE_FACTORY_CLASS = BigdataSimpleValueFactory.class
 				.getName();
 
 		/*
@@ -1132,7 +1133,7 @@ abstract public class AbstractTripleStore extends
          * The maximum length of a String value which may be inlined into the
          * statement indices (default {@value #DEFAULT_MAX_INLINE_STRING_LENGTH}
          * ). Depending on the configuration, this may applies to literal label
-         * (and datatypeURI or language code), URI local names, full URIs, blank
+         * (and datatypeURI or language code), IRI local names, full URIs, blank
          * node IDs, etc. The {@link XSDStringExtension} is registered by the
          * {@link DefaultExtensionFactory} when GT ZERO (0).
          * <p>
@@ -1223,7 +1224,7 @@ abstract public class AbstractTripleStore extends
 
         /**
          * When <code>true</code> AND {@value #INLINE_XSD_DATATYPE_LITERALS} is
-         * <code>true</code>, literals having an xsd datatype URI which can not
+         * <code>true</code>, literals having an xsd datatype IRI which can not
          * be validated against that datatype will be rejected (default
          * {@link #DEFAULT_REJECT_INVALID_XSD_VALUES}). For example, when
          * <code>true</code> <code>abc^^xsd:int</code> would be rejected. When
@@ -1609,7 +1610,7 @@ abstract public class AbstractTripleStore extends
         addNamespace(RDF.NAMESPACE, "rdf");
         addNamespace(RDFS.NAMESPACE, "rdfs");
         addNamespace(OWL.NAMESPACE, "owl");
-        addNamespace(XMLSchema.NAMESPACE, "xsd");
+        addNamespace(XSD.NAMESPACE, "xsd");
 
     }
     
@@ -2073,7 +2074,7 @@ abstract public class AbstractTripleStore extends
              * AtomicDelete operation on the GRS winds up de-serializing the
              * Vocabulary class as part of the delete of the declaration of
              * the KB instance. This causes the Vocabulary object to be re-created
-             * within the BigdataValueFactoryImpl cache.  So we need to wipe it out
+             * within the BigdataSimpleValueFactory cache.  So we need to wipe it out
              * again here.
              * 
              * @see #948
@@ -2581,7 +2582,7 @@ abstract public class AbstractTripleStore extends
         {
 
             final byte[] fromKey = new byte[] {//
-            KeyBuilder.encodeByte(BlobIV.toFlags(VTE.URI)) //
+            KeyBuilder.encodeByte(BlobIV.toFlags(VTE.IRI)) //
             };
 
             final byte[] toKey = SuccessorUtil.successor(fromKey.clone());
@@ -2809,14 +2810,14 @@ abstract public class AbstractTripleStore extends
      */
 
     @Override
-    final public void addStatement(final Resource s, final URI p, final Value o) {
+    final public void addStatement(final Resource s, final IRI p, final Value o) {
         
         addStatement(s, p, o, null);
 
     }
 
     @Override
-    final public void addStatement(final Resource s, final URI p,
+    final public void addStatement(final Resource s, final IRI p,
             final Value o, final Resource c) {
 
         if (quads && c == null) {
@@ -2963,7 +2964,7 @@ abstract public class AbstractTripleStore extends
      * request!
      */
     @Override
-    final public boolean hasStatement(final Resource s, final URI p,
+    final public boolean hasStatement(final Resource s, final IRI p,
             final Value o) {
 
         return hasStatement(s, p, o, null/* c */);
@@ -2978,7 +2979,7 @@ abstract public class AbstractTripleStore extends
      * indices)!
      */
     @Override
-    final public boolean hasStatement(Resource s, URI p, Value o, Resource c) {
+    final public boolean hasStatement(Resource s, IRI p, Value o, Resource c) {
 
         /*
          * convert other Value object types to our object types.
@@ -2987,7 +2988,7 @@ abstract public class AbstractTripleStore extends
         
         s = (Resource) valueFactory.asValue(s);
 
-        p = (URI) valueFactory.asValue(p);
+        p = (IRI) valueFactory.asValue(p);
 
         o = valueFactory.asValue(o);
 
@@ -3045,7 +3046,7 @@ abstract public class AbstractTripleStore extends
     }
 
     @Override
-    final public long removeStatements(final Resource s, final URI p,
+    final public long removeStatements(final Resource s, final IRI p,
             final Value o) {
 
         return removeStatements(s, p, o, null/* c */);
@@ -3053,7 +3054,7 @@ abstract public class AbstractTripleStore extends
     }
 
     @Override
-    final public long removeStatements(final Resource s, final URI p,
+    final public long removeStatements(final Resource s, final IRI p,
             final Value o, final Resource c) {
 
         return getAccessPath(s, p, o, c).removeAll();
@@ -3068,7 +3069,7 @@ abstract public class AbstractTripleStore extends
     }
 
     @Override
-    final public BigdataStatement getStatement(final Resource s, final URI p,
+    final public BigdataStatement getStatement(final Resource s, final IRI p,
             final Value o) {
 
         return getStatement(s, p, o, null/* c */);
@@ -3076,7 +3077,7 @@ abstract public class AbstractTripleStore extends
     }
 
     @Override
-    final public BigdataStatement getStatement(final Resource s, final URI p,
+    final public BigdataStatement getStatement(final Resource s, final IRI p,
             final Value o, final Resource c) {
 
         if (s == null || p == null || o == null || (quads && c == null)) {
@@ -3107,7 +3108,7 @@ abstract public class AbstractTripleStore extends
 
     @Override
     final public BigdataStatementIterator getStatements(final Resource s,
-            final URI p, final Value o) {
+            final IRI p, final Value o) {
 
         return getStatements(s, p, o, null/* c */);
 
@@ -3115,7 +3116,7 @@ abstract public class AbstractTripleStore extends
 
     @Override
     final public BigdataStatementIterator getStatements(final Resource s,
-            final URI p, final Value o, final Resource c) {
+            final IRI p, final Value o, final Resource c) {
 
         return asStatementIterator(getAccessPath(s, p, o, c).iterator());
 
@@ -3205,14 +3206,14 @@ abstract public class AbstractTripleStore extends
     }
 
     @Override
-    public IAccessPath<ISPO> getAccessPath(final Resource s, final URI p,
+    public IAccessPath<ISPO> getAccessPath(final Resource s, final IRI p,
             final Value o) {
 
         return getAccessPath(s, p, o, null/*c*/, null/* filter */, null/* range */);
 
     }
 
-    public IAccessPath<ISPO> getAccessPath(final Resource s, final URI p,
+    public IAccessPath<ISPO> getAccessPath(final Resource s, final IRI p,
             final Value o, final IElementFilter<ISPO> filter) {
 
         return getAccessPath(s, p, o, null/* c */, filter, null/* range */);
@@ -3220,14 +3221,14 @@ abstract public class AbstractTripleStore extends
     }
     
     @Override
-    final public IAccessPath<ISPO> getAccessPath(final Resource s, final URI p,
+    final public IAccessPath<ISPO> getAccessPath(final Resource s, final IRI p,
             final Value o, Resource c) {
 
         return getAccessPath(s, p, o, c, null/* filter */, null/* range */);
 
     }
 
-    final public IAccessPath<ISPO> getAccessPath(final Resource s, final URI p,
+    final public IAccessPath<ISPO> getAccessPath(final Resource s, final IRI p,
             final Value o, final Resource c, final IElementFilter<ISPO> filter,
             final RangeBOp range) {
 
@@ -3335,14 +3336,14 @@ abstract public class AbstractTripleStore extends
 
     }
 
-    public IPredicate<ISPO> getPredicate(final Resource s, final URI p,
+    public IPredicate<ISPO> getPredicate(final Resource s, final IRI p,
             final Value o) {
 
         return getPredicate(s, p, o, null/*c*/, null/* filter */, null/* range */);
 
     }
 
-    public IPredicate<ISPO> getPredicate(final Resource s, final URI p,
+    public IPredicate<ISPO> getPredicate(final Resource s, final IRI p,
             final Value o, final Resource c) {
 
         return getPredicate(s, p, o, c, null/* filter */, null/* range */);
@@ -3354,7 +3355,7 @@ abstract public class AbstractTripleStore extends
      * Will return null if any of the Sesame Values are not present in the
      * database.
      */
-    final public IPredicate<ISPO> getPredicate(final Resource s, final URI p,
+    final public IPredicate<ISPO> getPredicate(final Resource s, final IRI p,
             final Value o, final Resource c, final IElementFilter<ISPO> filter,
             final RangeBOp range) {
 
@@ -3563,8 +3564,8 @@ abstract public class AbstractTripleStore extends
     private final Map<String, String> uriToPrefix = new LinkedHashMap<String, String>();
 
     /**
-     * Defines a transient mapping from a URI to a namespace prefix that will be
-     * used for that URI by {@link #toString()}.
+     * Defines a transient mapping from a IRI to a namespace prefix that will be
+     * used for that IRI by {@link #toString()}.
      * 
      * @param namespace
      * 
@@ -3703,7 +3704,7 @@ abstract public class AbstractTripleStore extends
 	        if (v == null)
 	            return "<NOT_FOUND#" + iv + ">";
 	
-	        s = (v instanceof URI ? abbrev((URI) v) : v.toString());
+	        s = (v instanceof IRI ? abbrev((IRI) v) : v.toString());
 	        
         } catch (NotMaterializedException ex) { }
 
@@ -3716,7 +3717,7 @@ abstract public class AbstractTripleStore extends
     /**
      * Substitutes in well know namespaces (rdf, rdfs, etc).
      */
-    final private String abbrev(final URI uri) {
+    final private String abbrev(final IRI uri) {
 
         final String uriString = uri.toString();
 
@@ -4757,7 +4758,7 @@ abstract public class AbstractTripleStore extends
 //     * Note: If you want to discover a data typed value, then form the
 //     * appropriate data typed {@link Literal} and use
 //     * {@link IRawTripleStore#getTermId(Value)}. Likewise, that method is also
-//     * more appropriate when you want to lookup a specific {@link URI}.
+//     * more appropriate when you want to lookup a specific {@link IRI}.
 //     * </p>
 //     * 
 //     * @param languageCode
@@ -4776,7 +4777,7 @@ abstract public class AbstractTripleStore extends
 //     *             if the search operation is interrupted.
 //     * 
 //     * @todo Abstract the search api so that it queries the terms index directly
-//     *       when a data typed literal or a URI is used (typed query).
+//     *       when a data typed literal or a IRI is used (typed query).
 //     */
 //    @SuppressWarnings("unchecked")
 //    public Iterator<IHit> textSearch(final String languageCode,
@@ -5048,7 +5049,7 @@ abstract public class AbstractTripleStore extends
      *             specified context.
      */
     public ICloseableIterator<IBindingSet> match(final Literal[] lits,
-            final URI[] preds, final URI cls) {
+            final IRI[] preds, final IRI cls) {
 
         if (lits == null || lits.length == 0)
             throw new IllegalArgumentException();

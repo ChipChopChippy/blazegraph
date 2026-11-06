@@ -35,8 +35,9 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.counters.CounterSet;
 import com.bigdata.counters.ICounterSetAccess;
 import com.bigdata.counters.IProcessCounters;
@@ -54,7 +55,7 @@ import com.bigdata.util.httpd.AbstractHTTPD;
 public class DefaultServiceFederationDelegate<T extends AbstractService>
         implements IFederationDelegate<T> {
 
-    protected final static Logger log = Logger
+    protected final static Logger log = LogManager
             .getLogger(DefaultServiceFederationDelegate.class);
     
     final protected T service;

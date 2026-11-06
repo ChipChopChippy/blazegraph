@@ -27,8 +27,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sparql.ast.optimizers;
 
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.rdf.internal.IV;
@@ -149,22 +149,22 @@ public class TestASTFlattenUnionsOptimizer extends AbstractASTEvaluationTestCase
         /*
          * Set up constants.
          */
-        final IV producerIV = makeIV(new URIImpl(
+        final IV producerIV = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/producer"));
 
-        final IV producer1IV = makeIV(new URIImpl(
+        final IV producer1IV = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromProducer1/Producer1"));
 
-        final IV reviewForIV = makeIV(new URIImpl(
+        final IV reviewForIV = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/reviewFor"));
 
-        final IV rating1IV = makeIV(new URIImpl(
+        final IV rating1IV = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/rating1"));
-        final IV rating2IV = makeIV(new URIImpl(
+        final IV rating2IV = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/rating2"));
-        final IV rating3IV = makeIV(new URIImpl(
+        final IV rating3IV = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/rating3"));
-        final IV rating4IV = makeIV(new URIImpl(
+        final IV rating4IV = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/rating4"));
         
         // The source AST.

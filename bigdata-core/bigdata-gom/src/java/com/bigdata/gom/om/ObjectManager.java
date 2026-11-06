@@ -28,17 +28,18 @@ package com.bigdata.gom.om;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Graph;
-import org.openrdf.model.Statement;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.GraphQuery;
-import org.openrdf.query.GraphQueryResult;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.repository.RepositoryException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.GraphQuery;
+import org.eclipse.rdf4j.query.GraphQueryResult;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.repository.RepositoryException;
 
 import com.bigdata.bop.engine.QueryEngine;
 import com.bigdata.bop.fed.QueryEngineFactory;
@@ -68,7 +69,7 @@ import cutthecrap.utils.striterators.ICloseableIterator;
  */
 public class ObjectManager extends ObjectMgrModel {
     
-	private static final Logger log = Logger.getLogger(ObjectManager.class);
+	private static final Logger log = LogManager.getLogger(ObjectManager.class);
 	
 	final private BigdataSailRepository m_repo;
 	final private boolean readOnly;
@@ -302,7 +303,7 @@ public class ObjectManager extends ObjectMgrModel {
 
             final IV<?, ?> iv = addResolveIV(gpo);
 
-            final Graph g = m_describeCache.lookup(iv);
+            final Model g = m_describeCache.lookup(iv);
 
             if (g != null) {
 
