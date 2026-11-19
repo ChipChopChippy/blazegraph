@@ -32,9 +32,17 @@ jobs:
 
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v2
-      if: always() # Ensures this runs even if tests fail
+      if: always()
       with:
         files: "**/target/surefire-reports/*.xml"
+        # Only fail the check run on errors, or use "nothing" to never fail the check run
+        fail_on: "errors"
+        # Keep false so the reporter step itself doesn't fail the job (Maven already fails the build on real failures)
+        action_fail: "false"
+        # Optional: report failures across individual reruns rather than only the first
+        report_individual_runs: "true"
+        # Optional: skip collecting per-run details/annotations for large XML sets
+        ignore_runs: "false"
       
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
