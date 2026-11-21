@@ -39,6 +39,12 @@ If you enable authentication and expose the Blazegraph workbench, you should als
 ### Building the code ###
 As a quick start, run `mvn install -DskipTests` or the utility script `./scripts/mavenInstall.sh `.
 
+To build the standalone executable JAR with Java 21, run
+`mvn -PDeployment -pl blazegraph-jar -am package -DskipTests`. Start it with
+`java -jar blazegraph-jar/target/blazegraph-jar-3.0.0-SNAPSHOT.jar` and open
+`http://localhost:9999/blazegraph/`. The build skips tests and uses the current
+snapshot version; it is not a published release.
+
 For more detailed maven information see the [wiki](https://wiki.blazegraph.com/wiki/index.php/MavenNotes). 
 
 If you build with Java 7, you need to add Maven options for TLS 1.2, i.e. `export MAVEN_OPTS="-Dhttps.protocols=TLSv1.2"`.
