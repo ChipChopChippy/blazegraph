@@ -36,7 +36,7 @@ jobs:
       with:
         files: "**/target/surefire-reports/*.xml"
         # Only fail the check run on errors, or use "nothing" to never fail the check run
-        fail_on: "errors"
+        fail_on: "nothing"
         # Keep false so the reporter step itself doesn't fail the job (Maven already fails the build on real failures)
         action_fail: "false"
         # Optional: report failures across individual reruns rather than only the first
