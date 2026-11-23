@@ -23,9 +23,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package com.bigdata.rdf.internal;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.rdf.internal.impl.literal.AbstractLiteralIV;
 import com.bigdata.rdf.internal.impl.uri.URIExtensionIV;
@@ -33,15 +34,15 @@ import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.vocab.Vocabulary;
 
 /**
- * Handler is mapped to a namespace prefix. When a URI is presented that matches
+ * Handler is mapped to a namespace prefix. When a IRI is presented that matches
  * the handler's namespace prefix, this class attempts to parse the remaining
- * portion of the URI into an inline literal. The namespace prefix must be
+ * portion of the IRI into an inline literal. The namespace prefix must be
  * present in the vocabulary. The localName must be parseable into an inline
- * literal. If either of these things is not true the URI will not be inlined.
+ * literal. If either of these things is not true the IRI will not be inlined.
  */
 public abstract class InlineURIHandler {
 
-	private static final Logger log = Logger.getLogger(InlineURIHandler.class);
+	private static final Logger log = LogManager.getLogger(InlineURIHandler.class);
 	
     /**
      * The namespace prefix.
@@ -62,7 +63,7 @@ public abstract class InlineURIHandler {
     /**
 	 * Create a handler for the supplied namespace prefix - the handler will be
 	 * invoked iff it is the registered handler having the longest prefix LTE to
-	 * the actual URI.
+	 * the actual IRI.
 	 */
     public InlineURIHandler(final String namespace) {
 
@@ -77,7 +78,7 @@ public abstract class InlineURIHandler {
      */
     public void init(final Vocabulary vocab) {
 
-    	this.namespaceIV = vocab.get(new URIImpl(namespace));
+    	this.namespaceIV = vocab.get(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(namespace));
 		
     	if (namespaceIV == null)
 			log.warn("No vocabulary entry for namespace - URIs with this namespace will not be inlined: namespace="
@@ -94,7 +95,7 @@ public abstract class InlineURIHandler {
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-	public URIExtensionIV createInlineIV(final URI uri) {
+	public URIExtensionIV createInlineIV(final IRI uri) {
 
         /*
          * If the namespace prefix is not in the vocabulary we can't inline

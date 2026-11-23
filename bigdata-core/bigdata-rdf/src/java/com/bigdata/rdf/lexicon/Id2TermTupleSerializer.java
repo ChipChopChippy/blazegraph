@@ -33,7 +33,7 @@ import java.io.ObjectOutput;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.btree.DefaultTupleSerializer;
 import com.bigdata.btree.ITuple;
@@ -48,7 +48,7 @@ import com.bigdata.rdf.internal.IVUtility;
 import com.bigdata.rdf.internal.impl.TermId;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.model.BigdataValueSerializer;
 import com.bigdata.rdf.store.AbstractTripleStore;
 import com.bigdata.util.Bytes;
@@ -72,7 +72,7 @@ public class Id2TermTupleSerializer extends DefaultTupleSerializer<IV, BigdataVa
     private String namespace;
     
     /**
-     * A (de-)serialized backed by a {@link BigdataValueFactoryImpl} for the
+     * A (de-)serialized backed by a {@link BigdataSimpleValueFactory} for the
      * {@link #namespace} of the owning {@link LexiconRelation}.
      */
     transient private BigdataValueSerializer<BigdataValue> valueSer;
@@ -205,7 +205,7 @@ public class Id2TermTupleSerializer extends DefaultTupleSerializer<IV, BigdataVa
     /**
      * De-serializes the {@link ITuple} as a {@link BigdataValue}, including
      * the term identifier extracted from the unsigned byte[] key, and sets
-     * the appropriate {@link BigdataValueFactoryImpl} reference on that object.
+     * the appropriate {@link BigdataSimpleValueFactory} reference on that object.
      */
     public BigdataValue deserialize(final ITuple tuple) {
 

@@ -67,18 +67,18 @@ public class StressTestCentos extends AbstractTripleStoreTestCase {
                 StatementBuffer<BigdataStatement> sb = new StatementBuffer<BigdataStatement>(
                         store, 20000);
                 
-                BigdataURI g = store.getValueFactory().createURI(
+                BigdataURI g = store.getValueFactory().createIRI(
                         "http://test/g" + k);
 
                 for (int l = 0; l < M; l++) {
 
-                    BigdataURI s = store.getValueFactory().createURI(
+                    BigdataURI s = store.getValueFactory().createIRI(
                             "http://test/s" + (l % 99));
                     
-                    BigdataURI p = store.getValueFactory().createURI(
+                    BigdataURI p = store.getValueFactory().createIRI(
                             "http://test/p" + (l % 37));
                     
-                    BigdataURI o = store.getValueFactory().createURI(
+                    BigdataURI o = store.getValueFactory().createIRI(
                             "http://test/o" + (l % 399));
                     
                     sb.add(store.getValueFactory().createStatement(s, p, o, g,

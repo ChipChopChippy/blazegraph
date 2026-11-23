@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.rdf.graph.impl.bd;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.rdf.graph.IGASContext;
 import com.bigdata.rdf.graph.IGASEngine;
@@ -107,7 +107,7 @@ public class TestSSSP extends AbstractBigdataGraphTestCase {
                     .newGASContext(graphAccessor, new SSSP());
 
             // Set constraint on the visited link types.
-            gasContext.setLinkType((URI) p.getFoafKnows());
+            gasContext.setLinkType((IRI) p.getFoafKnows());
 
             final IGASState<SSSP.VS, SSSP.ES, Integer> gasState = gasContext.getGASState();
             
@@ -162,10 +162,10 @@ public class TestSSSP extends AbstractBigdataGraphTestCase {
                     .newGASContext(graphAccessor, new SSSP());
 
             // Set constraint on the visited link types.
-            gasContext.setLinkType((URI) p.getFoafKnows());
+            gasContext.setLinkType((IRI) p.getFoafKnows());
 
             // Set constraint on the visited link attribute types.
-            gasContext.setLinkAttributeType((URI) p.getLinkWeight());
+            gasContext.setLinkAttributeType((IRI) p.getLinkWeight());
 
             final IGASState<SSSP.VS, SSSP.ES, Integer> gasState = gasContext.getGASState();
             

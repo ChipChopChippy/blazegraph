@@ -26,10 +26,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 package com.bigdata.util.config;
 
 import java.net.URL;
+import java.io.File;
+import java.net.URI;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
-import org.apache.log4j.xml.DOMConfigurator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
 
 /**
  * Utility class that provides a set of static convenience methods related to
@@ -37,22 +39,21 @@ import org.apache.log4j.xml.DOMConfigurator;
  * the components of the system. The methods of this class can be useful both in
  * Jini configuration files, as well as in the system components themselves.
  * <p>
- * This class relies on the presence of either the
- * <code>log4j.configuration</code> or the
- * <code>log4j.primary.configuration</code> property.
+ * This class uses the <code>log4j2.configurationFile</code> property when it
+ * is set.
  * <p>
- * If neither of those properties is found, then this class searches the
+ * If that property is not set, this class searches the
  * CLASSPATH for a log4j configuration. While this is a change from the
  * historical, searching the CLASSPATH is necessary for webapp deployments.
  * <p>
- * This class understands files with any of the following extensions {
- * <code>.properties</code>, <code>.logging</code>, <code>.xml</code> . If
- * neither configuration property is defined, if the resource identified by the
+ * This class looks for Log4j 2 configuration files with either the
+ * <code>.properties</code> or <code>.xml</code> extension. If the configuration
+ * property is not defined, if the resource identified by the
  * property can not be located, or if a log4j configuration resource can not be
  * located in the default location along the class path then this class will
  * will a message on <em>stderr</em>.
  * <p>
- * A watcher is setup on the log4j configuration if one is found.
+ * The logging configuration is loaded from the selected location.
  * <p>
  * This class cannot be instantiated.
  * 
@@ -69,19 +70,8 @@ public class LogUtil {
      */
     static String getConfigPropertyValue() {
 
-        final String log4jConfig = System
-                .getProperty("log4j.primary.configuration");
-        
-        if (log4jConfig != null)
-            return log4jConfig;
-        
-        final String log4jDefaultConfig = System
-                .getProperty("log4j.configuration");
-        
-        if (log4jDefaultConfig != null)
-            return log4jDefaultConfig;
-        
-        return null;
+        return System
+                .getProperty("log4j2.configurationFile");
         
     }
     
@@ -90,22 +80,18 @@ public class LogUtil {
      * order and return the {@link URL} of the first such resource which is
      * found and <code>null</code> if none of the resources are found:
      * <ol>
-     * <li>log4j.properties</li>
-     * <li>log4j.logging</li>
-     * <li>log4j.xml</li>
+     * <li>log4j2.properties</li>
+     * <li>log4j2.xml</li>
      * </ol>
      * 
      * @return The {@link URL} of the first such resource which was found.
      */
     static URL getConfigPropertyValueUrl() {
 
-        URL url = LogUtil.class.getResource("/log4j.properties");
+        URL url = LogUtil.class.getResource("/log4j2.properties");
 
         if (url == null)
-            url = LogUtil.class.getResource("/log4j.logging");
-
-        if (url == null)
-            url = LogUtil.class.getResource("/log4j.xml");
+            url = LogUtil.class.getResource("/log4j2.xml");
 
         return url;
 
@@ -133,18 +119,11 @@ public class LogUtil {
          */
         final String log4jConfig = getConfigPropertyValue();
         
-        if( log4jConfig != null && (log4jConfig.endsWith(".properties") ||
-                                    log4jConfig.endsWith(".logging"))) {
+        if (log4jConfig != null) {
 
-            PropertyConfigurator.configureAndWatch(log4jConfig);
+            configure(log4jConfig);
             if (!quiet) System.out.println("INFO: " + LogUtil.class.getName()
-                    + ": Configure and watch: " + log4jConfig);
-
-        } else if (log4jConfig != null && log4jConfig.endsWith(".xml")) {
-
-            DOMConfigurator.configureAndWatch(log4jConfig);
-            if (!quiet) System.out.println("INFO: " + LogUtil.class.getName()
-                    + ": Configure and watch: " + log4jConfig);
+                    + ": Configure: " + log4jConfig);
 
         } else {
             
@@ -154,18 +133,9 @@ public class LogUtil {
             
             final URL log4jUrl = getConfigPropertyValueUrl();
             
-            if (log4jUrl != null &&//
-                    (log4jUrl.getFile().endsWith(".properties") || //
-                     log4jUrl.getFile().endsWith(".logging")//
-                    )) {
+            if (log4jUrl != null) {
 
-                PropertyConfigurator.configure(log4jUrl);
-                if (!quiet) System.out.println("INFO: " + LogUtil.class.getName()
-                        + ": Configure: " + log4jUrl);
-
-            } else if (log4jUrl != null && log4jUrl.getFile().endsWith(".xml")) {
-
-                DOMConfigurator.configure(log4jUrl);
+                configure(log4jUrl);
                 if (!quiet) System.out.println("INFO: " + LogUtil.class.getName()
                         + ": Configure: " + log4jUrl);
 
@@ -179,13 +149,7 @@ public class LogUtil {
                 System.err.println("ERROR: " + LogUtil.class.getName()
                      + " : Could not initialize Log4J logging utility.\n"
                      + "Set system property "
-                     +"'-Dlog4j.configuration="
-                     +"file:bigdata/src/resources/logging/log4j.properties'"
-                     +"\n  and / or \n"
-                     +"Set system property "
-                     +"'-Dlog4j.primary.configuration="
-                     +"file:<installDir>/"
-                     +"bigdata/src/resources/logging/log4j.properties'");
+                     +"'-Dlog4j2.configurationFile=file:<path-to-log4j2-configuration>'");
         
             }
             
@@ -193,16 +157,35 @@ public class LogUtil {
         
     }
 
+    private static void configure(String location) {
+        URI uri;
+        if (location.matches("^[A-Za-z]:[\\\\/].*")
+                || !location.matches("^[A-Za-z][A-Za-z0-9+.-]*:.*")) {
+            uri = new File(location).toURI();
+        } else {
+            uri = URI.create(location);
+        }
+        Configurator.reconfigure(uri);
+    }
+
+    private static void configure(URL location) {
+        try {
+            Configurator.reconfigure(location.toURI());
+        } catch (java.net.URISyntaxException e) {
+            throw new IllegalArgumentException("Invalid logging configuration URL: " + location, e);
+        }
+    }
+
     public static Logger getLog4jLogger(String componentName) {
-        return Logger.getLogger(componentName);
+        return LogManager.getLogger(componentName);
     }
 
     public static Logger getLog4jLogger(Class componentClass) {
-        return Logger.getLogger(componentClass);
+        return LogManager.getLogger(componentClass);
     }
 
     public static Logger getLog4jRootLogger() {
-        return Logger.getRootLogger();
+        return LogManager.getRootLogger();
     }
     
 }

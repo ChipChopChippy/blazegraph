@@ -29,8 +29,8 @@ package com.bigdata.rdf.rules;
 
 import java.util.Properties;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.model.BigdataValueFactory;
@@ -88,12 +88,12 @@ public class TestRuleRdfs07 extends AbstractRuleTestCase {
             
             final BigdataValueFactory f = store.getValueFactory();
             
-            final URI A = f.createURI("http://www.foo.org/A");
-            final URI B = f.createURI("http://www.foo.org/B");
-            final URI U = f.createURI("http://www.foo.org/U");
-            final URI Y = f.createURI("http://www.foo.org/Y");
+            final IRI A = f.createIRI("http://www.foo.org/A");
+            final IRI B = f.createIRI("http://www.foo.org/B");
+            final IRI U = f.createIRI("http://www.foo.org/U");
+            final IRI Y = f.createIRI("http://www.foo.org/Y");
     
-            final URI rdfsSubPropertyOf = RDFS.SUBPROPERTYOF;
+            final IRI rdfsSubPropertyOf = RDFS.SUBPROPERTYOF;
     
             store.addStatement(A, rdfsSubPropertyOf, B);
             store.addStatement(U, A, Y);
@@ -156,14 +156,14 @@ public class TestRuleRdfs07 extends AbstractRuleTestCase {
 
             final BigdataValueFactory f = store.getValueFactory();
 
-            final URI A = f.createURI("http://www.foo.org/A");
-            final URI B = f.createURI("http://www.foo.org/B");
-            final URI U1 = f.createURI("http://www.foo.org/U1");
-            final URI Y1 = f.createURI("http://www.foo.org/Y1");
-            final URI U2 = f.createURI("http://www.foo.org/U2");
-            final URI Y2 = f.createURI("http://www.foo.org/Y2");
+            final IRI A = f.createIRI("http://www.foo.org/A");
+            final IRI B = f.createIRI("http://www.foo.org/B");
+            final IRI U1 = f.createIRI("http://www.foo.org/U1");
+            final IRI Y1 = f.createIRI("http://www.foo.org/Y1");
+            final IRI U2 = f.createIRI("http://www.foo.org/U2");
+            final IRI Y2 = f.createIRI("http://www.foo.org/Y2");
     
-            final URI rdfsSubPropertyOf = RDFS.SUBPROPERTYOF;
+            final IRI rdfsSubPropertyOf = RDFS.SUBPROPERTYOF;
     
             store.addStatement(A, rdfsSubPropertyOf, B);
             store.addStatement(U1, A, Y1);
@@ -236,13 +236,13 @@ public class TestRuleRdfs07 extends AbstractRuleTestCase {
             
             final BigdataValueFactory f = store.getValueFactory();
             
-            final URI A = f.createURI("http://www.foo.org/A");
-            final URI B1 = f.createURI("http://www.foo.org/B1");
-            final URI B2 = f.createURI("http://www.foo.org/B2");
-            final URI U = f.createURI("http://www.foo.org/U");
-            final URI Y = f.createURI("http://www.foo.org/Y");
+            final IRI A = f.createIRI("http://www.foo.org/A");
+            final IRI B1 = f.createIRI("http://www.foo.org/B1");
+            final IRI B2 = f.createIRI("http://www.foo.org/B2");
+            final IRI U = f.createIRI("http://www.foo.org/U");
+            final IRI Y = f.createIRI("http://www.foo.org/Y");
     
-            final URI rdfsSubPropertyOf = RDFS.SUBPROPERTYOF;
+            final IRI rdfsSubPropertyOf = RDFS.SUBPROPERTYOF;
     
             store.addStatement(A, rdfsSubPropertyOf, B1);
             store.addStatement(A, rdfsSubPropertyOf, B2);

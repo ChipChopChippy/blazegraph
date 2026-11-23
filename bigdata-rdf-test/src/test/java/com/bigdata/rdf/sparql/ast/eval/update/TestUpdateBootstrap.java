@@ -32,10 +32,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.Constant;
@@ -80,7 +81,7 @@ import com.bigdata.rdf.spo.SPO;
  */
 public class TestUpdateBootstrap extends AbstractASTEvaluationTestCase {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(TestUpdateBootstrap.class);
     
     /**
@@ -127,13 +128,13 @@ public class TestUpdateBootstrap extends AbstractASTEvaluationTestCase {
 
             updateRoot.addChild(op);
 
-            final IV g1 = makeIV(valueFactory.createURI("http://www.bigdata.com/g1"));
-            final IV mike = makeIV(valueFactory.createURI("http://www.bigdata.com/Mike"));
-            final IV bryan = makeIV(valueFactory.createURI("http://www.bigdata.com/Bryan"));
-            final IV dc = makeIV(valueFactory.createURI("http://www.bigdata.com/DC"));
+            final IV g1 = makeIV(valueFactory.createIRI("http://www.bigdata.com/g1"));
+            final IV mike = makeIV(valueFactory.createIRI("http://www.bigdata.com/Mike"));
+            final IV bryan = makeIV(valueFactory.createIRI("http://www.bigdata.com/Bryan"));
+            final IV dc = makeIV(valueFactory.createIRI("http://www.bigdata.com/DC"));
             final IV rdfType = makeIV(valueFactory.asValue(RDF.TYPE));
             final IV rdfsLabel = makeIV(valueFactory.asValue(RDFS.LABEL));
-            final IV foafPerson = makeIV(valueFactory.createURI("http://xmlns.com/foaf/0.1/Person"));
+            final IV foafPerson = makeIV(valueFactory.createIRI("http://xmlns.com/foaf/0.1/Person"));
             final IV mikeL = makeIV(valueFactory.createLiteral("Mike"));
             final IV bryanL = makeIV(valueFactory.createLiteral("Bryan"));
             final IV dcL = makeIV(valueFactory.createLiteral("DC"));
@@ -257,13 +258,13 @@ public class TestUpdateBootstrap extends AbstractASTEvaluationTestCase {
         
         {
             final BigdataValueFactory f = store.getValueFactory();
-            final BigdataURI mike = f.createURI("http://www.bigdata.com/Mike");
-            final BigdataURI bryan = f.createURI("http://www.bigdata.com/Bryan");
-            final BigdataURI dc = f.createURI("http://www.bigdata.com/DC");
-            final BigdataURI g1 = f.createURI("http://www.bigdata.com/g1");
+            final BigdataURI mike = f.createIRI("http://www.bigdata.com/Mike");
+            final BigdataURI bryan = f.createIRI("http://www.bigdata.com/Bryan");
+            final BigdataURI dc = f.createIRI("http://www.bigdata.com/DC");
+            final BigdataURI g1 = f.createIRI("http://www.bigdata.com/g1");
             final BigdataURI rdfType = f.asValue(RDF.TYPE);
             final BigdataURI rdfsLabel = f.asValue(RDFS.LABEL);
-            final BigdataURI foafPerson = f.createURI("http://xmlns.com/foaf/0.1/Person");
+            final BigdataURI foafPerson = f.createIRI("http://xmlns.com/foaf/0.1/Person");
             final BigdataLiteral mikeL = f.createLiteral("Mike");
             final BigdataLiteral bryanL = f.createLiteral("Bryan");
             final BigdataLiteral DCL = f.createLiteral("DC");
@@ -355,7 +356,7 @@ public class TestUpdateBootstrap extends AbstractASTEvaluationTestCase {
             updateRoot.addChild(op);
 
             op.setSourceGraph(new ConstantNode(
-                    makeIV(new URIImpl(
+                    makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                             "file:src/test/java/com/bigdata/rdf/sparql/ast/eval/update/load_01.trig"))));
 
             /*
@@ -458,13 +459,13 @@ public class TestUpdateBootstrap extends AbstractASTEvaluationTestCase {
         
         {
             final BigdataValueFactory f = store.getValueFactory();
-            final BigdataURI mike = f.createURI("http://www.bigdata.com/Mike");
-            final BigdataURI bryan = f.createURI("http://www.bigdata.com/Bryan");
-            final BigdataURI dc = f.createURI("http://www.bigdata.com/DC");
-            final BigdataURI g1 = f.createURI("http://www.bigdata.com/g1");
+            final BigdataURI mike = f.createIRI("http://www.bigdata.com/Mike");
+            final BigdataURI bryan = f.createIRI("http://www.bigdata.com/Bryan");
+            final BigdataURI dc = f.createIRI("http://www.bigdata.com/DC");
+            final BigdataURI g1 = f.createIRI("http://www.bigdata.com/g1");
             final BigdataURI rdfType = f.asValue(RDF.TYPE);
             final BigdataURI rdfsLabel = f.asValue(RDFS.LABEL);
-            final BigdataURI foafPerson = f.createURI("http://xmlns.com/foaf/0.1/Person");
+            final BigdataURI foafPerson = f.createIRI("http://xmlns.com/foaf/0.1/Person");
             final BigdataLiteral mikeL = f.createLiteral("Mike");
             final BigdataLiteral bryanL = f.createLiteral("Bryan");
             final BigdataLiteral DCL = f.createLiteral("DC");

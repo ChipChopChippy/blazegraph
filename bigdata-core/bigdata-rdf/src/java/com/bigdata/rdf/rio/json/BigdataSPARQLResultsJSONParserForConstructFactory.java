@@ -16,13 +16,13 @@
  */
 package com.bigdata.rdf.rio.json;
 
-import org.openrdf.query.resultio.TupleQueryResultParserFactory;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.RDFParserFactory;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultParserFactory;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.RDFParserFactory;
 
 import com.bigdata.rdf.ServiceProviderHook;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 
 /**
  * A {@link TupleQueryResultParserFactory} for parsers of SPARQL-1.1 JSON Tuple
@@ -37,11 +37,11 @@ public class BigdataSPARQLResultsJSONParserForConstructFactory implements RDFPar
 		//TICKET 1284:  Quads needed. This is a workaround to create a value factory
 		//in the default namespace.
 		final String namespace = "kb";
-		return new BigdataSPARQLResultsJSONParserForConstruct(BigdataValueFactoryImpl.getInstance(namespace));
+		return new BigdataSPARQLResultsJSONParserForConstruct(BigdataSimpleValueFactory.getInstance(namespace));
 	}
 	
 	public RDFParser getParser(String namespace) {
-		return new BigdataSPARQLResultsJSONParserForConstruct(BigdataValueFactoryImpl.getInstance(namespace));
+		return new BigdataSPARQLResultsJSONParserForConstruct(BigdataSimpleValueFactory.getInstance(namespace));
 	}
 
 	@Override

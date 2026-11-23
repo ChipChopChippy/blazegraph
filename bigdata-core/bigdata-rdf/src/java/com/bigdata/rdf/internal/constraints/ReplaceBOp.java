@@ -27,12 +27,13 @@ package com.bigdata.rdf.internal.constraints;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.query.algebra.evaluation.ValueExprEvaluationException;
-import org.openrdf.query.algebra.evaluation.util.QueryEvaluationUtil;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.algebra.evaluation.ValueExprEvaluationException;
+import org.eclipse.rdf4j.query.algebra.evaluation.util.QueryEvaluationUtil;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -50,7 +51,7 @@ import com.bigdata.rdf.sparql.ast.GlobalAnnotations;
  */
 public class ReplaceBOp extends IVValueExpression<IV> implements INeedsMaterialization {
 
-	private static final transient Logger log = Logger.getLogger(ReplaceBOp.class);
+	private static final transient Logger log = LogManager.getLogger(ReplaceBOp.class);
 
     public interface Annotations extends XSDBooleanIVValueExpression.Annotations {
     	
@@ -229,8 +230,8 @@ public class ReplaceBOp extends IVValueExpression<IV> implements INeedsMateriali
 			
 			String result = p.matcher(argString).replaceAll(replacementString);
 
-			String lang = arg.getLanguage();
-			URI dt = arg.getDatatype();
+			String lang = arg.getLanguage().orElse(null);
+			IRI dt = arg.getDatatype();
 
 			if (lang != null) {
 				return valueFactory.createLiteral(result, lang);

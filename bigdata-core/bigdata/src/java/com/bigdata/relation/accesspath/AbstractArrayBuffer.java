@@ -29,6 +29,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 package com.bigdata.relation.accesspath;
 
 
+
+import org.apache.logging.log4j.LogManager;
 /**
  * A thread-safe buffer backed by a fixed capacity array. Concrete
  * implementations must empty the buffer in {@link #flush(int, Object[])}.
@@ -38,7 +40,7 @@ package com.bigdata.relation.accesspath;
  */
 abstract public class AbstractArrayBuffer<E> implements IBuffer<E> {
 
-//    protected static final Logger log = Logger.getLogger(AbstractArrayBuffer.class);
+//    protected static final Logger log = LogManager.getLogger(AbstractArrayBuffer.class);
 //    
 //    protected static final boolean INFO = log.isInfoEnabled();
 //

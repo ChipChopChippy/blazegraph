@@ -38,8 +38,9 @@ import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Value;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpContextBase;
@@ -71,7 +72,7 @@ import com.bigdata.rdf.store.LocalTripleStore;
  */
 public class AbstractASTEvaluationTestCase extends AbstractQueryEngineTestCase {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(AbstractASTEvaluationTestCase.class);
 
     /**

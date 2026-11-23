@@ -50,8 +50,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.MDC;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.ThreadContext;
 
 import com.bigdata.bfs.BigdataFileSystem;
 import com.bigdata.bfs.GlobalFileSystemHelper;
@@ -126,7 +127,7 @@ import cutthecrap.utils.striterators.Striterator;
  */
 public abstract class AbstractTask<T> implements Callable<T>, ITask<T> {
 
-    static protected final Logger log = Logger.getLogger(AbstractTask.class);
+    static protected final Logger log = LogManager.getLogger(AbstractTask.class);
 
     /**
      * Used to protect against re-submission of the same task object.
@@ -1823,12 +1824,12 @@ public abstract class AbstractTask<T> implements Callable<T>, ITask<T> {
 
         // Add to the logging context for the current thread.
             
-        MDC.put("taskname", getTaskName());
+        ThreadContext.put("taskname", getTaskName());
 
-        MDC.put("timestamp", Long.valueOf(timestamp));
+        ThreadContext.put("timestamp", Long.toString(timestamp));
         
         if(log.isInfoEnabled())
-        MDC.put("resources", Arrays.toString(resource));
+        ThreadContext.put("resources", Arrays.toString(resource));
         
     }
 
@@ -1838,12 +1839,12 @@ public abstract class AbstractTask<T> implements Callable<T>, ITask<T> {
      */
     protected void clearLoggingContext() {
 
-        MDC.remove("taskname");
+        ThreadContext.remove("taskname");
 
-        MDC.remove("timestamp");
+        ThreadContext.remove("timestamp");
 
         if(log.isInfoEnabled())
-        MDC.remove("resources");
+        ThreadContext.remove("resources");
         
     }
     

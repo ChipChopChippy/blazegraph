@@ -31,8 +31,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 /**
  * Dublin Core terms.
@@ -45,25 +45,25 @@ import org.openrdf.model.impl.URIImpl;
 public class DCTermsVocabularyDecl {
 
     public static final String NAMESPACE = "http://purl.org/dc/terms/";
-    public static final URI description = new URIImpl(NAMESPACE + "description");
-    public static final URI hasVersion = new URIImpl(NAMESPACE + "hasVersion");
-    public static final URI issued = new URIImpl(NAMESPACE + "issued");
-    public static final URI modified = new URIImpl(NAMESPACE + "modified");
-    public static final URI publisher = new URIImpl(NAMESPACE + "publisher");
-    public static final URI reviewer = new URIImpl(NAMESPACE + "reviewer");
-    public static final URI Review = new URIImpl(NAMESPACE + "Review");
-    public static final URI text = new URIImpl(NAMESPACE + "text");
-    public static final URI title = new URIImpl(NAMESPACE + "title");
+    public static final IRI description = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "description");
+    public static final IRI hasVersion = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "hasVersion");
+    public static final IRI issued = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "issued");
+    public static final IRI modified = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "modified");
+    public static final IRI publisher = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "publisher");
+    public static final IRI reviewer = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "reviewer");
+    public static final IRI Review = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "Review");
+    public static final IRI text = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "text");
+    public static final IRI title = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "title");
 
-    static private final URI[] uris = new URI[]{
-            new URIImpl(NAMESPACE),//
+    static private final IRI[] uris = new IRI[]{
+            org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE),//
             description, hasVersion, issued, modified, publisher, reviewer,
             Review, text, title, };
 
     public DCTermsVocabularyDecl() {
     }
 
-    public Iterator<URI> values() {
+    public Iterator<IRI> values() {
 
         return Collections.unmodifiableList(Arrays.asList(uris)).iterator();
 

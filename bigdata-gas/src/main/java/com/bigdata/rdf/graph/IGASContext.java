@@ -19,8 +19,8 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 /**
  * Execution context for an {@link IGASProgram}. This is distinct from the
@@ -134,7 +134,7 @@ public interface IGASContext<VS, ES, ST> extends Callable<IGASStats> {
      *         link type (there can be many types of links - the return value
      *         specifies which attribute is of interest).
      */
-    URI getLinkType();
+    IRI getLinkType();
 
     /**
      * Set an optional restriction on the type of the visited links.
@@ -148,7 +148,7 @@ public interface IGASContext<VS, ES, ST> extends Callable<IGASStats> {
      *            The link type to visit (optional). When <code>null</code>, all
      *            link types are visited.
      */
-    void setLinkType(URI linkType);
+    void setLinkType(IRI linkType);
 
     /**
      * Return non-<code>null</code> iff there is a single link attribute type to
@@ -159,9 +159,9 @@ public interface IGASContext<VS, ES, ST> extends Callable<IGASStats> {
      * @return The {@link Value} for the predicate that identifies the desired
      *         link attribute type.
      * 
-     * @see #setLinkType(URI)
+     * @see #setLinkType(IRI)
      */
-    URI getLinkAttributeType();
+    IRI getLinkAttributeType();
 
     /**
      * Imposes an optional restriction on which link attributes are considered
@@ -174,7 +174,7 @@ public interface IGASContext<VS, ES, ST> extends Callable<IGASStats> {
      *            are NOT visited (the topology of the graph is visited, but not
      *            the attributes for the edges).
      */
-    void setLinkAttributeType(URI linkType);
+    void setLinkAttributeType(IRI linkType);
     
     /**
      * Set an optional {@link IReducer} that will run after the

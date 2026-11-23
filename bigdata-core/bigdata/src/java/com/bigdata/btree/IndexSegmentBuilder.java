@@ -43,8 +43,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.data.IAbstractNodeData;
 import com.bigdata.btree.data.ILeafData;
 import com.bigdata.btree.data.INodeData;
@@ -226,7 +227,7 @@ public class IndexSegmentBuilder implements Callable<IndexSegmentCheckpoint> {
     /**
      * Logger.
      */
-	private static final Logger log = Logger
+	private static final Logger log = LogManager
 			.getLogger(IndexSegmentBuilder.class);
 
     /**

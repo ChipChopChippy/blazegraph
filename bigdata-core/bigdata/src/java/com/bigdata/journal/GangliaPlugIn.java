@@ -31,8 +31,9 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.counters.AbstractStatisticsCollector;
 import com.bigdata.counters.ganglia.BigdataGangliaService;
 import com.bigdata.counters.ganglia.BigdataMetadataFactory;
@@ -61,7 +62,7 @@ import com.bigdata.ganglia.util.GangliaUtil;
  */
 public class GangliaPlugIn implements IPlugIn<Journal, GangliaService> {
 
-    private static final Logger log = Logger.getLogger(GangliaPlugIn.class);
+    private static final Logger log = LogManager.getLogger(GangliaPlugIn.class);
 
     /**
      * Configuration options.

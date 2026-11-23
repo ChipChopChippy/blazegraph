@@ -26,8 +26,8 @@ package com.bigdata.rdf.internal;
 
 import java.util.Set;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.rdf.internal.impl.TermId;
 import com.bigdata.rdf.internal.impl.literal.LiteralExtensionIV;
@@ -42,9 +42,9 @@ import com.bigdata.rdf.vocab.Vocabulary;
  * Because of how {@link LiteralExtensionIV}s are encoded and decoded, the
  * {@link IExtension} will need to have on hand the {@link TermId} for its
  * datatype. This is accomplished via the {@link IDatatypeURIResolver} - the
- * {@link IExtension} will give the resolver the datatype {@link URI} it needs
+ * {@link IExtension} will give the resolver the datatype {@link IRI} it needs
  * resolved and the resolver will lookup (or create) the {@link TermId}. This
- * relies on the declaration of that {@link URI} as part of the
+ * relies on the declaration of that {@link IRI} as part of the
  * {@link Vocabulary}.
  */
 public interface IExtension<V extends BigdataValue> {

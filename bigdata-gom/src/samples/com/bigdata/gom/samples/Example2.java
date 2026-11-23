@@ -6,14 +6,15 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.eclipse.jetty.client.HttpClient;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.BindingSet;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.BindingSet;
 
 import com.bigdata.BigdataStatics;
 import com.bigdata.gom.gpo.IGPO;
@@ -53,7 +54,7 @@ import cutthecrap.utils.striterators.ICloseableIterator;
  */
 public class Example2 implements Callable<Void> {
 
-    private static final transient Logger log = Logger
+    private static final transient Logger log = LogManager
             .getLogger(Example2.class);
 
     private final IObjectManager om;
@@ -76,7 +77,7 @@ public class Example2 implements Callable<Void> {
      * @return The string value -or- <code>null</code> if the property is not
      *         bound to a {@link Literal}.
      */
-    static private String getStr(final IGPO gpo, final URI property) {
+    static private String getStr(final IGPO gpo, final IRI property) {
 
         final Value val = gpo.getValue(RDFS.LABEL);
 
@@ -105,8 +106,8 @@ public class Example2 implements Callable<Void> {
      * @return The link weight -or- <code>null</code> if the link either does
      *         not exist or does not have the link weight property.
      */
-    static private Integer getLinkWeight(final IGPO gpo, final URI connectTo,
-            final IGPO friendOfAFriend, final URI weightProperty) {
+    static private Integer getLinkWeight(final IGPO gpo, final IRI connectTo,
+            final IGPO friendOfAFriend, final IRI weightProperty) {
 
         final IGPO link = gpo.getLink(connectTo, friendOfAFriend);
 
@@ -140,15 +141,15 @@ public class Example2 implements Callable<Void> {
         final long begin = System.currentTimeMillis();
         
         /*
-         * URI used to recommend possible connections.
+         * IRI used to recommend possible connections.
          */
-        final BigdataURI connectTo = om.getValueFactory().createURI(
+        final BigdataURI connectTo = om.getValueFactory().createIRI(
                 "http://example.org/connectTo");
 
         /*
-         * URI used for the connection count (link weight).
+         * IRI used for the connection count (link weight).
          */
-        final BigdataURI weightProperty = om.getValueFactory().createURI(
+        final BigdataURI weightProperty = om.getValueFactory().createIRI(
                 "http://example.org/connectionCount");
 
         final ICloseableIterator<BindingSet> itr = om

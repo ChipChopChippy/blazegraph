@@ -30,13 +30,14 @@ import java.util.UUID;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.apache.log4j.Logger;
-import org.openrdf.query.Dataset;
-import org.openrdf.query.parser.sparql.manifest.ManifestTest;
-import org.openrdf.query.parser.sparql.manifest.SPARQL11ManifestTest;
-import org.openrdf.query.parser.sparql.manifest.SPARQLQueryTest;
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.dataset.DatasetRepository;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.query.Dataset;
+import org.eclipse.rdf4j.query.parser.sparql.manifest.ManifestTest;
+import org.eclipse.rdf4j.query.parser.sparql.manifest.SPARQL11ManifestTest;
+import org.eclipse.rdf4j.query.parser.sparql.manifest.SPARQLQueryTest;
+import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.dataset.DatasetRepository;
 
 import com.bigdata.BigdataStatics;
 import com.bigdata.btree.keys.CollatorEnum;
@@ -226,7 +227,7 @@ extends SPARQLQueryTest
 //    @Override
 //    protected Repository createRepository() throws Exception {
 //        Repository repo = newRepository();
-//        repo.initialize();
+//        repo.init();
 //        return repo;
 //    }
 
@@ -367,7 +368,7 @@ extends SPARQLQueryTest
 	 */
 	public static final String CONFIG_PROPERTY = "bigdata.configuration";
 	
-    private static final Logger _logger = Logger.getLogger ( BigdataFederationSparqlTest.class ) ;
+    private static final Logger _logger = LogManager.getLogger ( BigdataFederationSparqlTest.class ) ;
 
     /*
      * Instance fields for the current test.

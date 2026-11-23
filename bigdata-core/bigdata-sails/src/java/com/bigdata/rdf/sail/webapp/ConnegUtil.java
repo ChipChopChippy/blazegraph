@@ -32,10 +32,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
-import org.openrdf.query.resultio.BooleanQueryResultFormat;
-import org.openrdf.query.resultio.TupleQueryResultFormat;
-import org.openrdf.rio.RDFFormat;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.query.resultio.BooleanQueryResultFormat;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultFormat;
+import org.eclipse.rdf4j.rio.RDFFormat;
 
 import com.bigdata.counters.format.CounterSetFormat;
 import com.bigdata.rdf.properties.PropertiesFormat;
@@ -49,7 +50,7 @@ import com.bigdata.rdf.sail.webapp.client.MiniMime;
  */
 public class ConnegUtil {
 
-	static private final transient Logger log = Logger
+	static private final transient Logger log = LogManager
 			.getLogger(ConnegUtil.class);
 
 	private static final Pattern pattern;
@@ -229,7 +230,7 @@ public class ConnegUtil {
 				// RDFFormat
 				{
 
-					final RDFFormat rdfFormat = RDFFormat.forMIMEType(t
+					final RDFFormat rdfFormat = com.bigdata.rdf.rio.RDF4JFormatUtil.forMIMEType(t
 							.getMimeType());
 
 					if (rdfFormat != null) {
@@ -243,8 +244,12 @@ public class ConnegUtil {
 				// TupleQueryResultFormat
 				{
 
-					final TupleQueryResultFormat tupleFormat = TupleQueryResultFormat
-							.forMIMEType(t.getMimeType());
+					final TupleQueryResultFormat tupleFormat =
+							org.eclipse.rdf4j.common.lang.FileFormat.matchMIMEType(
+									t.getMimeType(),
+									org.eclipse.rdf4j.query.resultio.TupleQueryResultWriterRegistry
+											.getInstance().getKeys())
+                                    .map(f -> (TupleQueryResultFormat) f).orElse(null);
 
 					if (tupleFormat != null) {
 
@@ -257,8 +262,12 @@ public class ConnegUtil {
 				// BooleanQueryResultFormat
 				{
 
-					BooleanQueryResultFormat booleanFormat = BooleanQueryResultFormat
-							.forMIMEType(t.getMimeType());
+					BooleanQueryResultFormat booleanFormat =
+							org.eclipse.rdf4j.common.lang.FileFormat.matchMIMEType(
+									t.getMimeType(),
+									org.eclipse.rdf4j.query.resultio.BooleanQueryResultWriterRegistry
+											.getInstance().getKeys())
+                                    .map(f -> (BooleanQueryResultFormat) f).orElse(null);
 
 					if (booleanFormat != null) {
 

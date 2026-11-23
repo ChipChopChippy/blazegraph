@@ -35,8 +35,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.util.DaemonThreadFactory;
 
 /**
@@ -57,7 +58,7 @@ import com.bigdata.util.DaemonThreadFactory;
 public class SynchronizedHardReferenceQueueWithTimeout<T> implements
         IHardReferenceQueue<T> {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(SynchronizedHardReferenceQueueWithTimeout.class);
 
     /**

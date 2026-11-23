@@ -5,8 +5,9 @@ import java.math.BigInteger;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.base.CoreDatatype;
 
 import com.bigdata.rdf.internal.DTE;
 import com.bigdata.rdf.internal.DTEExtension;
@@ -27,8 +28,8 @@ import com.bigdata.rdf.model.BigdataURI;
  * <strong>always</strong> has the <em>inline</em> and <em>extension</em> bits
  * set. An instance of this class bundles together an inline value of some
  * primitive data type declared by {@link DTE} with the {@link IV} of the
- * datatype URI for the datatype literal. {@link LiteralExtensionIV} are fully inline
- * since the datatype URI can be materialized by the {@link IExtension} while
+ * datatype IRI for the datatype literal. {@link LiteralExtensionIV} are fully inline
+ * since the datatype IRI can be materialized by the {@link IExtension} while
  * {@link DTE} identifies the value space and the point in the value space is
  * directly inline.
  * 
@@ -227,7 +228,7 @@ public class LiteralExtensionIV<V extends BigdataLiteral>
 	}
 
 	@Override
-	public URI getDatatype() {
+	public IRI getDatatype() {
 		return getValue().getDatatype();
 	}
 
@@ -237,8 +238,13 @@ public class LiteralExtensionIV<V extends BigdataLiteral>
 	}
 
 	@Override
-	public String getLanguage() {
+	public java.util.Optional<String> getLanguage() {
 		return getValue().getLanguage();
+	}
+
+	@Override
+	public CoreDatatype getCoreDatatype() {
+		return CoreDatatype.from(getDatatype());
 	}
 
 	@Override

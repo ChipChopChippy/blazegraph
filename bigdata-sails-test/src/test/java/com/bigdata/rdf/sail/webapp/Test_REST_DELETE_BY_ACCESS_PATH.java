@@ -23,11 +23,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sail.webapp;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
 
 import junit.framework.Test;
 
@@ -92,7 +92,7 @@ public class Test_REST_DELETE_BY_ACCESS_PATH<S extends IIndexManager> extends
 
       final long mutationResult = doDeleteWithAccessPath(//
             // requestPath,//
-            new URIImpl("http://www.bigdata.com/Mike"),// s
+            org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/Mike"),// s
             null,// p
             null);
 
@@ -110,7 +110,7 @@ public class Test_REST_DELETE_BY_ACCESS_PATH<S extends IIndexManager> extends
       final long mutationResult = doDeleteWithAccessPath(//
             // requestPath,//
             null,// s
-            new URIImpl("http://www.w3.org/2000/01/rdf-schema#label"),// p
+            org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.w3.org/2000/01/rdf-schema#label"),// p
             null// o
       );
 
@@ -119,7 +119,7 @@ public class Test_REST_DELETE_BY_ACCESS_PATH<S extends IIndexManager> extends
    }
 
    /**
-    * Delete everything with a specific object (a URI).
+    * Delete everything with a specific object (a IRI).
     */
    public void test_DELETE_accessPath_delete_o_URI() throws Exception {
 
@@ -129,7 +129,7 @@ public class Test_REST_DELETE_BY_ACCESS_PATH<S extends IIndexManager> extends
             // requestPath,//
             null,// s
             null,// p
-            new URIImpl("http://xmlns.com/foaf/0.1/Person")// o
+            org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://xmlns.com/foaf/0.1/Person")// o
       );
 
       assertEquals(3, mutationResult);
@@ -147,7 +147,7 @@ public class Test_REST_DELETE_BY_ACCESS_PATH<S extends IIndexManager> extends
             // requestPath,//
             null,// s
             null,// p
-            new URIImpl("http://www.bigdata.com/Bryan")// o
+            org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/Bryan")// o
       );
 
       assertEquals(1, mutationResult);
@@ -155,7 +155,7 @@ public class Test_REST_DELETE_BY_ACCESS_PATH<S extends IIndexManager> extends
    }
 
    /**
-    * Delete everything with a specific predicate and object (a URI).
+    * Delete everything with a specific predicate and object (a IRI).
     */
    public void test_DELETE_accessPath_delete_p_o_URI() throws Exception {
 
@@ -165,7 +165,7 @@ public class Test_REST_DELETE_BY_ACCESS_PATH<S extends IIndexManager> extends
             // requestPath,//
             null,// s
             RDF.TYPE,// p
-            new URIImpl("http://xmlns.com/foaf/0.1/Person")// o
+            org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://xmlns.com/foaf/0.1/Person")// o
       );
 
       assertEquals(3, mutationResult);
@@ -183,7 +183,7 @@ public class Test_REST_DELETE_BY_ACCESS_PATH<S extends IIndexManager> extends
             // requestPath,//
             null,// s
             RDFS.LABEL,// p
-            new LiteralImpl("Bryan")// o
+            org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Bryan")// o
       );
 
       assertEquals(1, mutationResult);
@@ -201,7 +201,7 @@ public class Test_REST_DELETE_BY_ACCESS_PATH<S extends IIndexManager> extends
             // requestPath,//
             null,// s
             null,// p
-            new URIImpl("http://xmlns.com/foaf/0.1/XXX")// o
+            org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://xmlns.com/foaf/0.1/XXX")// o
       );
 
       assertEquals(0, mutationResult);
@@ -218,9 +218,9 @@ public class Test_REST_DELETE_BY_ACCESS_PATH<S extends IIndexManager> extends
 
       doInsertbyURL("POST", packagePath + "test_delete_by_access_path.trig");
 
-      final URI base = new URIImpl("http://www.bigdata.com/");
-      final URI c1 = new URIImpl("http://www.bigdata.com/c1");
-      final URI c2 = new URIImpl("http://www.bigdata.com/c2");
+      final IRI base = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/");
+      final IRI c1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/c1");
+      final IRI c2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/c2");
       
       // This is the named graph that we will delete.
       assertEquals(3,m_repo.rangeCount(null,// s,
@@ -296,7 +296,7 @@ public class Test_REST_DELETE_BY_ACCESS_PATH<S extends IIndexManager> extends
             null,// s
             null,// p
             null,// o
-            new URIImpl("http://www.bigdata.com/c1") // c
+            org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/c1") // c
       );
 
       assertEquals(2, mutationResult);
@@ -314,9 +314,9 @@ public class Test_REST_DELETE_BY_ACCESS_PATH<S extends IIndexManager> extends
 
       doInsertbyURL("POST", packagePath + "test_delete_by_access_path.trig");
 
-      final URI base = new URIImpl("http://www.bigdata.com/");
-      final URI c1 = new URIImpl("http://www.bigdata.com/c1");
-      final URI c2 = new URIImpl("http://www.bigdata.com/c2");
+      final IRI base = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/");
+      final IRI c1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/c1");
+      final IRI c2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/c2");
       
       // This named graph will not be deleted.
       assertEquals(3, m_repo.rangeCount(null,// s,
@@ -395,7 +395,7 @@ public class Test_REST_DELETE_BY_ACCESS_PATH<S extends IIndexManager> extends
             null,// s
             null,// p
             null,// o
-            new URIImpl("http://xmlns.com/foaf/0.1/XXX") // c
+            org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://xmlns.com/foaf/0.1/XXX") // c
       );
 
       assertEquals(0, mutationResult);

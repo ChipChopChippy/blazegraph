@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IValueExpression;
@@ -30,7 +30,7 @@ public class FunctionNode extends ValueExpressionNode {
     interface Annotations extends ValueExpressionNode.Annotations {
   
         /**
-         * The function URI from the {@link FunctionRegistry}.
+         * The function IRI from the {@link FunctionRegistry}.
          */
         String FUNCTION_URI = FunctionNode.class.getName() + ".functionURI";
 
@@ -47,7 +47,7 @@ public class FunctionNode extends ValueExpressionNode {
      * Construct a function node in the AST.
      * 
      * @param functionURI
-     *            the function URI. see {@link FunctionRegistry}
+     *            the function IRI. see {@link FunctionRegistry}
      * @param scalarValues
      *            One or more scalar values that are passed to the function
      * @param args
@@ -57,7 +57,7 @@ public class FunctionNode extends ValueExpressionNode {
      *      Occasional error on BSBM Explore query</a>
      */
 	public FunctionNode(// 
-			final URI functionURI, 
+			final IRI functionURI, 
 	        final Map<String,Object> scalarValues,
 			final ValueExpressionNode... args) {
 
@@ -96,9 +96,9 @@ public class FunctionNode extends ValueExpressionNode {
 
     }
     
-    public URI getFunctionURI() {
+    public IRI getFunctionURI() {
 		
-		return (URI) getRequiredProperty(Annotations.FUNCTION_URI);
+		return (IRI) getRequiredProperty(Annotations.FUNCTION_URI);
 		
 	}
 
@@ -329,7 +329,7 @@ public class FunctionNode extends ValueExpressionNode {
     /**
      * Return a binary function <code>op(t1,t2)</code>
      */
-    static public FunctionNode binary(final URI uri, final TermNode t1,
+    static public FunctionNode binary(final IRI uri, final TermNode t1,
             final TermNode t2) {
 
         return new FunctionNode(uri, null/* scalarValues */,

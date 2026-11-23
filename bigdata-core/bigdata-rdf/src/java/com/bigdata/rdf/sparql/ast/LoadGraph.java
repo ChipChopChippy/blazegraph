@@ -29,9 +29,9 @@ package com.bigdata.rdf.sparql.ast;
 
 import java.util.Map;
 
-import org.openrdf.model.URI;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.helpers.RDFParserBase;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.helpers.AbstractRDFParser;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.rdf.rio.IRDFParserOptions;
@@ -59,7 +59,7 @@ public class LoadGraph extends GraphUpdate {
      * Adds options to control the behavior of the {@link RDFParser}.
      * 
      * @see RDFParserOptions
-     * @see RDFParserBase
+     * @see AbstractRDFParser
      * @see RDFParser
      */
     public interface Annotations extends GraphUpdate.Annotations{
@@ -103,7 +103,7 @@ public class LoadGraph extends GraphUpdate {
     /**
      * {@inheritDoc}
      * <p>
-     * Note: For {@link LoadGraph}, this is the {@link URI} of the external
+     * Note: For {@link LoadGraph}, this is the {@link IRI} of the external
      * resource to be loaded.
      */
     @Override

@@ -6,8 +6,9 @@ import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Value;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.rdf.graph.FrontierEnum;
 import com.bigdata.rdf.graph.IGASContext;
@@ -46,7 +47,7 @@ import com.bigdata.rdf.graph.impl.GASStats;
 public abstract class GASRunnerBase<VS, ES, ST> implements
         Callable<IGASStats> {
 
-    private static final Logger log = Logger.getLogger(GASRunnerBase.class);
+    private static final Logger log = LogManager.getLogger(GASRunnerBase.class);
     
     /**
      * Configured options for the {@link GASRunner}.

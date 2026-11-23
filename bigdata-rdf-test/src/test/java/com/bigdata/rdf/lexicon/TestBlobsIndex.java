@@ -31,7 +31,7 @@ import java.util.UUID;
 
 import junit.framework.TestCase2;
 
-import org.openrdf.model.vocabulary.XMLSchema;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
 
 import com.bigdata.btree.BTree;
 import com.bigdata.btree.IndexMetadata;
@@ -52,7 +52,7 @@ import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataURI;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.util.DumpLexicon;
 import com.bigdata.util.BytesUtil;
 
@@ -80,7 +80,7 @@ public class TestBlobsIndex extends TestCase2 {
 		
 		final String namespace = getName();
 
-		final BigdataValueFactory vf = BigdataValueFactoryImpl
+		final BigdataValueFactory vf = BigdataSimpleValueFactory
 				.getInstance(namespace);
 
 		/*
@@ -91,14 +91,14 @@ public class TestBlobsIndex extends TestCase2 {
 		{
 		
 			final BigdataURI uri1 = vf
-					.createURI("http://www.bigdata.com/testTerm");
+					.createIRI("http://www.bigdata.com/testTerm");
 
 			final BigdataLiteral lit1 = vf.createLiteral("bigdata");
 
 			final BigdataLiteral lit2 = vf.createLiteral("bigdata", "en");
 
 			final BigdataLiteral lit3 = vf.createLiteral("bigdata",
-					XMLSchema.STRING);
+					XSD.STRING);
 
 			final BigdataBNode bnode1 = vf.createBNode();
 
@@ -230,7 +230,7 @@ public class TestBlobsIndex extends TestCase2 {
 	    
         final String name = namespace + ".TERMS";
 
-        final BigdataValueFactory valueFactory = BigdataValueFactoryImpl
+        final BigdataValueFactory valueFactory = BigdataSimpleValueFactory
                 .getInstance(namespace);
         
         final IndexMetadata metadata = new IndexMetadata(name, UUID
@@ -301,7 +301,7 @@ public class TestBlobsIndex extends TestCase2 {
 //        final IKeyBuilder keyBuilder = new TermsIndexHelper().newKeyBuilder();
 //
 //        final byte[][] keys = new byte[][] {
-//            BlobIV.mockIV(VTE.URI).encode(keyBuilder.reset()).getKey(), //
+//            BlobIV.mockIV(VTE.IRI).encode(keyBuilder.reset()).getKey(), //
 //            BlobIV.mockIV(VTE.BNODE).encode(keyBuilder.reset()).getKey(), //
 //            BlobIV.mockIV(VTE.LITERAL).encode(keyBuilder.reset()).getKey(), //
 //            BlobIV.mockIV(VTE.STATEMENT).encode(keyBuilder.reset()).getKey(), //
@@ -357,7 +357,7 @@ public class TestBlobsIndex extends TestCase2 {
 		    
 			final BTree ndx = createTermsIndex(store, namespace);
 
-			final BigdataValueFactory vf = BigdataValueFactoryImpl
+			final BigdataValueFactory vf = BigdataSimpleValueFactory
 					.getInstance(namespace);
 			
 			final BlobsIndexHelper h = new BlobsIndexHelper();
@@ -370,7 +370,7 @@ public class TestBlobsIndex extends TestCase2 {
 			{
 			
 				final BigdataURI uri1 = vf
-						.createURI("http://www.bigdata.com/testTerm");
+						.createIRI("http://www.bigdata.com/testTerm");
 
                 // Note: These three literals wind up with the same hash code.
                 // The hash code of the literal is based only on its label.
@@ -379,7 +379,7 @@ public class TestBlobsIndex extends TestCase2 {
 				final BigdataLiteral lit2 = vf.createLiteral("bigdata", "en");
 
 				final BigdataLiteral lit3 = vf.createLiteral("bigdata",
-						XMLSchema.STRING);
+						XSD.STRING);
 
 				final BigdataBNode bnode1 = vf.createBNode();
 
@@ -519,7 +519,7 @@ public class TestBlobsIndex extends TestCase2 {
 				 * the same data.
 				 */
 				final IV[] expected = new IV[a.length];
-				final BigdataValueFactory vf2 = BigdataValueFactoryImpl
+				final BigdataValueFactory vf2 = BigdataSimpleValueFactory
 						.getInstance(namespace + "-not-the-same");
 				for (int i = 0; i < a.length; i++) {
 					final BigdataValue tmp = a[i].obj;
@@ -602,7 +602,7 @@ public class TestBlobsIndex extends TestCase2 {
 
             final BTree ndx = BTree.create(store, metadata);
 
-            final BigdataValueFactory vf = BigdataValueFactoryImpl
+            final BigdataValueFactory vf = BigdataSimpleValueFactory
                     .getInstance(namespace);
 
             final BlobsIndexHelper h = new BlobsIndexHelper();
@@ -818,7 +818,7 @@ public class TestBlobsIndex extends TestCase2 {
 //
 //			final BTree ndx = BTree.create(store, metadata);
 //
-//			final BigdataValueFactory vf = BigdataValueFactoryImpl
+//			final BigdataValueFactory vf = BigdataSimpleValueFactory
 //					.getInstance(namespace);
 //
 //			/*
@@ -834,7 +834,7 @@ public class TestBlobsIndex extends TestCase2 {
 //				for (int i = 0; i < ncollisions; i++) {
 //
 //					final BigdataURI uri = vf
-//							.createURI("http://www.bigdata.com/testTerm/" + i);
+//							.createIRI("http://www.bigdata.com/testTerm/" + i);
 //
 //					tmp.add(uri);
 //
@@ -962,7 +962,7 @@ public class TestBlobsIndex extends TestCase2 {
 
             final BlobsIndexHelper h = new BlobsIndexHelper();
 
-            final BigdataValueFactory vf = BigdataValueFactoryImpl
+            final BigdataValueFactory vf = BigdataSimpleValueFactory
                     .getInstance(namespace);
 
             /*
@@ -973,14 +973,14 @@ public class TestBlobsIndex extends TestCase2 {
             {
 
                 final BigdataURI uri1 = vf
-                        .createURI("http://www.bigdata.com/testTerm");
+                        .createIRI("http://www.bigdata.com/testTerm");
 
                 final BigdataLiteral lit1 = vf.createLiteral("bigdata");
 
                 final BigdataLiteral lit2 = vf.createLiteral("bigdata", "en");
 
                 final BigdataLiteral lit3 = vf.createLiteral("bigdata",
-                        XMLSchema.STRING);
+                        XSD.STRING);
 
                 final BigdataBNode bnode1 = vf.createBNode();
 

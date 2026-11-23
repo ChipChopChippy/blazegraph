@@ -27,9 +27,9 @@ package com.bigdata.rdf.internal.impl.extensions;
 import java.util.Collections;
 import java.util.Set;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.Value;
-import org.openrdf.model.datatypes.XMLDatatypeUtil;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.datatypes.XMLDatatypeUtil;
 
 import com.bigdata.rdf.internal.IDatatypeURIResolver;
 import com.bigdata.rdf.internal.IExtension;

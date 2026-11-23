@@ -33,8 +33,9 @@ import java.nio.channels.OverlappingFileLockException;
 import java.util.Properties;
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.Banner;
 import com.bigdata.config.Configuration;
 import com.bigdata.config.IValidator;
@@ -60,7 +61,7 @@ public class FileMetadata {
 	/**
 	 * Logger.
 	 */
-	protected static final Logger log = Logger.getLogger(FileMetadata.class);
+	protected static final Logger log = LogManager.getLogger(FileMetadata.class);
 	protected static final boolean INFO = log.isInfoEnabled();
 	protected static final boolean DEBUG = log.isDebugEnabled();
 

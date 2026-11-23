@@ -106,7 +106,7 @@ public class TestMultiInlineURIHandlersSingleNamespace extends
 					store, 4 /* capacity */);
 
 			BigdataURI pred = vf
-					.createURI("http://blazegraph.com/Position#hasMarketValue");
+					.createIRI("http://blazegraph.com/Position#hasMarketValue");
 			BigdataValue obj = vf.createLiteral("100.00");
 
 			// http://blazegraph.com/Data#Position_010072F0000038090100000000D56C9E
@@ -115,10 +115,10 @@ public class TestMultiInlineURIHandlersSingleNamespace extends
 			// http://blazegraph.com/Data#Position_010072F0000038090100000000D56C9E_WashSale
 
 			final BigdataURI[] uris = new BigdataURI[] {
-					vf.createURI("http://blazegraph.com/Data#Position_010072F0000038090100000000D56C9E_TaxCost"),
-					vf.createURI("http://blazegraph.com/Data#Position_010072F0000038090100000000D56C9E_UnrealizedGain"),
-					vf.createURI("http://blazegraph.com/Data#Position_010072F0000038090100000000D56C9E"),
-					vf.createURI("http://blazegraph.com/Data#Position_010072F0000038090100000000D56C9E_WashSale") };
+					vf.createIRI("http://blazegraph.com/Data#Position_010072F0000038090100000000D56C9E_TaxCost"),
+					vf.createIRI("http://blazegraph.com/Data#Position_010072F0000038090100000000D56C9E_UnrealizedGain"),
+					vf.createIRI("http://blazegraph.com/Data#Position_010072F0000038090100000000D56C9E"),
+					vf.createIRI("http://blazegraph.com/Data#Position_010072F0000038090100000000D56C9E_WashSale") };
 
 			final String[] localNames = new String[] {
 					"Position_010072F0000038090100000000D56C9E_TaxCost",

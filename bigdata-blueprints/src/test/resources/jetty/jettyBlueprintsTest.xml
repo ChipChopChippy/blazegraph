@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
+<Configure id="Server" class="org.eclipse.jetty.server.Server">
+    <Arg name="threadPool">
+        <New id="threadpool" class="org.eclipse.jetty.util.thread.QueuedThreadPool"/>
+    </Arg>
+    <Call name="addConnector">
+        <Arg>
+            <New class="org.eclipse.jetty.server.ServerConnector">
+                <Arg name="server"><Ref refid="Server"/></Arg>
+                <Set name="host"><SystemProperty name="jetty.host"/></Set>
+                <Set name="port"><SystemProperty name="jetty.port" default="8080"/></Set>
+            </New>
+        </Arg>
+    </Call>
+    <Set name="handler">
+        <New class="org.eclipse.jetty.ee11.webapp.WebAppContext">
+            <Set name="war"><SystemProperty name="jetty.resourceBase" default="../bigdata-war-html/src/main/webapp"/></Set>
+            <Set name="contextPath">/bigdata</Set>
+            <Set name="parentLoaderPriority">true</Set>
+            <Set name="extractWAR">false</Set>
+            <Set name="overrideDescriptor"><SystemProperty name="jetty.overrideWebXml" default="../bigdata-war-html/src/main/webapp/WEB-INF/override-web.xml"/></Set>
+        </New>
+    </Set>
+</Configure>

@@ -31,7 +31,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.openrdf.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.rdf.model.BigdataURI;
 import com.bigdata.rdf.model.BigdataValue;
@@ -482,14 +482,14 @@ public class TestNegation extends AbstractDataDrivenSPARQLTestCase {
             final BigdataValueFactory f = h.getTripleStore().getValueFactory();
             
             final BigdataURI refEntity = f
-                    .createURI("os:prop/analysis/refEntity");
+                    .createIRI("os:prop/analysis/refEntity");
 
-            final BigdataURI Kriterion = f.createURI("os:elem/loc/Kriterion");
+            final BigdataURI Kriterion = f.createIRI("os:elem/loc/Kriterion");
             
             final BigdataURI AnalysisResults = f
-                    .createURI("os:class/AnalysisResults");
+                    .createIRI("os:class/AnalysisResults");
             
-            final BigdataURI Artis = f.createURI("os:elem/loc/Artis");
+            final BigdataURI Artis = f.createIRI("os:elem/loc/Artis");
             
             final BigdataURI rdfType = f.asValue(RDF.TYPE);
             

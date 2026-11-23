@@ -31,7 +31,7 @@ import java.util.Properties;
 
 import junit.framework.TestCase2;
 
-import org.openrdf.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.NV;
@@ -102,13 +102,13 @@ public class TestContextAdvancer extends TestCase2 {
 
             final BigdataValueFactory f = db.getValueFactory();
             
-            final BigdataURI u1 = f.createURI("http://www.bigdata.com/u1");
-            final BigdataURI u2 = f.createURI("http://www.bigdata.com/u2");
-            final BigdataURI v1 = f.createURI("http://www.bigdata.com/v1");
-            final BigdataURI v2 = f.createURI("http://www.bigdata.com/v2");
-            final BigdataURI c1 = f.createURI("http://www.bigdata.com/c1");
-            final BigdataURI c2 = f.createURI("http://www.bigdata.com/c2");
-            final BigdataURI rdfType = f.createURI(RDF.TYPE.stringValue());
+            final BigdataURI u1 = f.createIRI("http://www.bigdata.com/u1");
+            final BigdataURI u2 = f.createIRI("http://www.bigdata.com/u2");
+            final BigdataURI v1 = f.createIRI("http://www.bigdata.com/v1");
+            final BigdataURI v2 = f.createIRI("http://www.bigdata.com/v2");
+            final BigdataURI c1 = f.createIRI("http://www.bigdata.com/c1");
+            final BigdataURI c2 = f.createIRI("http://www.bigdata.com/c2");
+            final BigdataURI rdfType = f.createIRI(RDF.TYPE.stringValue());
 
             final BigdataValue[] terms = new BigdataValue[] {
                     u1,u2,//

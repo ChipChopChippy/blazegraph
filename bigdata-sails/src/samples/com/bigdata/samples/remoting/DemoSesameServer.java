@@ -1,16 +1,16 @@
 package com.bigdata.samples.remoting;
 
-import org.openrdf.model.Graph;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.GraphImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.GraphQuery;
-import org.openrdf.query.GraphQueryResult;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.http.HTTPRepository;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.LinkedHashModel;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.GraphQuery;
+import org.eclipse.rdf4j.query.GraphQueryResult;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.http.HTTPRepository;
 import com.bigdata.rdf.store.BD;
 import com.bigdata.samples.SparqlBuilder;
 
@@ -53,11 +53,11 @@ public class DemoSesameServer {
         
         try { // load some statements built up programmatically
             
-            URI mike = new URIImpl(BD.NAMESPACE + "Mike");
-            URI bryan = new URIImpl(BD.NAMESPACE + "Bryan");
-            URI loves = new URIImpl(BD.NAMESPACE + "loves");
-            URI rdf = new URIImpl(BD.NAMESPACE + "RDF");
-            Graph graph = new GraphImpl();
+            IRI mike = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Mike");
+            IRI bryan = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Bryan");
+            IRI loves = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "loves");
+            IRI rdf = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "RDF");
+            Model graph = new LinkedHashModel();
             graph.add(mike, loves, rdf);
             graph.add(bryan, loves, rdf);
             

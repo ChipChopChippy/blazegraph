@@ -34,13 +34,14 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.rio.RDFFormat;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.rio.RDFFormat;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.sail.BigdataSail;
@@ -54,7 +55,7 @@ import com.bigdata.rdf.vocab.VocabularyDecl;
 
 public class TestPaths extends ProxyBigdataSailTestCase {
 
-    protected static final Logger log = Logger.getLogger(TestPaths.class);
+    protected static final Logger log = LogManager.getLogger(TestPaths.class);
 
     protected static final boolean INFO = log.isInfoEnabled();
     
@@ -103,7 +104,7 @@ public class TestPaths extends ProxyBigdataSailTestCase {
 //    public void testSimpleBFS() throws Exception {
 //    	
 //    	final BigdataSail sail = getSail();
-//    	sail.initialize();
+//    	sail.init();
 //    	final BigdataSailRepository repo = new BigdataSailRepository(sail);
 //    	
 //    	final BigdataSailRepositoryConnection cxn = repo.getConnection();
@@ -142,7 +143,7 @@ public class TestPaths extends ProxyBigdataSailTestCase {
 	public void testSimpleSSSP() throws Exception {
 
 		final BigdataSail sail = getSail();
-		sail.initialize();
+		sail.init();
 		final BigdataSailRepository repo = new BigdataSailRepository(sail);
 
 		final BigdataSailRepositoryConnection cxn = repo.getConnection();
@@ -182,7 +183,7 @@ public class TestPaths extends ProxyBigdataSailTestCase {
 //    public void testPaths() throws Exception {
 //    	
 //    	final BigdataSail sail = getSail();
-//    	sail.initialize();
+//    	sail.init();
 //    	final BigdataSailRepository repo = new BigdataSailRepository(sail);
 //    	
 //    	final BigdataSailRepositoryConnection cxn = repo.getConnection();

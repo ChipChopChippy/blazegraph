@@ -29,8 +29,9 @@ package com.bigdata.btree.isolation;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 /**
  * This test case demonstrates a state-based validation technique described in
  * http://www.cs.brown.edu/~mph/Herlihy90a/p96-herlihy.pdf for a "bank account"
@@ -61,7 +62,7 @@ import org.apache.log4j.Logger;
  */
 public class TestAccount extends TestCase {
 
-	private static final Logger log = Logger.getLogger(TestAccount.class);
+	private static final Logger log = LogManager.getLogger(TestAccount.class);
 	
     /**
      * 

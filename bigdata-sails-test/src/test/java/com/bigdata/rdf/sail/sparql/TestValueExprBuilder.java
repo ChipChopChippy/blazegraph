@@ -29,8 +29,8 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.bop.aggregate.AggregateBase;
 import com.bigdata.rdf.sail.sparql.ast.ParseException;
@@ -188,7 +188,7 @@ public class TestValueExprBuilder extends AbstractBigdataExprBuilderTestCase {
                     new AssignmentNode(//
                             new VarNode("x"), //
                             new ConstantNode(makeIV(valueFactory
-                                    .createURI("http://xmlns.com/foaf/0.1/")))));
+                                    .createIRI("http://xmlns.com/foaf/0.1/")))));
             expected.setProjection(projection);
 
         }

@@ -29,7 +29,7 @@ package com.bigdata.rdf.sparql.ast;
 
 import java.util.Map;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.bop.BOp;
 
@@ -93,7 +93,7 @@ abstract public class SubqueryFunctionNodeBase extends FunctionNode implements
      * @param graphPattern
      *            The inner value of the EXISTS function.
      */
-    protected SubqueryFunctionNodeBase(final URI functionURI,
+    protected SubqueryFunctionNodeBase(final IRI functionURI,
             final VarNode anonvar,
             final GraphPatternGroup<IGroupMemberNode> graphPattern) {
 

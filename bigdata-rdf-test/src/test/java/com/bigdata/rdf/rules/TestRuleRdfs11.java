@@ -29,8 +29,8 @@ package com.bigdata.rdf.rules;
 
 import java.util.Properties;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.model.BigdataValueFactory;
@@ -79,11 +79,11 @@ public class TestRuleRdfs11 extends AbstractRuleTestCase {
         
             final BigdataValueFactory f = store.getValueFactory();
 
-            final URI A = f.createURI("http://www.foo.org/A");
-            final URI B = f.createURI("http://www.foo.org/B");
-            final URI C = f.createURI("http://www.foo.org/C");
+            final IRI A = f.createIRI("http://www.foo.org/A");
+            final IRI B = f.createIRI("http://www.foo.org/B");
+            final IRI C = f.createIRI("http://www.foo.org/C");
 
-            final URI rdfsSubClassOf = RDFS.SUBCLASSOF;
+            final IRI rdfsSubClassOf = RDFS.SUBCLASSOF;
 
             store.addStatement(A, rdfsSubClassOf, B);
             store.addStatement(B, rdfsSubClassOf, C);

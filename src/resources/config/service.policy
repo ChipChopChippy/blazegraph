@@ -23,14 +23,14 @@ grant {
 
     // Needed by proxies that wish to do logging
     permission java.util.PropertyPermission 
-                                "log4j.configuration", "read";
+                                "log4j2.configurationFile", "read";
     permission java.util.PropertyPermission 
                         "log4j.primary.configuration", "read";
     permission java.util.PropertyPermission
                                      "bigdata.logDir", "read";
 
     permission java.io.FilePermission 
-                             "${log4j.configuration}", "read";
+                             "${log4j2.configurationFile}", "read";
     permission java.io.FilePermission 
                      "${log4j.primary.configuration}", "read";
     permission java.io.FilePermission

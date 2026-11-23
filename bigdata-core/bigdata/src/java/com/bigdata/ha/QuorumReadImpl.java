@@ -29,8 +29,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.ha.msg.HAReadRequest;
 import com.bigdata.ha.msg.IHAReadRequest;
 import com.bigdata.ha.msg.IHAReadResponse;
@@ -48,7 +49,7 @@ import com.bigdata.rawstore.IRawStore;
 public class QuorumReadImpl<S extends HAReadGlue> extends
         QuorumStateChangeListenerBase implements QuorumRead<S> {
 
-    static private transient final Logger log = Logger
+    static private transient final Logger log = LogManager
             .getLogger(QuorumReadImpl.class);
 
     protected final QuorumMember<S> member;

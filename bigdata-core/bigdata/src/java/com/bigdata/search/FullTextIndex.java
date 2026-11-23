@@ -46,10 +46,11 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.core.LowerCaseFilter;
+import org.apache.lucene.analysis.LowerCaseFilter;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
 import com.bigdata.bop.IBindingSet;
@@ -239,7 +240,7 @@ import com.bigdata.util.concurrent.ExecutionHelper;
  */
 public class FullTextIndex<V extends Comparable<V>> extends AbstractRelation {
 
-    final private static transient Logger log = Logger
+    final private static transient Logger log = LogManager
             .getLogger(FullTextIndex.class);
 
     /**
@@ -714,6 +715,15 @@ public class FullTextIndex<V extends Comparable<V>> extends AbstractRelation {
 //
 //        }
         
+    }
+
+    /**
+     * Discard cached hits (they are stale if the index was modified outside of this class).
+     */
+    public void clearHitCache() {
+
+        cache.clear();
+
     }
 
     public void destroy() {

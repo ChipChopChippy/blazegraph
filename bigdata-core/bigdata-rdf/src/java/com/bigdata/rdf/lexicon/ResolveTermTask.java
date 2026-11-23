@@ -3,8 +3,9 @@ package com.bigdata.rdf.lexicon;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.IIndex;
 import com.bigdata.btree.proc.AbstractKeyArrayIndexProcedure.ResultBuffer;
 import com.bigdata.btree.proc.AbstractKeyArrayIndexProcedure.ResultBufferHandler;
@@ -24,7 +25,7 @@ import com.bigdata.rdf.model.BigdataValueFactory;
  */
 class ResolveTermTask implements Callable<Void> {
     
-    static private final transient Logger log = Logger
+    static private final transient Logger log = LogManager
             .getLogger(ResolveTermTask.class);
     
     private final IIndex ndx;

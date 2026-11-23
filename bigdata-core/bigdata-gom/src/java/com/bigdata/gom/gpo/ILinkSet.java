@@ -27,7 +27,7 @@ package com.bigdata.gom.gpo;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 /**
  * A collection of links into (edges in) or links out of (edges out) of an
@@ -63,7 +63,7 @@ public interface ILinkSet extends Set<IGPO> {
      * The name of the property that the members of the link set use to point to
      * the generic object that is collecting this link set.
      */
-    URI getLinkProperty();
+    IRI getLinkProperty();
 
     /**
      * <code>true</code> iff this link set models the links into the owner

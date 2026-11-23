@@ -3,8 +3,9 @@ package com.bigdata.rdf.lexicon;
 import java.util.Arrays;
 import java.util.concurrent.Callable;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.IIndex;
 import com.bigdata.btree.keys.KVO;
 import com.bigdata.btree.proc.AbstractKeyArrayIndexProcedureConstructor;
@@ -25,7 +26,7 @@ import com.bigdata.service.ndx.pipeline.KVOList;
  */
 public class BlobsWriteTask implements Callable<KVO<BigdataValue>[]> {
 
-    private static transient final Logger log = Logger.getLogger(BlobsWriteTask.class);
+    private static transient final Logger log = LogManager.getLogger(BlobsWriteTask.class);
             
 //    private final LexiconRelation r;
     final IIndex ndx;

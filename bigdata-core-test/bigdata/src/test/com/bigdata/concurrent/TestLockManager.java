@@ -44,8 +44,9 @@ import java.util.concurrent.TimeUnit;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.service.DataService;
 import com.bigdata.testutil.ExperimentDriver;
 import com.bigdata.testutil.ExperimentDriver.IComparisonTest;
@@ -84,7 +85,7 @@ import com.bigdata.util.NV;
  */
 public class TestLockManager extends TestCase implements IComparisonTest {
 
-    private static final Logger log = Logger.getLogger(TestLockManager.class);
+    private static final Logger log = LogManager.getLogger(TestLockManager.class);
 
     /**
      * 

@@ -193,7 +193,7 @@ public class TestASTAttachJoinFiltersOptimizer extends AbstractASTEvaluationTest
 	public void test_redundantFilter() {
 
         final String sampleInstance = "http://www.example.com/I";
-        final BigdataURI someUri = valueFactory.createURI(sampleInstance);
+        final BigdataURI someUri = valueFactory.createIRI(sampleInstance);
         final BigdataValue[] terms = new BigdataValue[] { someUri };
 
         // resolve terms.

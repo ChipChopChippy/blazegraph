@@ -34,12 +34,13 @@ import java.util.UUID;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.journal.AbstractTask;
 import com.bigdata.rdf.sparql.ast.QueryHints;
 import com.bigdata.rdf.task.AbstractApiTask;
@@ -58,7 +59,7 @@ import com.bigdata.util.NV;
  */
 public abstract class AbstractRestApiTask<T> extends AbstractApiTask<T> {
 
-    private static final Logger log = Logger.getLogger(AbstractRestApiTask.class);
+    private static final Logger log = LogManager.getLogger(AbstractRestApiTask.class);
 
     /**
      * The {@link UUID} associated with this task. This is used to CANCEL a

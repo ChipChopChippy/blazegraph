@@ -34,8 +34,9 @@ import java.util.UUID;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.rawstore.WormAddressManager;
 import com.bigdata.util.Bytes;
 
@@ -47,7 +48,7 @@ import com.bigdata.util.Bytes;
  */
 public class TestIndexSegmentCheckpoint extends TestCase {
 
-	private static final Logger log = Logger
+	private static final Logger log = LogManager
 			.getLogger(TestIndexSegmentCheckpoint.class);
 	
     /**

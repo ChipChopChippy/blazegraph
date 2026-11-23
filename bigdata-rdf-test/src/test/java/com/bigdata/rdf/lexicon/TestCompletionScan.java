@@ -50,8 +50,8 @@ package com.bigdata.rdf.lexicon;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import org.openrdf.model.Literal;
-import org.openrdf.model.impl.LiteralImpl;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
 import com.bigdata.rdf.internal.IV;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
@@ -60,7 +60,7 @@ import com.bigdata.rdf.store.AbstractTripleStoreTestCase;
 
 /**
  * Unit tests for
- * {@link LexiconRelation#prefixScan(org.openrdf.model.Literal[])}.
+ * {@link LexiconRelation#prefixScan(org.eclipse.rdf4j.model.Literal[])}.
  * 
  * @author <a href="mailto:thompsonbry@users.sourceforge.net">Bryan Thompson</a>
  */
@@ -117,16 +117,16 @@ public class TestCompletionScan extends AbstractTripleStoreTestCase {
                 
                 final Set<Literal> expected = new HashSet<Literal>();
                 
-                expected.add(new LiteralImpl("minor"));
+                expected.add(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("minor"));
 
-                expected.add(new LiteralImpl("minor league"));
+                expected.add(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("minor league"));
                 
-                expected.add(new LiteralImpl("minor threat"));
+                expected.add(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("minor threat"));
 
-                expected.add(new LiteralImpl("minority report"));
+                expected.add(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("minority report"));
                 
                 final Iterator<IV> itr = store.getLexiconRelation()
-                        .prefixScan(new LiteralImpl("minor"));
+                        .prefixScan(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("minor"));
 
                 while(itr.hasNext()) {
                     

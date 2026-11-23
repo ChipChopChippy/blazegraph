@@ -41,15 +41,16 @@ import java.util.Properties;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.server.Server;
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParseException;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParseException;
 
 import com.bigdata.BigdataStatics;
 import com.bigdata.gom.gpo.IGPO;
@@ -80,7 +81,7 @@ import com.bigdata.util.config.NicUtil;
  */
 public class TestRemoteGOM extends TestCase {
 
-    private static final Logger log = Logger.getLogger(TestRemoteGOM.class);
+    private static final Logger log = LogManager.getLogger(TestRemoteGOM.class);
 
 	private Server m_server;
 
@@ -140,7 +141,7 @@ public class TestRemoteGOM extends TestCase {
         // instantiate a sail and a Sesame repository
         final BigdataSail sail = new BigdataSail(properties);
         repo = new BigdataSailRepository(sail);
-        repo.initialize();
+        repo.init();
 
         //m_cxn = repo.getConnection();
         //m_cxn.setAutoCommit(false);
@@ -253,11 +254,11 @@ public class TestRemoteGOM extends TestCase {
             print(n3);
             load(n3, RDFFormat.N3);
 
-            final URI s = vf.createURI("gpo:#root");
+            final IRI s = vf.createIRI("gpo:#root");
 
-            final URI rootAttr = vf.createURI("attr:/root");
+            final IRI rootAttr = vf.createIRI("attr:/root");
             om.getGPO(s).getValue(rootAttr);
-            final URI rootId = (URI) om.getGPO(s).getValue(rootAttr);
+            final IRI rootId = (IRI) om.getGPO(s).getValue(rootAttr);
 
             final IGPO rootGPO = om.getGPO(rootId);
 
@@ -268,12 +269,12 @@ public class TestRemoteGOM extends TestCase {
                 log.info(rootGPO.getType().getStatements());
             }
 
-            final URI typeName = vf.createURI("attr:/type#name");
+            final IRI typeName = vf.createIRI("attr:/type#name");
             assertTrue("Company".equals(rootGPO.getType().getValue(typeName)
                     .stringValue()));
 
             // find set of workers for the Company
-            final URI worksFor = vf.createURI("attr:/employee#worksFor");
+            final IRI worksFor = vf.createIRI("attr:/employee#worksFor");
             final ILinkSet linksIn = rootGPO.getLinksIn(worksFor);
             final Iterator<IGPO> workers = linksIn.iterator();
             while (workers.hasNext()) {
@@ -289,8 +290,8 @@ public class TestRemoteGOM extends TestCase {
 		final NanoSparqlObjectManager om = new NanoSparqlObjectManager(m_repo.getRepositoryForDefaultNamespace(), m_namespace);
 		final ValueFactory vf = om.getValueFactory();
 		
-		final URI keyname = vf.createURI("attr:/test#name");
-		final Resource id = vf.createURI("gpo:test#1");
+		final IRI keyname = vf.createIRI("attr:/test#name");
+		final Resource id = vf.createIRI("gpo:test#1");
 //		om.checkValue(id);
 		final int transCounter = om.beginNativeTransaction();
 		try {
@@ -322,11 +323,11 @@ public class TestRemoteGOM extends TestCase {
 		final ValueFactory vf = om.getValueFactory();
 
 		final int transCounter = om.beginNativeTransaction();
-		final URI name = vf.createURI("attr:/test#name");
-		final URI ni = vf.createURI("attr:/test#ni");
-		final URI age = vf.createURI("attr:/test#age");
-		final URI mob = vf.createURI("attr:/test#mobile");
-		final URI gender = vf.createURI("attr:/test#mail");
+		final IRI name = vf.createIRI("attr:/test#name");
+		final IRI ni = vf.createIRI("attr:/test#ni");
+		final IRI age = vf.createIRI("attr:/test#age");
+		final IRI mob = vf.createIRI("attr:/test#mobile");
+		final IRI gender = vf.createIRI("attr:/test#mail");
 		try {
 			// warmup
 			for (int i = 0; i < 10000; i++) {
@@ -354,7 +355,7 @@ public class TestRemoteGOM extends TestCase {
             /*
              * Note that this is a conservative estimate for statements per
              * second since there is only one per object, requiring the object
-             * URI and the Value to be added.
+             * IRI and the Value to be added.
              */
             if (log.isInfoEnabled()) {
                 log.info("Creation rate of " + (creates * 1000 / duration)
@@ -376,8 +377,8 @@ public class TestRemoteGOM extends TestCase {
 		final NanoSparqlObjectManager om = new NanoSparqlObjectManager(m_repo.getRepositoryForDefaultNamespace(), m_namespace);
 		final ValueFactory vf = om.getValueFactory();
 		
-		final URI keyname = vf.createURI("attr:/test#name");
-		final Resource id = vf.createURI("gpo:test#1");
+		final IRI keyname = vf.createIRI("attr:/test#name");
+		final Resource id = vf.createIRI("gpo:test#1");
 //		om.checkValue(id);
 		final int transCounter = om.beginNativeTransaction();
 		try {

@@ -27,6 +27,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sparql.ast.eval;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -62,7 +64,7 @@ import com.bigdata.striterator.IChunkedOrderedIterator;
  */
 public class TestInlineConstraints extends AbstractDataDrivenSPARQLTestCase {
 
-//	private static final Logger log = Logger.getLogger(TestInlineConstraints.class);
+//	private static final Logger log = LogManager.getLogger(TestInlineConstraints.class);
 	
     /**
      * 

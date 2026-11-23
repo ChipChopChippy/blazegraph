@@ -32,8 +32,9 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpUtility;
 import com.bigdata.bop.Bind;
@@ -80,7 +81,7 @@ import cutthecrap.utils.striterators.Striterator;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class VerifyAggregates {
 
-    private static final Logger log = Logger.getLogger(VerifyAggregates.class);
+    private static final Logger log = LogManager.getLogger(VerifyAggregates.class);
     
     private final IValueExpression<?>[] select;
     private final IValueExpression<?>[] groupBy;

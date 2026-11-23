@@ -30,10 +30,10 @@ package com.bigdata.rdf.sparql.ast.eval.service;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.impl.MapBindingSet;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.impl.MapBindingSet;
 
 import com.bigdata.rdf.sparql.ast.eval.AbstractDataDrivenSPARQLTestCase;
 import com.bigdata.rdf.sparql.ast.service.ServiceRegistry;
@@ -86,11 +86,11 @@ public class TestOpenrdfNativeServiceEvaluation extends
         {
             final MapBindingSet bset = new MapBindingSet();
             bset.addBinding("book",
-                    new URIImpl("http://example.org/book/book1"));
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/book/book1"));
             serviceSolutions.add(bset);
         }
    
-        final URI serviceURI = new URIImpl(
+        final IRI serviceURI = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://www.bigdata.com/mockService/" + getName());
 
         ServiceRegistry.getInstance().add(serviceURI,
@@ -142,13 +142,13 @@ public class TestOpenrdfNativeServiceEvaluation extends
         {
             final MapBindingSet bset = new MapBindingSet();
             bset.addBinding("book",
-                    new URIImpl("http://example.org/book/book1"));
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/book/book1"));
             serviceSolutions.add(bset);
         }
         {
             final MapBindingSet bset = new MapBindingSet();
             bset.addBinding("book",
-                    new URIImpl("http://example.org/book/book2"));
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/book/book2"));
             serviceSolutions.add(bset);
         }
         {
@@ -156,7 +156,7 @@ public class TestOpenrdfNativeServiceEvaluation extends
             serviceSolutions.add(bset);
         }
    
-        final URI serviceURI = new URIImpl(
+        final IRI serviceURI = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://www.bigdata.com/mockService/" + getName());
 
         ServiceRegistry.getInstance().add(serviceURI,

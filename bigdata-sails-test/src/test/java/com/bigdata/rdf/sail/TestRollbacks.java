@@ -33,18 +33,19 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.log4j.Logger;
-import org.openrdf.OpenRDFException;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.sail.SailRepository;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.common.exception.RDF4JException;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.sail.SailRepository;
 
 import com.bigdata.journal.IIndexManager;
 import com.bigdata.rdf.axioms.NoAxioms;
@@ -79,7 +80,7 @@ import com.bigdata.rdf.vocab.NoVocabulary;
  */
 public class TestRollbacks extends QuadsTestCase {
 
-    private static final Logger log = Logger.getLogger(TestRollbacks.class);
+    private static final Logger log = LogManager.getLogger(TestRollbacks.class);
 
 	public TestRollbacks() {
     }
@@ -179,7 +180,7 @@ public class TestRollbacks extends QuadsTestCase {
 
         /*
          * Note: Each run needs to be in a distinct namespace since we otherwise
-         * can have side-effects through the BigdataValueFactoryImpl for a given
+         * can have side-effects through the BigdataSimpleValueFactory for a given
          * namespace.
          */
         
@@ -193,7 +194,7 @@ public class TestRollbacks extends QuadsTestCase {
         try {
         	// Note: Modified to use the BigdataSailRepository rather than the base SailRepository class.
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
-            repo.initialize();
+            repo.init();
             runConcurrentStuff(repo,maxCounter);
         } finally {
 			final IIndexManager db = sail.getIndexManager();
@@ -254,7 +255,7 @@ public class TestRollbacks extends QuadsTestCase {
 		 *            problems during CI.
 		 */
 		private DoStuff(final SailRepository repo, final boolean writer,
-				final int maxCounter) throws OpenRDFException {
+				final int maxCounter) throws RDF4JException {
 			this.repo = repo;
 			this.writer = writer;
 			this.maxCounter = maxCounter;
@@ -323,14 +324,14 @@ public class TestRollbacks extends QuadsTestCase {
                 MalformedQueryException, QueryEvaluationException,
                 InterruptedException {
 
-            final URI subj = conn.getValueFactory().createURI(
+            final IRI subj = conn.getValueFactory().createIRI(
                     "u:s" + (counter++));
             final Value value = conn.getValueFactory().createLiteral(
                     "literal" + counter);
             query(conn);
 //            Thread.sleep(200);
-            conn.add(subj, conn.getValueFactory().createURI("u:p"), subj);
-            conn.add(subj, conn.getValueFactory().createURI("u:p"), value);
+            conn.add(subj, conn.getValueFactory().createIRI("u:p"), subj);
+            conn.add(subj, conn.getValueFactory().createIRI("u:p"), value);
             conn.commit();
 
             if(log.isInfoEnabled())
@@ -359,7 +360,7 @@ public class TestRollbacks extends QuadsTestCase {
             : "SELECT ?b { ?a ?b ?c . ?d ?b ?e} LIMIT 20"//
             ;
             final TupleQuery q = conn.prepareTupleQuery(QueryLanguage.SPARQL, query);
-            q.setBinding("b", conn.getValueFactory().createURI("u:p"));
+            q.setBinding("b", conn.getValueFactory().createIRI("u:p"));
             if (useJoin)
                 q.setBinding("d", conn.getValueFactory().createLiteral(
                         "literal1"));

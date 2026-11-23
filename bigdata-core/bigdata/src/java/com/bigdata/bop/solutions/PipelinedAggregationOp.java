@@ -8,8 +8,9 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpContext;
 import com.bigdata.bop.BOpUtility;
@@ -65,7 +66,7 @@ import cutthecrap.utils.striterators.ICloseableIterator;
 public class PipelinedAggregationOp extends GroupByOp implements
         ISingleThreadedOp {
 
-	private final static transient Logger log = Logger
+	private final static transient Logger log = LogManager
 			.getLogger(PipelinedAggregationOp.class);
 	
     /**

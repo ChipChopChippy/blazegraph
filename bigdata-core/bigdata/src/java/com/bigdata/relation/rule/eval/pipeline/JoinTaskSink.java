@@ -2,8 +2,9 @@ package com.bigdata.relation.rule.eval.pipeline;
 
 import java.util.concurrent.Future;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.mdi.PartitionLocator;
 import com.bigdata.relation.accesspath.BlockingBuffer;
@@ -20,7 +21,7 @@ import com.bigdata.service.IBigdataFederation;
  */
 public class JoinTaskSink {
 
-    protected static final Logger log = Logger.getLogger(JoinTaskSink.class);
+    protected static final Logger log = LogManager.getLogger(JoinTaskSink.class);
 
     /**
      * True iff the {@link #log} level is INFO or less.

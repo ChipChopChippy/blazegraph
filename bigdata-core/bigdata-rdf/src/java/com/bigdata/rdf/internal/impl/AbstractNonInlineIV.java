@@ -29,10 +29,11 @@ import java.math.BigInteger;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.openrdf.model.BNode;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.base.CoreDatatype;
 
 import com.bigdata.rdf.internal.DTE;
 import com.bigdata.rdf.internal.IV;
@@ -45,7 +46,7 @@ import com.bigdata.rdf.model.BigdataValue;
  * from their inline representation.
  */
 abstract public class AbstractNonInlineIV<V extends BigdataValue, T> 
-		extends AbstractIV<V, T> implements Literal, BNode, URI  {
+		extends AbstractIV<V, T> implements Literal, BNode, IRI  {
 
     /**
      * 
@@ -163,26 +164,26 @@ abstract public class AbstractNonInlineIV<V extends BigdataValue, T>
 	}
 
     /**
-     * Implements {@link URI#getLocalName()}.
+     * Implements {@link IRI#getLocalName()}.
      */
     public String getLocalName() {
     	
     	if (!isURI())
     		throw new ClassCastException();
     	
-		return ((URI) getValue()).getLocalName();
+		return ((IRI) getValue()).getLocalName();
     	
     }
 
     /**
-     * Implements {@link URI#getNamespace()}.
+     * Implements {@link IRI#getNamespace()}.
      */
     public String getNamespace() {
 
         if (!isURI())
             throw new ClassCastException();
 
-		return ((URI) getValue()).getNamespace();
+		return ((IRI) getValue()).getNamespace();
     	
     }
 
@@ -215,7 +216,7 @@ abstract public class AbstractNonInlineIV<V extends BigdataValue, T>
      * Implements {@link Literal#getDatatype()}.
      */
 	@Override
-	public URI getDatatype() {
+	public IRI getDatatype() {
 		
 		if (!isLiteral())
 			throw new ClassCastException();
@@ -228,7 +229,7 @@ abstract public class AbstractNonInlineIV<V extends BigdataValue, T>
      * Implements {@link Literal#getLanguage()}.
      */
 	@Override
-	public String getLanguage() {
+	public java.util.Optional<String> getLanguage() {
 		
 		if (!isLiteral())
 			throw new ClassCastException();
@@ -236,6 +237,25 @@ abstract public class AbstractNonInlineIV<V extends BigdataValue, T>
 		return ((Literal) getValue()).getLanguage();
 		
 	}
+
+    @Override
+    public CoreDatatype getCoreDatatype() {
+        if (!isLiteral())
+            return CoreDatatype.NONE;
+        final Literal literal = (Literal) getValue();
+        if (literal.getLanguage().isPresent())
+            return CoreDatatype.RDF.LANGSTRING;
+        return CoreDatatype.from(literal.getDatatype());
+    }
+
+    @Override
+    public Value.Type getType() {
+        if (isURI())
+            return Value.Type.IRI;
+        if (isBNode())
+            return Value.Type.BNode;
+        return Value.Type.Literal;
+    }
 
     /**
      * Implements {@link Literal#booleanValue()}.

@@ -15,19 +15,19 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.vocabulary.DC;
-import org.openrdf.model.vocabulary.FN;
-import org.openrdf.model.vocabulary.FOAF;
-import org.openrdf.model.vocabulary.OWL;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.model.vocabulary.SESAME;
-import org.openrdf.model.vocabulary.XMLSchema;
-import org.openrdf.query.MalformedQueryException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.vocabulary.DC;
+import org.eclipse.rdf4j.model.vocabulary.FN;
+import org.eclipse.rdf4j.model.vocabulary.FOAF;
+import org.eclipse.rdf4j.model.vocabulary.OWL;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.vocabulary.SESAME;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
+import org.eclipse.rdf4j.query.MalformedQueryException;
 
 import com.bigdata.rdf.graph.impl.bd.GASService;
-import com.bigdata.rdf.internal.XSD;
 import com.bigdata.rdf.sail.sparql.ast.ASTDeleteData;
 import com.bigdata.rdf.sail.sparql.ast.ASTIRI;
 import com.bigdata.rdf.sail.sparql.ast.ASTInsertData;
@@ -51,7 +51,7 @@ import com.bigdata.rdf.vocab.decls.FOAFVocabularyDecl;
  */
 public class PrefixDeclProcessor {
 	
-    private static final Logger log = Logger.getLogger(PrefixDeclProcessor.class);
+    private static final Logger log = LogManager.getLogger(PrefixDeclProcessor.class);
 
 
     public static final Map<String,String> defaultDecls =
@@ -89,7 +89,7 @@ public class PrefixDeclProcessor {
         defaultDecls.put("rdfs", RDFS.NAMESPACE);
         defaultDecls.put("sesame", SESAME.NAMESPACE);
         defaultDecls.put("owl", OWL.NAMESPACE);
-        defaultDecls.put("xsd", XMLSchema.NAMESPACE);
+        defaultDecls.put("xsd", XSD.NAMESPACE);
         defaultDecls.put("fn", FN.NAMESPACE);
         defaultDecls.put("foaf", FOAF.NAMESPACE);
         defaultDecls.put("dc", DC.NAMESPACE);
@@ -139,7 +139,7 @@ public class PrefixDeclProcessor {
 //      insertDefaultPrefix(prefixMap, "rdfs", RDFS.NAMESPACE);
 //      insertDefaultPrefix(prefixMap, "sesame", SESAME.NAMESPACE);
 //      insertDefaultPrefix(prefixMap, "owl", OWL.NAMESPACE);
-//      insertDefaultPrefix(prefixMap, "xsd", XMLSchema.NAMESPACE);
+//      insertDefaultPrefix(prefixMap, "xsd", XSD.NAMESPACE);
 //      insertDefaultPrefix(prefixMap, "fn", FN.NAMESPACE);
 //      insertDefaultPrefix(prefixMap, "hint", QueryHints.NAMESPACE);
 //      insertDefaultPrefix(prefixMap, "bd", BD.NAMESPACE);
@@ -360,9 +360,12 @@ public class PrefixDeclProcessor {
 						
 						done = ch == -1;
 						
-						final String s = sb.toString();
+						String s = sb.toString();
+						if (s.endsWith("\r")) {
+							s = s.substring(0, s.length() - 1);
+						}
 						
-						if(sb.length() == 0) {
+						if(s.length() == 0) {
 							//End of file with no input
 							break;
 						}

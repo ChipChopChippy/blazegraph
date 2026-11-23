@@ -28,9 +28,10 @@ package com.bigdata.rdf.inf;
 import java.util.Arrays;
 import java.util.UUID;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.bop.IConstant;
 import com.bigdata.bop.IPredicate;
@@ -132,19 +133,17 @@ import com.bigdata.striterator.IChunkedOrderedIterator;
  */
 public class Justification implements Comparable<Justification> {
 
-    protected static transient final Logger log = Logger.getLogger(Justification.class);
+    protected static transient final Logger log = LogManager.getLogger(Justification.class);
     
     /**
      * True iff the {@link #log} level is INFO or less.
      */
-    final static public boolean INFO = log.getEffectiveLevel().toInt() <= Level.INFO
-            .toInt();
+    final static public boolean INFO = log.isEnabled(Level.INFO);
 
     /**
      * True iff the {@link #log} level is DEBUG or less.
      */
-    final static public boolean DEBUG = log.getEffectiveLevel().toInt() <= Level.DEBUG
-            .toInt();
+    final static public boolean DEBUG = log.isEnabled(Level.DEBUG);
 
     /**
      * The #of term identifiers in a statement.

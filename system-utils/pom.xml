@@ -28,12 +28,12 @@ Copyright 2010 by TalkingTrends (Amsterdam, The Netherlands)
   <parent>
     <groupId>com.blazegraph</groupId>
     <artifactId>blazegraph-parent</artifactId>
-    <version>2.1.6-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <groupId>com.blazegraph</groupId>
   <artifactId>system-utils</artifactId>
-  <version>2.1.6-SNAPSHOT</version>
+  <version>3.0.0-SNAPSHOT</version>
   <name>Blazegraph System Utilities</name>
   <description>System Utilities for Blazegraph DB</description>
   <build>
@@ -87,8 +87,8 @@ ga('send', 'pageview');
   </reporting>
   <dependencies>
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
       <version>${log4j.version}</version>
     </dependency>
     <dependency>

@@ -31,9 +31,10 @@ import java.text.NumberFormat;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.io.FileChannelUtility;
 import com.bigdata.mdi.IResourceMetadata;
 import com.bigdata.rawstore.AbstractRawWormStore;
@@ -53,10 +54,9 @@ public abstract class AbstractBufferStrategy extends AbstractRawWormStore implem
     /**
      * Log for buffer operations.
      */
-    protected static final Logger log = Logger.getLogger(AbstractBufferStrategy.class);
+    protected static final Logger log = LogManager.getLogger(AbstractBufferStrategy.class);
     
-    protected static final boolean WARN = log.getEffectiveLevel().toInt() <= Level.WARN
-            .toInt();
+    protected static final boolean WARN = log.isEnabled(Level.WARN);
         
     /**
      * Text of the error message used when a {@link ByteBuffer} with zero bytes

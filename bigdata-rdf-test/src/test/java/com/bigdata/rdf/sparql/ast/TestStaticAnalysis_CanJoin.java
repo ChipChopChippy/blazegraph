@@ -59,7 +59,7 @@ public class TestStaticAnalysis_CanJoin extends TestCase2 {
      */
     @SuppressWarnings("rawtypes")
     protected IV mockIV() {
-        return TermId.mockIV(VTE.URI);
+        return TermId.mockIV(VTE.IRI);
     }
 
     /**

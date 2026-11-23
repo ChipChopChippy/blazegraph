@@ -3,7 +3,7 @@ package com.bigdata.rdf.store;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.openrdf.model.Statement;
+import org.eclipse.rdf4j.model.Statement;
 
 import com.bigdata.journal.IIndexManager;
 import com.bigdata.journal.ITransactionService;
@@ -50,9 +50,9 @@ public class TestLocalTripleStoreTransactionSemantics extends ProxyTestCase {
             
             final BigdataValueFactory f = store.getValueFactory();
 
-            final BigdataValue s = f.createURI("http://www.bigdata.com/s");
-            final BigdataValue p = f.createURI("http://www.bigdata.com/p");
-            final BigdataValue o = f.createURI("http://www.bigdata.com/o");
+            final BigdataValue s = f.createIRI("http://www.bigdata.com/s");
+            final BigdataValue p = f.createIRI("http://www.bigdata.com/p");
+            final BigdataValue o = f.createIRI("http://www.bigdata.com/o");
 
             final BigdataValue[] values = new BigdataValue[]{s,p,o};
             
@@ -90,9 +90,9 @@ public class TestLocalTripleStoreTransactionSemantics extends ProxyTestCase {
 //            // read-committed view of the same database.
 //            final AbstractTripleStore view = store.asReadCommittedView();
 //
-//            final IV s = new TermId(VTE.URI, 1);
-//            final IV p = new TermId(VTE.URI, 2);
-//            final IV o = new TermId(VTE.URI, 3);
+//            final IV s = new TermId(VTE.IRI, 1);
+//            final IV p = new TermId(VTE.IRI, 2);
+//            final IV o = new TermId(VTE.IRI, 3);
 //
 //            // add the statement.
 //            store.addStatements(new SPO[] { //
@@ -143,9 +143,9 @@ public class TestLocalTripleStoreTransactionSemantics extends ProxyTestCase {
 
 //        final MockTermIdFactory f = new MockTermIdFactory();
 //        
-//        final IV<?,?> s = f.newTermId(VTE.URI);
-//        final IV<?,?> p = f.newTermId(VTE.URI);
-//        final IV<?,?> o = f.newTermId(VTE.URI);
+//        final IV<?,?> s = f.newTermId(VTE.IRI);
+//        final IV<?,?> p = f.newTermId(VTE.IRI);
+//        final IV<?,?> o = f.newTermId(VTE.IRI);
 
         class AbortException extends RuntimeException {
             private static final long serialVersionUID = 1L;
@@ -162,9 +162,9 @@ public class TestLocalTripleStoreTransactionSemantics extends ProxyTestCase {
 
             final BigdataValueFactory f = store.getValueFactory();
 
-            s = f.createURI("http://www.bigdata.com/s"); 
-            p = f.createURI("http://www.bigdata.com/p"); 
-            o = f.createURI("http://www.bigdata.com/o"); 
+            s = f.createIRI("http://www.bigdata.com/s"); 
+            p = f.createIRI("http://www.bigdata.com/p"); 
+            o = f.createIRI("http://www.bigdata.com/o"); 
             
             final BigdataValue[] values = new BigdataValue[]{s,p,o};
             
@@ -306,10 +306,10 @@ public class TestLocalTripleStoreTransactionSemantics extends ProxyTestCase {
             
             final BigdataValueFactory f = unisolatedStore.getValueFactory();
 
-            final BigdataURI john = f.createURI("http://www.bigdata.com/john");
+            final BigdataURI john = f.createIRI("http://www.bigdata.com/john");
             final BigdataURI loves = f
-                    .createURI("http://www.bigdata.com/loves");
-            final BigdataURI mary = f.createURI("http://www.bigdata.com/mary");
+                    .createIRI("http://www.bigdata.com/loves");
+            final BigdataURI mary = f.createIRI("http://www.bigdata.com/mary");
 
             final BigdataValue[] terms = new BigdataValue[] {
 

@@ -26,11 +26,12 @@ package com.bigdata.rdf.internal.constraints;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.vocabulary.RDF;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -53,7 +54,7 @@ public class DatatypeBOp extends IVValueExpression<IV>
 	 */
 	private static final long serialVersionUID = 7391999162162545704L;
 
-	private static final transient Logger log = Logger.getLogger(DatatypeBOp.class);
+	private static final transient Logger log = LogManager.getLogger(DatatypeBOp.class);
 
     public DatatypeBOp(final IValueExpression<? extends IV> x, final GlobalAnnotations globals) {
 
@@ -115,26 +116,20 @@ public class DatatypeBOp extends IVValueExpression<IV>
 
         	final Literal literal = (Literal) val;
 
-        	final URI datatype;
+        	final IRI datatype;
 
-			if (literal.getDatatype() != null) {
-
-				// literal with datatype
-				datatype = literal.getDatatype();
-
-            } else if (literal.getLanguage() != null) {
+            if (literal.getLanguage().isPresent()) {
 
                 // language-tag literal
                 datatype = RDF.LANGSTRING;
 
-			} else if (literal.getLanguage() == null) {
+			} else if (literal.getDatatype() != null) {
 
-				// simple literal
-				datatype = XSD.STRING;
+                datatype = literal.getDatatype();
 
 			} else {
 
-				throw new SparqlTypeErrorException();
+				datatype = XSD.STRING;
 
 			}
 

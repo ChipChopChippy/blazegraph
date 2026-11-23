@@ -29,8 +29,8 @@ import java.io.IOException;
 
 import net.jini.url.httpmd.HttpmdUtil;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Utility class that provides a set of static convenience methods

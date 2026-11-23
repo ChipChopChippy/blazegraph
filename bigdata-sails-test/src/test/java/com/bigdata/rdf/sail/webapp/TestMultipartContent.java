@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -18,7 +17,8 @@ import org.apache.http.entity.mime.FormBodyPart;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.message.BasicNameValuePair;
-import org.eclipse.jetty.client.api.ContentProvider;
+import org.eclipse.jetty.client.Request;
+import org.eclipse.jetty.io.Content;
 
 import com.bigdata.rdf.sail.webapp.client.EntityContentProvider;
 
@@ -43,7 +43,7 @@ public class TestMultipartContent extends TestCase {
      	
     	final HttpEntity entity =  new UrlEncodedFormEntity(formparams, "UTF-8");
     	
-    	final ContentProvider content = new EntityContentProvider(entity);
+        final Request.Content content = new EntityContentProvider(entity);
     	
     	System.out.println(new String(entity.getContentType().toString()));
 	}
@@ -84,20 +84,15 @@ public class TestMultipartContent extends TestCase {
         final EntityContentProvider cp = new EntityContentProvider(entity);
 
         ByteArrayOutputStream outstr = new ByteArrayOutputStream();
-        final Iterator<ByteBuffer> bbs = cp.iterator();
-        while(bbs.hasNext()) {
-        	final ByteBuffer bb = bbs.next();
-        	outstr.write(bb.array());
-        }
+        final ByteBuffer bb = Content.Source.asByteBuffer(cp);
+        final byte[] bytes = new byte[bb.remaining()];
+        bb.get(bytes);
+        outstr.write(bytes);
         System.out.println(new String(outstr.toByteArray()));
 	}
 	
-	void display(ContentProvider cp) {
-		Iterator<ByteBuffer> iter = cp.iterator();
-		
-		while (iter.hasNext()) {
-			System.out.println(new String(iter.next().array()));
-		}
+	void display(Request.Content cp) throws IOException {
+		System.out.println(Content.Source.asString(cp));
 	}
 		
 }

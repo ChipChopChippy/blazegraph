@@ -28,27 +28,40 @@
 package com.bigdata.rdf.model;
 
 import java.util.Date;
+import java.math.BigInteger;
+import java.math.BigDecimal;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.openrdf.model.BNode;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.base.CoreDatatype;
 
 import com.bigdata.rdf.store.IRawTripleStore;
 
 /**
  * Interface strengthens the return types and adds some custom extensions.
  * 
- * @see BigdataValueFactoryImpl#getInstance(String)
+ * @see BigdataSimpleValueFactory#getInstance(String)
  * 
  * @author <a href="mailto:thompsonbry@users.sourceforge.net">Bryan Thompson</a>
  * @version $Id$
  */
 public interface BigdataValueFactory extends ValueFactory {
+
+    @Override
+    default BigdataURI createIRI(final String uriString) {
+        return createURI(uriString);
+    }
+
+    @Override
+    default BigdataURI createIRI(final String namespace, final String localName) {
+        return createURI(namespace, localName);
+    }
 	
     /**
      * The namespace of the KB instance associated with the value factory.
@@ -76,13 +89,13 @@ public interface BigdataValueFactory extends ValueFactory {
 //    /**
 //     * Create a blank node and flag it as a statement identifier.
 //     */
-//    BigdataBNodeImpl createSID();
+//    BigdataSimpleBNode createSID();
 //    
 //    /**
 //     * Create a blank node with the specified ID and flag it as a statement
 //     * identifier.
 //     */
-//    BigdataBNodeImpl createSID(String id);
+//    BigdataSimpleBNode createSID(String id);
 
     BigdataBNode createBNode();
 
@@ -101,6 +114,10 @@ public interface BigdataValueFactory extends ValueFactory {
     BigdataLiteral createLiteral(int arg0);
 
     BigdataLiteral createLiteral(long arg0);
+
+    BigdataLiteral createLiteral(BigInteger arg0);
+
+    BigdataLiteral createLiteral(BigDecimal arg0);
 
     BigdataLiteral createLiteral(byte arg0, boolean unsigned);
 
@@ -122,9 +139,15 @@ public interface BigdataValueFactory extends ValueFactory {
         
     BigdataLiteral createLiteral(String label, String language);
 
-    BigdataLiteral createLiteral(String label, URI datatype);
+    BigdataLiteral createLiteral(String label, IRI datatype);
 
-    BigdataLiteral createLiteral(String label, URI datatype, String language);
+    BigdataLiteral createLiteral(String label, IRI datatype, String language);
+
+    @Override
+    BigdataLiteral createLiteral(String label, IRI datatype, CoreDatatype coreDatatype);
+
+    @Override
+    BigdataLiteral createLiteral(String label, CoreDatatype coreDatatype);
 
     BigdataURI createURI(String uriString);
 
@@ -133,12 +156,12 @@ public interface BigdataValueFactory extends ValueFactory {
     /**
      * Create a statement whose {@link StatementEnum} is NOT specified.
      */
-    BigdataStatement createStatement(Resource s, URI p, Value o);
+    BigdataStatement createStatement(Resource s, IRI p, Value o);
 
     /**
      * Create a statement whose {@link StatementEnum} is NOT specified.
      */
-    BigdataStatement createStatement(Resource s, URI p, Value o, Resource c);
+    BigdataStatement createStatement(Resource s, IRI p, Value o, Resource c);
 
     /**
      * Create a statement (core impl). The s,p,o, and the optional c arguments
@@ -158,7 +181,7 @@ public interface BigdataValueFactory extends ValueFactory {
      * @param type
      *            The statement type (optional).
      */
-    BigdataStatement createStatement(Resource s, URI p, Value o,
+    BigdataStatement createStatement(Resource s, IRI p, Value o,
             Resource c, StatementEnum type);
     
     /**
@@ -181,19 +204,19 @@ public interface BigdataValueFactory extends ValueFactory {
      * @param userFlag
      *            The user flag
      */
-    BigdataStatement createStatement(Resource s, URI p, Value o,
+    BigdataStatement createStatement(Resource s, IRI p, Value o,
             Resource c, StatementEnum type, boolean userFlag);
 
     /**
      * Converts a {@link Value} into a {@link BigdataValue}. If the value is
      * already a {@link BigdataValue} and it was allocated by <i>this</i>
-     * {@link BigdataValueFactoryImpl} then it is returned unchanged. Otherwise a
+     * {@link BigdataSimpleValueFactory} then it is returned unchanged. Otherwise a
      * new {@link BigdataValue} will be creating using the same data as the
      * given value and the term identifier on the new {@link BigdataValue} will
      * be initialized to {@link IRawTripleStore#NULL}.
      * <p>
-     * All {@link BigdataValue}s created by a {@link BigdataValueFactoryImpl}
-     * internally store a transient reference to the {@link BigdataValueFactoryImpl}.
+     * All {@link BigdataValue}s created by a {@link BigdataSimpleValueFactory}
+     * internally store a transient reference to the {@link BigdataSimpleValueFactory}.
      * This reference is used to decide if a {@link BigdataValue} MIGHT have
      * been created by a different lexicon (term identifiers generated by
      * different lexicons CAN NOT be used interchangeably). This has the effect
@@ -215,9 +238,9 @@ public interface BigdataValueFactory extends ValueFactory {
     BigdataResource asValue(Resource v);
     
     /**
-     * Strongly typed for {@link URI}s.
+     * Strongly typed for {@link IRI}s.
      */
-    BigdataURI asValue(URI v);
+    BigdataURI asValue(IRI v);
 
     /**
      * Strongly typed for {@link Literal}s.
@@ -232,7 +255,7 @@ public interface BigdataValueFactory extends ValueFactory {
     /**
      * An object that can efficiently (de-)serialize {@link Value}s using this
      * {@link ValueFactory}. When the values are de-serialized they will have a
-     * reference to this {@link BigdataValueFactoryImpl}.  That reference can be
+     * reference to this {@link BigdataSimpleValueFactory}.  That reference can be
      * used to identify when two {@link BigdataValue}s MIGHT be from different
      * lexicons.
      * 

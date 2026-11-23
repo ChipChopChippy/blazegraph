@@ -27,11 +27,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.internal;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.rdf.internal.impl.bnode.FullyInlineUnicodeBNodeIV;
 import com.bigdata.rdf.internal.impl.extensions.XSDStringExtension;
@@ -47,7 +47,7 @@ import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataURI;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.vocab.Vocabulary;
 
 /**
@@ -80,33 +80,33 @@ public class TestEncodeDecodeUnicodeIVs extends
      */
     public void test_encodeDecode_extension_xsdString() {
         
-        final BigdataValueFactory vf = BigdataValueFactoryImpl.getInstance("test");
+        final BigdataValueFactory vf = BigdataSimpleValueFactory.getInstance("test");
         
         final int maxInlineStringLength = 128;
         
         final XSDStringExtension<BigdataValue> ext = 
             new XSDStringExtension<BigdataValue>(
                 new IDatatypeURIResolver() {
-                    public BigdataURI resolve(final URI uri) {
-                        final BigdataURI buri = vf.createURI(uri.stringValue());
-                        buri.setIV(newTermId(VTE.URI));
+                    public BigdataURI resolve(final IRI uri) {
+                        final BigdataURI buri = vf.createIRI(uri.stringValue());
+                        buri.setIV(newTermId(VTE.IRI));
                         return buri;
                     }
                 }, maxInlineStringLength);
         
         final IV<?, ?>[] e = {//
-                ext.createIV(new LiteralImpl("", XSD.STRING)), //
-                ext.createIV(new LiteralImpl(" ", XSD.STRING)), //
-                ext.createIV(new LiteralImpl("  ", XSD.STRING)), //
-                ext.createIV(new LiteralImpl("1", XSD.STRING)), //
-                ext.createIV(new LiteralImpl("12", XSD.STRING)), //
-                ext.createIV(new LiteralImpl("123", XSD.STRING)), //
-                ext.createIV(new LiteralImpl("234", XSD.STRING)), //
-                ext.createIV(new LiteralImpl("34", XSD.STRING)), //
-                ext.createIV(new LiteralImpl("4", XSD.STRING)), //
-                ext.createIV(new LiteralImpl("a", XSD.STRING)), //
-                ext.createIV(new LiteralImpl("ab", XSD.STRING)), //
-                ext.createIV(new LiteralImpl("abc", XSD.STRING)), //
+                ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("", XSD.STRING)), //
+                ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral(" ", XSD.STRING)), //
+                ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("  ", XSD.STRING)), //
+                ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("1", XSD.STRING)), //
+                ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("12", XSD.STRING)), //
+                ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("123", XSD.STRING)), //
+                ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("234", XSD.STRING)), //
+                ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("34", XSD.STRING)), //
+                ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("4", XSD.STRING)), //
+                ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("a", XSD.STRING)), //
+                ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("ab", XSD.STRING)), //
+                ext.createIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("abc", XSD.STRING)), //
         };
 
         doEncodeDecodeTest(e);
@@ -116,15 +116,15 @@ public class TestEncodeDecodeUnicodeIVs extends
     }
 
     /**
-     * Unit test for inlining an entire URI using {@link FullyInlineURIIV}. The URI
+     * Unit test for inlining an entire IRI using {@link FullyInlineURIIV}. The IRI
      * is inlined as a Unicode component using {@link DTE#XSDString}. The
      * extension bit is NOT set since we are not factoring out the namespace
-     * component of the URI.
+     * component of the IRI.
      */
     public void test_encodeDecode_Inline_URI() {
         
         final IV<?, ?>[] e = {//
-                new FullyInlineURIIV<BigdataURI>(new URIImpl("http://www.bigdata.com")),//
+                new FullyInlineURIIV<BigdataURI>(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com")),//
                 new FullyInlineURIIV<BigdataURI>(RDF.TYPE),//
                 new FullyInlineURIIV<BigdataURI>(RDF.SUBJECT),//
                 new FullyInlineURIIV<BigdataURI>(RDF.BAG),//
@@ -138,10 +138,10 @@ public class TestEncodeDecodeUnicodeIVs extends
     }
 
     /**
-     * Unit test for inlining an entire URI using {@link URIExtensionIV}. The
-     * URI is inlined as a combination of a {@link Vocabulary} item and a
+     * Unit test for inlining an entire IRI using {@link URIExtensionIV}. The
+     * IRI is inlined as a combination of a {@link Vocabulary} item and a
      * Unicode component using {@link DTE#XSDString}. The extension bit is set
-     * since we are factoring out the namespace component of the URI.
+     * since we are factoring out the namespace component of the IRI.
      */
     public void test_encodeDecode_Inline_Extension_URI() {
 
@@ -296,8 +296,8 @@ public class TestEncodeDecodeUnicodeIVs extends
      */
     public void test_encodeDecode_Inline_Literal_datatypeLiteral() {
         
-        final URI dt1 = new URIImpl("http://www.bigdata.com/mock-datatype-1");
-        final URI dt2 = new URIImpl("http://www.bigdata.com/mock-datatype-2");
+        final IRI dt1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/mock-datatype-1");
+        final IRI dt2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/mock-datatype-2");
         
         final IV<?, ?>[] e = {//
                 new FullyInlineTypedLiteralIV<BigdataLiteral>("foo", null/* language */,
@@ -344,8 +344,8 @@ public class TestEncodeDecodeUnicodeIVs extends
      */
     public void test_encodeDecode_Inline_Literals_All_Types() {
         
-        final URI dt1 = new URIImpl("http://www.bigdata.com/mock-datatype-1");
-        final URI dt2 = new URIImpl("http://www.bigdata.com/mock-datatype-2");
+        final IRI dt1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/mock-datatype-1");
+        final IRI dt2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/mock-datatype-2");
         
         final IV<?, ?>[] e = {//
                 /*
@@ -438,14 +438,14 @@ public class TestEncodeDecodeUnicodeIVs extends
     }
 
     /**
-     * Test for a URI broken down into namespace and local name components. The
+     * Test for a IRI broken down into namespace and local name components. The
      * namespace component is coded by setting the extension bit and placing the
      * IV of the namespace into the extension IV field. The local name is
      * inlined as a Unicode component using {@link DTE#XSDString}.
      */
     public void test_encodeDecode_NonInline_URI_with_NamespaceIV() {
 
-        final IV<?,?> namespaceIV = newTermId(VTE.URI);
+        final IV<?,?> namespaceIV = newTermId(VTE.IRI);
         
         final IV<?, ?>[] e = {//
                 new PartlyInlineURIIV<BigdataURI>(
@@ -474,8 +474,8 @@ public class TestEncodeDecodeUnicodeIVs extends
      */
     public void test_encodeDecode_NonInline_Literal_with_DatatypeIV() {
 
-        final IV<?,?> datatypeIV = newTermId(VTE.URI);
-        final IV<?,?> datatypeIV2 = newTermId(VTE.URI);
+        final IV<?,?> datatypeIV = newTermId(VTE.IRI);
+        final IV<?,?> datatypeIV2 = newTermId(VTE.IRI);
 
         final IV<?, ?>[] e = {//
                 new PartlyInlineTypedLiteralIV<BigdataLiteral>(
@@ -519,7 +519,7 @@ public class TestEncodeDecodeUnicodeIVs extends
     }
 
     /**
-     * Unit test for a fully inline representation of a URI based on a
+     * Unit test for a fully inline representation of a IRI based on a
      * namespaceIV represented by a {@link VocabURIShortIV} and a Unicode localName.
      */
     public void test_encodeDecode_URINamespaceIV() {

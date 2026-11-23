@@ -31,8 +31,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.rdf.vocab.VocabularyDecl;
 
@@ -48,41 +48,41 @@ import com.bigdata.rdf.vocab.VocabularyDecl;
 public class SKOSVocabularyDecl implements VocabularyDecl {
 
     public static final String NAMESPACE = "http://www.w3.org/2004/02/skos/core#";
-    public static final URI Collection = new URIImpl(NAMESPACE+"Collection");
-    public static final URI Concept = new URIImpl(NAMESPACE+"Concept");
-    public static final URI ConceptScheme = new URIImpl(NAMESPACE+"ConceptScheme");
-    public static final URI OrderedCollection = new URIImpl(NAMESPACE+"OrderedCollection");
-    public static final URI altLabel = new URIImpl(NAMESPACE+"altLabel");
-    public static final URI broadMatch = new URIImpl(NAMESPACE+"broadMatch");
-    public static final URI broader = new URIImpl(NAMESPACE+"broader");
-    public static final URI broaderTransitive = new URIImpl(NAMESPACE+"broaderTransitive");
-    public static final URI changeNote = new URIImpl(NAMESPACE+"changeNote");
-    public static final URI closeMatch = new URIImpl(NAMESPACE+"closeMatch");
-    public static final URI definition = new URIImpl(NAMESPACE+"definition");
-    public static final URI editorialNote = new URIImpl(NAMESPACE+"editorialNote");
-    public static final URI exactMatch = new URIImpl(NAMESPACE+"exactMatch");
-    public static final URI example = new URIImpl(NAMESPACE+"example");
-    public static final URI hasTopConcept = new URIImpl(NAMESPACE+"hasTopConcept");
-    public static final URI hiddenLabel = new URIImpl(NAMESPACE+"hiddenLabel");
-    public static final URI historyNote = new URIImpl(NAMESPACE+"historyNote");
-    public static final URI inScheme = new URIImpl(NAMESPACE+"inScheme");
-    public static final URI mappingRelation = new URIImpl(NAMESPACE+"mappingRelation");
-    public static final URI member = new URIImpl(NAMESPACE+"member");
-    public static final URI memberList = new URIImpl(NAMESPACE+"memberList");
-    public static final URI narrowMatch = new URIImpl(NAMESPACE+"narrowMatch");
-    public static final URI narrow = new URIImpl(NAMESPACE+"narrow");
-    public static final URI narrowTransitive = new URIImpl(NAMESPACE+"narrowTransitive");
-    public static final URI notation = new URIImpl(NAMESPACE+"notation");
-    public static final URI note = new URIImpl(NAMESPACE+"note");
-    public static final URI prefLabel = new URIImpl(NAMESPACE+"prefLabel");
-    public static final URI related = new URIImpl(NAMESPACE+"related");
-    public static final URI relatedMatch = new URIImpl(NAMESPACE+"relatedMatch");
-    public static final URI scopeNote = new URIImpl(NAMESPACE+"scopeNote");
-    public static final URI semanticRelation= new URIImpl(NAMESPACE+"semanticRelation");
-    public static final URI topConceptOf = new URIImpl(NAMESPACE+"topConceptOf");
+    public static final IRI Collection = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"Collection");
+    public static final IRI Concept = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"Concept");
+    public static final IRI ConceptScheme = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"ConceptScheme");
+    public static final IRI OrderedCollection = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"OrderedCollection");
+    public static final IRI altLabel = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"altLabel");
+    public static final IRI broadMatch = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"broadMatch");
+    public static final IRI broader = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"broader");
+    public static final IRI broaderTransitive = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"broaderTransitive");
+    public static final IRI changeNote = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"changeNote");
+    public static final IRI closeMatch = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"closeMatch");
+    public static final IRI definition = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"definition");
+    public static final IRI editorialNote = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"editorialNote");
+    public static final IRI exactMatch = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"exactMatch");
+    public static final IRI example = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"example");
+    public static final IRI hasTopConcept = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"hasTopConcept");
+    public static final IRI hiddenLabel = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"hiddenLabel");
+    public static final IRI historyNote = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"historyNote");
+    public static final IRI inScheme = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"inScheme");
+    public static final IRI mappingRelation = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"mappingRelation");
+    public static final IRI member = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"member");
+    public static final IRI memberList = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"memberList");
+    public static final IRI narrowMatch = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"narrowMatch");
+    public static final IRI narrow = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"narrow");
+    public static final IRI narrowTransitive = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"narrowTransitive");
+    public static final IRI notation = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"notation");
+    public static final IRI note = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"note");
+    public static final IRI prefLabel = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"prefLabel");
+    public static final IRI related = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"related");
+    public static final IRI relatedMatch = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"relatedMatch");
+    public static final IRI scopeNote = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"scopeNote");
+    public static final IRI semanticRelation= org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"semanticRelation");
+    public static final IRI topConceptOf = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+"topConceptOf");
     
-    static private final URI[] uris = new URI[] {
-        new URIImpl(NAMESPACE),//
+    static private final IRI[] uris = new IRI[] {
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE),//
         Collection, Concept, ConceptScheme, OrderedCollection, altLabel,
         broadMatch, broader, broaderTransitive, changeNote, closeMatch,
         definition, editorialNote, exactMatch, example, hasTopConcept,
@@ -95,7 +95,7 @@ public class SKOSVocabularyDecl implements VocabularyDecl {
     public SKOSVocabularyDecl() {
     }
     
-    public Iterator<URI> values() {
+    public Iterator<IRI> values() {
 
         return Collections.unmodifiableList(Arrays.asList(uris)).iterator();
         

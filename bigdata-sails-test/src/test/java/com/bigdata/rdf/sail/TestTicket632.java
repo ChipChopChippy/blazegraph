@@ -29,20 +29,20 @@ import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParseException;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.sail.SailRepository;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFParseException;
 
 import com.bigdata.rdf.sail.BigdataSail.Options;
 import com.bigdata.rdf.sparql.ast.eval.service.OpenrdfNativeMockServiceFactory;
@@ -66,7 +66,7 @@ public class TestTicket632 extends QuadsTestCase {
     }
 
     public void testServiceWithBindingArg() throws Exception {
-        final URI serviceURI = new URIImpl("http://www.bigdata.com/mockService/" + getName());
+        final IRI serviceURI = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/mockService/" + getName());
         //the service solutions don't matter cause the error is from before computing the service solutions
         final List<BindingSet> serviceSolutions = new LinkedList<BindingSet>();
         ServiceRegistry.getInstance().add(serviceURI, new OpenrdfNativeMockServiceFactory(serviceSolutions));
@@ -79,9 +79,9 @@ public class TestTicket632 extends QuadsTestCase {
         }
     }
 
-    private void executeQuery(final URI serviceUri, final SailRepository repo) throws RepositoryException, MalformedQueryException, QueryEvaluationException, RDFParseException, IOException, RDFHandlerException {
+    private void executeQuery(final IRI serviceUri, final SailRepository repo) throws RepositoryException, MalformedQueryException, QueryEvaluationException, RDFParseException, IOException, RDFHandlerException {
         try {
-            repo.initialize();
+            repo.init();
             final RepositoryConnection conn = repo.getConnection();
             final ValueFactory vf = conn.getValueFactory();
             conn.setAutoCommit(false);

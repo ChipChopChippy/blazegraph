@@ -35,9 +35,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.Constant;
@@ -92,7 +93,7 @@ import cutthecrap.utils.striterators.Striterator;
  */
 public class SearchServiceFactory extends AbstractServiceFactoryBase {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(SearchServiceFactory.class);
 
     /*
@@ -135,7 +136,7 @@ public class SearchServiceFactory extends AbstractServiceFactoryBase {
          * Validate the search predicates for a given search variable.
          */
         
-        final Map<IVariable<?>, Map<URI, StatementPatternNode>> map = verifyGraphPattern(
+        final Map<IVariable<?>, Map<IRI, StatementPatternNode>> map = verifyGraphPattern(
                 store, serviceNode.getGraphPattern());
 
         if (map == null)
@@ -145,12 +146,12 @@ public class SearchServiceFactory extends AbstractServiceFactoryBase {
             throw new RuntimeException(
                     "Multiple search requests may not be combined.");
 
-        final Map.Entry<IVariable<?>, Map<URI, StatementPatternNode>> e = map
+        final Map.Entry<IVariable<?>, Map<IRI, StatementPatternNode>> e = map
                 .entrySet().iterator().next();
         
         final IVariable<?> searchVar = e.getKey();
         
-        final Map<URI, StatementPatternNode> statementPatterns = e.getValue();
+        final Map<IRI, StatementPatternNode> statementPatterns = e.getValue();
         
         validateSearch(searchVar, statementPatterns);
 
@@ -172,12 +173,12 @@ public class SearchServiceFactory extends AbstractServiceFactoryBase {
      * The caller will detect both the absence of any search and the presence of
      * more than one search and throw an exception.
      */
-    private Map<IVariable<?>, Map<URI, StatementPatternNode>> verifyGraphPattern(
+    private Map<IVariable<?>, Map<IRI, StatementPatternNode>> verifyGraphPattern(
             final AbstractTripleStore database,
             final GroupNodeBase<IGroupMemberNode> group) {
 
         // lazily allocate iff we find some search predicates in this group.
-        Map<IVariable<?>, Map<URI, StatementPatternNode>> tmp = null;
+        Map<IVariable<?>, Map<IRI, StatementPatternNode>> tmp = null;
 
         final int arity = group.arity();
 
@@ -201,7 +202,7 @@ public class SearchServiceFactory extends AbstractServiceFactoryBase {
                     throw new RuntimeException("Expecting search predicate: "
                             + sp);
 
-                final URI uri = (URI) ((ConstantNode) p).getValue();
+                final IRI uri = (IRI) ((ConstantNode) p).getValue();
 
                 if (!uri.stringValue().startsWith(BDS.NAMESPACE))
                     throw new RuntimeException("Expecting search predicate: "
@@ -227,18 +228,18 @@ public class SearchServiceFactory extends AbstractServiceFactoryBase {
                 // Lazily allocate map.
                 if (tmp == null) {
 
-                    tmp = new LinkedHashMap<IVariable<?>, Map<URI, StatementPatternNode>>();
+                    tmp = new LinkedHashMap<IVariable<?>, Map<IRI, StatementPatternNode>>();
                     
                 }
 
                 // Lazily allocate set for that searchVar.
-                Map<URI, StatementPatternNode> statementPatterns = tmp
+                Map<IRI, StatementPatternNode> statementPatterns = tmp
                         .get(searchVar);
                 
                 if (statementPatterns == null) {
 
                     tmp.put(searchVar,
-                            statementPatterns = new LinkedHashMap<URI, StatementPatternNode>());
+                            statementPatterns = new LinkedHashMap<IRI, StatementPatternNode>());
                     
                 }
 
@@ -259,13 +260,13 @@ public class SearchServiceFactory extends AbstractServiceFactoryBase {
      * for a given searchVar.
      */
     private void validateSearch(final IVariable<?> searchVar,
-            final Map<URI, StatementPatternNode> statementPatterns) {
+            final Map<IRI, StatementPatternNode> statementPatterns) {
 
-        final Set<URI> uris = new LinkedHashSet<URI>();
+        final Set<IRI> uris = new LinkedHashSet<IRI>();
 
         for(StatementPatternNode sp : statementPatterns.values()) {
         
-            final URI uri = (URI)(sp.p()).getValue();
+            final IRI uri = (IRI)(sp.p()).getValue();
             
             if (!uris.add(uri))
                 throw new RuntimeException(
@@ -385,7 +386,7 @@ public class SearchServiceFactory extends AbstractServiceFactoryBase {
         public SearchCall(
                 final AbstractTripleStore store,
                 final IVariable<?> searchVar,
-                final Map<URI, StatementPatternNode> statementPatterns,
+                final Map<IRI, StatementPatternNode> statementPatterns,
                 final IServiceOptions serviceOptions) {
 
             if(store == null)
@@ -442,7 +443,7 @@ public class SearchServiceFactory extends AbstractServiceFactoryBase {
 
             for (StatementPatternNode meta : statementPatterns.values()) {
 
-                final URI p = (URI) meta.p().getValue();
+                final IRI p = (IRI) meta.p().getValue();
 
                 final Literal oVal = meta.o().isConstant() ? (Literal) meta.o()
                         .getValue() : null;
@@ -530,7 +531,7 @@ public class SearchServiceFactory extends AbstractServiceFactoryBase {
 
             return (Hiterator) textIndex.search(new FullTextQuery(
         		s,//
-                query.getLanguage(),// 
+                query.getLanguage().orElse(null),// 
                 prefixMatch,//
                 matchRegex == null ? null : matchRegex.stringValue(),
                 matchAllTerms,
@@ -570,7 +571,7 @@ public class SearchServiceFactory extends AbstractServiceFactoryBase {
 
             return textIndex.count(new FullTextQuery(
         		s,//
-                query.getLanguage(),// 
+                query.getLanguage().orElse(null),// 
                 prefixMatch,//
                 matchRegex == null ? null : matchRegex.stringValue(),
                 matchAllTerms,

@@ -28,14 +28,15 @@ import java.io.Reader;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Statement;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFHandler;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.Rio;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFHandler;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.Rio;
 
 import com.bigdata.rdf.ServiceProviderHook;
 
@@ -51,7 +52,7 @@ public class BasicRioLoader implements IRioLoader {
      * Note: This logger was historically associated with the {@link IRioLoader}
      * interface and it is still named for that interface.
      */
-    protected static final transient Logger log = Logger
+    protected static final transient Logger log = LogManager
             .getLogger(IRioLoader.class);
 
     /**

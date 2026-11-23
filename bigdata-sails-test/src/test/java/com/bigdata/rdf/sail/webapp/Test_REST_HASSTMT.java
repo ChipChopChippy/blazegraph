@@ -27,12 +27,12 @@ import java.util.Properties;
 
 import junit.framework.Test;
 
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.FOAF;
-import org.openrdf.model.vocabulary.OWL;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.FOAF;
+import org.eclipse.rdf4j.model.vocabulary.OWL;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
 
 import com.bigdata.journal.IIndexManager;
 import com.bigdata.rdf.sail.BigdataSail;
@@ -78,14 +78,14 @@ public class Test_REST_HASSTMT<S extends IIndexManager> extends
 
       doInsertbyURL("POST", packagePath + "test_estcard.ttl");
 
-      assertTrue(m_repo.hasStatement(new URIImpl(
+      assertTrue(m_repo.hasStatement(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
             "http://www.bigdata.com/Mike"),// s
             null,// p
             null,// o
             false// includeInferred
             ));
 
-      assertFalse(m_repo.hasStatement(new URIImpl(
+      assertFalse(m_repo.hasStatement(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
             "http://www.bigdata.com/Fred"),// s
             null,// p
             null,// o
@@ -120,14 +120,14 @@ public class Test_REST_HASSTMT<S extends IIndexManager> extends
 
       assertTrue(m_repo.hasStatement(null,// s
             null,// p
-            new LiteralImpl("Mike"),// o
+            org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Mike"),// o
             false // includeInferred
             // c
             ));
 
       assertFalse(m_repo.hasStatement(null,// s
             null,// p
-            new LiteralImpl("Fred"),// o
+            org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Fred"),// o
             false // includeInferred
             // c
             ));
@@ -138,7 +138,7 @@ public class Test_REST_HASSTMT<S extends IIndexManager> extends
 
       doInsertbyURL("POST", packagePath + "test_estcard.ttl");
 
-      assertTrue( m_repo.hasStatement(new URIImpl(
+      assertTrue( m_repo.hasStatement(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
             "http://www.bigdata.com/Mike"),// s,
             RDF.TYPE,// p
             null,// o
@@ -146,7 +146,7 @@ public class Test_REST_HASSTMT<S extends IIndexManager> extends
             // null // c
             ));
 
-      assertFalse( m_repo.hasStatement(new URIImpl(
+      assertFalse( m_repo.hasStatement(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
             "http://www.bigdata.com/Fred"),// s,
             RDF.TYPE,// p
             null,// o
@@ -154,7 +154,7 @@ public class Test_REST_HASSTMT<S extends IIndexManager> extends
             // null // c
             ));
 
-      assertFalse( m_repo.hasStatement(new URIImpl(
+      assertFalse( m_repo.hasStatement(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
             "http://www.bigdata.com/Mike"),// s,
             RDF.BAG,// p
             null,// o
@@ -170,21 +170,21 @@ public class Test_REST_HASSTMT<S extends IIndexManager> extends
 
       assertTrue( m_repo.hasStatement(null,// s,
             RDFS.LABEL,// p
-            new LiteralImpl("Mike"),// o
+            org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Mike"),// o
             false // includeInferred
             // null // c
             ));
 
       assertFalse( m_repo.hasStatement(null,// s,
             RDFS.LABEL,// p
-            new LiteralImpl("Fred"),// o
+            org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Fred"),// o
             false // includeInferred
             // null // c
             ));
 
       assertFalse( m_repo.hasStatement(null,// s,
             RDF.BAG,// p
-            new LiteralImpl("Mike"),// o
+            org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Mike"),// o
             false // includeInferred
             // null // c
             ));
@@ -195,14 +195,14 @@ public class Test_REST_HASSTMT<S extends IIndexManager> extends
 
       doInsertbyURL("POST", packagePath + "test_estcard.ttl");
 
-      assertTrue(m_repo.hasStatement(new URIImpl(
+      assertTrue(m_repo.hasStatement(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
             "http://www.bigdata.com/Mike"),// s
             RDFS.LABEL,// p
             null,// o
             false// includeInferred
             ));
 
-      assertFalse(m_repo.hasStatement(new URIImpl(
+      assertFalse(m_repo.hasStatement(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
             "http://www.bigdata.com/Mike"),// s
             RDF.BAG,// p
             null,// o

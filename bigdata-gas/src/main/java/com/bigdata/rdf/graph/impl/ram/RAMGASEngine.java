@@ -22,13 +22,13 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.ValueFactoryImpl;
-import org.openrdf.sail.SailException;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.sail.SailException;
 
 import com.bigdata.rdf.graph.EdgesEnum;
 import com.bigdata.rdf.graph.IGASContext;
@@ -106,7 +106,7 @@ public class RAMGASEngine extends GASEngine {
              * this collection will be the {@link #v}.
              * <p>
              * The {@link Statement#getObject()} for each {@link Statement} in
-             * this collection will be a {@link URI}.
+             * this collection will be a {@link IRI}.
              */
             private Set<Statement> attribs = null;
 
@@ -184,7 +184,7 @@ public class RAMGASEngine extends GASEngine {
 
             vertices = new ConcurrentHashMap<Value, Vertex>();
             
-            vf = new ValueFactoryImpl();
+            vf = SimpleValueFactory.getInstance();
             
         }
         
@@ -228,7 +228,7 @@ public class RAMGASEngine extends GASEngine {
             final Value o = st.getObject();
 
             boolean modified = false;
-            if (o instanceof URI) {
+            if (o instanceof IRI) {
                 // Edge
                 modified |= get(s, true/* create */).addOutEdge(st);
                 modified |= get(o, true/* create */).addInEdge(st);
@@ -329,7 +329,7 @@ public class RAMGASEngine extends GASEngine {
                 final IGASContext<?, ?, ?> ctx, final Value u)
                 throws SailException {
 
-            final URI linkTypeIV = (URI) ctx.getLinkType();
+            final IRI linkTypeIV = (IRI) ctx.getLinkType();
             if(linkTypeIV != null) {
                 /*
                  * FIXME RDR: We need to use a union of access paths for link

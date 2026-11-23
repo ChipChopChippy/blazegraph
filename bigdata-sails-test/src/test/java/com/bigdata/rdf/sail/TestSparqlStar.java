@@ -28,18 +28,18 @@ package com.bigdata.rdf.sail;
 
 import java.util.Properties;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.BooleanQuery;
-import org.openrdf.query.GraphQuery;
-import org.openrdf.query.GraphQueryResult;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.Update;
-import org.openrdf.repository.RepositoryResult;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.BooleanQuery;
+import org.eclipse.rdf4j.query.GraphQuery;
+import org.eclipse.rdf4j.query.GraphQueryResult;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.Update;
+import org.eclipse.rdf4j.repository.RepositoryResult;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.model.BigdataBNode;
@@ -100,7 +100,7 @@ public class TestSparqlStar extends ProxyBigdataSailTestCase {
 
         try {
 
-            sail.initialize();
+            sail.init();
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             cxn = (BigdataSailRepositoryConnection) repo.getConnection();
 
@@ -119,11 +119,11 @@ public class TestSparqlStar extends ProxyBigdataSailTestCase {
 
     			assertEquals(2, cxn.getTripleStore().getStatementCount(true));
 
-        		final URI s = vf.createURI("x:s");
-                final URI p = vf.createURI("x:p");
+        		final IRI s = vf.createIRI("x:s");
+                final IRI p = vf.createIRI("x:p");
                 final Literal o = vf.createLiteral("d");
 
-                final BigdataURI p1 = vf.createURI("x:order");
+                final BigdataURI p1 = vf.createIRI("x:order");
                 final BigdataLiteral o1 = vf.createLiteral(5);
             	
             	final RepositoryResult<Statement> result = cxn.getStatements(s,p,o,true);
@@ -249,7 +249,7 @@ public class TestSparqlStar extends ProxyBigdataSailTestCase {
 
         try {
 
-            sail.initialize();
+            sail.init();
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             cxn = (BigdataSailRepositoryConnection) repo.getConnection();
 
@@ -268,12 +268,12 @@ public class TestSparqlStar extends ProxyBigdataSailTestCase {
 	
 				assertEquals(2, cxn.getTripleStore().getStatementCount(true));
 
-                final URI s = vf.createURI("x:s");
-                final URI p = vf.createURI("x:p");
+                final IRI s = vf.createIRI("x:s");
+                final IRI p = vf.createIRI("x:p");
                 final Literal o = vf.createLiteral("d");
 
-                final BigdataURI s1 = vf.createURI("x:r");
-                final BigdataURI p1 = vf.createURI("x:refers");
+                final BigdataURI s1 = vf.createIRI("x:r");
+                final BigdataURI p1 = vf.createIRI("x:refers");
             	
                 final RepositoryResult<Statement> result = cxn.getStatements(s,p,o,true);
                 try {
@@ -307,7 +307,7 @@ public class TestSparqlStar extends ProxyBigdataSailTestCase {
 	            final TupleQuery tq = cxn.prepareTupleQuery(QueryLanguage.SPARQL, selectStr);
 				final TupleQueryResult tqr = tq.evaluate();
 				try {
-	            final BigdataURI s2 = vf.createURI("x:r");
+	            final BigdataURI s2 = vf.createIRI("x:r");
 					int cnt = 0;
 					while (tqr.hasNext()) {
 					    final BindingSet bs = tqr.next();
@@ -329,7 +329,7 @@ public class TestSparqlStar extends ProxyBigdataSailTestCase {
 	            final TupleQuery tq = cxn.prepareTupleQuery(QueryLanguage.SPARQL, selectStr);
 				final TupleQueryResult tqr = tq.evaluate();
 				try {
-	            final BigdataURI s2 = vf.createURI("x:r");
+	            final BigdataURI s2 = vf.createIRI("x:r");
 					int cnt = 0;
 					while (tqr.hasNext()) {
 					    final BindingSet bs = tqr.next();
@@ -351,7 +351,7 @@ public class TestSparqlStar extends ProxyBigdataSailTestCase {
 					"}";
 	            final GraphQuery tg = cxn.prepareGraphQuery(QueryLanguage.SPARQL, selectStr);
 				GraphQueryResult tgr = tg.evaluate();
-	            final BigdataURI s2 = vf.createURI("x:r");
+	            final BigdataURI s2 = vf.createIRI("x:r");
 				try {
 					int cnt = 0;
 					while (tgr.hasNext()) {
@@ -397,7 +397,7 @@ public class TestSparqlStar extends ProxyBigdataSailTestCase {
 
         try {
 
-            sail.initialize();
+            sail.init();
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             cxn = (BigdataSailRepositoryConnection) repo.getConnection();
 
@@ -417,15 +417,15 @@ public class TestSparqlStar extends ProxyBigdataSailTestCase {
 
         			assertEquals(3, cxn.getTripleStore().getStatementCount(true));
 
-                final URI s = vf.createURI("x:s");
-                final URI p = vf.createURI("x:p");
+                final IRI s = vf.createIRI("x:s");
+                final IRI p = vf.createIRI("x:p");
                 final Literal o = vf.createLiteral("d");
 
-                final BigdataURI s1 = vf.createURI("x:r");
-                final BigdataURI p1 = vf.createURI("x:refers");
+                final BigdataURI s1 = vf.createIRI("x:r");
+                final BigdataURI p1 = vf.createIRI("x:refers");
 
-                final BigdataURI s2 = vf.createURI("x:z");
-                final BigdataURI p2 = vf.createURI("x:recurs");
+                final BigdataURI s2 = vf.createIRI("x:z");
+                final BigdataURI p2 = vf.createIRI("x:recurs");
 
             	final RepositoryResult<Statement> result = cxn.getStatements(s,p,o,true);
             	try {
@@ -467,7 +467,7 @@ public class TestSparqlStar extends ProxyBigdataSailTestCase {
 					"}";
 	            final TupleQuery tq = cxn.prepareTupleQuery(QueryLanguage.SPARQL, selectStr);
 				TupleQueryResult tqr = tq.evaluate();
-	            final BigdataURI s2 = vf.createURI("x:z");
+	            final BigdataURI s2 = vf.createIRI("x:z");
 				try {
 					int cnt = 0;
 					while (tqr.hasNext()) {
@@ -489,7 +489,7 @@ public class TestSparqlStar extends ProxyBigdataSailTestCase {
 					"}";
 	            final TupleQuery tq = cxn.prepareTupleQuery(QueryLanguage.SPARQL, selectStr);
 				TupleQueryResult tqr = tq.evaluate();
-	            final BigdataURI s2 = vf.createURI("x:z");
+	            final BigdataURI s2 = vf.createIRI("x:z");
 				try {
 					int cnt = 0;
 					while (tqr.hasNext()) {
@@ -512,7 +512,7 @@ public class TestSparqlStar extends ProxyBigdataSailTestCase {
 					"}";
 	            final GraphQuery tg = cxn.prepareGraphQuery(QueryLanguage.SPARQL, selectStr);
 				GraphQueryResult tgr = tg.evaluate();
-	            final BigdataURI s2 = vf.createURI("x:z");
+	            final BigdataURI s2 = vf.createIRI("x:z");
 				try {
 					int cnt = 0;
 					while (tgr.hasNext()) {

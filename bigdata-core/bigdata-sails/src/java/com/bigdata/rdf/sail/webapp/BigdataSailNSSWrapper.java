@@ -26,7 +26,8 @@ import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.server.Server;
 
@@ -39,7 +40,7 @@ import com.bigdata.util.config.NicUtil;
 
 public class BigdataSailNSSWrapper {
     
-    private static final transient Logger log = Logger
+    private static final transient Logger log = LogManager
             .getLogger(BigdataSailNSSWrapper.class);
 
 

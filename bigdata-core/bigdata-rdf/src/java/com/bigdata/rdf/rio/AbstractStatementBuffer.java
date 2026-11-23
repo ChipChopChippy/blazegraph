@@ -5,16 +5,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.BNode;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.ContextStatementImpl;
-import org.openrdf.model.impl.StatementImpl;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 
 import com.bigdata.rdf.lexicon.LexiconRelation;
 import com.bigdata.rdf.model.BigdataBNode;
@@ -81,7 +82,7 @@ import com.bigdata.rdf.store.TripleStoreUtility;
 abstract public class AbstractStatementBuffer<F extends Statement, G extends BigdataStatement>
         implements IStatementBuffer<F> {
 
-    protected static final Logger log = Logger.getLogger(AbstractStatementBuffer.class);
+    protected static final Logger log = LogManager.getLogger(AbstractStatementBuffer.class);
 
     protected static final boolean INFO = log.isInfoEnabled();
 
@@ -263,7 +264,7 @@ abstract public class AbstractStatementBuffer<F extends Statement, G extends Big
     /**
      * Return a canonical {@link BigdataValue} instance representing the given
      * <i>value</i>. The scope of the canonical instance is until the next
-     * internal buffer overflow ({@link URI}s and {@link Literal}s) or until
+     * internal buffer overflow ({@link IRI}s and {@link Literal}s) or until
      * {@link #flush()} ({@link BNode}s, since blank nodes are global for a
      * given source). The purpose of the canonicalizing mapping is to reduce the
      * buffered {@link BigdataValue}s to the minimum variety required to
@@ -335,7 +336,7 @@ abstract public class AbstractStatementBuffer<F extends Statement, G extends Big
 
             if (b == null) {
 
-                if (value instanceof URI) {
+                if (value instanceof IRI) {
 
                     b = valueFactory.asValue(value);
 
@@ -458,21 +459,21 @@ abstract public class AbstractStatementBuffer<F extends Statement, G extends Big
     }
     
     @SuppressWarnings("unchecked")
-    public void add(Resource s, URI p, Value o) {
+    public void add(Resource s, IRI p, Value o) {
 
-        add((F)new StatementImpl(s,p,o));
+        add((F)SimpleValueFactory.getInstance().createStatement(s,p,o));
         
     }
 
     @SuppressWarnings("unchecked")
-    public void add(Resource s, URI p, Value o, Resource c) {
+    public void add(Resource s, IRI p, Value o, Resource c) {
         
-        add((F)new ContextStatementImpl(s,p,o,c));
+        add((F)SimpleValueFactory.getInstance().createStatement(s,p,o,c));
         
     }
 
     @SuppressWarnings("unchecked")
-    public void add(Resource s, URI p, Value o, Resource c, StatementEnum type) {
+    public void add(Resource s, IRI p, Value o, Resource c, StatementEnum type) {
         
         final G stmt = (G)  getValueFactory().createStatement(//
                 (BigdataResource) convertValue(s), //

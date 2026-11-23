@@ -27,13 +27,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.store;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.rdf.model.BigdataStatement;
-import com.bigdata.rdf.model.BigdataStatementImpl;
+import com.bigdata.rdf.model.BigdataSimpleStatement;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.StatementEnum;
 import com.bigdata.rdf.rules.InferenceEngine;
@@ -220,11 +220,11 @@ public interface ITripleStore {
      * @param c
      *            The context (required IFF a quad store and otherwise ignored).
      */
-    void addStatement(Resource s, URI p, Value o, Resource c);
+    void addStatement(Resource s, IRI p, Value o, Resource c);
     /**
-     * @deprecated by {@link #addStatement(Resource, URI, Value, Resource)}
+     * @deprecated by {@link #addStatement(Resource, IRI, Value, Resource)}
      */
-    void addStatement(Resource s, URI p, Value o);
+    void addStatement(Resource s, IRI p, Value o);
 
     /**
      * Return true if the triple pattern matches any statements in the store
@@ -241,12 +241,12 @@ public interface ITripleStore {
      * @param c
      *            The context (optional and ignored unless a quad store).
      */
-    boolean hasStatement(Resource s, URI p, Value o, Resource c);
+    boolean hasStatement(Resource s, IRI p, Value o, Resource c);
 
     /**
-     * @deprecated by {@link #hasStatement(Resource, URI, Value, Resource)}
+     * @deprecated by {@link #hasStatement(Resource, IRI, Value, Resource)}
      */
-    boolean hasStatement(Resource s, URI p, Value o);
+    boolean hasStatement(Resource s, IRI p, Value o);
 
     /**
      * Return the statement from the database matching the fully bound query.
@@ -272,12 +272,12 @@ public interface ITripleStore {
      * 
      * @see #asValue(Value)
      */
-    BigdataStatement getStatement(Resource s, URI p, Value o, Resource c);
+    BigdataStatement getStatement(Resource s, IRI p, Value o, Resource c);
 
     /**
-     * @deprecated by {@link #getStatement(Resource, URI, Value, Resource)}
+     * @deprecated by {@link #getStatement(Resource, IRI, Value, Resource)}
      */
-    BigdataStatement getStatement(Resource s, URI p, Value o);
+    BigdataStatement getStatement(Resource s, IRI p, Value o);
 
     /**
      * Return an iterator that will visit all {@link BigdataStatement}s in the
@@ -294,13 +294,13 @@ public interface ITripleStore {
      *            
      * @return The iterator.
      */
-    BigdataStatementIterator getStatements(Resource s, URI p, Value o,
+    BigdataStatementIterator getStatements(Resource s, IRI p, Value o,
             Resource c);
 
     /**
-     * @deprecated by {@link #getStatements(Resource, URI, Value, Resource)}
+     * @deprecated by {@link #getStatements(Resource, IRI, Value, Resource)}
      */
-    BigdataStatementIterator getStatements(Resource s, URI p, Value o);
+    BigdataStatementIterator getStatements(Resource s, IRI p, Value o);
 
     /**
      * Converts a {@link BigdataValue} to a Sesame {@link Value} object.
@@ -329,12 +329,12 @@ public interface ITripleStore {
      *            
      * @return The #of statements removed.
      */
-    long removeStatements(Resource s, URI p, Value o, Resource c);
+    long removeStatements(Resource s, IRI p, Value o, Resource c);
 
     /**
-     * @deprecated by {@link #removeStatements(Resource, URI, Value, Resource)}
+     * @deprecated by {@link #removeStatements(Resource, IRI, Value, Resource)}
      */
-    long removeStatements(Resource s, URI p, Value o);
+    long removeStatements(Resource s, IRI p, Value o);
 
     /**
      * Returns an {@link IAccessPath} matching the triple pattern.
@@ -356,19 +356,19 @@ public interface ITripleStore {
      * @see IAccessPath
      * @see #asStatementIterator(IChunkedOrderedIterator)
      */
-    IAccessPath<ISPO> getAccessPath(Resource s, URI p, Value o,
+    IAccessPath<ISPO> getAccessPath(Resource s, IRI p, Value o,
             Resource c);
 
     /**
-     * @deprecated by {@link #getAccessPath(Resource, URI, Value, Resource)}
+     * @deprecated by {@link #getAccessPath(Resource, IRI, Value, Resource)}
      */
-    IAccessPath<ISPO> getAccessPath(Resource s, URI p, Value o);
+    IAccessPath<ISPO> getAccessPath(Resource s, IRI p, Value o);
 
     /**
      * Wraps an {@link IChunkedOrderedIterator} as a
      * {@link BigdataStatementIterator}.
      * <p>
-     * Note: The object visited will be {@link BigdataStatementImpl}s.
+     * Note: The object visited will be {@link BigdataSimpleStatement}s.
      * 
      * @param src
      *            An {@link IChunkedOrderedIterator} visiting {@link SPO}s
@@ -376,7 +376,7 @@ public interface ITripleStore {
      * @return The {@link BigdataStatementIterator}.
      * 
      * @see IAccessPath
-     * @see #getAccessPath(Resource, URI, Value)
+     * @see #getAccessPath(Resource, IRI, Value)
      */
     BigdataStatementIterator asStatementIterator(
             IChunkedOrderedIterator<ISPO> src);

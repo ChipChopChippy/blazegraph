@@ -57,7 +57,7 @@ public class TestLiteralDatatypeIV extends TestCase2 {
 
 	public void test_LiteralDatatypeIV() {
 
-		final IV<?,?> datatypeIV = newTermId(VTE.URI);
+		final IV<?,?> datatypeIV = newTermId(VTE.IRI);
 
 		doTest(new PartlyInlineTypedLiteralIV<BigdataLiteral>(
 				new FullyInlineTypedLiteralIV<BigdataLiteral>(""), datatypeIV)//

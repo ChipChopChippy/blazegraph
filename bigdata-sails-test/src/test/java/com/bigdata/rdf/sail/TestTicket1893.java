@@ -29,14 +29,13 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.UUID;
 
-import org.openrdf.model.vocabulary.XMLSchema;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParseException;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParseException;
 
 import com.bigdata.journal.IJournal;
-import com.bigdata.rdf.internal.XSD;
 import com.bigdata.rdf.lexicon.ITextIndexer.FullTextQuery;
 import com.bigdata.rdf.lexicon.IValueCentricTextIndexer;
 import com.bigdata.rdf.model.BigdataValue;
@@ -601,15 +600,15 @@ public class TestTicket1893 extends
         
         final BigdataValueFactory vf = cxn.getValueFactory();
         final BigdataValue[] values = new BigdataValue[]{
-				vf.createURI("http://s"),
-				vf.createLiteral("1", XMLSchema.INTEGER),
+				vf.createIRI("http://s"),
+				vf.createLiteral("1", XSD.INTEGER),
 				vf.createLiteral(2),
-				vf.createLiteral("3.0", XMLSchema.DECIMAL),
+				vf.createLiteral("3.0", XSD.DECIMAL),
 				vf.createLiteral(4.0),
 				vf.createLiteral(true),
 				vf.createLiteral(false),
 				vf.createLiteral("plain string"),
-				vf.createLiteral("datatyped string", XMLSchema.STRING),
+				vf.createLiteral("datatyped string", XSD.STRING),
 				vf.createLiteral("english string", "en"),
 		};
 
@@ -647,15 +646,15 @@ public class TestTicket1893 extends
         
         BigdataValueFactory vf = cxn.getValueFactory();
 		BigdataValue[] values = new BigdataValue[]{
-				vf.createURI("http://s"),
-				vf.createLiteral("1", XMLSchema.INTEGER),
+				vf.createIRI("http://s"),
+				vf.createLiteral("1", XSD.INTEGER),
 				vf.createLiteral(2),
-				vf.createLiteral("3.0", XMLSchema.DECIMAL),
+				vf.createLiteral("3.0", XSD.DECIMAL),
 				vf.createLiteral(4.0),
 				vf.createLiteral(true),
 				vf.createLiteral(false),
 				vf.createLiteral("plain string"),
-				vf.createLiteral("datatyped string", XMLSchema.STRING),
+				vf.createLiteral("datatyped string", XSD.STRING),
 				vf.createLiteral("english string", "en"),
 		};
 
@@ -693,15 +692,15 @@ public class TestTicket1893 extends
         
         BigdataValueFactory vf = cxn.getValueFactory();
 		BigdataValue[] values = new BigdataValue[]{
-				vf.createURI("http://s"),
-				vf.createLiteral("1", XMLSchema.INTEGER),
+				vf.createIRI("http://s"),
+				vf.createLiteral("1", XSD.INTEGER),
 				vf.createLiteral(2),
-				vf.createLiteral("3.0", XMLSchema.DECIMAL),
+				vf.createLiteral("3.0", XSD.DECIMAL),
 				vf.createLiteral(4.0),
 				vf.createLiteral(true),
 				vf.createLiteral(false),
 				vf.createLiteral("plain string"),
-				vf.createLiteral("datatyped string", XMLSchema.STRING),
+				vf.createLiteral("datatyped string", XSD.STRING),
 				vf.createLiteral("english string", "en"),
 		};
 
@@ -739,15 +738,15 @@ public class TestTicket1893 extends
         
         BigdataValueFactory vf = cxn.getValueFactory();
 		BigdataValue[] values = new BigdataValue[]{
-				vf.createURI("http://s"),
-				vf.createLiteral("1", XMLSchema.INTEGER),
+				vf.createIRI("http://s"),
+				vf.createLiteral("1", XSD.INTEGER),
 				vf.createLiteral(2),
-				vf.createLiteral("3.0", XMLSchema.DECIMAL),
+				vf.createLiteral("3.0", XSD.DECIMAL),
 				vf.createLiteral(4.0),
 				vf.createLiteral(true),
 				vf.createLiteral(false),
 				vf.createLiteral("plain string"),
-				vf.createLiteral("datatyped string", XMLSchema.STRING),
+				vf.createLiteral("datatyped string", XSD.STRING),
 				vf.createLiteral("english string", "en"),
 				vf.createBNode("_:s1"),
 				vf.createBNode("_:s2"),
@@ -787,15 +786,15 @@ public class TestTicket1893 extends
         
         BigdataValueFactory vf = cxn.getValueFactory();
 		BigdataValue[] values = new BigdataValue[]{
-				vf.createURI("http://s"),
-				vf.createLiteral("1", XMLSchema.INTEGER),
+				vf.createIRI("http://s"),
+				vf.createLiteral("1", XSD.INTEGER),
 				vf.createLiteral(2),
-				vf.createLiteral("3.0", XMLSchema.DECIMAL),
+				vf.createLiteral("3.0", XSD.DECIMAL),
 				vf.createLiteral(4.0),
 				vf.createLiteral(true),
 				vf.createLiteral(false),
 				vf.createLiteral("plain string"),
-				vf.createLiteral("datatyped string", XMLSchema.STRING),
+				vf.createLiteral("datatyped string", XSD.STRING),
 				vf.createLiteral("english string", "en"),
 				vf.createLiteral("very long literal which length exceeds MAX_INLINE_TEXT_LENGTH"),
 		};
@@ -838,15 +837,15 @@ public class TestTicket1893 extends
         
         BigdataValueFactory vf = cxn.getValueFactory();
 		BigdataValue[] values = new BigdataValue[]{
-				vf.createURI("http://s"),
-				vf.createLiteral("1", XMLSchema.INTEGER),
+				vf.createIRI("http://s"),
+				vf.createLiteral("1", XSD.INTEGER),
 				vf.createLiteral(2),
-				vf.createLiteral("3.0", XMLSchema.DECIMAL),
+				vf.createLiteral("3.0", XSD.DECIMAL),
 				vf.createLiteral(4.0),
 				vf.createLiteral(true),
 				vf.createLiteral(false),
 				vf.createLiteral("plain string"),
-				vf.createLiteral("datatyped string", XMLSchema.STRING),
+				vf.createLiteral("datatyped string", XSD.STRING),
 				vf.createLiteral("english string", "en"),
 				vf.createLiteral("very long literal which length exceeds MAX_INLINE_TEXT_LENGTH"),
 		};
@@ -889,15 +888,15 @@ public class TestTicket1893 extends
         
         BigdataValueFactory vf = cxn.getValueFactory();
 		BigdataValue[] values = new BigdataValue[]{
-				vf.createURI("http://s"),
-				vf.createLiteral("1", XMLSchema.INTEGER),
+				vf.createIRI("http://s"),
+				vf.createLiteral("1", XSD.INTEGER),
 				vf.createLiteral(2),
-				vf.createLiteral("3.0", XMLSchema.DECIMAL),
+				vf.createLiteral("3.0", XSD.DECIMAL),
 				vf.createLiteral(4.0),
 				vf.createLiteral(true),
 				vf.createLiteral(false),
 				vf.createLiteral("plain string"),
-				vf.createLiteral("datatyped string", XMLSchema.STRING),
+				vf.createLiteral("datatyped string", XSD.STRING),
 				vf.createLiteral("english string", "en"),
 		};
 
@@ -935,15 +934,15 @@ public class TestTicket1893 extends
         
         BigdataValueFactory vf = cxn.getValueFactory();
 		BigdataValue[] values = new BigdataValue[]{
-				vf.createURI("http://s"),
-				vf.createLiteral("1", XMLSchema.INTEGER),
+				vf.createIRI("http://s"),
+				vf.createLiteral("1", XSD.INTEGER),
 				vf.createLiteral(2),
-				vf.createLiteral("3.0", XMLSchema.DECIMAL),
+				vf.createLiteral("3.0", XSD.DECIMAL),
 				vf.createLiteral(4.0),
 				vf.createLiteral(true),
 				vf.createLiteral(false),
 				vf.createLiteral("plain string"),
-				vf.createLiteral("datatyped string", XMLSchema.STRING),
+				vf.createLiteral("datatyped string", XSD.STRING),
 				vf.createLiteral("english string", "en"),
 		};
 
@@ -1000,7 +999,7 @@ public class TestTicket1893 extends
 
         final BigdataSail sail = getSail(properties);
 
-        sail.initialize();
+        sail.init();
         
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         

@@ -28,10 +28,11 @@ import java.math.BigInteger;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.datatypes.XMLDatatypeUtil;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.base.CoreDatatype;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.datatypes.XMLDatatypeUtil;
 
 import com.bigdata.rdf.internal.DTE;
 import com.bigdata.rdf.internal.IV;
@@ -97,7 +98,7 @@ abstract public class AbstractLiteralIV<V extends BigdataLiteral, T>
      * Implement {@link Literal#getDatatype()}.
      */
     @Override
-    public URI getDatatype() {
+    public IRI getDatatype() {
         return getDTE() == DTE.Extension ? 
                 getDTEX().getDatatypeURI() : getDTE().getDatatypeURI();
     }
@@ -106,8 +107,13 @@ abstract public class AbstractLiteralIV<V extends BigdataLiteral, T>
      * Implement {@link Literal#getLanguage()}.
      */
     @Override
-    public String getLanguage() {
-    	return null;
+    public java.util.Optional<String> getLanguage() {
+    	return java.util.Optional.empty();
+    }
+
+    @Override
+    public CoreDatatype getCoreDatatype() {
+        return CoreDatatype.from(getDatatype());
     }
     
     /**

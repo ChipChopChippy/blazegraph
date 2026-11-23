@@ -23,6 +23,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.rdf.sparql.ast.eval;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -85,7 +87,7 @@ import com.bigdata.util.ClassPathUtil;
  */
 public class AST2BOpContext implements IdFactory, IEvaluationContext {
 
-//   private static final Logger log = Logger.getLogger(AST2BOpContext.class);
+//   private static final Logger log = LogManager.getLogger(AST2BOpContext.class);
    
     /**
      * The {@link ASTContainer} and never <code>null</code>.

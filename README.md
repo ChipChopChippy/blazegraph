@@ -1,4 +1,4 @@
-## Welcome to the Blazegraph Database ##
+## Welcome to the Blazegraph21 Database ##
 Blazegraph™ DB is a ultra high-performance graph database supporting Blueprints and RDF/SPARQL APIs. It supports up to 50 Billion edges on a single machine. It is in production use for Fortune 500 customers such as EMC, Autodesk, and many others.  It is supporting key [Precision Medicine](http://www.syapse.com) applications and has wide-spread usage for life science applications.  It is used extensively to support Cyber analytics in commercial and government applications.  It powers the Wikimedia Foundation's [Wikidata Query Service](https://query.wikidata.org/). 
 
 ![image](http://blog.blazegraph.com/wp-content/uploads/2015/07/blazegraph_by_systap_favicon.png)
@@ -38,6 +38,12 @@ If you enable authentication and expose the Blazegraph workbench, you should als
 
 ### Building the code ###
 As a quick start, run `mvn install -DskipTests` or the utility script `./scripts/mavenInstall.sh `.
+
+To build the standalone executable JAR with Java 21, run
+`mvn -PDeployment -pl blazegraph-jar -am package -DskipTests`. Start it with
+`java -jar blazegraph-jar/target/blazegraph-jar-3.0.0-SNAPSHOT.jar` and open
+`http://localhost:9999/blazegraph/`. The build skips tests and uses the current
+snapshot version; it is not a published release.
 
 For more detailed maven information see the [wiki](https://wiki.blazegraph.com/wiki/index.php/MavenNotes). 
 

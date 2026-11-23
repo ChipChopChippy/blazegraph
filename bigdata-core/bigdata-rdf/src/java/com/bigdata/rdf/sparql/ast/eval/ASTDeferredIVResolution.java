@@ -12,19 +12,20 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.query.Binding;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.Dataset;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.algebra.StatementPattern.Scope;
-import org.openrdf.query.algebra.evaluation.QueryBindingSet;
-import org.openrdf.query.impl.DatasetImpl;
-import org.openrdf.query.impl.MapBindingSet;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.query.Binding;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.Dataset;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.query.algebra.evaluation.QueryBindingSet;
+import org.eclipse.rdf4j.query.impl.SimpleDataset;
+import org.eclipse.rdf4j.query.impl.MapBindingSet;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpBase;
@@ -103,7 +104,7 @@ import com.bigdata.relation.accesspath.IAccessPath;
 @SuppressWarnings( { "rawtypes", "unchecked" } )
 public class ASTDeferredIVResolution {
     
-    private final static Logger log = Logger
+    private final static Logger log = LogManager
             .getLogger(ASTDeferredIVResolution.class);
     
     /**
@@ -795,29 +796,29 @@ public class ASTDeferredIVResolution {
     private Dataset handleDataset(final AbstractTripleStore store, final Dataset dataset) {
         if (dataset != null) {
 
-            DatasetImpl newDataset = new DatasetImpl();
+            SimpleDataset newDataset = new SimpleDataset();
             
-            for (final URI uri: dataset.getDefaultGraphs()) {
-                URI value = handleDatasetGraph(store, uri);
+            for (final IRI uri: dataset.getDefaultGraphs()) {
+                IRI value = handleDatasetGraph(store, uri);
                 newDataset.addDefaultGraph(value);
             }
-            for (final URI uri: dataset.getDefaultRemoveGraphs()) {
-                URI value = handleDatasetGraph(store, uri);
+            for (final IRI uri: dataset.getDefaultRemoveGraphs()) {
+                IRI value = handleDatasetGraph(store, uri);
                 newDataset.addDefaultRemoveGraph(value);
             }
-            for (final URI uri: dataset.getNamedGraphs()) {
-                URI value = handleDatasetGraph(store, uri);
+            for (final IRI uri: dataset.getNamedGraphs()) {
+                IRI value = handleDatasetGraph(store, uri);
                 newDataset.addNamedGraph(value);
             }
-            URI value = handleDatasetGraph(store, dataset.getDefaultInsertGraph());
+            IRI value = handleDatasetGraph(store, dataset.getDefaultInsertGraph());
             newDataset.setDefaultInsertGraph(value);
             return newDataset;
         }
         return dataset;
     }
 
-    private URI handleDatasetGraph(final AbstractTripleStore store, final URI uri) {
-        URI value = uri;
+    private IRI handleDatasetGraph(final AbstractTripleStore store, final IRI uri) {
+        IRI value = uri;
         if (value!= null && !(value instanceof BigdataValue)) {
             value = store.getValueFactory().asValue(value);
         }
@@ -1212,8 +1213,8 @@ public class ASTDeferredIVResolution {
                          * @see TestRollbacks
                          */
                         final String label = ((Literal) v).getLabel();
-                        final URI dataType = ((Literal) v).getDatatype();
-                        final String language = ((Literal) v).getLanguage();
+                        final IRI dataType = ((Literal) v).getDatatype();
+                        final String language = ((Literal) v).getLanguage().orElse(null);
                         final BigdataValue resolved;
                         if (language != null) {
                             resolved = vf.createLiteral(label, language);

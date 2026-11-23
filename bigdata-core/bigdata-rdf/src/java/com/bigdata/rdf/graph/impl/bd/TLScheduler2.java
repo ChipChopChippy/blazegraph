@@ -23,8 +23,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Value;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.rdf.graph.IGASScheduler;
 import com.bigdata.rdf.graph.IGASSchedulerImpl;
@@ -50,7 +51,7 @@ import com.bigdata.rdf.graph.util.GASUtil;
  */
 public class TLScheduler2 implements IGASSchedulerImpl {
 
-    private static final Logger log = Logger.getLogger(TLScheduler2.class);
+    private static final Logger log = LogManager.getLogger(TLScheduler2.class);
     
     /**
      * Class bundles a reusable, extensible array for sorting the thread-local

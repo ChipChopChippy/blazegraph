@@ -30,34 +30,35 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.Binding;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.impl.BindingImpl;
-import org.openrdf.query.impl.EmptyBindingSet;
-import org.openrdf.query.parser.ParsedTupleQuery;
-import org.openrdf.query.parser.QueryParserUtil;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.sail.SailConnection;
-import org.openrdf.sail.SailException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.Binding;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.impl.SimpleBinding;
+import org.eclipse.rdf4j.query.impl.EmptyBindingSet;
+import org.eclipse.rdf4j.query.parser.ParsedTupleQuery;
+import org.eclipse.rdf4j.query.parser.QueryParserUtil;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.sail.SailConnection;
+import org.eclipse.rdf4j.sail.SailException;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.store.BD;
 import com.bigdata.rdf.vocab.NoVocabulary;
 
-import info.aduna.iteration.CloseableIteration;
+import org.eclipse.rdf4j.common.iteration.CloseableIteration;
 
 /**
  * @author <a href="mailto:mrpersonick@users.sourceforge.net">Mike Personick</a>
@@ -65,7 +66,7 @@ import info.aduna.iteration.CloseableIteration;
  */
 public class TestSingleTailRule extends ProxyBigdataSailTestCase {
 
-    protected static final Logger log = Logger.getLogger(TestSingleTailRule.class);
+    protected static final Logger log = LogManager.getLogger(TestSingleTailRule.class);
     
     @Override
     public Properties getProperties() {
@@ -99,7 +100,7 @@ public class TestSingleTailRule extends ProxyBigdataSailTestCase {
 
         final BigdataSail sail = getSail();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
-        repo.initialize();
+        repo.init();
         final BigdataSailRepositoryConnection cxn = repo.getConnection();
         cxn.setAutoCommit(false);
         
@@ -109,9 +110,9 @@ public class TestSingleTailRule extends ProxyBigdataSailTestCase {
             
             final String ns = BD.NAMESPACE;
             
-            URI mike = vf.createURI(ns+"Mike");
-            URI likes = vf.createURI(ns+"likes");
-            URI rdf = vf.createURI(ns+"RDF");
+            IRI mike = vf.createIRI(ns+"Mike");
+            IRI likes = vf.createIRI(ns+"likes");
+            IRI rdf = vf.createIRI(ns+"RDF");
 /**/
             cxn.setNamespace("ns", ns);
             
@@ -133,7 +134,7 @@ public class TestSingleTailRule extends ProxyBigdataSailTestCase {
 
         final BigdataSail sail = getSail();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
-        repo.initialize();
+        repo.init();
         final BigdataSailRepositoryConnection cxn = repo.getConnection();
         cxn.setAutoCommit(false);
         
@@ -143,9 +144,9 @@ public class TestSingleTailRule extends ProxyBigdataSailTestCase {
             
             final String ns = BD.NAMESPACE;
             
-            final URI mike = vf.createURI(ns+"Mike");
-//            URI likes = vf.createURI(ns+"likes");
-//            URI rdf = vf.createURI(ns+"RDF");
+            final IRI mike = vf.createIRI(ns+"Mike");
+//            IRI likes = vf.createIRI(ns+"likes");
+//            IRI rdf = vf.createIRI(ns+"RDF");
             final Literal l1 = vf.createLiteral("Mike");
 /**/
             cxn.setNamespace("ns", ns);
@@ -180,9 +181,9 @@ public class TestSingleTailRule extends ProxyBigdataSailTestCase {
  
                 final Collection<BindingSet> solution = new LinkedList<BindingSet>();
                 solution.add(createBindingSet(new Binding[] {
-                    new BindingImpl("s", mike),
-                    new BindingImpl("p", RDFS.LABEL),
-                    new BindingImpl("o", l1),
+                    new SimpleBinding("s", mike),
+                    new SimpleBinding("p", RDFS.LABEL),
+                    new SimpleBinding("o", l1),
                 }));
                 
                 compare(result, solution);
@@ -211,7 +212,7 @@ public class TestSingleTailRule extends ProxyBigdataSailTestCase {
  
                 final Collection<BindingSet> solution = new LinkedList<BindingSet>();
                 solution.add(createBindingSet(new Binding[] {
-                    new BindingImpl("s", l1),
+                    new SimpleBinding("s", l1),
                 }));
                 
                 compare(result, solution);
@@ -228,13 +229,13 @@ public class TestSingleTailRule extends ProxyBigdataSailTestCase {
     }
     
     private void testValueRoundTrip(final SailConnection con, 
-            final Resource subj, final URI pred, final Value obj)
+            final Resource subj, final IRI pred, final Value obj)
         throws Exception
     {
         con.addStatement(subj, pred, obj);
         con.commit();
     
-        CloseableIteration<? extends Statement, SailException> stIter = 
+        CloseableIteration<? extends Statement> stIter = 
             con.getStatements(null, null, null, false);
     
         try {
@@ -259,7 +260,7 @@ public class TestSingleTailRule extends ProxyBigdataSailTestCase {
                 "  FILTER( ?P = <" + pred.stringValue() + "> ) " +
                 "}", null);
     
-        CloseableIteration<? extends BindingSet, QueryEvaluationException> iter;
+        CloseableIteration<? extends BindingSet> iter;
         iter = con.evaluate(tupleQuery.getTupleExpr(), null, EmptyBindingSet.getInstance(), false);
     
         try {
@@ -284,7 +285,7 @@ public class TestSingleTailRule extends ProxyBigdataSailTestCase {
 //        final Sail sail = new MemoryStore();
 //        final Repository repo = new SailRepository(sail);
         
-        repo.initialize();
+        repo.init();
         final RepositoryConnection cxn = repo.getConnection();
         cxn.setAutoCommit(false);
         
@@ -292,9 +293,9 @@ public class TestSingleTailRule extends ProxyBigdataSailTestCase {
     
             final ValueFactory vf = sail.getValueFactory();
 
-            URI s = vf.createURI("urn:test:s");
-            URI p1 = vf.createURI("urn:test:p1");
-            URI p2 = vf.createURI("urn:test:p2");
+            IRI s = vf.createIRI("urn:test:s");
+            IRI p1 = vf.createIRI("urn:test:p1");
+            IRI p2 = vf.createIRI("urn:test:p2");
             Literal v1 = vf.createLiteral(1);
             Literal v2 = vf.createLiteral(2);
             Literal v3 = vf.createLiteral(3);
@@ -320,13 +321,13 @@ public class TestSingleTailRule extends ProxyBigdataSailTestCase {
             
             Collection<BindingSet> solution = new LinkedList<BindingSet>();
             solution.add(createBindingSet(new Binding[] {
-                new BindingImpl("s", s),
-                new BindingImpl("v1", v1),
-                new BindingImpl("v2", v2),
+                new SimpleBinding("s", s),
+                new SimpleBinding("v1", v1),
+                new SimpleBinding("v2", v2),
             }));
             solution.add(createBindingSet(new Binding[] {
-                new BindingImpl("s", s),
-                new BindingImpl("v1", v3),
+                new SimpleBinding("s", s),
+                new SimpleBinding("v1", v3),
             }));
             
             compare(result, solution);

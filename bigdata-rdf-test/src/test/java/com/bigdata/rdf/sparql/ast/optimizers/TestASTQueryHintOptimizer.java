@@ -29,11 +29,11 @@ package com.bigdata.rdf.sparql.ast.optimizers;
 
 import java.util.Collections;
 
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.bop.BufferAnnotations;
 import com.bigdata.bop.IBindingSet;
@@ -135,25 +135,25 @@ public class TestASTQueryHintOptimizer extends
         @SuppressWarnings("rawtypes")
         final IV rdfsLabel = makeIV(RDFS.LABEL);
         @SuppressWarnings("rawtypes")
-        final IV politician = makeIV(new URIImpl("http://www.rdfabout.com/rdf/schema/politico/Politician"));
+        final IV politician = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.rdfabout.com/rdf/schema/politico/Politician"));
         @SuppressWarnings("rawtypes")
-        final IV hasRole = makeIV(new URIImpl("http://www.rdfabout.com/rdf/schema/politico/hasRole"));
+        final IV hasRole = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.rdfabout.com/rdf/schema/politico/hasRole"));
         @SuppressWarnings("rawtypes")
-        final IV party = makeIV(new URIImpl("http://www.rdfabout.com/rdf/schema/politico/party"));
+        final IV party = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.rdfabout.com/rdf/schema/politico/party"));
         @SuppressWarnings("rawtypes")
-        final IV democrat = makeIV(new LiteralImpl("Democrat"));
+        final IV democrat = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Democrat"));
         @SuppressWarnings("rawtypes")
-        final IV name = makeIV(new URIImpl("http://www.rdfabout.com/rdf/schema/usgovt/name"));
+        final IV name = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.rdfabout.com/rdf/schema/usgovt/name"));
         @SuppressWarnings("rawtypes")
-        final IV votedBy = makeIV(new URIImpl(
+        final IV votedBy = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://www.rdfabout.com/rdf/schema/vote/votedBy"));
 
         @SuppressWarnings("rawtypes")
-        final IV scopePrior = makeIV(new URIImpl(QueryHints.NAMESPACE+QueryHintScope.Prior));
+        final IV scopePrior = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE+QueryHintScope.Prior));
         @SuppressWarnings("rawtypes")
-        final IV chunkCapacity = makeIV(new URIImpl(QueryHints.NAMESPACE+BufferAnnotations.CHUNK_CAPACITY));
+        final IV chunkCapacity = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE+BufferAnnotations.CHUNK_CAPACITY));
         @SuppressWarnings("rawtypes")
-        final IV chunkCapacityValue = makeIV(new LiteralImpl("200"));
+        final IV chunkCapacityValue = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("200"));
 
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -378,26 +378,26 @@ public class TestASTQueryHintOptimizer extends
         @SuppressWarnings("rawtypes")
         final IV a = makeIV(RDF.TYPE);
         @SuppressWarnings("rawtypes")
-        final IV option = makeIV(new URIImpl("http://www.rdfabout.com/rdf/schema/vote/Option"));
+        final IV option = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.rdfabout.com/rdf/schema/vote/Option"));
         @SuppressWarnings("rawtypes")
-        final IV votedBy = makeIV(new URIImpl("http://www.rdfabout.com/rdf/schema/vote/votedBy"));
+        final IV votedBy = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.rdfabout.com/rdf/schema/vote/votedBy"));
 
         @SuppressWarnings("rawtypes")
-        final IV scopeQuery = makeIV(new URIImpl(QueryHints.NAMESPACE+ QueryHintScope.Query));
+        final IV scopeQuery = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE+ QueryHintScope.Query));
         @SuppressWarnings("rawtypes")
-        final IV scopePrior = makeIV(new URIImpl(QueryHints.NAMESPACE+ QueryHintScope.Prior));
+        final IV scopePrior = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE+ QueryHintScope.Prior));
         @SuppressWarnings("rawtypes")
-        final IV optimizer = makeIV(new URIImpl(QueryHints.NAMESPACE+QueryHints.OPTIMIZER));
+        final IV optimizer = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE+QueryHints.OPTIMIZER));
         @SuppressWarnings("rawtypes")
-        final IV hashJoin = makeIV(new URIImpl(QueryHints.NAMESPACE+QueryHints.HASH_JOIN));
+        final IV hashJoin = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE+QueryHints.HASH_JOIN));
         @SuppressWarnings("rawtypes")
-        final IV none = makeIV(new LiteralImpl("None"));
+        final IV none = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("None"));
         @SuppressWarnings("rawtypes")
-        final IV t = makeIV(new LiteralImpl("true"));
+        final IV t = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("true"));
         @SuppressWarnings("rawtypes")
-        final IV keyOrder = makeIV(new URIImpl(QueryHints.NAMESPACE+IPredicate.Annotations.KEY_ORDER));
+        final IV keyOrder = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE+IPredicate.Annotations.KEY_ORDER));
         @SuppressWarnings("rawtypes")
-        final IV pcso = makeIV(new LiteralImpl("PCSO"));
+        final IV pcso = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("PCSO"));
 
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -551,16 +551,16 @@ public class TestASTQueryHintOptimizer extends
         @SuppressWarnings("rawtypes")
         final IV a = makeIV(RDF.TYPE);
         @SuppressWarnings("rawtypes")
-        final IV option = makeIV(new URIImpl("http://www.rdfabout.com/rdf/schema/vote/Option"));
+        final IV option = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.rdfabout.com/rdf/schema/vote/Option"));
         @SuppressWarnings("rawtypes")
-        final IV votedBy = makeIV(new URIImpl("http://www.rdfabout.com/rdf/schema/vote/votedBy"));
+        final IV votedBy = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.rdfabout.com/rdf/schema/vote/votedBy"));
 
         @SuppressWarnings("rawtypes")
-        final IV scopeGroup = makeIV(new URIImpl(QueryHints.NAMESPACE+ QueryHintScope.Group));
+        final IV scopeGroup = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE+ QueryHintScope.Group));
         @SuppressWarnings("rawtypes")
-        final IV optimizer = makeIV(new URIImpl(QueryHints.NAMESPACE+QueryHints.OPTIMIZER));
+        final IV optimizer = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE+QueryHints.OPTIMIZER));
         @SuppressWarnings("rawtypes")
-        final IV none = makeIV(new LiteralImpl("None"));
+        final IV none = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("None"));
 
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -689,20 +689,20 @@ public class TestASTQueryHintOptimizer extends
         @SuppressWarnings("rawtypes")
         final IV a = makeIV(RDF.TYPE);
         @SuppressWarnings("rawtypes")
-        final IV option = makeIV(new URIImpl("http://www.rdfabout.com/rdf/schema/vote/Option"));
+        final IV option = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.rdfabout.com/rdf/schema/vote/Option"));
         @SuppressWarnings("rawtypes")
-        final IV votedBy = makeIV(new URIImpl("http://www.rdfabout.com/rdf/schema/vote/votedBy"));
+        final IV votedBy = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.rdfabout.com/rdf/schema/vote/votedBy"));
 
         @SuppressWarnings("rawtypes")
-        final IV scopeQuery= makeIV(new URIImpl(QueryHints.NAMESPACE+ QueryHintScope.Query));
+        final IV scopeQuery= makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE+ QueryHintScope.Query));
         @SuppressWarnings("rawtypes")
-        final IV nativeDistinct = makeIV(new URIImpl(QueryHints.NAMESPACE+QueryHints.NATIVE_DISTINCT_SOLUTIONS));
+        final IV nativeDistinct = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE+QueryHints.NATIVE_DISTINCT_SOLUTIONS));
         @SuppressWarnings("rawtypes")
-        final IV nativeHashJoins= makeIV(new URIImpl(QueryHints.NAMESPACE+QueryHints.NATIVE_HASH_JOINS));
+        final IV nativeHashJoins= makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE+QueryHints.NATIVE_HASH_JOINS));
         @SuppressWarnings("rawtypes")
-        final IV mergeJoin = makeIV(new URIImpl(QueryHints.NAMESPACE+QueryHints.MERGE_JOIN));
+        final IV mergeJoin = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE+QueryHints.MERGE_JOIN));
         @SuppressWarnings("rawtypes")
-        final IV t = makeIV(new LiteralImpl("true"));
+        final IV t = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("true"));
 
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -848,20 +848,20 @@ public class TestASTQueryHintOptimizer extends
         @SuppressWarnings("rawtypes")
         final IV a = makeIV(RDF.TYPE);
         @SuppressWarnings("rawtypes")
-        final IV option = makeIV(new URIImpl(
+        final IV option = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://www.rdfabout.com/rdf/schema/vote/Option"));
         @SuppressWarnings("rawtypes")
-        final IV votedBy = makeIV(new URIImpl(
+        final IV votedBy = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://www.rdfabout.com/rdf/schema/vote/votedBy"));
 
         @SuppressWarnings("rawtypes")
-        final IV scopePrior = makeIV(new URIImpl(QueryHints.NAMESPACE
+        final IV scopePrior = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE
                 + QueryHintScope.Prior));
         @SuppressWarnings("rawtypes")
-        final IV runLast = makeIV(new URIImpl(QueryHints.NAMESPACE
+        final IV runLast = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE
                 + QueryHints.RUN_LAST));
         @SuppressWarnings("rawtypes")
-        final IV t = makeIV(new LiteralImpl("true"));
+        final IV t = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("true"));
 
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -980,18 +980,18 @@ public class TestASTQueryHintOptimizer extends
         @SuppressWarnings("rawtypes")
         final IV relevance = makeIV(BDS.RELEVANCE);
         @SuppressWarnings("rawtypes")
-        final IV mike = makeIV(new LiteralImpl("mike"));
+        final IV mike = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("mike"));
         @SuppressWarnings("rawtypes")
-        final IV serviceURI = makeIV(new URIImpl("http://www.bigdata.com/rdf/search#search"));
+        final IV serviceURI = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf/search#search"));
 
         @SuppressWarnings("rawtypes")
-        final IV scopePrior = makeIV(new URIImpl(QueryHints.NAMESPACE
+        final IV scopePrior = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE
                 + QueryHintScope.Prior));
         @SuppressWarnings("rawtypes")
-        final IV runLast = makeIV(new URIImpl(QueryHints.NAMESPACE
+        final IV runLast = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(QueryHints.NAMESPACE
                 + QueryHints.RUN_LAST));
         @SuppressWarnings("rawtypes")
-        final IV t = makeIV(new LiteralImpl("true"));
+        final IV t = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("true"));
 
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);

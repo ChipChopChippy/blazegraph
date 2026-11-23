@@ -4,8 +4,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IVariable;
 import com.bigdata.rdf.sparql.ast.optimizers.StaticOptimizer;
@@ -23,7 +24,7 @@ public class UnionNode extends GraphPatternGroup<JoinGroupNode>  implements IReo
      */
     private static final long serialVersionUID = 1L;
 
-    private static final transient Logger log = Logger.getLogger(UnionNode.class);
+    private static final transient Logger log = LogManager.getLogger(UnionNode.class);
     
     /**
      * Constructor required for {@link com.bigdata.bop.BOpUtility#deepCopy(FilterNode)}.

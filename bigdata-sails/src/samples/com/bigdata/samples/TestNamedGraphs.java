@@ -30,14 +30,14 @@ package com.bigdata.samples;
 import java.util.HashSet;
 import java.util.Properties;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.impl.DatasetImpl;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryResult;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.impl.SimpleDataset;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryResult;
 
 import com.bigdata.rdf.sail.BigdataSail;
 import com.bigdata.rdf.sail.BigdataSailRepository;
@@ -73,11 +73,11 @@ public class TestNamedGraphs extends SampleCode {
             System.err.println("Statement Count: " + stmtCount);
 
             RepositoryResult<Resource> graphs = cxn.getContextIDs();
-            HashSet<URI> ngs = new HashSet<URI>();
+            HashSet<IRI> ngs = new HashSet<IRI>();
             while (graphs.hasNext()) {
                 Resource g = graphs.next();
-                if (g instanceof URI) {
-                    ngs.add((URI) g);
+                if (g instanceof IRI) {
+                    ngs.add((IRI) g);
                 }
             }
             System.err.println("graphCount: " + ngs.size());
@@ -92,8 +92,8 @@ public class TestNamedGraphs extends SampleCode {
                                     + " ?actID <http://cambridgesemantics.com/ontologies/2009/08/Film#mpName> ?actor ."
                                     + " ?actID a <http://cambridgesemantics.com/ontologies/2009/08/Film#Actor>"
                                     + "}");
-            DatasetImpl ds = new DatasetImpl();
-            for (URI g : ngs) {
+            SimpleDataset ds = new SimpleDataset();
+            for (IRI g : ngs) {
                 ds.addDefaultGraph(g);
             }
             actorQuery.setDataset(ds);

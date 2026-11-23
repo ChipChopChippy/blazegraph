@@ -30,8 +30,9 @@ package com.bigdata.btree;
 
 import java.util.NoSuchElementException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.Leaf.ILeafListener;
 import com.bigdata.btree.isolation.IsolatedFusedView;
 import com.bigdata.btree.view.FusedView;
@@ -56,7 +57,7 @@ import com.bigdata.util.BytesUtil;
 abstract public class AbstractBTreeTupleCursor<I extends AbstractBTree, L extends Leaf, E>
         implements ITupleCursor2<E> {
 
-    protected static final Logger log = Logger
+    protected static final Logger log = LogManager
             .getLogger(AbstractBTreeTupleCursor.class);
 
     protected static final boolean INFO = log.isInfoEnabled();

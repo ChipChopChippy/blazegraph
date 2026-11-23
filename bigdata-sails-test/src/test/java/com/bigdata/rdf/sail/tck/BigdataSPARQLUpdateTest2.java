@@ -46,19 +46,20 @@ import java.util.Properties;
 
 import junit.framework.TestCase2;
 
-import org.apache.log4j.Logger;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.UpdateExecutionException;
-import org.openrdf.query.impl.TupleQueryResultBuilder;
-import org.openrdf.query.resultio.QueryResultIO;
-import org.openrdf.query.resultio.TupleQueryResultFormat;
-import org.openrdf.query.resultio.TupleQueryResultParser;
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.UpdateExecutionException;
+import org.eclipse.rdf4j.query.impl.TupleQueryResultBuilder;
+import org.eclipse.rdf4j.query.resultio.QueryResultIO;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultFormat;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultParser;
+import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
 
 import com.bigdata.bop.engine.AbstractQueryEngineTestCase;
 import com.bigdata.journal.AbstractTask;
@@ -88,7 +89,7 @@ import com.bigdata.rdf.store.AbstractTripleStore;
  */
 public class BigdataSPARQLUpdateTest2 extends TestCase2 {
 
-    static private final Logger log = Logger
+    static private final Logger log = LogManager
             .getLogger(BigdataSPARQLUpdateTest2.class);
 
     public BigdataSPARQLUpdateTest2() {
@@ -157,8 +158,7 @@ public class BigdataSPARQLUpdateTest2 extends TestCase2 {
     protected TupleQueryResult readExpectedTupleQueryResult(
             final String resultFileURL) throws Exception {
 
-        final TupleQueryResultFormat tqrFormat = QueryResultIO
-                .getParserFormatForFileName(resultFileURL);
+        final TupleQueryResultFormat tqrFormat = (TupleQueryResultFormat) org.eclipse.rdf4j.query.resultio.TupleQueryResultParserRegistry.getInstance().getFileFormatForFileName(resultFileURL).orElse(null);
 
         if (tqrFormat == null)
             throw new RuntimeException("Format not found: resource="
@@ -168,8 +168,7 @@ public class BigdataSPARQLUpdateTest2 extends TestCase2 {
 
         try {
 
-            final TupleQueryResultParser parser = QueryResultIO
-                    .createParser(tqrFormat);
+            final TupleQueryResultParser parser = QueryResultIO.createTupleParser(tqrFormat);
 
 //            parser.setValueFactory(store.getValueFactory());
 
@@ -378,7 +377,7 @@ public class BigdataSPARQLUpdateTest2 extends TestCase2 {
 
 		Repository repo = newRepository();
 
-		repo.initialize();
+		repo.init();
 
 		return repo;
 

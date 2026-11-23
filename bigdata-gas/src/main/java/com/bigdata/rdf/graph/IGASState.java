@@ -17,10 +17,10 @@ package com.bigdata.rdf.graph;
 
 import java.util.Set;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 /**
  * Interface exposes access to the VS and ES that is visible during a GATHER or
@@ -243,7 +243,7 @@ public interface IGASState<VS,ES, ST> {
      * @return <code>true</code> iff the statement is an instance of a link
      *         attribute for the specified link type.
      */
-    boolean isLinkAttrib(Statement e, URI linkAttribType);
+    boolean isLinkAttrib(Statement e, IRI linkAttribType);
     
     /**
      * If the vertex is actually an edge, then return the decoded edge.

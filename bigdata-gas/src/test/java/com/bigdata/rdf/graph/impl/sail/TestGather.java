@@ -19,10 +19,10 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.openrdf.model.Statement;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.StatementImpl;
-import org.openrdf.sail.SailConnection;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.sail.SailConnection;
 
 import com.bigdata.rdf.graph.EdgesEnum;
 import com.bigdata.rdf.graph.Factory;
@@ -211,8 +211,8 @@ public class TestGather extends AbstractSailGraphTestCase {
         // gather in-edges for :mike
         {
             
-            final Set<StatementImpl> expected = set(//
-            new StatementImpl(p.getBryan(), p.getFoafKnows(), p.getMike())//
+            final Set<Statement> expected = set(//
+            SimpleValueFactory.getInstance().createStatement(p.getBryan(), p.getFoafKnows(), p.getMike())//
             );
 
             doGatherTest(EdgesEnum.InEdges, expected, p.getMike()/* startingVertex */);
@@ -222,9 +222,9 @@ public class TestGather extends AbstractSailGraphTestCase {
         // gather out-edges for :mike
         {
             
-            final Set<StatementImpl> expected = set(//
-                    new StatementImpl(p.getMike(), p.getRdfType(), p.getFoafPerson()),//
-                    new StatementImpl(p.getMike(), p.getFoafKnows(), p.getBryan())//
+            final Set<Statement> expected = set(//
+                    SimpleValueFactory.getInstance().createStatement(p.getMike(), p.getRdfType(), p.getFoafPerson()),//
+                    SimpleValueFactory.getInstance().createStatement(p.getMike(), p.getFoafKnows(), p.getBryan())//
             );
 
             doGatherTest(EdgesEnum.OutEdges, expected, p.getMike() /* startingVertex */);
@@ -234,10 +234,10 @@ public class TestGather extends AbstractSailGraphTestCase {
         // gather all-edges for :mike 
         {
             
-            final Set<StatementImpl> expected = set(//
-                    new StatementImpl(p.getBryan(), p.getFoafKnows(), p.getMike()),//
-                    new StatementImpl(p.getMike(), p.getRdfType(), p.getFoafPerson()),//
-                    new StatementImpl(p.getMike(), p.getFoafKnows(), p.getBryan())//
+            final Set<Statement> expected = set(//
+                    SimpleValueFactory.getInstance().createStatement(p.getBryan(), p.getFoafKnows(), p.getMike()),//
+                    SimpleValueFactory.getInstance().createStatement(p.getMike(), p.getRdfType(), p.getFoafPerson()),//
+                    SimpleValueFactory.getInstance().createStatement(p.getMike(), p.getFoafKnows(), p.getBryan())//
             );
 
             doGatherTest(EdgesEnum.AllEdges, expected, p.getMike()/* startingVertex */);

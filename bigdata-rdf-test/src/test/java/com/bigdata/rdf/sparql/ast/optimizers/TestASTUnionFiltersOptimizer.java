@@ -27,8 +27,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sparql.ast.optimizers;
 
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.rdf.internal.IV;
@@ -82,11 +82,11 @@ public class TestASTUnionFiltersOptimizer extends AbstractOptimizerTestCase {
         
         final IV type = makeIV(RDF.TYPE);
         
-        final IV a = makeIV(new URIImpl("http://example/a"));
+        final IV a = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/a"));
 
-        final IV t1 = makeIV(new URIImpl("http://example/t1"));
+        final IV t1 = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/t1"));
 
-        final IV t2 = makeIV(new URIImpl("http://example/t2"));
+        final IV t2 = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/t2"));
 
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);

@@ -27,7 +27,7 @@ import java.io.IOException;
 /**
  * Well-known exception is used to convey a non-success response from inside of
  * an {@link AbstractRestApiTask} to
- * {@link BigdataRDFServlet#launderThrowable(Throwable, javax.servlet.http.HttpServletResponse, String)}
+ * {@link BigdataRDFServlet#launderThrowable(Throwable, jakarta.servlet.http.HttpServletResponse, String)}
  * .
  * 
  * @author bryan

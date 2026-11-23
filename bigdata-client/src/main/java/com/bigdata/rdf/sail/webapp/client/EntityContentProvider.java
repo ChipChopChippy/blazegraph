@@ -21,89 +21,45 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-/*
- * Created on Oct 13, 2011
- */
 package com.bigdata.rdf.sail.webapp.client;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.util.Iterator;
 
 import org.apache.http.HttpEntity;
-import org.eclipse.jetty.client.api.ContentProvider;
+import org.eclipse.jetty.client.InputStreamRequestContent;
 
-public class EntityContentProvider implements ContentProvider {
+public class EntityContentProvider extends InputStreamRequestContent {
 
-	private final HttpEntity m_entity;
+	private final long contentLength;
 
 	public EntityContentProvider(final HttpEntity entity) {
-		m_entity = entity;
+		super(contentType(entity), contentStream(entity));
+		contentLength = entity.getContentLength();
 	}
 
 	@Override
 	public long getLength() {
-		return m_entity.getContentLength();
-	}
-	
-	public String getContentType() {
-		return m_entity.getContentType().getValue();
+		return contentLength;
 	}
 
-	@Override
-	public Iterator<ByteBuffer> iterator() {
+	private static String contentType(final HttpEntity entity) {
+		return entity.getContentType().getValue();
+	}
+
+	private static InputStream contentStream(final HttpEntity entity) {
 		try {
-			final InputStream instr;
-			
-			if (m_entity.isStreaming()) {
-				instr = m_entity.getContent();
-			} else {
-				// If Apache Entity does not stream then we need to double buffer to an output stream - not ideal
-				final ByteArrayOutputStream streambuf = new ByteArrayOutputStream();
-				m_entity.writeTo(streambuf);
-				
-				instr = new ByteArrayInputStream(streambuf.toByteArray());
+			if (entity.isStreaming()) {
+				return entity.getContent();
 			}
 
-			return new Iterator<ByteBuffer>() {
-				
-				boolean eof = false;
-				int bufindex = 0;
-
-				@Override
-				public boolean hasNext() {
-					return !eof;
-				}
-
-				@Override
-				public ByteBuffer next() {
-					final byte[] buf = new byte[1024];
-					try {
-						final int rdlen = instr.read(buf);
-						
-						// System.out.println("Returning ByteBuffer[" + bufindex++ + "] length: " + rdlen);
-						
-						if (rdlen == -1) {
-							eof = true;
-							return ByteBuffer.wrap(buf, 0, 0);
-						} else {
-							return ByteBuffer.wrap(buf, 0, rdlen);
-						}
-					} catch (IOException e) {
-						throw new RuntimeException(e);
-					}
-				}
-
-				@Override
-				public void remove() {
-					throw new UnsupportedOperationException();
-				}
-			};
-		} catch (Exception e) {
-			throw new RuntimeException("Unexpected", e);
+			final ByteArrayOutputStream streambuf = new ByteArrayOutputStream();
+			entity.writeTo(streambuf);
+			return new ByteArrayInputStream(streambuf.toByteArray());
+		} catch (IOException e) {
+			throw new IllegalStateException("Unable to read HTTP entity", e);
 		}
 	}
 }

@@ -240,7 +240,7 @@ public class Id2TermWriteProc extends AbstractKeyArrayIndexProcedure<Void> imple
 //                         * datatype literals.
 //                         */
 //                        final BigdataValueSerializer valSer = new BigdataValueSerializer(
-//                                new ValueFactoryImpl());
+//                                new SimpleValueFactory());
 //
 //                        final Value term = valSer.deserialize(val);
 //                        final Value oldterm = valSer.deserialize(oldval);

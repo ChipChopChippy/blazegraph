@@ -30,8 +30,9 @@ package com.bigdata.rdf.sparql.ast.eval;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.BigdataStatics;
 import com.bigdata.rdf.sparql.ast.ASTContainer;
 import com.bigdata.rdf.sparql.ast.optimizers.ASTBottomUpOptimizer;
@@ -44,7 +45,7 @@ import com.bigdata.rdf.sparql.ast.optimizers.ASTSimpleOptionalOptimizer;
  */
 public class TestTCK extends AbstractDataDrivenSPARQLTestCase {
 
-    private static final Logger log = Logger.getLogger(TestTCK.class);
+    private static final Logger log = LogManager.getLogger(TestTCK.class);
     
     /**
      * 

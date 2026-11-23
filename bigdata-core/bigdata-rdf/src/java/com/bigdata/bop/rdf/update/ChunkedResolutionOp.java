@@ -33,8 +33,9 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Value;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpContext;
@@ -68,7 +69,7 @@ import com.bigdata.rdf.model.BigdataValueFactory;
  */
 public class ChunkedResolutionOp extends PipelineOp {
 
-    private static final transient Logger log = Logger
+    private static final transient Logger log = LogManager
             .getLogger(ChunkedResolutionOp.class);
 
     /**

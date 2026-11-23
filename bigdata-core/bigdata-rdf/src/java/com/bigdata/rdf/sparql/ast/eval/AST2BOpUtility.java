@@ -14,8 +14,9 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.URI;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpContextBase;
@@ -192,7 +193,7 @@ import cutthecrap.utils.striterators.NOPFilter;
  */
 public class AST2BOpUtility extends AST2BOpRTO {
 
-    private static final transient Logger log = Logger
+    private static final transient Logger log = LogManager
             .getLogger(AST2BOpUtility.class);
 
     /**
@@ -1088,7 +1089,7 @@ public class AST2BOpUtility extends AST2BOpRTO {
              * 
              * Note: If the service call winds up being a native bigdata
              * service, then this will do more work. But, since the service
-             * reference does not evaluate to a URI constant we are not able to
+             * reference does not evaluate to a IRI constant we are not able to
              * figure that out in advance.
              */
             
@@ -5625,7 +5626,7 @@ public class AST2BOpUtility extends AST2BOpRTO {
 
             final FunctionNode functionNode = (FunctionNode) node;
 
-            final URI functionURI = functionNode.getFunctionURI();
+            final IRI functionURI = functionNode.getFunctionURI();
 
             final Map<String, Object> scalarValues = functionNode.getScalarValues();
 

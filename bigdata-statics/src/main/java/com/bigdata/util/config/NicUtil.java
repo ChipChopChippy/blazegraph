@@ -25,6 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.util.config;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -38,7 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Level;
+import org.apache.logging.log4j.Level;
 
 /**
  * Utility class that provides a set of static convenience methods
@@ -52,7 +54,7 @@ import org.apache.log4j.Level;
  */
 public class NicUtil {
 
-    private static final org.apache.log4j.Logger utilLogger = 
+    private static final org.apache.logging.log4j.Logger utilLogger =
                                      LogUtil.getLog4jLogger( NicUtil.class );
 
     private static final java.util.logging.Logger jiniConfigLogger = 

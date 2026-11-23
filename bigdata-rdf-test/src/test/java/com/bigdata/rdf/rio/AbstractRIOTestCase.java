@@ -46,7 +46,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import junit.framework.AssertionFailedError;
 
-import org.openrdf.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFFormat;
 
 import com.bigdata.rdf.load.IStatementBufferFactory;
 import com.bigdata.rdf.model.BigdataStatement;
@@ -394,7 +394,7 @@ abstract public class AbstractRIOTestCase extends AbstractTripleStoreTestCase {
                 try {
 
                     // guess at the RDF Format
-                    final RDFFormat rdfFormat = RDFFormat.forFileName(resource);
+                    final RDFFormat rdfFormat = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(resource);
                     
                     final RDFParserOptions options = new RDFParserOptions();
                     
@@ -705,7 +705,7 @@ abstract public class AbstractRIOTestCase extends AbstractTripleStoreTestCase {
                 final IRioLoader loader = new StatementVerifier(store,
                         capacity, nerrs, maxerrors);
 
-                final RDFFormat rdfFormat = RDFFormat.forFileName(resource);
+                final RDFFormat rdfFormat = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(resource);
 
                 final RDFParserOptions options = new RDFParserOptions();
                 

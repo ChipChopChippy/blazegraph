@@ -27,18 +27,18 @@ import java.util.Arrays;
 
 import junit.framework.Test;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.impl.ValueFactoryImpl;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.GraphQueryResult;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.impl.DatasetImpl;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.GraphQueryResult;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.impl.SimpleDataset;
 
 import com.bigdata.journal.IIndexManager;
 import com.bigdata.rdf.sail.remote.BigdataSailRemoteRepository;
@@ -58,15 +58,15 @@ import com.bigdata.rdf.sail.webapp.client.RemoteRepository.AddOp;
 public class Test_Ticket_789<S extends IIndexManager> extends
 		AbstractTestNanoSparqlClient<S> {
 
-	private final Resource s = new URIImpl("http://test/s");
-	private final URI p = new URIImpl("http://test/p");
-	private final URI p1 = new URIImpl("http://test/p1");
-	private final Value o = new URIImpl("http://test/o");
-	private final Resource c = new URIImpl("http://test/c");
-	private final URI defaultGraph1 = new URIImpl("http://test/defaultGraph1");
-	private final URI defaultGraph2 = new URIImpl("http://test/defaultGraph2");
-	private final URI namedGraph1 = new URIImpl("http://test/namedGraph1");
-	private final URI namedGraph2 = new URIImpl("http://test/namedGraph2");
+	private final Resource s = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://test/s");
+	private final IRI p = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://test/p");
+	private final IRI p1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://test/p1");
+	private final Value o = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://test/o");
+	private final Resource c = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://test/c");
+	private final IRI defaultGraph1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://test/defaultGraph1");
+	private final IRI defaultGraph2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://test/defaultGraph2");
+	private final IRI namedGraph1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://test/namedGraph1");
+	private final IRI namedGraph2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://test/namedGraph2");
 
 	public Test_Ticket_789() {
 
@@ -88,7 +88,7 @@ public class Test_Ticket_789<S extends IIndexManager> extends
 	}
 
 	private void populate() throws Exception {
-		final ValueFactoryImpl vf = ValueFactoryImpl.getInstance();
+		final SimpleValueFactory vf = SimpleValueFactory.getInstance();
 		final Statement[] a = new Statement[] {
 				vf.createStatement(s, p, o, c),
 				vf.createStatement(s, p, o, namedGraph1),
@@ -163,7 +163,7 @@ public class Test_Ticket_789<S extends IIndexManager> extends
 		BigdataSailRemoteRepositoryConnection con = sailRepo.getConnection();
 		final TupleQuery tq = con.prepareTupleQuery(QueryLanguage.SPARQL, "select * where {?s ?p ?o}");
 
-		final DatasetImpl dataset = new DatasetImpl();
+		final SimpleDataset dataset = new SimpleDataset();
 		dataset.addDefaultGraph(defaultGraph1);
 
 		tq.setDataset(dataset);

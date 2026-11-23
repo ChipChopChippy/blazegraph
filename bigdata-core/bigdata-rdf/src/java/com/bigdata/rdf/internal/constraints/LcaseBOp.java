@@ -26,7 +26,7 @@ package com.bigdata.rdf.internal.constraints;
 
 import java.util.Map;
 
-import org.openrdf.model.Literal;
+import org.eclipse.rdf4j.model.Literal;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -106,9 +106,9 @@ public class LcaseBOp extends IVValueExpression<IV> implements INeedsMaterializa
 
         final BigdataLiteral out;
 
-        if (in.getLanguage() != null) {
+        if (in.getLanguage().isPresent()) {
 
-            out = vf.createLiteral(label, in.getLanguage());
+            out = vf.createLiteral(label, in.getLanguage().get());
 
         } else if (in.getDatatype() != null) {
 

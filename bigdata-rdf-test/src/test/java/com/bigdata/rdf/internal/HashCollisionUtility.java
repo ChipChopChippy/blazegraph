@@ -35,19 +35,20 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.zip.Deflater;
 import java.util.zip.GZIPInputStream;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.BNode;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParseException;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.RDFParserFactory;
-import org.openrdf.rio.RDFParserRegistry;
-import org.openrdf.rio.helpers.RDFHandlerBase;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFParseException;
+import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.RDFParserFactory;
+import org.eclipse.rdf4j.rio.RDFParserRegistry;
+import org.eclipse.rdf4j.rio.helpers.AbstractRDFHandler;
 
 import com.bigdata.Banner;
 import com.bigdata.btree.BTree;
@@ -74,7 +75,7 @@ import com.bigdata.rdf.internal.impl.literal.PartlyInlineTypedLiteralIV;
 import com.bigdata.rdf.internal.impl.uri.PartlyInlineURIIV;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.model.BigdataValueSerializer;
 import com.bigdata.rdf.store.AbstractTripleStore;
 import com.bigdata.rdf.vocab.BaseVocabulary;
@@ -404,7 +405,7 @@ import com.bigdata.util.concurrent.Latch;
  * for a counter to break ties when there is a hash collision. We should wind up
  * with an 8-12 byte termId which is collision proof and very well distributed.
  * 
- * TODO Add bit flags at the front for {BLOB, URI, Literal, BNode} (BLOB being
+ * TODO Add bit flags at the front for {BLOB, IRI, Literal, BNode} (BLOB being
  * the odd one out). If we move BLOBs out of the key range of other plain
  * literals, or literals of a given language code or datatype, then we can not
  * do an ordered scan of the literals anymore which is inclusive of the blobs.
@@ -432,7 +433,7 @@ import com.bigdata.util.concurrent.Latch;
  */
 public class HashCollisionUtility {
 
-	private final static Logger log = Logger
+	private final static Logger log = LogManager
 			.getLogger(HashCollisionUtility.class);
 
 	/**
@@ -458,7 +459,7 @@ public class HashCollisionUtility {
 		private final AtomicLong nstmts = new AtomicLong();
 
 		/**
-		 * The #of {@link URI}s whose <code>localName</code> was short enough
+		 * The #of {@link IRI}s whose <code>localName</code> was short enough
 		 * that we decided to inline them into the statement indices instead.
 		 */
 		private final AtomicLong nshortURIs = new AtomicLong();
@@ -924,7 +925,7 @@ public class HashCollisionUtility {
 		this.valueQueue = new LinkedBlockingQueue<ValueBuffer>(
 				valQueueCapacity);// lock);
 
-		vf = BigdataValueFactoryImpl.getInstance("test");
+		vf = BigdataSimpleValueFactory.getInstance("test");
 		
 		final BaseVocabulary vocab;
         try {
@@ -1423,15 +1424,15 @@ sparse, but this suggests that we should try a different coder for the leaf keys
 		
 		final String n = f.getName();
 
-		RDFFormat fmt = RDFFormat.forFileName(n, fallback);
+		RDFFormat fmt = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(n, fallback);
 
 		if (fmt == null && n.endsWith(".zip")) {
-			fmt = RDFFormat.forFileName(n.substring(0, n.length() - 4),
+			fmt = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(n.substring(0, n.length() - 4),
 					fallback);
 		}
 
 		if (fmt == null && n.endsWith(".gz")) {
-			fmt = RDFFormat.forFileName(n.substring(0, n.length() - 3),
+			fmt = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(n.substring(0, n.length() - 3),
 					fallback);
 		}
 
@@ -1510,7 +1511,7 @@ sparse, but this suggests that we should try a different coder for the leaf keys
 			if (!file.exists())
 				throw new RuntimeException("Not found: " + file);
 
-			final RDFFormat format = RDFFormat.forFileName(file.getName(),fallback);
+			final RDFFormat format = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(file.getName(),fallback);
 
 			if (format == null)
 				throw new RuntimeException("Unknown format: " + file);
@@ -1519,7 +1520,7 @@ sparse, but this suggests that we should try a different coder for the leaf keys
 				log.trace("RDFFormat=" + format);
 
 			final RDFParserFactory rdfParserFactory = RDFParserRegistry
-					.getInstance().get(format);
+					.getInstance().get(format).orElse(null);
 
 			if (rdfParserFactory == null)
 				throw new RuntimeException("No parser for format: " + format);
@@ -1528,11 +1529,11 @@ sparse, but this suggests that we should try a different coder for the leaf keys
 
 			rdfParser.setValueFactory(vf);
 
-			rdfParser.setVerifyData(false);
+			com.bigdata.rdf.rio.RDFParserOptions.setVerifyData(rdfParser, false);
 
-			rdfParser.setStopAtFirstError(false);
+			
 
-			rdfParser.setDatatypeHandling(RDFParser.DatatypeHandling.IGNORE);
+			com.bigdata.rdf.rio.RDFParserOptions.setDatatypeHandling(rdfParser, com.bigdata.rdf.rio.DatatypeHandling.IGNORE);
 
 			rdfParser.setRDFHandler(stmtHandler);
 
@@ -1572,7 +1573,7 @@ sparse, but this suggests that we should try a different coder for the leaf keys
     /**
      * Helper class adds statements to the sail as they are visited by a parser.
      */
-    static private class StatementHandler extends RDFHandlerBase {
+    static private class StatementHandler extends AbstractRDFHandler {
 
 //    	private static final transient Logger log = HashCollisionUtility.log; 
     	
@@ -1642,7 +1643,7 @@ sparse, but this suggests that we should try a different coder for the leaf keys
 		 * 
 		 * FIXME We need to provide a canonicalizing mapping for blank nodes.
 		 * 
-		 * TODO The key should also include the URI,Literal,BNode, etc. prefix
+		 * TODO The key should also include the IRI,Literal,BNode, etc. prefix
 		 * bits (or is this necessary any more?).
 		 */
 		private Map<byte[]/*key*/,Bucket> addrMap;
@@ -1772,7 +1773,7 @@ sparse, but this suggests that we should try a different coder for the leaf keys
 				// This is being inlined.
 				
 				switch (iv.getVTE()) {
-				case URI:
+				case IRI:
 					c.nshortURIs.incrementAndGet();
 					break;
 				case BNODE:

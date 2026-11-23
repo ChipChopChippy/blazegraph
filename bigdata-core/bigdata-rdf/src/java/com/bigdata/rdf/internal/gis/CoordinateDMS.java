@@ -23,6 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.rdf.internal.gis;
 
+
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;

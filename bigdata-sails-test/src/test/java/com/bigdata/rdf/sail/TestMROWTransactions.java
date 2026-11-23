@@ -26,7 +26,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package com.bigdata.rdf.sail;
 
-import info.aduna.iteration.CloseableIteration;
+
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.common.iteration.CloseableIteration;
 
 import java.io.FileInputStream;
 import java.util.Properties;
@@ -39,12 +41,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.sail.SailException;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.sail.SailException;
 
 import com.bigdata.btree.AbstractNode;
 import com.bigdata.btree.BTree;
@@ -70,7 +72,7 @@ import com.bigdata.util.InnerCause;
  */
 abstract public class TestMROWTransactions extends ProxyBigdataSailTestCase {
 
-//    private static final Logger txLog = Logger.getLogger("com.bigdata.txLog");
+//    private static final Logger txLog = LogManager.getLogger("com.bigdata.txLog");
 
     TestMROWTransactions() {
     }
@@ -163,17 +165,17 @@ abstract public class TestMROWTransactions extends ProxyBigdataSailTestCase {
         // log.warn("Journal: "+sail.getDatabase().getIndexManager()+", file="+((Journal)sail.getDatabase().getIndexManager()).getFile());
         try {
 
-            sail.initialize();
+            sail.init();
             // TODO Force an initial commit?
 
 //            final BigdataSailRepository repo = new BigdataSailRepository(sail);
 //            final AbstractTripleStore origStore = repo.getDatabase();
 
-            final URI[] subs = new URI[nuris];
+            final IRI[] subs = new IRI[nuris];
             for (int i = 0; i < nuris; i++) {
                 subs[i] = uri("uri:" + i);
             }
-            final URI[] preds = new URI[npreds];
+            final IRI[] preds = new IRI[npreds];
             for (int i = 0; i < npreds; i++) {
                 preds[i] = uri("pred:" + i);
             }
@@ -291,14 +293,14 @@ abstract public class TestMROWTransactions extends ProxyBigdataSailTestCase {
         final AtomicReference<Throwable> failex;
         final int nuris;
         final int npreds;
-        final URI[] subs;
-        final URI[] preds;
+        final IRI[] subs;
+        final IRI[] preds;
 
         Writer(final Random r, final int nwrites,
                 final BigdataSail sail, final CAT commits,
                 final CAT aborts, //final int maxAborts,
-                final AtomicReference<Throwable> failex, final URI[] subs,
-                final URI[] preds) {
+                final AtomicReference<Throwable> failex, final IRI[] subs,
+                final IRI[] preds) {
 
             this.r = r;
             this.nwrites = nwrites;
@@ -377,12 +379,12 @@ abstract public class TestMROWTransactions extends ProxyBigdataSailTestCase {
         final CAT commits;
         final CAT nreadersDone;
         final int nuris;
-        final URI[] subs;
+        final IRI[] subs;
 
         Reader(final Random r, final int nreads, final int nwriters,
                 final BigdataSail sail,
                 final AtomicReference<Throwable> failex, final CAT commits,
-                final CAT nreadersDone, final URI[] subs) {
+                final CAT nreadersDone, final IRI[] subs) {
             this.r = r;
             this.nreads = nreads;
             this.nwriters = nwriters;
@@ -411,8 +413,8 @@ abstract public class TestMROWTransactions extends ProxyBigdataSailTestCase {
                     Thread.sleep(2000/* millis */);
 
                 for (int i = 0; i < nreads; i++) {
-                    final CloseableIteration<? extends Statement, SailException> stats = con
-                            .getStatements(subs[r.nextInt(nuris)], (URI) null,
+                    final CloseableIteration<? extends Statement> stats = con
+                            .getStatements(subs[r.nextInt(nuris)], (IRI) null,
                                     (Value) null, (Resource) null);
                     try {
                         while (stats.hasNext()) {
@@ -462,15 +464,15 @@ abstract public class TestMROWTransactions extends ProxyBigdataSailTestCase {
 //        final BigdataSail sail = getSail(getProperties(retention,isolatableIndices));
 //        try {
 //
-//            sail.initialize();
+//            sail.init();
 //            final BigdataSailRepository repo = new BigdataSailRepository(sail);
 //            final AbstractTripleStore origStore = repo.getDatabase();
 //
-//            final URI[] subs = new URI[nuris];
+//            final IRI[] subs = new IRI[nuris];
 //            for (int i = 0; i < nuris; i++) {
 //                subs[i] = uri("uri:" + i);
 //            }
-//            final URI[] preds = new URI[npreds + 20];
+//            final IRI[] preds = new IRI[npreds + 20];
 //            for (int i = 0; i < npreds; i++) {
 //                preds[i] = uri("pred:" + i);
 //            }
@@ -543,8 +545,8 @@ abstract public class TestMROWTransactions extends ProxyBigdataSailTestCase {
 //
 //    }
 
-    protected static URI uri(String s) {
-        return new URIImpl(BD.NAMESPACE + s);
+    protected static IRI uri(String s) {
+        return org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + s);
     }
 
     @Override

@@ -1,18 +1,19 @@
 package com.bigdata.rdf.sparql.ast.cache;
 
-import info.aduna.iteration.CloseableIteration;
+import org.eclipse.rdf4j.common.iteration.CloseableIteration;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Graph;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.GraphImpl;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.rio.RDFWriter;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.LinkedHashModel;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.rio.RDFWriter;
 
 import com.bigdata.rdf.internal.IV;
 import com.bigdata.rdf.model.BigdataStatement;
@@ -30,9 +31,9 @@ import com.bigdata.rdf.store.TempTripleStore;
  *         Thompson</a>
  */
 public class DescribeCacheUpdater implements
-        CloseableIteration<BigdataStatement, QueryEvaluationException> {
+        CloseableIteration<BigdataStatement> {
 
-    static private transient final Logger log = Logger
+    static private transient final Logger log = LogManager
             .getLogger(DescribeCacheUpdater.class);
 
     /**
@@ -56,7 +57,7 @@ public class DescribeCacheUpdater implements
      * The source iterator visiting the statements that are the description
      * of the projected resources.
      */
-    private final CloseableIteration<BigdataStatement, QueryEvaluationException> src;
+    private final CloseableIteration<BigdataStatement> src;
     
     /**
      * The statements to be inserted into the cache as the description of
@@ -69,7 +70,7 @@ public class DescribeCacheUpdater implements
      * with its {@link IV}s and its {@link Value}s, so the
      * {@link TempTripleStore} will not work. Something more custom?
      */
-    final private HashMap<BigdataValue, Graph> graphs = new HashMap<BigdataValue, Graph>();
+    final private HashMap<BigdataValue, Model> graphs = new HashMap<BigdataValue, Model>();
 
     private boolean open = true;
     
@@ -91,7 +92,7 @@ public class DescribeCacheUpdater implements
     public DescribeCacheUpdater(
             final IDescribeCache cache,
             final Set<BigdataValue> describedResources,
-            final CloseableIteration<BigdataStatement, QueryEvaluationException> src) {
+            final CloseableIteration<BigdataStatement> src) {
 
         if (cache == null)
             throw new IllegalArgumentException();
@@ -209,11 +210,11 @@ public class DescribeCacheUpdater implements
     private void record(final BigdataValue describedResource,
             final BigdataStatement stmt) {
 
-        Graph g = graphs.get(describedResource);
+        Model g = graphs.get(describedResource);
         
         if(g == null) {
             
-            graphs.put(describedResource, g = new GraphImpl());
+            graphs.put(describedResource, g = new LinkedHashModel());
 
         }
 
@@ -227,7 +228,7 @@ public class DescribeCacheUpdater implements
 
     private void updateCache() {
 
-        for (Map.Entry<BigdataValue, Graph> e : graphs.entrySet()) {
+        for (Map.Entry<BigdataValue, Model> e : graphs.entrySet()) {
 
             final BigdataValue describedResource = e.getKey();
 
@@ -236,7 +237,7 @@ public class DescribeCacheUpdater implements
             if (iv == null)
                 throw new AssertionError("IV not set: " + describedResource);
             
-            final Graph graph = e.getValue();
+            final Model graph = e.getValue();
             
             cache.insert(iv, graph);
 

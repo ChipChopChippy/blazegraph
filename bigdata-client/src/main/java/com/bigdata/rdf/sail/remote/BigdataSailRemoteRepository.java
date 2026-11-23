@@ -28,11 +28,11 @@ import java.io.File;
 import java.util.Collection;
 import java.util.UUID;
 
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.ValueFactoryImpl;
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
 
 import com.bigdata.rdf.sail.model.RunningQuery;
 import com.bigdata.rdf.sail.webapp.client.RemoteRepository;
@@ -112,7 +112,7 @@ public class BigdataSailRemoteRepository implements Repository {
      * This exists solely for {@link #getValueFactory()} - the value factory
      * is not used inside of this class.
      */
-    private final ValueFactory valueFactory = ValueFactoryImpl.getInstance();
+    private final ValueFactory valueFactory = SimpleValueFactory.getInstance();
     
     /**
      * The object used to communicate with that remote repository.
@@ -203,7 +203,7 @@ public class BigdataSailRemoteRepository implements Repository {
 	}
 
 	@Override
-	public void initialize() throws RepositoryException {
+	public void init() throws RepositoryException {
 		if (!open)
 			throw new RepositoryException("Can not re-initialize");
 	}

@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sparql.ast.optimizers;
 
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.BigdataStatics;
 import com.bigdata.bop.IBindingSet;
@@ -125,18 +125,18 @@ public class TestASTHashJoinOptimizer extends AbstractASTEvaluationTestCase {
 
         final String productInstance = "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromProducer1/Product22";
         
-        final BigdataURI rdfsLabel = valueFactory.createURI(rdfs + "label");
+        final BigdataURI rdfsLabel = valueFactory.createIRI(rdfs + "label");
 
-        final BigdataURI productFeature = valueFactory.createURI(bsbm
+        final BigdataURI productFeature = valueFactory.createIRI(bsbm
                 + "productFeature");
 
-        final BigdataURI productPropertyNumeric1 = valueFactory.createURI(bsbm
+        final BigdataURI productPropertyNumeric1 = valueFactory.createIRI(bsbm
                 + "productPropertyNumeric1");
 
-        final BigdataURI productPropertyNumeric2 = valueFactory.createURI(bsbm
+        final BigdataURI productPropertyNumeric2 = valueFactory.createIRI(bsbm
                 + "productPropertyNumeric2");
 
-        final BigdataURI product53999 = valueFactory.createURI(productInstance);
+        final BigdataURI product53999 = valueFactory.createIRI(productInstance);
         
         final BigdataLiteral _120 = valueFactory.createLiteral("120",
                 XSD.INTEGER);

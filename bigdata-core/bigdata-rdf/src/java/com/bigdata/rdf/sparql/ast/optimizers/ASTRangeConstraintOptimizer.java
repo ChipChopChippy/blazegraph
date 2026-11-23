@@ -341,10 +341,10 @@ public class ASTRangeConstraintOptimizer implements IASTOptimizer {
 //      /*
 //       * Create some terms.
 //       */
-//      final URI mike = vf.createURI(BD.NAMESPACE + "mike");
-//      final URI bryan = vf.createURI(BD.NAMESPACE + "bryan");
-//      final URI person = vf.createURI(BD.NAMESPACE + "person");
-//      final URI age = vf.createURI(BD.NAMESPACE + "age");
+//      final URI mike = vf.createIRI(BD.NAMESPACE + "mike");
+//      final URI bryan = vf.createIRI(BD.NAMESPACE + "bryan");
+//      final URI person = vf.createIRI(BD.NAMESPACE + "person");
+//      final URI age = vf.createIRI(BD.NAMESPACE + "age");
 //      final Literal _1 = vf.createLiteral(1);
 //      final Literal _2 = vf.createLiteral(2);
 //      final Literal _3 = vf.createLiteral(3);

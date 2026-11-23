@@ -26,11 +26,12 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.journal.BasicSnapshotFactory;
 import com.bigdata.journal.ISnapshotResult;
 import com.bigdata.journal.Journal;
@@ -63,7 +64,7 @@ public class BackupServlet extends BigdataRDFServlet {
 	 /**
      * Logger.
      */
-    private static final Logger log = Logger.getLogger(BackupServlet.class);
+    private static final Logger log = LogManager.getLogger(BackupServlet.class);
     
     private static final boolean debug = log.isDebugEnabled();
     

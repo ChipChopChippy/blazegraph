@@ -7,8 +7,9 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.counters.ICounter;
 import com.bigdata.counters.ICounterNode;
 import com.bigdata.counters.IHistoryEntry;
@@ -21,7 +22,7 @@ import com.bigdata.counters.IHistoryEntry;
  */
 public class PivotTable {
 
-    private static final Logger log = Logger.getLogger(PivotTable.class);
+    private static final Logger log = LogManager.getLogger(PivotTable.class);
 
     /**
      * The HistoryTable (converts counter hierarchy into regular table).

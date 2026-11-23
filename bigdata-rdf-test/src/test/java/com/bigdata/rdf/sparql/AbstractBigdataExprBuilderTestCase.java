@@ -32,8 +32,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.openrdf.query.MalformedQueryException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.query.MalformedQueryException;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpUtility;
@@ -73,7 +74,7 @@ import junit.framework.TestCase;
  */
 public class AbstractBigdataExprBuilderTestCase extends TestCase {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(AbstractBigdataExprBuilderTestCase.class);
 
     /**

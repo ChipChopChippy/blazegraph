@@ -27,7 +27,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sail;
 
-import info.aduna.iteration.CloseableIteration;
+
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.common.iteration.CloseableIteration;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -37,12 +39,12 @@ import java.util.Properties;
 import junit.extensions.proxy.IProxyTest;
 import junit.framework.Test;
 
-import org.openrdf.model.Resource;
-import org.openrdf.query.Binding;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.algebra.evaluation.QueryBindingSet;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.query.Binding;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.algebra.evaluation.QueryBindingSet;
 
 
 /**
@@ -68,7 +70,7 @@ public abstract class ProxyBigdataSailTestCase
     implements IProxyTest
 {
 
-//	protected final transient static Logger log = Logger.getLogger(ProxyBigdataSailTestCase.class);
+//	protected final transient static Logger log = LogManager.getLogger(ProxyBigdataSailTestCase.class);
 	
     public ProxyBigdataSailTestCase() {}
     public ProxyBigdataSailTestCase(String name){super(name);}
@@ -262,7 +264,7 @@ public abstract class ProxyBigdataSailTestCase
      */
     static public void assertSameIterationAnyOrder(
             final Resource[] expected,
-            final CloseableIteration<?, ? extends Exception> actual)
+            final CloseableIteration<?> actual)
             throws Exception {
 
         assertSameIterationAnyOrder("", expected, actual);
@@ -278,7 +280,7 @@ public abstract class ProxyBigdataSailTestCase
     @SuppressWarnings("unchecked")
     static public void assertSameIterationAnyOrder(String msg,
             final Resource[] expected,
-            final CloseableIteration<?, ? extends Exception> actual)
+            final CloseableIteration<?> actual)
             throws Exception {
 
         // Populate a map that we will use to realize the match and

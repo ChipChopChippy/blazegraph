@@ -27,9 +27,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sparql.ast.optimizers;
 
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.rdf.internal.IV;
@@ -166,17 +166,17 @@ public class TestASTComplexOptionalOptimizer extends
         @SuppressWarnings("rawtypes")
         final IV a = makeIV(RDF.TYPE);
         @SuppressWarnings("rawtypes")
-        final IV polititian = makeIV(new URIImpl("http://www.rdfabout.com/rdf/schema/politico/Politician"));
+        final IV polititian = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.rdfabout.com/rdf/schema/politico/Politician"));
         @SuppressWarnings("rawtypes")
-        final IV name = makeIV(new URIImpl("http://www.rdfabout.com/rdf/schema/usgovt/name"));
+        final IV name = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.rdfabout.com/rdf/schema/usgovt/name"));
         @SuppressWarnings("rawtypes")
-        final IV sponsor = makeIV(new URIImpl("http://www.rdfabout.com/rdf/schema/usgovt/sponsor"));
+        final IV sponsor = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.rdfabout.com/rdf/schema/usgovt/sponsor"));
         @SuppressWarnings("rawtypes")
-        final IV title = makeIV(new URIImpl("http://www.rdfabout.com/rdf/schema/usgovt/title"));
+        final IV title = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.rdfabout.com/rdf/schema/usgovt/title"));
         @SuppressWarnings("rawtypes")
-        final IV N = makeIV(new URIImpl("http://www.w3.org/2001/vcard-rdf/3.0#N"));
+        final IV N = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.w3.org/2001/vcard-rdf/3.0#N"));
         @SuppressWarnings("rawtypes")
-        final IV family = makeIV(new URIImpl("http://www.w3.org/2001/vcard-rdf/3.0#Family"));
+        final IV family = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.w3.org/2001/vcard-rdf/3.0#Family"));
 
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);

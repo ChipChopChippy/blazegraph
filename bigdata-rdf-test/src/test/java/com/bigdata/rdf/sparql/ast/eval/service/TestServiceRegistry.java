@@ -28,11 +28,12 @@ import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.eclipse.jetty.client.HttpClient;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.sail.SailException;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.sail.SailException;
 
 import com.bigdata.bop.engine.QueryEngine;
 import com.bigdata.bop.fed.QueryEngineFactory;
@@ -68,7 +69,7 @@ import com.bigdata.rdf.vocab.NoVocabulary;
  */
 public class TestServiceRegistry extends AbstractBigdataExprBuilderTestCase {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(TestServiceRegistry.class);
 
     public TestServiceRegistry() {
@@ -108,10 +109,10 @@ public class TestServiceRegistry extends AbstractBigdataExprBuilderTestCase {
      */
     public void test_addGetRemove() {
 
-        final URI serviceURI1 = new URIImpl("http://www.bigdata.com/myService/"
+        final IRI serviceURI1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/myService/"
                 + getName() + "/" + UUID.randomUUID());
 
-        final URI serviceURI2 = new URIImpl(
+        final IRI serviceURI2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://www.bigdata.com/myService2/" + getName() + "/"
                         + UUID.randomUUID());
 
@@ -160,10 +161,10 @@ public class TestServiceRegistry extends AbstractBigdataExprBuilderTestCase {
          * using a UUID to make these URIs distinct from others that might be in
          * the ServiceRegistry.
          */
-        final URI serviceURI1 = new URIImpl("http://www.bigdata.com/myService/"
+        final IRI serviceURI1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/myService/"
                 + getName() + "/" + UUID.randomUUID());
 
-        final URI serviceURI2 = new URIImpl(
+        final IRI serviceURI2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                 "http://www.bigdata.com/myService2/" + getName() + "/"
                         + UUID.randomUUID());
 
@@ -191,7 +192,7 @@ public class TestServiceRegistry extends AbstractBigdataExprBuilderTestCase {
 
             /*
              * Can not register the serviceURI as an alias (for any registered
-             * service URI).
+             * service IRI).
              */
             try {
                 ServiceRegistry.getInstance()
@@ -203,7 +204,7 @@ public class TestServiceRegistry extends AbstractBigdataExprBuilderTestCase {
             }
 
             /*
-             * Now alias the service to the 2nd URI.
+             * Now alias the service to the 2nd IRI.
              */
             
             // Register alias.
@@ -257,7 +258,7 @@ public class TestServiceRegistry extends AbstractBigdataExprBuilderTestCase {
     }
 
     /**
-     * Unit test verifies that you MAY register an alias for a URI which is NOT
+     * Unit test verifies that you MAY register an alias for a IRI which is NOT
      * associated with an explicitly registered service.
      */
     public void test_serviceAlias2() {
@@ -273,11 +274,11 @@ public class TestServiceRegistry extends AbstractBigdataExprBuilderTestCase {
             final BigdataValueFactory f = store.getValueFactory();
 
             final BigdataURI serviceURI1 = f
-                    .createURI("http://www.bigdata.com/myService/" + getName()
+                    .createIRI("http://www.bigdata.com/myService/" + getName()
                             + "/" + UUID.randomUUID());
 
             final BigdataURI serviceURI2 = f
-                    .createURI("http://www.bigdata.com/myService2/" + getName()
+                    .createIRI("http://www.bigdata.com/myService2/" + getName()
                             + "/" + UUID.randomUUID());
 
             final BigdataValue[] values = new BigdataValue[] { //
@@ -364,7 +365,7 @@ public class TestServiceRegistry extends AbstractBigdataExprBuilderTestCase {
      */
     public void test_customService() throws SailException {
 
-        final URI serviceURI1 = new URIImpl("http://www.bigdata.com/myService/"
+        final IRI serviceURI1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/myService/"
                 + getName() + "/" + UUID.randomUUID());
 
         final MyCustomServiceFactory serviceFactory = new MyCustomServiceFactory(
@@ -420,7 +421,7 @@ public class TestServiceRegistry extends AbstractBigdataExprBuilderTestCase {
 
                     final BigdataSail sail = new BigdataSail(store.getNamespace(),store.getIndexManager());
                     try {
-                        sail.initialize();
+                        sail.init();
                         // Nothing started yet.
                         assertEquals("nstarted", 0,
                                 serviceFactory.nstarted.get());

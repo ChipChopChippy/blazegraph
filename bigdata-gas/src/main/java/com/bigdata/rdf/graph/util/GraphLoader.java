@@ -28,17 +28,19 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParseException;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.RDFParserFactory;
-import org.openrdf.rio.RDFParserRegistry;
-import org.openrdf.rio.helpers.RDFHandlerBase;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.common.lang.FileFormat;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFParseException;
+import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.RDFParserFactory;
+import org.eclipse.rdf4j.rio.RDFParserRegistry;
+import org.eclipse.rdf4j.rio.helpers.AbstractRDFHandler;
 
 /**
  * Utility to load data into a graph.
@@ -47,7 +49,7 @@ import org.openrdf.rio.helpers.RDFHandlerBase;
  */
 abstract public class GraphLoader {
 
-    private static final Logger log = Logger.getLogger(GASUtil.class);
+    private static final Logger log = LogManager.getLogger(GASUtil.class);
 
     /**
      * Return the best guess at the {@link RDFFormat} for a resource.
@@ -63,14 +65,17 @@ abstract public class GraphLoader {
      */
     private RDFFormat guessRDFFormat(final String n, final RDFFormat rdfFormat) {
 
-        RDFFormat fmt = RDFFormat.forFileName(n);
+        RDFFormat fmt = FileFormat.matchFileName(n, RDFParserRegistry.getInstance().getKeys())
+                .orElse(null);
 
         if (fmt == null && n.endsWith(".zip")) {
-            fmt = RDFFormat.forFileName(n.substring(0, n.length() - 4));
+            fmt = FileFormat.matchFileName(n.substring(0, n.length() - 4),
+                    RDFParserRegistry.getInstance().getKeys()).orElse(null);
         }
 
         if (fmt == null && n.endsWith(".gz")) {
-            fmt = RDFFormat.forFileName(n.substring(0, n.length() - 3));
+            fmt = FileFormat.matchFileName(n.substring(0, n.length() - 3),
+                    RDFParserRegistry.getInstance().getKeys()).orElse(null);
         }
 
         if (fmt == null) // fallback
@@ -281,11 +286,13 @@ abstract public class GraphLoader {
         try {
 
             final RDFParserFactory rdfParserFactory = RDFParserRegistry
-                    .getInstance().get(rdfFormat);
+                    .getInstance().get(rdfFormat).orElse(null);
+
+            if (rdfParserFactory == null) {
+                throw new IllegalArgumentException("No RDF parser registered for " + rdfFormat);
+            }
 
             final RDFParser rdfParser = rdfParserFactory.getParser();
-
-            rdfParser.setStopAtFirstError(false);
 
             final ValueFactory vf = getValueFactory();
 
@@ -330,7 +337,7 @@ abstract public class GraphLoader {
     /**
      * Helper class adds statements to the sail as they are visited by a parser.
      */
-    protected abstract class AddStatementHandler extends RDFHandlerBase {
+    protected abstract class AddStatementHandler extends AbstractRDFHandler {
 
         /**
          * Only used if the statements themselves do not have a context.

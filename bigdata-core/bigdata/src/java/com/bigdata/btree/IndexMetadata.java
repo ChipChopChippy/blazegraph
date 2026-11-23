@@ -35,8 +35,9 @@ import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.data.ILeafData;
 import com.bigdata.btree.data.INodeData;
 import com.bigdata.btree.isolation.IConflictResolver;
@@ -221,7 +222,7 @@ public class IndexMetadata implements Serializable, Externalizable, Cloneable,
 
     private static final long serialVersionUID = 4370669592664382720L;
     
-    private static final transient Logger log = Logger
+    private static final transient Logger log = LogManager
             .getLogger(IndexMetadata.class);
 
     /**

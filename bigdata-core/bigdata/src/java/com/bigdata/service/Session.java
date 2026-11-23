@@ -30,8 +30,9 @@ package com.bigdata.service;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 /**
  * A (transient) property set associated with some kinds of services.
  * 
@@ -40,7 +41,7 @@ import org.apache.log4j.Logger;
  */
 public class Session {
 
-    protected static final Logger log = Logger.getLogger(Session.class);
+    protected static final Logger log = LogManager.getLogger(Session.class);
 
     private ConcurrentHashMap<String, Object> session = new ConcurrentHashMap<String, Object>();
 

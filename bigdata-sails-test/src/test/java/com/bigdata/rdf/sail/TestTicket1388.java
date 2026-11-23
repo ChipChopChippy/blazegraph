@@ -35,16 +35,16 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Properties;
 
-import org.openrdf.OpenRDFException;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.vocabulary.XMLSchema;
-import org.openrdf.query.Binding;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.impl.BindingImpl;
-import org.openrdf.rio.RDFFormat;
+import org.eclipse.rdf4j.common.exception.RDF4JException;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
+import org.eclipse.rdf4j.query.Binding;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.impl.SimpleBinding;
+import org.eclipse.rdf4j.rio.RDFFormat;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.vocab.NoVocabulary;
@@ -98,7 +98,7 @@ public class TestTicket1388 extends ProxyBigdataSailTestCase {
 
         try {
 
-            sail.initialize();
+            sail.init();
             
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             
@@ -118,7 +118,7 @@ public class TestTicket1388 extends ProxyBigdataSailTestCase {
 					reader.close();
 				}
 				cxn.commit();
-			} catch (OpenRDFException ex) {
+			} catch (RDF4JException ex) {
 				cxn.rollback();
 				throw ex;
 			}
@@ -142,12 +142,12 @@ public class TestTicket1388 extends ProxyBigdataSailTestCase {
 			//[myDate="2014-04-11"^^<http://www.w3.org/2001/XMLSchema#date>;countDoc="3"^^<http://www.w3.org/2001/XMLSchema#integer>]
 			//[myDate="2014-05-29"^^<http://www.w3.org/2001/XMLSchema#date>;countDoc="2"^^<http://www.w3.org/2001/XMLSchema#integer>]
             solution.add(createBindingSet(new Binding[] {
-                new BindingImpl("myDate", new LiteralImpl("2014-04-11", XMLSchema.DATE)),
-                new BindingImpl("countDoc", new LiteralImpl(Integer.toString(3), XMLSchema.INTEGER))
+                new SimpleBinding("myDate", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("2014-04-11", XSD.DATE)),
+                new SimpleBinding("countDoc", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral(Integer.toString(3), XSD.INTEGER))
             }));
             solution.add(createBindingSet(new Binding[] {
-                new BindingImpl("myDate", new LiteralImpl("2014-05-29", XMLSchema.DATE)),
-                new BindingImpl("countDoc", new LiteralImpl(Integer.toString(2), XMLSchema.INTEGER))
+                new SimpleBinding("myDate", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("2014-05-29", XSD.DATE)),
+                new SimpleBinding("countDoc", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral(Integer.toString(2), XSD.INTEGER))
             }));
                        
             compare(tqr, solution);

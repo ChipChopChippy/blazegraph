@@ -28,17 +28,18 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 
-import javax.servlet.AsyncContext;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.AsyncContext;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-import org.eclipse.jetty.client.api.Response;
-import org.eclipse.jetty.proxy.ProxyServlet;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.jetty.client.Response;
+import org.eclipse.jetty.ee11.proxy.ProxyServlet;
 
 import com.bigdata.BigdataStatics;
 import com.bigdata.counters.CAT;
@@ -82,7 +83,7 @@ import com.bigdata.util.StackInfoReport;
  */
 public class HALoadBalancerServlet extends ProxyServlet {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(HALoadBalancerServlet.class);
     
     /**

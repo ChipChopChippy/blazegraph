@@ -30,8 +30,9 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.io.DataInputBuffer;
 
@@ -47,7 +48,7 @@ import cutthecrap.utils.striterators.ICloseableIterator;
 public class SolutionSetStreamDecoder implements
         ICloseableIterator<IBindingSet[]> {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(SolutionSetStreamDecoder.class);
 
     /** The name of the solution set (optional). */

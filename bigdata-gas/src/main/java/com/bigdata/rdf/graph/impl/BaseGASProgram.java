@@ -17,11 +17,12 @@ package com.bigdata.rdf.graph.impl;
 
 import java.util.*;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
 
 
 import com.bigdata.rdf.graph.BinderBase;
@@ -46,7 +47,7 @@ import com.bigdata.rdf.graph.impl.util.VertexDistribution;
 abstract public class BaseGASProgram<VS, ES, ST> implements
         IGASProgram<VS, ES, ST> {
 
-    private static final Logger log = Logger.getLogger(BaseGASProgram.class);
+    private static final Logger log = LogManager.getLogger(BaseGASProgram.class);
     
 //    /**
 //     * If the vertex is actually an edge, then return the decoded edge.

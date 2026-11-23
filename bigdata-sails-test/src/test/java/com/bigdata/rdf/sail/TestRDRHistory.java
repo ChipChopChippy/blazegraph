@@ -28,14 +28,15 @@ package com.bigdata.rdf.sail;
 
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.repository.RepositoryResult;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.repository.RepositoryResult;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.changesets.IChangeRecord;
@@ -51,7 +52,7 @@ import com.bigdata.rdf.store.AbstractTripleStore;
  */
 public class TestRDRHistory extends ProxyBigdataSailTestCase {
 
-    private static final Logger log = Logger.getLogger(TestRDRHistory.class);
+    private static final Logger log = LogManager.getLogger(TestRDRHistory.class);
     
     @Override
     public Properties getProperties() {
@@ -102,15 +103,15 @@ public class TestRDRHistory extends ProxyBigdataSailTestCase {
 
         try {
 
-            sail.initialize();
+            sail.init();
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             cxn = (BigdataSailRepositoryConnection) repo.getConnection();
 
             final BigdataValueFactory vf = (BigdataValueFactory) sail
                   .getValueFactory();
-            final URI s = vf.createURI(":s");
-            final URI p = vf.createURI(":p");
-            final URI o = vf.createURI(":o");
+            final IRI s = vf.createIRI(":s");
+            final IRI p = vf.createIRI(":p");
+            final IRI o = vf.createIRI(":o");
 
             final BigdataStatement stmt = vf.createStatement(s, p, o);
             
@@ -233,7 +234,7 @@ public class TestRDRHistory extends ProxyBigdataSailTestCase {
                         final Statement result = stmts.next();
                         final Literal l = (Literal) result.getObject();
                         assertTrue(l.getDatatype().equals(XSD.DATETIME));
-                        final URI action = result.getPredicate();
+                        final IRI action = result.getPredicate();
                         if (action.equals(RDRHistory.Vocab.ADDED)) {
                             adds++;
                         } else if (action.equals(RDRHistory.Vocab.REMOVED)) {
@@ -268,15 +269,15 @@ public class TestRDRHistory extends ProxyBigdataSailTestCase {
 
         try {
 
-            sail.initialize();
+            sail.init();
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             cxn = (BigdataSailRepositoryConnection) repo.getConnection();
 
             final BigdataValueFactory vf = (BigdataValueFactory) sail
                   .getValueFactory();
-            final URI s = vf.createURI(":s");
-            final URI p = vf.createURI(":p");
-            final URI o = vf.createURI(":o");
+            final IRI s = vf.createIRI(":s");
+            final IRI p = vf.createIRI(":p");
+            final IRI o = vf.createIRI(":o");
             final Literal l = vf.createLiteral("o");
 
             BigdataStatement stmt1 = vf.createStatement(s, p, o);
@@ -354,7 +355,7 @@ public class TestRDRHistory extends ProxyBigdataSailTestCase {
 
         try {
 
-            sail.initialize();
+            sail.init();
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             
             {
@@ -523,14 +524,14 @@ public class TestRDRHistory extends ProxyBigdataSailTestCase {
 
         try {
 
-            sail.initialize();
+            sail.init();
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             cxn = (BigdataSailRepositoryConnection) repo.getConnection();
 
             final BigdataValueFactory vf = (BigdataValueFactory) sail
                     .getValueFactory();
-            final URI s = vf.createURI(":s");
-            final URI p = vf.createURI(":p");
+            final IRI s = vf.createIRI(":s");
+            final IRI p = vf.createIRI(":p");
             final Literal o = vf.createLiteral("foo");
             final BigdataStatement stmt = vf.createStatement(s, p, o);
             final BigdataBNode sid = vf.createBNode(stmt);
@@ -566,14 +567,14 @@ public class TestRDRHistory extends ProxyBigdataSailTestCase {
 
         try {
 
-            sail.initialize();
+            sail.init();
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             cxn = (BigdataSailRepositoryConnection) repo.getConnection();
 
             final BigdataValueFactory vf = (BigdataValueFactory) sail
                     .getValueFactory();
-            final URI s = vf.createURI(":s");
-            final URI p = vf.createURI(":p");
+            final IRI s = vf.createIRI(":s");
+            final IRI p = vf.createIRI(":p");
             final Literal o = vf.createLiteral("foo");
             final Literal bar = vf.createLiteral("bar");
             final BigdataStatement stmt = vf.createStatement(s, p, o);

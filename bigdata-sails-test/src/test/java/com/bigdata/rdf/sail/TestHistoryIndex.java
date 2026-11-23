@@ -28,11 +28,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sail;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.sail.SailException;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.sail.SailException;
 
 import com.bigdata.btree.IIndex;
 import com.bigdata.btree.ITuple;
@@ -79,7 +81,7 @@ import cutthecrap.utils.striterators.Striterator;
  */
 public class TestHistoryIndex extends ProxyBigdataSailTestCase  {
 
-//    private static final Logger log = Logger.getLogger(TestHistoryIndex.class);
+//    private static final Logger log = LogManager.getLogger(TestHistoryIndex.class);
     
     /**
      * 
@@ -133,7 +135,7 @@ public class TestHistoryIndex extends ProxyBigdataSailTestCase  {
 
         try {
 
-            sail.initialize();
+            sail.init();
 
             final BigdataSailConnection conn = sail.getConnection();
 
@@ -186,7 +188,7 @@ public class TestHistoryIndex extends ProxyBigdataSailTestCase  {
 
         try {
 
-            sail.initialize();
+            sail.init();
 
             /*
              * Verify that we can add some statements and they will appear in
@@ -217,11 +219,11 @@ public class TestHistoryIndex extends ProxyBigdataSailTestCase  {
                             .getValueFactory();
 
                     final BigdataURI A = f
-                            .createURI("http://www.bigdata.com/A");
+                            .createIRI("http://www.bigdata.com/A");
                     final BigdataURI B = f
-                            .createURI("http://www.bigdata.com/B");
+                            .createIRI("http://www.bigdata.com/B");
                     final BigdataURI C = f
-                            .createURI("http://www.bigdata.com/C");
+                            .createIRI("http://www.bigdata.com/C");
                     final BigdataURI rdfType = f.asValue(RDF.TYPE);
 
                     conn.addStatement(A, rdfType, B);
@@ -302,11 +304,11 @@ public class TestHistoryIndex extends ProxyBigdataSailTestCase  {
                             .getValueFactory();
 
                     final BigdataURI A = f
-                            .createURI("http://www.bigdata.com/A");
+                            .createIRI("http://www.bigdata.com/A");
                     final BigdataURI B = f
-                            .createURI("http://www.bigdata.com/B");
+                            .createIRI("http://www.bigdata.com/B");
 //                    final BigdataURI C = f
-//                            .createURI("http://www.bigdata.com/C");
+//                            .createIRI("http://www.bigdata.com/C");
                     final BigdataURI rdfType = f.asValue(RDF.TYPE);
 
                     conn.removeStatements(A, rdfType, B);
@@ -395,7 +397,7 @@ public class TestHistoryIndex extends ProxyBigdataSailTestCase  {
 
         try {
 
-            sail.initialize();
+            sail.init();
 
             /*
              * Verify that we can add some statements and they will appear in
@@ -426,11 +428,11 @@ public class TestHistoryIndex extends ProxyBigdataSailTestCase  {
                             .getValueFactory();
 
                     final BigdataURI A = f
-                            .createURI("http://www.bigdata.com/A");
+                            .createIRI("http://www.bigdata.com/A");
                     final BigdataURI B = f
-                            .createURI("http://www.bigdata.com/B");
+                            .createIRI("http://www.bigdata.com/B");
                     final BigdataURI C = f
-                            .createURI("http://www.bigdata.com/C");
+                            .createIRI("http://www.bigdata.com/C");
                     final BigdataURI rdfType = f.asValue(RDF.TYPE);
 
                     conn.addStatement(A, rdfType, B);
@@ -511,11 +513,11 @@ public class TestHistoryIndex extends ProxyBigdataSailTestCase  {
                             .getValueFactory();
 
                     final BigdataURI A = f
-                            .createURI("http://www.bigdata.com/A");
+                            .createIRI("http://www.bigdata.com/A");
                     final BigdataURI B = f
-                            .createURI("http://www.bigdata.com/B");
+                            .createIRI("http://www.bigdata.com/B");
 //                    final BigdataURI C = f
-//                            .createURI("http://www.bigdata.com/C");
+//                            .createIRI("http://www.bigdata.com/C");
                     final BigdataURI rdfType = f.asValue(RDF.TYPE);
 
                     conn.removeStatements(A, rdfType, B);

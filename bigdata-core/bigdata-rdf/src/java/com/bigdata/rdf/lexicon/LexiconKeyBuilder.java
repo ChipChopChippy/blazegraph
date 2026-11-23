@@ -1,10 +1,11 @@
 package com.bigdata.rdf.lexicon;
 
-import org.openrdf.model.BNode;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.vocabulary.XMLSchema;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
+import com.bigdata.rdf.model.BigdataValue;
 
 import com.bigdata.btree.keys.IKeyBuilder;
 import com.bigdata.btree.keys.IKeyBuilderFactory;
@@ -14,7 +15,7 @@ import com.bigdata.btree.keys.StrengthEnum;
  * Flyweight helper class for building (and decoding to the extent possible)
  * unsigned byte[] keys for RDF {@link Value}s and term identifiers. In general,
  * keys for RDF values are formed by a leading byte that indicates the type of
- * the value (URI, BNode, or some type of Literal), followed by the components
+ * the value (IRI, BNode, or some type of Literal), followed by the components
  * of that value type.
  * 
  * @author <a href="mailto:thompsonbry@users.sourceforge.net">Bryan Thompson</a>
@@ -44,10 +45,10 @@ public class LexiconKeyBuilder implements ITermIndexCodes {
     }
 
     /**
-     * Returns the sort key for the URI.
+     * Returns the sort key for the IRI.
      * 
      * @param uri
-     *            The URI.
+     *            The IRI.
      * 
      * @return The sort key.
      */
@@ -102,13 +103,13 @@ public class LexiconKeyBuilder implements ITermIndexCodes {
 
     /**
      * Formats a datatype literal sort key. The value is formated according to
-     * the datatype URI.
+     * the datatype IRI.
      * 
      * @param datatype
      * @param value
      * @return
      */
-    public byte[] datatypeLiteral2key(final URI datatype, final String value) {
+    public byte[] datatypeLiteral2key(final IRI datatype, final String value) {
 
         if (datatype == null)
             throw new IllegalArgumentException();
@@ -116,19 +117,14 @@ public class LexiconKeyBuilder implements ITermIndexCodes {
         if (value == null)
             throw new IllegalArgumentException();
 
-        if (false && datatype.equals(XMLSchema.STRING)) {
+        if (false && datatype.equals(XSD.STRING)) {
 
-            /*
-             * @todo xsd:string is explicitly mapped by RDF Semantics onto plain
-             * literals (they entail one another). However, it breaks the SPARQL
-             * unit tests if you map them onto the same key.
-             */
             return plainLiteral2key(value);
             
         }
 
         /*
-         * Note: The full lexical form of the data type URI is serialized into
+         * Note: The full lexical form of the data type IRI is serialized into
          * the key as a Unicode sort key followed by a nul byte and then a
          * Unicode sort key formed from the lexical form of the data type value.
          */
@@ -136,7 +132,7 @@ public class LexiconKeyBuilder implements ITermIndexCodes {
         // clear out any existing key and add prefix for the DTL space.
         keyBuilder.reset().append(TERM_CODE_DTL);
 
-        // encode the datatype URI as Unicode sort key to make all data
+        // encode the datatype IRI as Unicode sort key to make all data
         // types disjoint.
         keyBuilder.append(datatype.stringValue());
 
@@ -190,9 +186,9 @@ public class LexiconKeyBuilder implements ITermIndexCodes {
         if (value == null)
             throw new IllegalArgumentException();
 
-        if (value instanceof URI) {
+        if (value instanceof IRI) {
 
-            final URI uri = (URI) value;
+            final IRI uri = (IRI) value;
 
             final String term = uri.toString();
 
@@ -204,9 +200,9 @@ public class LexiconKeyBuilder implements ITermIndexCodes {
 
             final String text = lit.getLabel();
 
-            final String languageCode = lit.getLanguage();
+            final String languageCode = lit.getLanguage().orElse(null);
 
-            final URI datatypeUri = lit.getDatatype();
+            final IRI datatypeUri = lit.getDatatype();
 
             if (languageCode != null) {
 
@@ -215,7 +211,9 @@ public class LexiconKeyBuilder implements ITermIndexCodes {
                  */
                 return languageCodeLiteral2key(languageCode, text);
 
-            } else if (datatypeUri != null) {
+            } else if (datatypeUri != null
+                    && !(!(lit instanceof BigdataValue) && XSD.STRING.stringValue().equals(datatypeUri.stringValue()))) {
+                // Note: a foreign RDF4J 5 literal typed xsd:string is a plain literal (RDF 1.1).
 
                 /*
                  * datatype literal.

@@ -1,7 +1,8 @@
 package com.bigdata.counters;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 /**
  * A history instrument which aggregates samples into a circular buffer with a
  * specified sample period. Old samples are overwritten (or cleared in the case
@@ -17,7 +18,7 @@ import org.apache.log4j.Logger;
  */
 public class HistoryInstrument<T> implements IInstrument<T> {
 
-    protected static Logger log = Logger.getLogger(HistoryInstrument.class);
+    protected static Logger log = LogManager.getLogger(HistoryInstrument.class);
     
     public final History<T> minutes;
 

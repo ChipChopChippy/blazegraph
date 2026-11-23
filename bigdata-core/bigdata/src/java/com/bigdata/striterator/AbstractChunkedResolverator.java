@@ -31,8 +31,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.FutureTask;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.relation.accesspath.BlockingBuffer;
 import com.bigdata.relation.accesspath.IAsynchronousIterator;
 import com.bigdata.util.InnerCause;
@@ -55,7 +56,7 @@ import cutthecrap.utils.striterators.ICloseableIterator;
  */
 abstract public class AbstractChunkedResolverator<E,F,S> implements ICloseableIterator<F> {
 
-    final private static Logger log = Logger
+    final private static Logger log = LogManager
             .getLogger(AbstractChunkedResolverator.class);
 
 //    /**

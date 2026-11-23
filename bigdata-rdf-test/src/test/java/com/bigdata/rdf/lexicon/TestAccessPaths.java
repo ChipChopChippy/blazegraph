@@ -33,7 +33,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.openrdf.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.bop.Constant;
 import com.bigdata.bop.IPredicate;
@@ -112,19 +112,19 @@ public class TestAccessPaths extends AbstractTripleStoreTestCase {
             terms.add(f.createLiteral("test"));
             terms.add(f.createLiteral("test", "en"));
             terms.add(f.createLiteral("10", f
-                    .createURI("http://www.w3.org/2001/XMLSchema#int")));
+                    .createIRI("http://www.w3.org/2001/XMLSchema#int")));
 
             terms.add(f.createLiteral("12", f
-                    .createURI("http://www.w3.org/2001/XMLSchema#float")));
+                    .createIRI("http://www.w3.org/2001/XMLSchema#float")));
 
             terms.add(f.createLiteral("12.", f
-                    .createURI("http://www.w3.org/2001/XMLSchema#float")));
+                    .createIRI("http://www.w3.org/2001/XMLSchema#float")));
 
             terms.add(f.createLiteral("12.0", f
-                    .createURI("http://www.w3.org/2001/XMLSchema#float")));
+                    .createIRI("http://www.w3.org/2001/XMLSchema#float")));
 
             terms.add(f.createLiteral("12.00", f
-                    .createURI("http://www.w3.org/2001/XMLSchema#float")));
+                    .createIRI("http://www.w3.org/2001/XMLSchema#float")));
             
             terms.add(largeLiteral=f.createLiteral(TestAddTerms.getVeryLargeLiteral()));
 

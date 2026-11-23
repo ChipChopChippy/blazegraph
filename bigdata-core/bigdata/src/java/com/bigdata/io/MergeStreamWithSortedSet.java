@@ -8,11 +8,12 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 public class MergeStreamWithSortedSet {
 
-    private static final transient Logger log = Logger
+    private static final transient Logger log = LogManager
             .getLogger(MergeStreamWithSortedSet.class);
 
     static public void process(final InputStream in, final Set<Entry<Long, byte[]>> snapshotData, final OutputStream out) throws IOException {

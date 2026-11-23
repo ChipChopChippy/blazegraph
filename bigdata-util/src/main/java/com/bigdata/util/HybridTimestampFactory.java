@@ -29,8 +29,9 @@ package com.bigdata.util;
 
 import java.math.BigInteger;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 /**
  * A timestamp factory using {@link System#currentTimeMillis()} and an internal
  * counter to provide unique timestamps with greater than millisecond
@@ -46,7 +47,7 @@ public class HybridTimestampFactory {
     /**
      * Logger.
      */
-    public static final Logger log = Logger.getLogger(HybridTimestampFactory.class);
+    public static final Logger log = LogManager.getLogger(HybridTimestampFactory.class);
 
 //    /**
 //     * Allows up to 1024 distinct timestamps per millisecond.

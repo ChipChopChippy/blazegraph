@@ -27,9 +27,10 @@ package com.bigdata.concurrent;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 
+import org.apache.logging.log4j.LogManager;
 /**
  * This is a flyweight utility class to be used as a direct replacement for
  * FutureTask in code where we may need to be able to discover the root cancel
@@ -39,7 +40,7 @@ import org.apache.log4j.Logger;
  */
 public class FutureTaskMon<T> extends FutureTask<T> {
 
-	static private final transient Logger log = Logger
+	static private final transient Logger log = LogManager
 	.getLogger(FutureTaskMon.class);
 
 	private volatile boolean didStart = false;

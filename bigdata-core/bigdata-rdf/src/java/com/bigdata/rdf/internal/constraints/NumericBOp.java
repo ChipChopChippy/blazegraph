@@ -25,10 +25,11 @@ package com.bigdata.rdf.internal.constraints;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.vocabulary.XMLSchema;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -47,7 +48,7 @@ public class NumericBOp extends IVValueExpression<IV> implements INeedsMateriali
 
     private static final long serialVersionUID = 9136864442064392445L;
     
-    private static final transient Logger log = Logger.getLogger(NumericBOp.class);
+    private static final transient Logger log = LogManager.getLogger(NumericBOp.class);
     
 
     public interface Annotations extends ImmutableBOp.Annotations {
@@ -127,11 +128,11 @@ public class NumericBOp extends IVValueExpression<IV> implements INeedsMateriali
         
     	final Literal lit = super.getAndCheckLiteralValue(0, bs);
     	
-    	final URI dt = lit.getDatatype();
+    	final IRI dt = lit.getDatatype();
     	
     	final NumericOp op = op();
     	
-    	if ((dt.equals(XMLSchema.INT) || dt.equals(XMLSchema.INTEGER)) &&
+    	if ((dt.equals(XSD.INT) || dt.equals(XSD.INTEGER)) &&
     	    (op == NumericOp.CEIL || op == NumericOp.FLOOR || op == NumericOp.ROUND)) {
     	    
     	    return get(0).get(bs);

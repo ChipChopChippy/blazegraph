@@ -37,8 +37,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.URI;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpUtility;
@@ -205,7 +206,7 @@ import com.bigdata.rdf.sparql.ast.ssets.ISolutionSetManager;
  */
 public class StaticAnalysis extends StaticAnalysis_CanJoin {
 
-    private static final Logger log = Logger.getLogger(StaticAnalysis.class);
+    private static final Logger log = LogManager.getLogger(StaticAnalysis.class);
 
     /**
      * 
@@ -1656,7 +1657,7 @@ public class StaticAnalysis extends StaticAnalysis_CanJoin {
      * checking the graph pattern reported by
      * {@link ServiceNode#getGraphPattern()}.
      * <p>
-     * Note: If the SERVICE URI is a variable, then it can only become bound
+     * Note: If the SERVICE IRI is a variable, then it can only become bound
      * through some other operation. If the SERVICE variable never becomes
      * bound, then the SERVICE call can not run.
      */
@@ -2706,7 +2707,7 @@ public class StaticAnalysis extends StaticAnalysis_CanJoin {
        }
        
        final FunctionNode functionNode = (FunctionNode)vexpr;
-       final URI functionURI = functionNode.getFunctionURI();
+       final IRI functionURI = functionNode.getFunctionURI();
        
        if (functionURI.equals(FunctionRegistry.NOT)) {
           
@@ -2738,7 +2739,7 @@ public class StaticAnalysis extends StaticAnalysis_CanJoin {
      */
     static public boolean isCNFDisjunct(final FunctionNode functionNode) {
 
-       final URI functionURI = functionNode.getFunctionURI();
+       final IRI functionURI = functionNode.getFunctionURI();
        
        if (functionURI.equals(FunctionRegistry.NOT)) {
           
@@ -2776,7 +2777,7 @@ public class StaticAnalysis extends StaticAnalysis_CanJoin {
      */
     static public boolean isCNFNegationOrTerminal(final FunctionNode functionNode) {
 
-       final URI functionURI = functionNode.getFunctionURI();
+       final IRI functionURI = functionNode.getFunctionURI();
        if (functionURI.equals(FunctionRegistry.AND) || 
            functionURI.equals(FunctionRegistry.OR)) {
           
@@ -2834,7 +2835,7 @@ public class StaticAnalysis extends StaticAnalysis_CanJoin {
        }
        
        final FunctionNode functionNode = (FunctionNode)vexp;
-       final URI functionURI = functionNode.getFunctionURI();
+       final IRI functionURI = functionNode.getFunctionURI();
        
        if (functionURI.equals(FunctionRegistry.NOT)) {
           
@@ -2844,7 +2845,7 @@ public class StaticAnalysis extends StaticAnalysis_CanJoin {
           if(inner instanceof FunctionNode) {
              
              final FunctionNode innerFunctionNode = (FunctionNode)inner;
-             final URI innerFunctionURI = innerFunctionNode.getFunctionURI();
+             final IRI innerFunctionURI = innerFunctionNode.getFunctionURI();
              
              if (innerFunctionURI.equals(FunctionRegistry.AND)) {
 
@@ -2971,7 +2972,7 @@ public class StaticAnalysis extends StaticAnalysis_CanJoin {
        }
        
        final FunctionNode functionNode = (FunctionNode)vexp;
-       final URI functionURI = functionNode.getFunctionURI();
+       final IRI functionURI = functionNode.getFunctionURI();
        
        if (functionURI.equals(FunctionRegistry.OR)) {
 
@@ -3045,7 +3046,7 @@ public class StaticAnalysis extends StaticAnalysis_CanJoin {
        if (vexp instanceof FunctionNode) {
 
           final FunctionNode functionNode = (FunctionNode)vexp;
-          final URI functionURI = functionNode.getFunctionURI();
+          final IRI functionURI = functionNode.getFunctionURI();
           
           if (functionURI.equals(FunctionRegistry.AND)) {
              

@@ -26,8 +26,8 @@ package com.bigdata.rdf.internal.constraints;
 
 import java.util.Map;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.bop.AbstractAccessPathOp;
 import com.bigdata.bop.BOp;
@@ -46,7 +46,7 @@ import com.bigdata.rdf.lexicon.LexiconRelation;
 import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.sparql.ast.DummyConstantNode;
 import com.bigdata.rdf.sparql.ast.FilterNode;
 import com.bigdata.rdf.sparql.ast.GlobalAnnotations;
@@ -235,7 +235,7 @@ public abstract class IVValueExpression<T extends IV> extends BOpBase
                     
                     final String namespace = getNamespace();
                     
-                    vf = BigdataValueFactoryImpl.getInstance(namespace);
+                    vf = BigdataSimpleValueFactory.getInstance(namespace);
                     
                 }
 

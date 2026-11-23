@@ -24,8 +24,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.rdf.rules;
 
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
+
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
 
 import com.bigdata.rdf.axioms.Axioms;
 import com.bigdata.rdf.internal.IV;
@@ -51,7 +53,7 @@ import com.bigdata.relation.rule.eval.ISolution;
  */
 public class DoNotAddFilter<E extends ISPO> extends SPOFilter<E> {
 
-//    protected static final Logger log = Logger.getLogger(DoNotAddFilter.class);
+//    protected static final Logger log = LogManager.getLogger(DoNotAddFilter.class);
 //    
 //    protected static final boolean INFO = log.isInfoEnabled();
 //    

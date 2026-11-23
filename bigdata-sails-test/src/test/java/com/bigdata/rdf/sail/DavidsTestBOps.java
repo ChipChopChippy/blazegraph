@@ -32,21 +32,22 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.impl.BindingImpl;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParseException;
-import org.openrdf.sail.SailException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.impl.SimpleBinding;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParseException;
+import org.eclipse.rdf4j.sail.SailException;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.vocab.NoVocabulary;
@@ -59,7 +60,7 @@ import com.bigdata.rdf.vocab.NoVocabulary;
  */
 public class DavidsTestBOps extends ProxyBigdataSailTestCase {
 
-    private static final Logger log = Logger.getLogger(DavidsTestBOps.class);
+    private static final Logger log = LogManager.getLogger(DavidsTestBOps.class);
     
     @Override
     public Properties getProperties() {
@@ -100,10 +101,10 @@ public class DavidsTestBOps extends ProxyBigdataSailTestCase {
             final String kb = String.format ( "<%ss> <%sp> <%so> .", ns, ns, ns ) ;
             final String qs = String.format ( "select ?p ?o where { <%ss> ?p ?o .}", ns ) ;
     
-            final Resource graphs [] = new Resource [] { vf.createURI ( String.format ( "%sg1", ns ) ), vf.createURI ( String.format ( "%sg2", ns ) ) } ;
+            final Resource graphs [] = new Resource [] { vf.createIRI( String.format ( "%sg1", ns ) ), vf.createIRI( String.format ( "%sg2", ns ) ) } ;
     
-            final Collection<BindingSet> expected = getExpected ( createBindingSet ( new BindingImpl ( "p", new URIImpl ( String.format ( "%sp", ns ) ) )
-                                                                                   , new BindingImpl ( "o", new URIImpl ( String.format ( "%so", ns ) ) )
+            final Collection<BindingSet> expected = getExpected ( createBindingSet ( new SimpleBinding ( "p", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI( String.format ( "%sp", ns ) ) )
+                                                                                   , new SimpleBinding ( "o", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI( String.format ( "%so", ns ) ) )
                                                                                    )
                                                           ) ;
             run ( sail, cxn, kb, graphs, qs, expected ) ;
@@ -123,10 +124,10 @@ public class DavidsTestBOps extends ProxyBigdataSailTestCase {
         String kb = String.format ( "<%ss> <%sp> <%so> .", ns, ns, ns ) ;
         String qs = String.format ( "select ?p ?o from <%sg1> from <%sg2> where { <%ss> ?p ?o .}", ns, ns, ns ) ;
 
-        Resource graphs [] = new Resource [] { vf.createURI ( String.format ( "%sg1", ns ) ), vf.createURI ( String.format ( "%sg2", ns ) ) } ;
+        Resource graphs [] = new Resource [] { vf.createIRI( String.format ( "%sg1", ns ) ), vf.createIRI( String.format ( "%sg2", ns ) ) } ;
 
-        Collection<BindingSet> expected = getExpected ( createBindingSet ( new BindingImpl ( "p", new URIImpl ( String.format ( "%sp", ns ) ) )
-                                                                         , new BindingImpl ( "o", new URIImpl ( String.format ( "%so", ns ) ) )
+        Collection<BindingSet> expected = getExpected ( createBindingSet ( new SimpleBinding ( "p", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI( String.format ( "%sp", ns ) ) )
+                                                                         , new SimpleBinding ( "o", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI( String.format ( "%so", ns ) ) )
                                                                          )
                                                       ) ;
         run ( sail, cxn, kb, graphs, qs, expected ) ;
@@ -146,7 +147,7 @@ public class DavidsTestBOps extends ProxyBigdataSailTestCase {
         String kb = String.format ( "<%ss> <%sp> <%so> .", ns, ns, ns ) ;
         String qs = String.format ( "select ?s from named <%sg2> where { ?s ?p ?o .}", ns ) ;
 
-        Resource graphs [] = new Resource [] { vf.createURI ( String.format ( "%sg1", ns ) ), vf.createURI ( String.format ( "%sg2", ns ) ) } ;
+        Resource graphs [] = new Resource [] { vf.createIRI( String.format ( "%sg1", ns ) ), vf.createIRI( String.format ( "%sg2", ns ) ) } ;
 
         Collection<BindingSet> expected = getExpected () ;
 
@@ -167,7 +168,7 @@ public class DavidsTestBOps extends ProxyBigdataSailTestCase {
         String kb = String.format ( "<%ss> <%sp> <%so> .", ns, ns, ns ) ;
         String qs = String.format ( "select ?s from named <%sg1> from named <%sg2> where { ?s ?p ?o .}", ns, ns ) ;
 
-        Resource graphs [] = new Resource [] { vf.createURI ( String.format ( "%sg1", ns ) ), vf.createURI ( String.format ( "%sg2", ns ) ) } ;
+        Resource graphs [] = new Resource [] { vf.createIRI( String.format ( "%sg1", ns ) ), vf.createIRI( String.format ( "%sg2", ns ) ) } ;
 
         Collection<BindingSet> expected = getExpected () ;
 
@@ -188,9 +189,9 @@ public class DavidsTestBOps extends ProxyBigdataSailTestCase {
         String kb = String.format ( "<%ss> <%sp> <%so> .", ns, ns, ns ) ;
         String qs = String.format ( "select ?s from <%sg1> from named <%sg2> where { ?s ?p ?o .}", ns, ns ) ;
 
-        Resource graphs [] = new Resource [] { vf.createURI ( String.format ( "%sg1", ns ) ), vf.createURI ( String.format ( "%sg2", ns ) ) } ;
+        Resource graphs [] = new Resource [] { vf.createIRI( String.format ( "%sg1", ns ) ), vf.createIRI( String.format ( "%sg2", ns ) ) } ;
 
-        Collection<BindingSet> expected = getExpected ( createBindingSet ( new BindingImpl ( "s", new URIImpl ( String.format ( "%ss", ns ) ) ) ) ) ;
+        Collection<BindingSet> expected = getExpected ( createBindingSet ( new SimpleBinding ( "s", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI( String.format ( "%ss", ns ) ) ) ) ) ;
 
         run ( sail, cxn, kb, graphs, qs, expected ) ;
         } finally {

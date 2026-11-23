@@ -29,16 +29,16 @@ import java.util.Collections;
 import java.util.Properties;
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import junit.framework.Test;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.ValueFactoryImpl;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.TupleQueryResult;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.TupleQueryResult;
 
 import com.bigdata.journal.BufferMode;
 import com.bigdata.journal.IIndexManager;
@@ -87,9 +87,9 @@ public class TestRebuildTextIndex<S extends IIndexManager> extends
 
         final RemoteRepository repo = m_mgr.getRepositoryForNamespace(namespace);
 
-        final ValueFactoryImpl vf = ValueFactoryImpl.getInstance();
+        final SimpleValueFactory vf = SimpleValueFactory.getInstance();
 
-        final URI s = vf.createURI("s:s1");
+        final IRI s = vf.createIRI("s:s1");
 
         final Literal o = vf.createLiteral("literal");
 

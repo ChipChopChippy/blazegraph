@@ -42,9 +42,9 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.rio.RDFFormat;
+import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.rio.RDFFormat;
 
 import com.bigdata.journal.Journal;
 import com.bigdata.journal.RWStrategy;
@@ -143,7 +143,7 @@ public class LoadNamedGraphs extends SampleCode {
 							new ByteArrayInputStream(baos.toByteArray()));
 					final String baseIRI = file.toURI() + "/" + name;
 
-					cxn.add(reader, baseIRI, RDFFormat.forFileName(name));
+					cxn.add(reader, baseIRI, com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(name));
 
 					// note: due to buffering, this reports stmts flush to the
 					// db
@@ -189,7 +189,7 @@ public class LoadNamedGraphs extends SampleCode {
 						
 						final String baseIRI = file.toURI().toString();
 
-						cxn.add(reader, baseIRI, RDFFormat.forFileName(f
+						cxn.add(reader, baseIRI, com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(f
 								.getName()));
 
                         /*
@@ -237,7 +237,7 @@ public class LoadNamedGraphs extends SampleCode {
 				try {
 				final String baseIRI = file.toURI().toString();
 
-				cxn.add(reader, baseIRI, RDFFormat.forFileName(file
+				cxn.add(reader, baseIRI, com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(file
 						.getName()));
 
 				// note: due to buffering, this reports stmts flush to the

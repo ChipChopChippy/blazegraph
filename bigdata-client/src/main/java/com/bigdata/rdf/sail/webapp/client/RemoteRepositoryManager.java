@@ -44,30 +44,33 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.http.entity.ByteArrayEntity;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.eclipse.jetty.client.HttpClient;
-import org.eclipse.jetty.client.HttpRequest;
-import org.eclipse.jetty.client.api.Request;
+import org.eclipse.jetty.client.Request;
 import org.eclipse.jetty.http.HttpMethod;
-import org.openrdf.model.impl.ValueFactoryImpl;
-import org.openrdf.query.GraphQueryResult;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.impl.MapBindingSet;
-import org.openrdf.query.impl.TupleQueryResultImpl;
-import org.openrdf.query.resultio.BooleanQueryResultFormat;
-import org.openrdf.query.resultio.BooleanQueryResultParser;
-import org.openrdf.query.resultio.BooleanQueryResultParserFactory;
-import org.openrdf.query.resultio.BooleanQueryResultParserRegistry;
-import org.openrdf.query.resultio.TupleQueryResultFormat;
-import org.openrdf.query.resultio.TupleQueryResultParser;
-import org.openrdf.query.resultio.TupleQueryResultParserFactory;
-import org.openrdf.query.resultio.TupleQueryResultParserRegistry;
-import org.openrdf.repository.sparql.query.InsertBindingSetCursor;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.RDFParserFactory;
-import org.openrdf.rio.RDFParserRegistry;
+import org.eclipse.rdf4j.common.lang.FileFormat;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.query.GraphQueryResult;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.impl.MapBindingSet;
+import org.eclipse.rdf4j.query.impl.IteratingTupleQueryResult;
+import org.eclipse.rdf4j.query.resultio.BooleanQueryResultFormat;
+import org.eclipse.rdf4j.query.resultio.BooleanQueryResultParser;
+import org.eclipse.rdf4j.query.resultio.BooleanQueryResultParserFactory;
+import org.eclipse.rdf4j.query.resultio.BooleanQueryResultParserRegistry;
+import org.eclipse.rdf4j.query.resultio.QueryResultFormat;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultFormat;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultParser;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultParserFactory;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultParserRegistry;
+import org.eclipse.rdf4j.repository.sparql.query.InsertBindingSetCursor;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.RDFParserFactory;
+import org.eclipse.rdf4j.rio.RDFParserRegistry;
+import org.eclipse.rdf4j.rio.helpers.BasicParserSettings;
 
 import com.bigdata.rdf.ServiceProviderHook;
 import com.bigdata.rdf.properties.PropertiesFormat;
@@ -89,7 +92,7 @@ import com.bigdata.util.PropertyUtil;
  */
 public class RemoteRepositoryManager extends RemoteRepositoryBase implements AutoCloseable {
 
-    private static final transient Logger log = Logger.getLogger(RemoteRepositoryManager.class);
+    private static final transient Logger log = LogManager.getLogger(RemoteRepositoryManager.class);
 
     final static String EXCEPTION_MSG = "Class not found for service provider hook. " +
             "Blazegraph specific parser extensions will not be available.";
@@ -801,7 +804,9 @@ public class RemoteRepositoryManager extends RemoteRepositoryBase implements Aut
 
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-            final PropertiesWriter writer = PropertiesWriterRegistry.getInstance().get(format).getWriter(baos);
+            final PropertiesWriter writer = PropertiesWriterRegistry.getInstance().get(format)
+                    .orElseThrow(() -> new IllegalStateException("No properties writer registered for " + format))
+                    .getWriter(baos);
 
             writer.write(tmp);
 
@@ -875,7 +880,9 @@ public class RemoteRepositoryManager extends RemoteRepositoryBase implements Aut
 
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-            final PropertiesWriter writer = PropertiesWriterRegistry.getInstance().get(format).getWriter(baos);
+            final PropertiesWriter writer = PropertiesWriterRegistry.getInstance().get(format)
+                    .orElseThrow(() -> new IllegalStateException("No properties writer registered for " + format))
+                    .getWriter(baos);
 
             writer.write(tmp);
 
@@ -908,7 +915,7 @@ public class RemoteRepositoryManager extends RemoteRepositoryBase implements Aut
                         "Could not identify format for service response: serviceURI=" + sparqlEndpointURL +
                                 ", contentType=" + contentType + " : response=" + response.getResponseBody());
 
-            final PropertiesParserFactory factory = PropertiesParserRegistry.getInstance().get(format);
+            final PropertiesParserFactory factory = PropertiesParserRegistry.getInstance().get(format).orElse(null);
 
             if (factory == null)
                 throw new RuntimeException(
@@ -1386,7 +1393,7 @@ public class RemoteRepositoryManager extends RemoteRepositoryBase implements Aut
                         "Could not identify format for service response: serviceURI=" + sparqlEndpointURL +
                                 ", contentType=" + contentType + " : response=" + response.getResponseBody());
 
-            final PropertiesParserFactory factory = PropertiesParserRegistry.getInstance().get(format);
+            final PropertiesParserFactory factory = PropertiesParserRegistry.getInstance().get(format).orElse(null);
 
             if (factory == null)
                 throw new RuntimeException(
@@ -1495,7 +1502,9 @@ public class RemoteRepositoryManager extends RemoteRepositoryBase implements Aut
 
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-            final PropertiesWriter writer = PropertiesWriterRegistry.getInstance().get(format).getWriter(baos);
+            final PropertiesWriter writer = PropertiesWriterRegistry.getInstance().get(format)
+                    .orElseThrow(() -> new IllegalStateException("No properties writer registered for " + format))
+                    .getWriter(baos);
 
             writer.write(tmp);
 
@@ -1600,13 +1609,13 @@ public class RemoteRepositoryManager extends RemoteRepositoryBase implements Aut
         Request request = null;
         try {
 
-            request = (HttpRequest) newRequest(urlString.toString(), opts.method);
+            request = newRequest(urlString.toString(), opts.method);
 
             if (opts.requestHeaders != null) {
 
                 for (Map.Entry<String, String> e : opts.requestHeaders.entrySet()) {
 
-                    request.header(e.getKey(), e.getValue());
+                    request.headers(headers -> headers.add(e.getKey(), e.getValue()));
 
                     if (log.isDebugEnabled())
                         log.debug(e.getKey() + ": " + e.getValue());
@@ -1619,7 +1628,7 @@ public class RemoteRepositoryManager extends RemoteRepositoryBase implements Aut
 
                 final EntityContentProvider cp = new EntityContentProvider(opts.entity);
 
-                request.content(cp, cp.getContentType());
+                request.body(cp);
 
             }
 
@@ -1864,14 +1873,15 @@ public class RemoteRepositoryManager extends RemoteRepositoryBase implements Aut
 
             final MiniMime mimeType = new MiniMime(contentType);
 
-            final RDFFormat format = RDFFormat.forMIMEType(mimeType.getMimeType());
+            final RDFFormat format = FileFormat.matchMIMEType(mimeType.getMimeType(),
+                    RDFParserRegistry.getInstance().getKeys()).orElse(null);
 
             if (format == null)
                 throw new IOException(
                         "Could not identify format for service response: serviceURI=" + opts.getBestRequestURL() +
                                 ", contentType=" + contentType + " : response=" + response.getResponseBody());
 
-            final RDFParserFactory factory = RDFParserRegistry.getInstance().get(format);
+            final RDFParserFactory factory = RDFParserRegistry.getInstance().get(format).orElse(null);
 
             if (factory == null)
                 throw new RuntimeException(
@@ -1880,13 +1890,9 @@ public class RemoteRepositoryManager extends RemoteRepositoryBase implements Aut
             final RDFParser parser = factory.getParser();
 
             // TODO See #1055 (Make RDFParserOptions configurable)
-            parser.setValueFactory(new ValueFactoryImpl());
-
-            parser.setVerifyData(true);
-
-            parser.setStopAtFirstError(true);
-
-            parser.setDatatypeHandling(RDFParser.DatatypeHandling.IGNORE);
+            parser.setValueFactory(SimpleValueFactory.getInstance());
+            parser.getParserConfig().set(BasicParserSettings.VERIFY_DATATYPE_VALUES, false);
+            parser.getParserConfig().set(BasicParserSettings.NORMALIZE_DATATYPE_VALUES, false);
             /**
              * Note: The default charset depends on the MIME Type. The [charset]
              * MUST be [null] if the MIME Type is binary since this effects
@@ -2170,7 +2176,7 @@ public class RemoteRepositoryManager extends RemoteRepositoryBase implements Aut
         FutureTask<Void> ft = null;
         // iteration pattern returned to caller. once they hold this they are
         // responsible for cleaning up the request by calling close().
-        TupleQueryResultImpl tqrImpl = null;
+        IteratingTupleQueryResult tqrImpl = null;
         try {
 
             response = doConnect(opts);
@@ -2181,7 +2187,10 @@ public class RemoteRepositoryManager extends RemoteRepositoryBase implements Aut
 
             final MiniMime mimeType = new MiniMime(contentType);
 
-            final TupleQueryResultFormat format = TupleQueryResultFormat.forMIMEType(mimeType.getMimeType());
+            final QueryResultFormat queryResultFormat = FileFormat.matchMIMEType(mimeType.getMimeType(),
+                    TupleQueryResultParserRegistry.getInstance().getKeys()).orElse(null);
+            final TupleQueryResultFormat format = queryResultFormat instanceof TupleQueryResultFormat
+                    ? (TupleQueryResultFormat) queryResultFormat : null;
 
             if (format == null)
                 throw new IOException(
@@ -2189,7 +2198,7 @@ public class RemoteRepositoryManager extends RemoteRepositoryBase implements Aut
                                 ", contentType=" + contentType + " : response=" + response.getResponseBody());
 
             final TupleQueryResultParserFactory parserFactory = TupleQueryResultParserRegistry.getInstance()
-                    .get(format);
+                    .get(format).orElse(null);
 
             if (parserFactory == null)
                 throw new IOException("No parser for format for service response: serviceURI=" +
@@ -2228,7 +2237,7 @@ public class RemoteRepositoryManager extends RemoteRepositoryBase implements Aut
              * responsible for calling close() to provide proper error cleanup
              * of the resources associated with the request.
              */
-            final TupleQueryResultImpl tmp = new TupleQueryResultImpl(list, cursor) {
+            final IteratingTupleQueryResult tmp = new IteratingTupleQueryResult(list, cursor) {
 
                 private final AtomicBoolean notDone = new AtomicBoolean(true);
 
@@ -2351,14 +2360,18 @@ public class RemoteRepositoryManager extends RemoteRepositoryBase implements Aut
 
             final MiniMime mimeType = new MiniMime(contentType);
 
-            final BooleanQueryResultFormat format = BooleanQueryResultFormat.forMIMEType(mimeType.getMimeType());
+            final QueryResultFormat queryResultFormat = FileFormat.matchMIMEType(mimeType.getMimeType(),
+                    BooleanQueryResultParserRegistry.getInstance().getKeys()).orElse(null);
+            final BooleanQueryResultFormat format = queryResultFormat instanceof BooleanQueryResultFormat
+                    ? (BooleanQueryResultFormat) queryResultFormat : null;
 
             if (format == null)
                 throw new IOException(
                         "Could not identify format for service response: serviceURI=" + opts.getBestRequestURL() +
                                 ", contentType=" + contentType + " : response=" + response.getResponseBody());
 
-            final BooleanQueryResultParserFactory factory = BooleanQueryResultParserRegistry.getInstance().get(format);
+            final BooleanQueryResultParserFactory factory = BooleanQueryResultParserRegistry.getInstance()
+                    .get(format).orElse(null);
 
             if (factory == null)
                 throw new RuntimeException("No factory for Content-Type: " + contentType);
@@ -2444,7 +2457,7 @@ public class RemoteRepositoryManager extends RemoteRepositoryBase implements Aut
     //
     // final AtomicLong nsolutions = new AtomicLong();
     //
-    // parser.setTupleQueryResultHandler(new TupleQueryResultHandlerBase() {
+    // parser.setTupleQueryResultHandler(new AbstractTupleQueryResultHandler() {
     // // Indicates the end of a sequence of solutions.
     // @Override
     // public void endQueryResult() {

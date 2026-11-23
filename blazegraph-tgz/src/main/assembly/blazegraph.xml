@@ -19,7 +19,7 @@
  	        <fileMode>640</fileMode>
              </file>
              <file>
-		<source>target/classes/war/WEB-INF/classes/log4j.properties</source>
+		<source>target/classes/war/WEB-INF/classes/log4j2.properties</source>
 	        <outputDirectory>conf</outputDirectory>
  	        <fileMode>640</fileMode>
              </file>

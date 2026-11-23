@@ -33,8 +33,9 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpUtility;
 import com.bigdata.bop.IBind;
@@ -63,7 +64,7 @@ public class GroupByState implements IGroupByState, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Logger log = Logger.getLogger(GroupByState.class);
+    private static final Logger log = LogManager.getLogger(GroupByState.class);
     
     private final IValueExpression<?>[] select;
     private final IValueExpression<?>[] groupBy;

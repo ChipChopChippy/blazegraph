@@ -31,11 +31,12 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.BNode;
-import org.openrdf.model.Value;
-import org.openrdf.query.Binding;
-import org.openrdf.query.BindingSet;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.Binding;
+import org.eclipse.rdf4j.query.BindingSet;
 
 import com.bigdata.bop.IVariable;
 
@@ -50,7 +51,7 @@ import com.bigdata.bop.IVariable;
  */
 public class RemoteSparql11DraftQueryBuilder extends RemoteSparql11QueryBuilder {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(RemoteSparql10QueryBuilder.class);
 
     /**

@@ -2,8 +2,9 @@ package com.bigdata.counters;
 
 import java.io.InputStream;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 /**
  * A {@link Runnable} that reads the output of an {@link ActiveProcess}.
  * 
@@ -12,7 +13,7 @@ import org.apache.log4j.Logger;
  */
 public abstract class AbstractProcessReader implements Runnable {
     
-    static protected final Logger log = Logger
+    static protected final Logger log = LogManager
             .getLogger(AbstractProcessReader.class);
 
 //    /**

@@ -26,7 +26,7 @@ import com.bigdata.rdf.lexicon.LexiconKeyOrder;
 import com.bigdata.rdf.lexicon.LexiconRelation;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.model.BigdataValueSerializer;
 import com.bigdata.rdf.sail.BigdataSail;
 import com.bigdata.rdf.store.AbstractTripleStore;
@@ -505,7 +505,7 @@ public class DumpLexicon {
              */
     		final long[] bins = new long[NBINS];
     
-    		final BigdataValueFactory vf = BigdataValueFactoryImpl
+    		final BigdataValueFactory vf = BigdataSimpleValueFactory
     				.getInstance(namespace);
     
     		final BigdataValueSerializer<BigdataValue> valSer = vf

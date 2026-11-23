@@ -1,15 +1,18 @@
 package com.bigdata.rdf.model;
 
 import java.util.Date;
+import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.openrdf.model.BNode;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.base.CoreDatatype;
 
 /**
  * Class provides a document-scoped context for generating blank node
@@ -148,6 +151,16 @@ public class BNodeContextFactory implements BigdataValueFactory {
     }
 
     @Override
+    public BigdataLiteral createLiteral(BigInteger arg0) {
+        return valueFactory.createLiteral(arg0);
+    }
+
+    @Override
+    public BigdataLiteral createLiteral(BigDecimal arg0) {
+        return valueFactory.createLiteral(arg0);
+    }
+
+    @Override
 	public BigdataLiteral createLiteral(short arg0) {
         return valueFactory.createLiteral(arg0);
     }
@@ -158,13 +171,23 @@ public class BNodeContextFactory implements BigdataValueFactory {
     }
 
     @Override
-	public BigdataLiteral createLiteral(String label, URI datatype) {
+	public BigdataLiteral createLiteral(String label, IRI datatype) {
         return valueFactory.createLiteral(label, datatype);
     }
 	
     @Override
-	public BigdataLiteral createLiteral(String label, URI datatype, String language) {
+	public BigdataLiteral createLiteral(String label, IRI datatype, String language) {
 	    return valueFactory.createLiteral(label, datatype, language);
+	}
+
+	@Override
+	public BigdataLiteral createLiteral(String label, IRI datatype, CoreDatatype coreDatatype) {
+	    return valueFactory.createLiteral(label, datatype, coreDatatype);
+	}
+
+	@Override
+	public BigdataLiteral createLiteral(String label, CoreDatatype coreDatatype) {
+	    return valueFactory.createLiteral(label, coreDatatype);
 	}
 
     @Override
@@ -183,36 +206,36 @@ public class BNodeContextFactory implements BigdataValueFactory {
     }
 
     @Override
-	public BigdataStatement createStatement(Resource s, URI p, Value o) {
+	public BigdataStatement createStatement(Resource s, IRI p, Value o) {
         return valueFactory.createStatement(s, p, o);
     }
 
     @Override
-	public BigdataStatement createStatement(Resource s, URI p, Value o,
+	public BigdataStatement createStatement(Resource s, IRI p, Value o,
             Resource c) {
         return valueFactory.createStatement(s, p, o, c);
     }
 
     @Override
-	public BigdataStatement createStatement(Resource s, URI p, Value o,
+	public BigdataStatement createStatement(Resource s, IRI p, Value o,
             Resource c, StatementEnum type) {
         return valueFactory.createStatement(s, p, o, c, type, false);
     }
 	
     @Override
-	public BigdataStatement createStatement(Resource s, URI p, Value o,
+	public BigdataStatement createStatement(Resource s, IRI p, Value o,
             Resource c, StatementEnum type, boolean userFlag) {
         return valueFactory.createStatement(s, p, o, c, type, userFlag);
     }
 	
     @Override
 	public BigdataURI createURI(String namespace, String localName) {
-        return valueFactory.createURI(namespace, localName);
+        return valueFactory.createIRI(namespace, localName);
     }
 
     @Override
 	public BigdataURI createURI(String uriString) {
-        return valueFactory.createURI(uriString);
+        return valueFactory.createIRI(uriString);
     }
 
     @Override
@@ -234,7 +257,7 @@ public class BNodeContextFactory implements BigdataValueFactory {
     }
 
     @Override
-    public BigdataURI asValue(URI v) {
+    public BigdataURI asValue(IRI v) {
         return valueFactory.asValue(v);
     }
 

@@ -5,12 +5,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.BNode;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.rdf.graph.IGASEngine;
 import com.bigdata.rdf.graph.IGASProgram;
@@ -28,7 +29,7 @@ import com.bigdata.rdf.store.AbstractTripleStore;
 
 public class BigdataGASState<VS, ES, ST> extends GASState<VS, ES, ST> {
 
-    static private final Logger log = Logger.getLogger(BigdataGASState.class);
+    static private final Logger log = LogManager.getLogger(BigdataGASState.class);
 
     @Override
     protected BigdataGraphAccessor getGraphAccessor() {
@@ -113,7 +114,7 @@ public class BigdataGASState<VS, ES, ST> extends GASState<VS, ES, ST> {
      * {@inheritDoc}
      * <p>
      * Note: The {@link IV} classes sometimes implement more than one kind of
-     * {@link Value}. E.g., {@link TermId} can be a {@link BNode}, {@link URI},
+     * {@link Value}. E.g., {@link TermId} can be a {@link BNode}, {@link IRI},
      * or {@link Literal} and implements ALL of those interfaces. So we have to
      * make an {@link IV}-specific check here.
      * 
@@ -152,7 +153,7 @@ public class BigdataGASState<VS, ES, ST> extends GASState<VS, ES, ST> {
    
     @Override
     public boolean isLinkAttrib(final Statement e,
-            final URI linkAttribType) {
+            final IRI linkAttribType) {
         final ISPO edge = (ISPO) e;
         if (!edge.p().equals(linkAttribType)) {
             // Edge does not use the specified link attribute type.

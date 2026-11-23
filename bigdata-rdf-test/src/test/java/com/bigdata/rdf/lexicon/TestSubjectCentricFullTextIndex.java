@@ -34,11 +34,12 @@ import java.util.concurrent.TimeUnit;
 
 import junit.framework.AssertionFailedError;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.model.vocabulary.XMLSchema;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
 
 import com.bigdata.rdf.internal.IV;
 import com.bigdata.rdf.lexicon.ITextIndexer.FullTextQuery;
@@ -69,7 +70,7 @@ import cutthecrap.utils.striterators.ICloseableIterator;
 @Deprecated
 public class TestSubjectCentricFullTextIndex extends AbstractTripleStoreTestCase {
 
-	private static final transient Logger log = Logger.getLogger(TestSubjectCentricFullTextIndex.class);
+	private static final transient Logger log = LogManager.getLogger(TestSubjectCentricFullTextIndex.class);
 	
     /**
      * 
@@ -183,7 +184,7 @@ public class TestSubjectCentricFullTextIndex extends AbstractTripleStoreTestCase
         
     }
 
-    private LiteralImpl getLargeLiteral(final AbstractTripleStore store) {
+    private Literal getLargeLiteral(final AbstractTripleStore store) {
         
         final int len = store.getLexiconRelation().getLexiconConfiguration().getBlobsThreshold();
 
@@ -214,7 +215,7 @@ public class TestSubjectCentricFullTextIndex extends AbstractTripleStoreTestCase
         if (log.isInfoEnabled())
             log.info("length(s)=" + s.length());
 
-        return new LiteralImpl(s);
+        return org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral(s);
     
     }
 
@@ -228,11 +229,11 @@ public class TestSubjectCentricFullTextIndex extends AbstractTripleStoreTestCase
 
             final BigdataValueFactory f = store.getValueFactory();
             
-            final BigdataURI s = f.createURI(BD.NAMESPACE+"s");
+            final BigdataURI s = f.createIRI(BD.NAMESPACE+"s");
             
-            final BigdataURI p = f.createURI(BD.NAMESPACE+"p");
+            final BigdataURI p = f.createIRI(BD.NAMESPACE+"p");
             
-            final LiteralImpl largeLiteral = getLargeLiteral(store);
+            final Literal largeLiteral = getLargeLiteral(store);
 
             final BigdataValue[] terms = new BigdataValue[] {//
                     f.createLiteral("abc"),//
@@ -242,10 +243,10 @@ public class TestSubjectCentricFullTextIndex extends AbstractTripleStoreTestCase
                     f.createLiteral("tag team", "en"),//
                     f.createLiteral("the first day", "en"),// // 'the' is a stopword.
 
-                    f.createURI("http://www.bigdata.com"),//
+                    f.createIRI("http://www.bigdata.com"),//
                     f.asValue(RDF.TYPE),//
                     f.asValue(RDFS.SUBCLASSOF),//
-                    f.asValue(XMLSchema.DECIMAL),//
+                    f.asValue(XSD.DECIMAL),//
 
                     f.createBNode(UUID.randomUUID().toString()),//
                     f.createBNode("a12"),//
@@ -390,15 +391,15 @@ public class TestSubjectCentricFullTextIndex extends AbstractTripleStoreTestCase
 
             final BigdataValueFactory f = store.getValueFactory();
             
-            final BigdataURI s1 = f.createURI(BD.NAMESPACE+"s1");
+            final BigdataURI s1 = f.createIRI(BD.NAMESPACE+"s1");
             
-            final BigdataURI s2 = f.createURI(BD.NAMESPACE+"s2");
+            final BigdataURI s2 = f.createIRI(BD.NAMESPACE+"s2");
             
-            final BigdataURI s3 = f.createURI(BD.NAMESPACE+"s3");
+            final BigdataURI s3 = f.createIRI(BD.NAMESPACE+"s3");
             
-            final BigdataURI p = f.createURI(BD.NAMESPACE+"p");
+            final BigdataURI p = f.createIRI(BD.NAMESPACE+"p");
             
-            final LiteralImpl largeLiteral = getLargeLiteral(store);
+            final Literal largeLiteral = getLargeLiteral(store);
 
             final BigdataValue[] terms = new BigdataValue[] {//
                     f.createLiteral("abc"),//
@@ -408,10 +409,10 @@ public class TestSubjectCentricFullTextIndex extends AbstractTripleStoreTestCase
                     f.createLiteral("tag team", "en"),//
                     f.createLiteral("the first day", "en"),// // 'the' is a stopword.
 
-                    f.createURI("http://www.bigdata.com"),//
+                    f.createIRI("http://www.bigdata.com"),//
                     f.asValue(RDF.TYPE),//
                     f.asValue(RDFS.SUBCLASSOF),//
-                    f.asValue(XMLSchema.DECIMAL),//
+                    f.asValue(XSD.DECIMAL),//
 
                     f.createBNode(UUID.randomUUID().toString()),//
                     f.createBNode("a12"),//

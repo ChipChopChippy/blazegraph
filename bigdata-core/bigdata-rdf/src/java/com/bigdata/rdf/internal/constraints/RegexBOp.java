@@ -27,10 +27,11 @@ package com.bigdata.rdf.internal.constraints;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Value;
-import org.openrdf.query.algebra.evaluation.util.QueryEvaluationUtil;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.algebra.evaluation.util.QueryEvaluationUtil;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -53,7 +54,7 @@ public class RegexBOp extends XSDBooleanIVValueExpression
      */
     private static final long serialVersionUID = 1357420268214930143L;
     
-    private static final transient Logger log = Logger.getLogger(RegexBOp.class);
+    private static final transient Logger log = LogManager.getLogger(RegexBOp.class);
     
     private static final boolean debug = log.isDebugEnabled();
 

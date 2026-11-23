@@ -29,9 +29,10 @@ package com.bigdata.rdf.lexicon;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.BNode;
-import org.openrdf.model.Value;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.btree.IIndex;
 import com.bigdata.btree.IRangeQuery;
@@ -59,7 +60,7 @@ import com.bigdata.util.BytesUtil;
  */
 public class BlobsIndexHelper {
 
-    private static final Logger log = Logger.getLogger(BlobsIndexHelper.class);
+    private static final Logger log = LogManager.getLogger(BlobsIndexHelper.class);
 
     public static final transient int SIZEOF_HASH = Bytes.SIZEOF_INT;
 

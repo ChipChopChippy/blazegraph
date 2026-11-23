@@ -29,9 +29,10 @@ package com.bigdata.rdf.sail.webapp;
 
 import junit.framework.TestCase2;
 
-import org.openrdf.query.resultio.BooleanQueryResultFormat;
-import org.openrdf.query.resultio.TupleQueryResultFormat;
-import org.openrdf.rio.RDFFormat;
+import org.eclipse.rdf4j.query.resultio.BooleanQueryResultFormat;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultFormat;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParserRegistry;
 
 import com.bigdata.counters.format.CounterSetFormat;
 
@@ -97,7 +98,7 @@ public class TestConneg extends TestCase2 {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public void test_conneg_rdf_data_01() {
 
-        for (RDFFormat format : RDFFormat.values()) {
+        for (RDFFormat format : RDFParserRegistry.getInstance().getKeys()) {
 
             final ConnegUtil util = new ConnegUtil(format.getDefaultMIMEType());
 
@@ -125,7 +126,7 @@ public class TestConneg extends TestCase2 {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public void test_conneg_sparql_result_set_01() {
 
-        for (TupleQueryResultFormat format : TupleQueryResultFormat.values()) {
+        for (TupleQueryResultFormat format : java.util.Arrays.asList(TupleQueryResultFormat.SPARQL, TupleQueryResultFormat.JSON, TupleQueryResultFormat.BINARY, TupleQueryResultFormat.TSV, TupleQueryResultFormat.CSV)) {
 
             final ConnegUtil util = new ConnegUtil(format.getDefaultMIMEType());
 
@@ -210,7 +211,7 @@ public class TestConneg extends TestCase2 {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public void test_conneg_sparql_boolean_result_set_01() {
 
-        for (BooleanQueryResultFormat format : BooleanQueryResultFormat.values()) {
+        for (BooleanQueryResultFormat format : java.util.Arrays.asList(BooleanQueryResultFormat.TEXT, BooleanQueryResultFormat.SPARQL, BooleanQueryResultFormat.JSON)) {
 
             final ConnegUtil util = new ConnegUtil(format.getDefaultMIMEType());
 

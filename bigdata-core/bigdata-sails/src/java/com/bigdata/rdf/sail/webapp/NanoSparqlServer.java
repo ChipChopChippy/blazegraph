@@ -34,14 +34,16 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import javax.servlet.ServletContextListener;
+import jakarta.servlet.ServletContextListener;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.util.resource.Resource;
-import org.eclipse.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.util.resource.ResourceFactory;
+import org.eclipse.jetty.ee11.webapp.WebAppContext;
 import org.eclipse.jetty.xml.XmlConfiguration;
 
 import com.bigdata.Banner;
@@ -81,7 +83,7 @@ import com.bigdata.util.httpd.Config;
  */
 public class NanoSparqlServer {
     
-    static private final Logger log = Logger.getLogger(NanoSparqlServer.class);
+    static private final Logger log = LogManager.getLogger(NanoSparqlServer.class);
 
     public interface SystemProperties {
 
@@ -766,17 +768,9 @@ public class NanoSparqlServer {
             final XmlConfiguration configuration;
             {
                 // Open jetty.xml resource.
-                final Resource jettyConfig = Resource.newResource(jettyXmlURL);
-                InputStream is = null;
-                try {
-                    is = jettyConfig.getInputStream();
-                    // Build configuration.
-                    configuration = new XmlConfiguration(is);
-                } finally {
-                    if (is != null) {
-                        is.close();
-                    }
-                }
+                final Resource jettyConfig = ResourceFactory.root()
+                        .newResource(jettyXmlURL);
+                configuration = new XmlConfiguration(jettyConfig);
             }
 
             // Configure/apply jetty.resourceBase overrides.
@@ -1116,8 +1110,7 @@ public class NanoSparqlServer {
      */
     public static WebAppContext getWebApp(final Server server) {
 
-        final WebAppContext wac = server
-                .getChildHandlerByClass(WebAppContext.class);
+        final WebAppContext wac = server.getDescendant(WebAppContext.class);
 
         /*
          * Note: This assumes that this is the webapp for bigdata. If there are

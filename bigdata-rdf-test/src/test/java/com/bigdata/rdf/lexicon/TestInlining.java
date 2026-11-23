@@ -39,8 +39,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.URI;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.internal.ColorsEnumExtension;
@@ -70,7 +71,7 @@ import com.bigdata.rdf.vocab.VocabularyDecl;
  */
 public class TestInlining extends AbstractTripleStoreTestCase {
 
-	private static final transient Logger log = Logger
+	private static final transient Logger log = LogManager
 			.getLogger(TestInlining.class);
 	
     /**
@@ -116,16 +117,16 @@ public class TestInlining extends AbstractTripleStoreTestCase {
             final BigdataValueFactory f = store.getValueFactory();
             
             terms.add(f.createLiteral("135", f
-                    .createURI(XSD.UNSIGNED_BYTE.toString())));
+                    .createIRI(XSD.UNSIGNED_BYTE.toString())));
 
             terms.add(f.createLiteral(""+ (10L + Integer.MAX_VALUE), f
-                    .createURI(XSD.UNSIGNED_INT.toString())));
+                    .createIRI(XSD.UNSIGNED_INT.toString())));
 
             terms.add(f.createLiteral("" + (Short.MAX_VALUE + 10), f
-                    .createURI(XSD.UNSIGNED_SHORT.toString())));
+                    .createIRI(XSD.UNSIGNED_SHORT.toString())));
 
             terms.add(f.createLiteral(BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.valueOf(10)).toString(), f
-                    .createURI(XSD.UNSIGNED_LONG.toString())));
+                    .createIRI(XSD.UNSIGNED_LONG.toString())));
 
             /*
              * Note: Blank nodes will not round trip through the lexicon unless
@@ -198,36 +199,36 @@ public class TestInlining extends AbstractTripleStoreTestCase {
             final BigdataValueFactory f = store.getValueFactory();
             
             assertTrue(f.createLiteral("198", f
-                    .createURI(XSD.UNSIGNED_BYTE.toString())).intValue() == 198);
+                    .createIRI(XSD.UNSIGNED_BYTE.toString())).intValue() == 198);
 
             assertTrue(f.createLiteral("0", f
-                    .createURI(XSD.UNSIGNED_BYTE.toString())).intValue() == 0);
+                    .createIRI(XSD.UNSIGNED_BYTE.toString())).intValue() == 0);
 
             assertTrue(f.createLiteral("50", f
-                    .createURI(XSD.UNSIGNED_BYTE.toString())).intValue() == 50);
+                    .createIRI(XSD.UNSIGNED_BYTE.toString())).intValue() == 50);
 
             assertTrue(f.createLiteral("" + (Short.MAX_VALUE + 10), f
-                    .createURI(XSD.UNSIGNED_SHORT.toString())).intValue() == (Short.MAX_VALUE + 10));
+                    .createIRI(XSD.UNSIGNED_SHORT.toString())).intValue() == (Short.MAX_VALUE + 10));
 
             assertTrue(f.createLiteral("0", f
-                    .createURI(XSD.UNSIGNED_SHORT.toString())).intValue() == 0);
+                    .createIRI(XSD.UNSIGNED_SHORT.toString())).intValue() == 0);
 
             assertTrue(f.createLiteral(""+ (10L + Integer.MAX_VALUE), f
-                    .createURI(XSD.UNSIGNED_INT.toString())).longValue() == (10L + Integer.MAX_VALUE));
+                    .createIRI(XSD.UNSIGNED_INT.toString())).longValue() == (10L + Integer.MAX_VALUE));
 
             assertTrue(f.createLiteral("0", f
-                    .createURI(XSD.UNSIGNED_INT.toString())).longValue() == 0L);
+                    .createIRI(XSD.UNSIGNED_INT.toString())).longValue() == 0L);
 
             BigInteger bi = BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.valueOf(10));
             assertTrue(f.createLiteral(bi.toString(), f
-                    .createURI(XSD.UNSIGNED_LONG.toString())).integerValue().equals(bi));
+                    .createIRI(XSD.UNSIGNED_LONG.toString())).integerValue().equals(bi));
 
             BigInteger biz = BigInteger.valueOf(0);
             assertTrue(f.createLiteral("0", f
-                    .createURI(XSD.UNSIGNED_LONG.toString())).integerValue().equals(biz));
+                    .createIRI(XSD.UNSIGNED_LONG.toString())).integerValue().equals(biz));
             BigInteger bi100 = BigInteger.valueOf(100);
             assertTrue(f.createLiteral("100", f
-                    .createURI(XSD.UNSIGNED_LONG.toString())).integerValue().equals(bi100));
+                    .createIRI(XSD.UNSIGNED_LONG.toString())).integerValue().equals(bi100));
 
 
         } finally {
@@ -266,19 +267,19 @@ public class TestInlining extends AbstractTripleStoreTestCase {
             
             // Out of range values cannot be inlined
             terms.add(f.createLiteral("-12", f
-                    .createURI(XSD.UNSIGNED_BYTE.toString())));
+                    .createIRI(XSD.UNSIGNED_BYTE.toString())));
 
             terms.add(f.createLiteral("1024", f
-                    .createURI(XSD.UNSIGNED_BYTE.toString())));
+                    .createIRI(XSD.UNSIGNED_BYTE.toString())));
 
             terms.add(f.createLiteral("" + Integer.MAX_VALUE, f
-                    .createURI(XSD.UNSIGNED_SHORT.toString())));
+                    .createIRI(XSD.UNSIGNED_SHORT.toString())));
 
            terms.add(f.createLiteral(""+ Long.MAX_VALUE, f
-                    .createURI(XSD.UNSIGNED_INT.toString())));
+                    .createIRI(XSD.UNSIGNED_INT.toString())));
 
             terms.add(f.createLiteral(BigInteger.valueOf(Long.MAX_VALUE).multiply(BigInteger.valueOf(10)).toString(), f
-                    .createURI(XSD.UNSIGNED_LONG.toString())));
+                    .createIRI(XSD.UNSIGNED_LONG.toString())));
 
             /*
              * Note: Blank nodes will not round trip through the lexicon unless
@@ -474,7 +475,7 @@ public class TestInlining extends AbstractTripleStoreTestCase {
             final BigdataLiteral l1 = f.createLiteral("1", EpochExtension.EPOCH);
             final BigdataLiteral l2 = f.createLiteral(String.valueOf(System.currentTimeMillis()), EpochExtension.EPOCH);
 //            final BigdataLiteral l3 = f.createLiteral("-100", EpochExtension.EPOCH);
-            final BigdataURI datatype = f.createURI(EpochExtension.EPOCH.stringValue());
+            final BigdataURI datatype = f.createIRI(EpochExtension.EPOCH.stringValue());
 
             terms.add(l1);
             terms.add(l2);
@@ -532,7 +533,7 @@ public class TestInlining extends AbstractTripleStoreTestCase {
      */
     static private class MyVocabularyDecl implements VocabularyDecl {
 
-        static private final URI[] myVocabURIs = new URI[] {//
+        static private final IRI[] myVocabURIs = new IRI[] {//
             ColorsEnumExtension.COLOR,
             EpochExtension.EPOCH
         };
@@ -540,7 +541,7 @@ public class TestInlining extends AbstractTripleStoreTestCase {
         public MyVocabularyDecl() {
         }
 
-        public Iterator<URI> values() {
+        public Iterator<IRI> values() {
 
             return Collections.unmodifiableList(Arrays.asList(myVocabURIs))
                     .iterator();
@@ -623,7 +624,7 @@ public class TestInlining extends AbstractTripleStoreTestCase {
             final BigdataLiteral l3 = f.createLiteral("Yellow", ColorsEnumExtension.COLOR);
             final BigdataLiteral l4 = f.createLiteral("Dog", ColorsEnumExtension.COLOR);
             final BigdataLiteral l5 = f.createLiteral("yellow", ColorsEnumExtension.COLOR);
-            final BigdataURI datatype = f.createURI(ColorsEnumExtension.COLOR.stringValue());
+            final BigdataURI datatype = f.createIRI(ColorsEnumExtension.COLOR.stringValue());
 
             terms.add(l1);
             terms.add(l2);
@@ -777,52 +778,52 @@ public class TestInlining extends AbstractTripleStoreTestCase {
             final BigdataValueFactory f = store.getValueFactory();
 
             terms.add(f.createLiteral("2008-03-22T00:00:00", f
-                    .createURI(XSD.DATETIME.toString())));
+                    .createIRI(XSD.DATETIME.toString())));
 
             terms.add(f.createLiteral("2007-12-25T00:00:00", f
-                    .createURI(XSD.DATETIME.toString())));
+                    .createIRI(XSD.DATETIME.toString())));
 
             terms.add(f.createLiteral("2008-03-22", f
-                    .createURI(XSD.DATE.toString())));
+                    .createIRI(XSD.DATE.toString())));
 
             terms.add(f.createLiteral("2007-12-25", f
-                    .createURI(XSD.DATE.toString())));
+                    .createIRI(XSD.DATE.toString())));
 
             terms.add(f.createLiteral("00:00:00", f
-                    .createURI(XSD.TIME.toString())));
+                    .createIRI(XSD.TIME.toString())));
 
             terms.add(f.createLiteral("13:15:42", f
-                    .createURI(XSD.TIME.toString())));
+                    .createIRI(XSD.TIME.toString())));
 
             terms.add(f.createLiteral("---22", f
-                    .createURI(XSD.GDAY.toString())));
+                    .createIRI(XSD.GDAY.toString())));
 
             terms.add(f.createLiteral("---25", f
-                    .createURI(XSD.GDAY.toString())));
+                    .createIRI(XSD.GDAY.toString())));
 
             terms.add(f.createLiteral("--03", f
-                    .createURI(XSD.GMONTH.toString())));
+                    .createIRI(XSD.GMONTH.toString())));
 
             terms.add(f.createLiteral("--12", f
-                    .createURI(XSD.GMONTH.toString())));
+                    .createIRI(XSD.GMONTH.toString())));
 
             terms.add(f.createLiteral("--03-22", f
-                    .createURI(XSD.GMONTHDAY.toString())));
+                    .createIRI(XSD.GMONTHDAY.toString())));
 
             terms.add(f.createLiteral("--12-25", f
-                    .createURI(XSD.GMONTHDAY.toString())));
+                    .createIRI(XSD.GMONTHDAY.toString())));
 
             terms.add(f.createLiteral("2008", f
-                    .createURI(XSD.GYEAR.toString())));
+                    .createIRI(XSD.GYEAR.toString())));
 
             terms.add(f.createLiteral("1976", f
-                    .createURI(XSD.GYEAR.toString())));
+                    .createIRI(XSD.GYEAR.toString())));
 
             terms.add(f.createLiteral("2008-03", f
-                    .createURI(XSD.GYEARMONTH.toString())));
+                    .createIRI(XSD.GYEARMONTH.toString())));
 
             terms.add(f.createLiteral("1976-12", f
-                    .createURI(XSD.GYEARMONTH.toString())));
+                    .createIRI(XSD.GYEARMONTH.toString())));
 
             final Map<IV<?,?>, BigdataValue> ids = doAddTermsTest(store, terms);
 

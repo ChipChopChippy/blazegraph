@@ -25,7 +25,8 @@ package com.bigdata.bop.rdf.aggregate;
 
 import junit.framework.TestCase2;
 
-import org.openrdf.model.impl.LiteralImpl;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpContext;
@@ -45,7 +46,7 @@ import com.bigdata.rdf.internal.constraints.StrBOp;
 import com.bigdata.rdf.internal.impl.literal.XSDNumericIV;
 import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.sparql.ast.GlobalAnnotations;
 import com.bigdata.rdf.store.AbstractTripleStore;
 
@@ -72,7 +73,7 @@ public class TestGROUP_CONCAT extends TestCase2 {
         
         final GlobalAnnotations globals = new GlobalAnnotations(namespace, ITx.READ_COMMITTED);
 
-        final BigdataValueFactory f = BigdataValueFactoryImpl
+        final BigdataValueFactory f = BigdataSimpleValueFactory
                 .getInstance(namespace);
 
         final IVariable<IV> org = Var.var("org");
@@ -133,7 +134,7 @@ public class TestGROUP_CONCAT extends TestCase2 {
             
         }
         
-        assertEquals(new LiteralImpl("9 5 7 7"), op.done().getValue());
+        assertEquals(SimpleValueFactory.getInstance().createLiteral("9 5 7 7"), op.done().getValue());
 
     }
 
@@ -141,7 +142,7 @@ public class TestGROUP_CONCAT extends TestCase2 {
 
         final String namespace = getName();
 
-        final BigdataValueFactory f = BigdataValueFactoryImpl
+        final BigdataValueFactory f = BigdataSimpleValueFactory
                 .getInstance(namespace);
 
         final IVariable<IV> org = Var.var("org");
@@ -205,7 +206,7 @@ public class TestGROUP_CONCAT extends TestCase2 {
             
         }
 
-        assertEquals(new LiteralImpl("9.5.7"), op.done().getValue());
+        assertEquals(SimpleValueFactory.getInstance().createLiteral("9.5.7"), op.done().getValue());
 
     }
 
@@ -213,7 +214,7 @@ public class TestGROUP_CONCAT extends TestCase2 {
 
         final String namespace = getName();
 
-        final BigdataValueFactory f = BigdataValueFactoryImpl
+        final BigdataValueFactory f = BigdataSimpleValueFactory
                 .getInstance(namespace);
 
         final IVariable<IV> org = Var.var("org");
@@ -277,7 +278,7 @@ public class TestGROUP_CONCAT extends TestCase2 {
             
         }
 
-        assertEquals(new LiteralImpl("9.5"), op.done().getValue());
+        assertEquals(SimpleValueFactory.getInstance().createLiteral("9.5"), op.done().getValue());
 
     }
 
@@ -296,7 +297,7 @@ public class TestGROUP_CONCAT extends TestCase2 {
            
            final GlobalAnnotations globals = new GlobalAnnotations(lexiconNamespace, ITx.READ_COMMITTED);
            
-           final BigdataValueFactory f = BigdataValueFactoryImpl
+           final BigdataValueFactory f = BigdataSimpleValueFactory
                    .getInstance(namespace);
    
            final IVariable<IV> org = Var.var("org");
@@ -364,7 +365,7 @@ public class TestGROUP_CONCAT extends TestCase2 {
            
            }
            
-           assertEquals(new LiteralImpl("10,6,8,8"), op.done().getValue());
+           assertEquals(SimpleValueFactory.getInstance().createLiteral("10,6,8,8"), op.done().getValue());
        } finally {
           kb.getIndexManager().destroy();
        }
@@ -385,7 +386,7 @@ public class TestGROUP_CONCAT extends TestCase2 {
            
            final GlobalAnnotations globals = new GlobalAnnotations(lexiconNamespace, ITx.READ_COMMITTED);
            
-           final BigdataValueFactory f = BigdataValueFactoryImpl
+           final BigdataValueFactory f = BigdataSimpleValueFactory
                    .getInstance(namespace);
    
            final IVariable<IV> org = Var.var("org");
@@ -451,7 +452,7 @@ public class TestGROUP_CONCAT extends TestCase2 {
                
            }
    
-           assertEquals(new LiteralImpl("10,6,8,8"), op.done().getValue());
+           assertEquals(SimpleValueFactory.getInstance().createLiteral("10,6,8,8"), op.done().getValue());
        } finally {
           kb.getIndexManager().destroy();
        }
@@ -461,7 +462,7 @@ public class TestGROUP_CONCAT extends TestCase2 {
 
         final String namespace = getName();
         
-        final BigdataValueFactory f = BigdataValueFactoryImpl
+        final BigdataValueFactory f = BigdataSimpleValueFactory
                 .getInstance(namespace);
 
         final IVariable<IV> org = Var.var("org");
@@ -524,7 +525,7 @@ public class TestGROUP_CONCAT extends TestCase2 {
             
         }
         
-        assertEquals(new LiteralImpl("9:7:7"), op.done().getValue());
+        assertEquals(SimpleValueFactory.getInstance().createLiteral("9:7:7"), op.done().getValue());
 
     }
 
@@ -533,7 +534,7 @@ public class TestGROUP_CONCAT extends TestCase2 {
      */
 //    public void test_sum_with_errors() {
 //        
-//        final BigdataValueFactory f = BigdataValueFactoryImpl.getInstance(getName());
+//        final BigdataValueFactory f = BigdataSimpleValueFactory.getInstance(getName());
 //        
 //        final IVariable<IV> org = Var.var("org");
 //        final IVariable<IV> auth = Var.var("auth");

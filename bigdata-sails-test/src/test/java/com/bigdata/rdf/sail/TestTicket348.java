@@ -25,24 +25,24 @@ package com.bigdata.rdf.sail;
 
 import java.io.IOException;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.RepositoryResult;
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParseException;
-import org.openrdf.sail.memory.MemoryStore;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.RepositoryResult;
+import org.eclipse.rdf4j.repository.sail.SailRepository;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFParseException;
+import org.eclipse.rdf4j.sail.memory.MemoryStore;
 
 /**
  * Unit test template for use in submission of bugs.
@@ -92,14 +92,14 @@ public class TestTicket348 extends QuadsTestCase {
 			QueryEvaluationException, RDFParseException, RDFHandlerException,
 			IOException {
 		try {
-			repo.initialize();
+			repo.init();
 			final RepositoryConnection conn = repo.getConnection();
 			try {
 				conn.setAutoCommit(false);
 				final ValueFactory vf = conn.getValueFactory();
-		        final URI uri = vf.createURI("os:/elem/example");
+		        final IRI uri = vf.createIRI("os:/elem/example");
 		        // run a query which looks for a statement and then adds it if it is not found.
-		        addDuringQueryExec(conn, uri, RDF.TYPE, vf.createURI("os:class/Clazz"));
+		        addDuringQueryExec(conn, uri, RDF.TYPE, vf.createIRI("os:class/Clazz"));
 		        // now try to export the statements.
 	        	final RepositoryResult<Statement> stats = conn.getStatements(null, null, null, false);
 		        try {
@@ -120,7 +120,7 @@ public class TestTicket348 extends QuadsTestCase {
 	}
 	
 	private void addDuringQueryExec(final RepositoryConnection conn,
-			final Resource subj, final URI pred, final Value obj,
+			final Resource subj, final IRI pred, final Value obj,
 			final Resource... ctx) throws RepositoryException,
 			MalformedQueryException, QueryEvaluationException {
 		final TupleQuery tq = conn.prepareTupleQuery(QueryLanguage.SPARQL,

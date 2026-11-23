@@ -15,10 +15,10 @@
 */
 package com.bigdata.rdf.graph.impl.sail;
 
-import org.openrdf.sail.Sail;
-import org.openrdf.sail.SailConnection;
-import org.openrdf.sail.SailException;
-import org.openrdf.sail.memory.MemoryStore;
+import org.eclipse.rdf4j.sail.Sail;
+import org.eclipse.rdf4j.sail.SailConnection;
+import org.eclipse.rdf4j.sail.SailException;
+import org.eclipse.rdf4j.sail.memory.MemoryStore;
 
 import com.bigdata.rdf.graph.IGASEngine;
 import com.bigdata.rdf.graph.IGraphAccessor;
@@ -31,7 +31,7 @@ public class SailGraphFixture extends AbstractGraphFixture {
     
     public SailGraphFixture() throws SailException {
         sail = new MemoryStore();
-        sail.initialize();
+        sail.init();
     }
     
     /**

@@ -34,9 +34,10 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 
+import org.apache.logging.log4j.LogManager;
 /**
  * The default implementation used when scores are available.
  * 
@@ -46,7 +47,7 @@ import org.apache.log4j.Logger;
 abstract public class AbstractServiceLoadHelperWithScores extends
         AbstractServiceLoadHelper {
 
-    protected static final Logger log = Logger
+    protected static final Logger log = LogManager
             .getLogger(AbstractServiceLoadHelperWithScores.class);
 
     protected static final boolean INFO = log.isInfoEnabled();

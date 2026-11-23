@@ -35,12 +35,12 @@ package com.bigdata.rdf.sail.sparql;
 
 import java.util.Map;
 
-import org.openrdf.model.Value;
-import org.openrdf.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.sail.sparql.ast.VisitorException;
 import com.bigdata.rdf.sparql.ast.ConstantNode;
 import com.bigdata.rdf.sparql.ast.VarNode;
@@ -79,7 +79,7 @@ public class BigdataASTContext {
 	 */
     public BigdataASTContext(final Map<Value, BigdataValue> values) {
 
-    	this.valueFactory = BigdataValueFactoryImpl.getInstance("");
+    	this.valueFactory = BigdataSimpleValueFactory.getInstance("");
         
     	this.vocab = values;
 

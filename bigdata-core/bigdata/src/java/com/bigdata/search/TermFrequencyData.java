@@ -3,8 +3,6 @@ package com.bigdata.search;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.apache.lucene.analysis.Token;
-
 /**
  * Models the term-frequency data associated with a single field of some
  * document.
@@ -47,7 +45,7 @@ public class TermFrequencyData<V extends Comparable<V>> {
     }
 
     /**
-     * Add a {@link Token}.
+     * Add a token.
      * 
      * @param token
      *            The token.

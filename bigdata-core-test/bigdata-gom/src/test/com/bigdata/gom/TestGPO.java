@@ -31,12 +31,12 @@ import junit.extensions.proxy.IProxyTest;
 import junit.framework.Test;
 import junit.framework.TestCase;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParseException;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParseException;
 
 import com.bigdata.gom.gpo.IGPO;
 import com.bigdata.gom.gpo.ILinkSet;
@@ -84,7 +84,7 @@ public class TestGPO extends ProxyGOMTest {
 		
 		final ValueFactory vf = om.getValueFactory();
 
-	    final URI clssuri = vf.createURI("gpo:#1");
+	    final IRI clssuri = vf.createIRI("gpo:#1");
 	    IGPO clssgpo = om.getGPO(clssuri);
 		
 	    assertTrue(clssgpo.hashCode() == clssgpo.getId().hashCode());
@@ -96,10 +96,10 @@ public class TestGPO extends ProxyGOMTest {
 		
 		final ValueFactory vf = om.getValueFactory();
 
-	    final URI clssuri = vf.createURI("gpo:#1");
+	    final IRI clssuri = vf.createIRI("gpo:#1");
 	    IGPO clssgpo = om.getGPO(clssuri);
 		
-	    final URI linkURI = vf.createURI("attr:/type");
+	    final IRI linkURI = vf.createIRI("attr:/type");
 	    ILinkSet ls = clssgpo.getLinksIn(linkURI);
 	    
 	    assertTrue(ls.getOwner() == clssgpo);
@@ -117,10 +117,10 @@ public class TestGPO extends ProxyGOMTest {
 		
 		final ValueFactory vf = om.getValueFactory();
 
-	    final URI workeruri = vf.createURI("gpo:#123");
+	    final IRI workeruri = vf.createIRI("gpo:#123");
 	    IGPO workergpo = om.getGPO(workeruri);
 		
-	    final URI worksFor = vf.createURI("attr:/employee#worksFor");
+	    final IRI worksFor = vf.createIRI("attr:/employee#worksFor");
 	    ILinkSet ls = workergpo.getLinksOut(worksFor);
 	    
 	    assertTrue(ls.getOwner() == workergpo);
@@ -129,7 +129,7 @@ public class TestGPO extends ProxyGOMTest {
 	    
 	    checkLinkSet(ls, 2);
 	    
-	    final URI gpo678uri = vf.createURI("gpo:#678");
+	    final IRI gpo678uri = vf.createIRI("gpo:#678");
 	    workergpo.addValue(worksFor, gpo678uri);
 	    
 	    checkLinkSet(ls, 3);
@@ -151,15 +151,15 @@ public class TestGPO extends ProxyGOMTest {
 		
 		final ValueFactory vf = om.getValueFactory();
 
-	    final URI workeruri = vf.createURI("gpo:#123");
+	    final IRI workeruri = vf.createIRI("gpo:#123");
 	    IGPO workergpo = om.getGPO(workeruri);
 		
-	    final URI worksFor = vf.createURI("attr:/employee#worksFor");
+	    final IRI worksFor = vf.createIRI("attr:/employee#worksFor");
 	    ILinkSet ls = workergpo.getLinksOut(worksFor);
 	    
 	    checkLinkSet(ls, 2);
 
-	    final URI companyuri = vf.createURI("gpo:#456");
+	    final IRI companyuri = vf.createIRI("gpo:#456");
 	    IGPO companygpo = om.getGPO(companyuri);
 	    
 	    assertTrue(companygpo.isMemberOf(ls));
@@ -171,10 +171,10 @@ public class TestGPO extends ProxyGOMTest {
 		
 		final ValueFactory vf = om.getValueFactory();
 
-	    final URI workeruri = vf.createURI("gpo:#123");
+	    final IRI workeruri = vf.createIRI("gpo:#123");
 	    IGPO workergpo = om.getGPO(workeruri);
-	    final URI worksFor = vf.createURI("attr:/employee#worksFor");
-	    final URI notWorksFor = vf.createURI("attr:/employee#notWorksFor");
+	    final IRI worksFor = vf.createIRI("attr:/employee#worksFor");
+	    final IRI notWorksFor = vf.createIRI("attr:/employee#notWorksFor");
 		
 	    assertTrue(workergpo.getValues(worksFor).size() > 0);
 	    
@@ -187,12 +187,12 @@ public class TestGPO extends ProxyGOMTest {
 		
 		final ValueFactory vf = om.getValueFactory();
 
-	    final URI workeruri = vf.createURI("gpo:#123");
+	    final IRI workeruri = vf.createIRI("gpo:#123");
 	    IGPO workergpo = om.getGPO(workeruri);
 	    
 	    assertTrue(workergpo.getStatements().size() == 6);
 	    
-	    final URI worksFor = vf.createURI("attr:/employee#worksFor");
+	    final IRI worksFor = vf.createIRI("attr:/employee#worksFor");
 	    workergpo.removeValues(worksFor);
 
 	    assertTrue(workergpo.getStatements().size() == 4);
@@ -203,10 +203,10 @@ public class TestGPO extends ProxyGOMTest {
 		
 		final ValueFactory vf = om.getValueFactory();
 
-	    final URI workeruri = vf.createURI("gpo:#123");
+	    final IRI workeruri = vf.createIRI("gpo:#123");
 	    IGPO workergpo = om.getGPO(workeruri);
-	    final URI worksFor = vf.createURI("attr:/employee#worksFor");
-	    final URI notWorksFor = vf.createURI("attr:/employee#notWorksFor");
+	    final IRI worksFor = vf.createIRI("attr:/employee#worksFor");
+	    final IRI notWorksFor = vf.createIRI("attr:/employee#notWorksFor");
 		
 	    assertTrue(workergpo.isBound(worksFor));
 	    
@@ -218,9 +218,9 @@ public class TestGPO extends ProxyGOMTest {
 		
 		final ValueFactory vf = om.getValueFactory();
 
-	    final URI workeruri = vf.createURI("gpo:#123");
+	    final IRI workeruri = vf.createIRI("gpo:#123");
 	    IGPO workergpo = om.getGPO(workeruri);
-	    final URI worksFor = vf.createURI("attr:/employee#worksFor");
+	    final IRI worksFor = vf.createIRI("attr:/employee#worksFor");
 		
 	    assertFalse(workergpo.getLinksOut(worksFor).isEmpty());
 	    assertFalse(workergpo.getValues(worksFor).isEmpty());
@@ -234,9 +234,9 @@ public class TestGPO extends ProxyGOMTest {
 		
 		final ValueFactory vf = om.getValueFactory();
 
-	    final URI workeruri = vf.createURI("gpo:#123");
+	    final IRI workeruri = vf.createIRI("gpo:#123");
 	    IGPO workergpo = om.getGPO(workeruri);
-	    final URI worksFor = vf.createURI("attr:/employee#worksFor");
+	    final IRI worksFor = vf.createIRI("attr:/employee#worksFor");
 		
 	    assertFalse(workergpo.getValues(worksFor).isEmpty());
 	    Value old = workergpo.getValue(worksFor);
@@ -252,9 +252,9 @@ public class TestGPO extends ProxyGOMTest {
 		
 		final ValueFactory vf = om.getValueFactory();
 
-	    final URI workeruri = vf.createURI("gpo:#123");
+	    final IRI workeruri = vf.createIRI("gpo:#123");
 	    IGPO workergpo = om.getGPO(workeruri);
-	    final URI worksFor = vf.createURI("attr:/employee#worksFor");
+	    final IRI worksFor = vf.createIRI("attr:/employee#worksFor");
 	    final ILinkSet ls = workergpo.getLinksOut(worksFor);
 	    
 	    assertTrue(ls.size() > 0);
@@ -291,9 +291,9 @@ public class TestGPO extends ProxyGOMTest {
 		
 		final ValueFactory vf = om.getValueFactory();
 
-	    final URI workeruri = vf.createURI("gpo:#123");
+	    final IRI workeruri = vf.createIRI("gpo:#123");
 	    IGPO workergpo = om.getGPO(workeruri);
-	    final URI worksFor = vf.createURI("attr:/employee#worksFor");
+	    final IRI worksFor = vf.createIRI("attr:/employee#worksFor");
 	    final ILinkSet ls = workergpo.getLinksOut(worksFor);
 	    
 	    assertTrue(ls.size() > 0);
@@ -316,9 +316,9 @@ public class TestGPO extends ProxyGOMTest {
 		
 		final ValueFactory vf = om.getValueFactory();
 
-	    final URI workeruri = vf.createURI("gpo:#123");
+	    final IRI workeruri = vf.createIRI("gpo:#123");
 	    IGPO workergpo = om.getGPO(workeruri);
-	    final URI worksFor = vf.createURI("attr:/employee#worksFor");
+	    final IRI worksFor = vf.createIRI("attr:/employee#worksFor");
 	    final ILinkSet ls = workergpo.getLinksOut(worksFor);
 	    
 	    assertTrue(ls.size() > 0);
@@ -328,8 +328,8 @@ public class TestGPO extends ProxyGOMTest {
 	    final ILinkSet employees = employer.getLinksIn(worksFor);
 	    assertTrue(employees.contains(workergpo));
 	    
-	    // set property to new URI
-	    final URI newuri = vf.createURI("gpo:#999");
+	    // set property to new IRI
+	    final IRI newuri = vf.createIRI("gpo:#999");
 	    workergpo.setValue(worksFor, newuri);
 	    
 	    assertFalse(employees.contains(workergpo));
@@ -346,12 +346,12 @@ public class TestGPO extends ProxyGOMTest {
 		
 		final ValueFactory vf = om.getValueFactory();
 
-	    final IGPO worker1 = om.getGPO(vf.createURI("gpo:#1000"));
-	    final IGPO worker2 = om.getGPO(vf.createURI("gpo:#1001"));
-	    final IGPO worker3 = om.getGPO(vf.createURI("gpo:#1002"));
+	    final IGPO worker1 = om.getGPO(vf.createIRI("gpo:#1000"));
+	    final IGPO worker2 = om.getGPO(vf.createIRI("gpo:#1001"));
+	    final IGPO worker3 = om.getGPO(vf.createIRI("gpo:#1002"));
 
-	    final IGPO employer = om.getGPO(vf.createURI("gpo:#1003"));
-	    final URI worksFor = vf.createURI("attr:/employee#worksFor");
+	    final IGPO employer = om.getGPO(vf.createIRI("gpo:#1003"));
+	    final IRI worksFor = vf.createIRI("attr:/employee#worksFor");
 	    
 	    final ILinkSet ls = employer.getLinksIn(worksFor);
 	    

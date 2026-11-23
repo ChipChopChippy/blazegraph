@@ -27,10 +27,10 @@ package com.bigdata.gom.gpo;
 import java.util.Map;
 import java.util.Set;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.gom.om.IObjectManager;
 import com.bigdata.gom.skin.GenericSkinRegistry;
@@ -107,49 +107,49 @@ public interface IGPO extends IGenericSkin // @todo , INativeTransaction?
      */
 
     /** Return first Value for property or null if no Value for that property. */
-    Value getValue(URI property);
+    Value getValue(IRI property);
 
     /** Replace (self,p,?x) with (self,p,newValue). */
-    void setValue(URI property, Value newValue);
+    void setValue(IRI property, Value newValue);
 
     /** Assert (self,p,newValue). */
-    void addValue(URI property, Value newValue);
+    void addValue(IRI property, Value newValue);
 
 //    /** Assert (self,p,target). */
-//    void addLink(URI property,IGPO target);
+//    void addLink(IRI property,IGPO target);
 
     /** Return the {@link IGPO} modeling the link iff it exists. */
-    IGPO getLink(URI property, IGPO target);
+    IGPO getLink(IRI property, IGPO target);
 
     /** Remove (self,p,oldValue) if found. */
-    void removeValue(URI property, Value oldValue);
+    void removeValue(IRI property, Value oldValue);
     
     /** Remove all (self,p,?). */
-    void removeValues(URI property);
+    void removeValues(IRI property);
 
     /** All (self,?p,?o). */
     Set<Statement> getStatements();
 
     /** All ?y where (self,p,?y). */
-    Set<Value> getValues(URI property);
+    Set<Value> getValues(IRI property);
 
     /** All ?y where (?y,?p,self). */
     Set<IGPO> getLinksIn();
 
     /** All ?y where (?y,p,self). */
-    ILinkSet getLinksIn(URI property);
+    ILinkSet getLinksIn(IRI property);
 
     /** All ?y where (self,?p,?y) and ?y is Resource. */
     Set<IGPO> getLinksOut();
 
     /** All ?y where (self,p,?y) and ?y is Resource. */
-    ILinkSet getLinksOut(URI property);
+    ILinkSet getLinksOut(IRI property);
 
     /** Exists (?x,linkSet.property,self). */
     boolean isMemberOf(ILinkSet linkSet);
 
     /** Exists (self,p,?y). */
-    boolean isBound(URI property);
+    boolean isBound(IRI property);
 
     /**
      * Return a map giving the range count for each reverse link property.
@@ -157,7 +157,7 @@ public interface IGPO extends IGenericSkin // @todo , INativeTransaction?
      * SELECT ?p, COUNT(*) WHERE { ?o ?p <s> } GROUP BY ?p
      * </pre>
      */
-    Map<URI,Long> getReverseLinkProperties();
+    Map<IRI,Long> getReverseLinkProperties();
     
     /**
      * Removes the persistent object. Any links to this generic object are also

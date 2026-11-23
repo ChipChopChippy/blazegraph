@@ -25,10 +25,10 @@ package com.bigdata.rdf.sail.webapp.client;
 
 import java.util.UUID;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.query.GraphQueryResult;
-import org.openrdf.query.TupleQueryResult;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.GraphQueryResult;
+import org.eclipse.rdf4j.query.TupleQueryResult;
 
 /**
  * Interface for the Java API to the NanoSparqlServer. See 
@@ -93,7 +93,7 @@ public interface IRemoteRepository {
 	 * @return
 	 * 			the range count
 	 */
-	long rangeCount(URI s, URI p, Value o, URI c) throws Exception;
+	long rangeCount(IRI s, IRI p, Value o, IRI c) throws Exception;
 	
 	/**
 	 * A prepared query will hold metadata for a particular query instance.
@@ -192,7 +192,7 @@ public interface IRemoteRepository {
 	 * <ul>
 	 * <li><code>RemoveOp(InputStream in, String baseURI, RDFFormat format)</code></li>
 	 * <li><code>RemoveOp(Iterable<Statement> stmts)</code></li>
-	 * <li><code>RemoveOp(URI s, URI p, Value o, URI c)</code></li>
+	 * <li><code>RemoveOp(IRI s, IRI p, Value o, IRI c)</code></li>
 	 * <li><code>RemoveOp(String sparqlQuery)</code></li>
 	 * </ul>  
 	 */

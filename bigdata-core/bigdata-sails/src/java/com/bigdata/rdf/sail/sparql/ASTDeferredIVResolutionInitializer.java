@@ -43,13 +43,14 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.Map.Entry;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.XMLSchema;
-import org.openrdf.query.MalformedQueryException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
+import org.eclipse.rdf4j.query.MalformedQueryException;
 
 import com.bigdata.bop.IValueExpression;
 import com.bigdata.rdf.internal.DTE;
@@ -73,7 +74,7 @@ import com.bigdata.rdf.internal.impl.literal.XSDUnsignedShortIV;
 import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.sail.BigdataValueReplacer;
 import com.bigdata.rdf.sail.sparql.ast.ASTBlankNode;
 import com.bigdata.rdf.sail.sparql.ast.ASTDatasetClause;
@@ -117,12 +118,12 @@ import com.bigdata.rdf.store.BD;
  */
 public class ASTDeferredIVResolutionInitializer extends ASTVisitorBase {
 
-    private final static Logger log = Logger
+    private final static Logger log = LogManager
             .getLogger(ASTDeferredIVResolutionInitializer.class);
 
     private final static boolean INFO = log.isInfoEnabled();
 
-    private final static List<URI> RDF_VOCAB = Arrays.asList(RDF.FIRST, RDF.REST, RDF.NIL, BD.VIRTUAL_GRAPH);
+    private final static List<IRI> RDF_VOCAB = Arrays.asList(RDF.FIRST, RDF.REST, RDF.NIL, BD.VIRTUAL_GRAPH);
 
     private final Map<Value, BigdataValue> vocab;
 
@@ -146,8 +147,8 @@ public class ASTDeferredIVResolutionInitializer extends ASTVisitorBase {
         // Unnamed BigdataValueFactory is used to provide instances
         // of BigdataValue, which are required by existing test suite.
         // See also task https://jira.blazegraph.com/browse/BLZG-1519
-//        this.valueFactory = BigdataValueFactoryImpl.getInstance("parser"+UUID.randomUUID().toString().replaceAll("-", ""));
-        this.valueFactory = new BigdataValueFactoryImpl();
+//        this.valueFactory = BigdataSimpleValueFactory.getInstance("parser"+UUID.randomUUID().toString().replaceAll("-", ""));
+        this.valueFactory = new BigdataSimpleValueFactory();
         
         this.nodes = new LinkedHashMap<>();
         
@@ -160,7 +161,7 @@ public class ASTDeferredIVResolutionInitializer extends ASTVisitorBase {
      * {@link ASTRDFValue} nodes (including blank nodes iff we are in a told
      * bnodes mode). The {@link ASTRDFValue}s are collected in a {@link Map}
      * which associates each one with a {@link BigdataValue} object which is set
-     * using {@link ASTRDFValue#setRDFValue(org.openrdf.model.Value)}. The
+     * using {@link ASTRDFValue#setRDFValue(org.eclipse.rdf4j.model.Value)}. The
      * {@link BigdataValue}s will be resolved later (in ASTDeferredIVResolution)
      * in a batch against the database, obtaining their {@link IVs}.
      * Until then {@link BigdataValue}s in the parse tree have unresolved
@@ -208,8 +209,8 @@ public class ASTDeferredIVResolutionInitializer extends ASTVisitorBase {
                     bigdataValue = (BigdataValue) value.getRDFValue();
                     iv = bigdataValue.getIV();
                 } else if (value instanceof ASTIRI) {
-                    iv = new TermId<BigdataValue>(VTE.URI,0);
-                    bigdataValue = valueFactory.createURI(((ASTIRI)value).getValue());
+                    iv = new TermId<BigdataValue>(VTE.IRI,0);
+                    bigdataValue = valueFactory.createIRI(((ASTIRI)value).getValue());
                     if (!bigdataValue.isRealIV()) {
                     	bigdataValue.clearInternalValue();
                     	bigdataValue.setIV(iv);
@@ -219,10 +220,10 @@ public class ASTDeferredIVResolutionInitializer extends ASTVisitorBase {
                     final ASTRDFLiteral rdfNode = (ASTRDFLiteral) value;
                     final String lang = rdfNode.getLang();
                     final ASTIRI dataTypeIri = rdfNode.getDatatype();
-                    URIImpl dataTypeUri = null;
+                    IRI dataTypeUri = null;
                     DTE dte = null;
                     if (dataTypeIri!=null && dataTypeIri.getValue()!=null) {
-                        dataTypeUri = new URIImpl(dataTypeIri.getValue());
+                        dataTypeUri = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(dataTypeIri.getValue());
                         dte = DTE.valueOf(dataTypeUri);
                     }
                     if (dte!=null) {
@@ -246,7 +247,7 @@ public class ASTDeferredIVResolutionInitializer extends ASTVisitorBase {
                     }
                 } else if (value instanceof ASTNumericLiteral) {
                     final ASTNumericLiteral rdfNode = (ASTNumericLiteral) value;
-                    final URI dataTypeUri = rdfNode.getDatatype();
+                    final IRI dataTypeUri = rdfNode.getDatatype();
                     final DTE dte = DTE.valueOf(dataTypeUri);
                     bigdataValue = getBigdataValue(rdfNode.getValue(), dte);
                     if (!bigdataValue.stringValue().equals(rdfNode.getValue())) {
@@ -400,7 +401,7 @@ public class ASTDeferredIVResolutionInitializer extends ASTVisitorBase {
                 bigdataValue = valueFactory.createLiteral(((AbstractLiteralIV)iv).stringValue(), dte.getDatatypeURI());
                 break;
             case XSDInteger:
-                bigdataValue = valueFactory.createLiteral(((AbstractLiteralIV)iv).stringValue(), XMLSchema.INTEGER);
+                bigdataValue = valueFactory.createLiteral(((AbstractLiteralIV)iv).stringValue(), XSD.INTEGER);
                 break;
             case XSDDecimal:
                 bigdataValue = valueFactory.createLiteral(iv.stringValue(), DTE.XSDDecimal.getDatatypeURI());
@@ -462,13 +463,13 @@ public class ASTDeferredIVResolutionInitializer extends ASTVisitorBase {
 
             try {
 
-                nodes.put(node, valueFactory.createURI(node.getValue()));
+                nodes.put(node, valueFactory.createIRI(node.getValue()));
 
                 return null;
 
             } catch (final IllegalArgumentException e) {
 
-                // invalid URI
+                // invalid IRI
                 throw new VisitorException(e.getMessage());
 
             }
@@ -491,15 +492,15 @@ public class ASTDeferredIVResolutionInitializer extends ASTVisitorBase {
 
             if (datatypeNode != null) {
 
-                final URI datatype;
+                final IRI datatype;
 
                 try {
 
-                    datatype = valueFactory.createURI(datatypeNode.getValue());
+                    datatype = valueFactory.createIRI(datatypeNode.getValue());
 
                 } catch (final IllegalArgumentException e) {
 
-                    // invalid URI
+                    // invalid IRI
                     throw new VisitorException(e);
 
                 }
@@ -631,7 +632,7 @@ public class ASTDeferredIVResolutionInitializer extends ASTVisitorBase {
             return new XSDDecimalIV<BigdataLiteral>(x);
         }
         case XSDString: {
-            return new FullyInlineTypedLiteralIV(val, null, XMLSchema.STRING, true);
+            return new FullyInlineTypedLiteralIV(val, null, XSD.STRING, true);
         }
         case XSDUnsignedByte: {
             return new XSDUnsignedByteIV<>((byte) (Byte.valueOf(val) + Byte.MIN_VALUE));

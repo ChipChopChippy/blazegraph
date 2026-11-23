@@ -35,13 +35,13 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
 
-import org.apache.log4j.MDC;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.OWL;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.rio.RDFFormat;
+import org.apache.logging.log4j.ThreadContext;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.OWL;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.rio.RDFFormat;
 
 import com.bigdata.rdf.inf.TruthMaintenance;
 import com.bigdata.rdf.internal.IV;
@@ -112,9 +112,9 @@ public class TestTruthMaintenance extends AbstractInferenceEngineTestCase {
 
             final BigdataValueFactory f = store.getValueFactory();
 
-            final BigdataURI x = f.createURI("http://www.foo.org/x1");
-            final BigdataURI y = f.createURI("http://www.foo.org/y2");
-            final BigdataURI z = f.createURI("http://www.foo.org/z3");
+            final BigdataURI x = f.createIRI("http://www.foo.org/x1");
+            final BigdataURI y = f.createIRI("http://www.foo.org/y2");
+            final BigdataURI z = f.createIRI("http://www.foo.org/z3");
             
             store.addTerms(new BigdataValue[] { x, y, z });
             
@@ -244,9 +244,9 @@ public class TestTruthMaintenance extends AbstractInferenceEngineTestCase {
             
             final BigdataValueFactory f = store.getValueFactory();
             
-            final BigdataURI U = f.createURI("http://www.bigdata.com/U");
-            final BigdataURI V = f.createURI("http://www.bigdata.com/V");
-            final BigdataURI X = f.createURI("http://www.bigdata.com/X");
+            final BigdataURI U = f.createIRI("http://www.bigdata.com/U");
+            final BigdataURI V = f.createIRI("http://www.bigdata.com/V");
+            final BigdataURI X = f.createIRI("http://www.bigdata.com/X");
 
             final BigdataURI rdfsSubClassOf = f.asValue(RDFS.SUBCLASSOF);
 
@@ -320,9 +320,9 @@ public class TestTruthMaintenance extends AbstractInferenceEngineTestCase {
 
             final BigdataValueFactory f = store.getValueFactory();
             
-            final BigdataURI U = f.createURI("http://www.bigdata.com/U");
-            final BigdataURI V = f.createURI("http://www.bigdata.com/V");
-            final BigdataURI X = f.createURI("http://www.bigdata.com/X");
+            final BigdataURI U = f.createIRI("http://www.bigdata.com/U");
+            final BigdataURI V = f.createIRI("http://www.bigdata.com/V");
+            final BigdataURI X = f.createIRI("http://www.bigdata.com/X");
 
             final BigdataURI rdfsSubClassOf = f.asValue(RDFS.SUBCLASSOF);
 
@@ -463,9 +463,9 @@ public class TestTruthMaintenance extends AbstractInferenceEngineTestCase {
 
             final BigdataValueFactory f = store.getValueFactory();
 
-            final BigdataURI U = f.createURI("http://www.bigdata.com/U");
-            final BigdataURI V = f.createURI("http://www.bigdata.com/V");
-            final BigdataURI X = f.createURI("http://www.bigdata.com/X");
+            final BigdataURI U = f.createIRI("http://www.bigdata.com/U");
+            final BigdataURI V = f.createIRI("http://www.bigdata.com/V");
+            final BigdataURI X = f.createIRI("http://www.bigdata.com/X");
 
             final BigdataURI rdfsSubClassOf = f.asValue(RDFS.SUBCLASSOF);
 
@@ -607,12 +607,12 @@ public class TestTruthMaintenance extends AbstractInferenceEngineTestCase {
      */
     public void test_retractWhenStatementSupportsExplicitStatement() {
      
-        URI user = new URIImpl("http://www.bigdata.com/user");
-        URI currentGraph = new URIImpl("http://www.bigdata.com/currentGraph");
-        URI foo = new URIImpl("http://www.bigdata.com/foo");
-        URI graph = new URIImpl("http://www.bigdata.com/Graph");
-        URI rdftype = RDF.TYPE;
-        URI rdfsRange = RDFS.RANGE;
+        IRI user = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/user");
+        IRI currentGraph = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/currentGraph");
+        IRI foo = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/foo");
+        IRI graph = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/Graph");
+        IRI rdftype = RDF.TYPE;
+        IRI rdfsRange = RDFS.RANGE;
 
         AbstractTripleStore store = getStore();
         
@@ -720,11 +720,11 @@ public class TestTruthMaintenance extends AbstractInferenceEngineTestCase {
      */
     public void test_closurecorrectness() {
         
-        final URI a = new URIImpl("http://www.bigdata.com/a");
-        final URI b = new URIImpl("http://www.bigdata.com/b");
-        final URI c = new URIImpl("http://www.bigdata.com/c");
-//        final URI d = new URIImpl("http://www.bigdata.com/d");
-        final URI sco = RDFS.SUBCLASSOF;
+        final IRI a = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/a");
+        final IRI b = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/b");
+        final IRI c = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/c");
+//        final IRI d = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/d");
+        final IRI sco = RDFS.SUBCLASSOF;
 
         final AbstractTripleStore store = getStore();
         
@@ -835,16 +835,16 @@ public class TestTruthMaintenance extends AbstractInferenceEngineTestCase {
      
 //        if(true) fail("re-enable this test");
         
-        final URI a = new URIImpl("http://www.bigdata.com/a");
-        final URI b = new URIImpl("http://www.bigdata.com/b");
-        final URI entity = new URIImpl("http://www.bigdata.com/Entity");
-        final URI sameAs = OWL.SAMEAS;
+        final IRI a = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/a");
+        final IRI b = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/b");
+        final IRI entity = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/Entity");
+        final IRI sameAs = OWL.SAMEAS;
 //        /*
 //         * Note: not using rdf:type to avoid entailments about (x rdf:type
 //         * Class) and (x rdfs:subClassOf y) that are not required by this test.
 //         */
-//      URI rdfType = new URIImpl("http://www.bigdata.com/type");
-        final URI rdfType = RDF.TYPE;
+//      IRI rdfType = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/type");
+        final IRI rdfType = RDF.TYPE;
 
         final AbstractTripleStore store = getStore();
         
@@ -1086,7 +1086,7 @@ public class TestTruthMaintenance extends AbstractInferenceEngineTestCase {
              * Do recursion.
              */
 
-            MDC.put("trial", "trial="+trial);
+            ThreadContext.put("trial", "trial="+trial);
 
             retractAndAssert(inf,store,0/*depth*/,D,N);
 
@@ -1097,7 +1097,7 @@ public class TestTruthMaintenance extends AbstractInferenceEngineTestCase {
 
             assertSameGraphs(tmp, store);
 
-            MDC.remove("trial");
+            ThreadContext.remove("trial");
             
         }
         
@@ -1346,7 +1346,7 @@ public class TestTruthMaintenance extends AbstractInferenceEngineTestCase {
      * <p>
      * Pre-condition: The term identifiers for the graphs MUST be consistently
      * assigned since the statements are not being materialized as RDF
-     * {@link org.openrdf.model.Value} objects.
+     * {@link org.eclipse.rdf4j.model.Value} objects.
      * 
      * @param expected
      *            A copy of the statements made after the data set was loaded

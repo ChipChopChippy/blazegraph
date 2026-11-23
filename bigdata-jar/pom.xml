@@ -28,12 +28,12 @@ Copyright 2010 by TalkingTrends (Amsterdam, The Netherlands)
   <parent>
     <groupId>com.blazegraph</groupId>
     <artifactId>blazegraph-artifacts</artifactId>
-    <version>2.1.6-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <relativePath>../blazegraph-artifacts/pom.xml</relativePath>
   </parent>
   <groupId>com.blazegraph</groupId>
   <artifactId>bigdata-jar</artifactId>
-  <version>2.1.6-SNAPSHOT</version>
+  <version>3.0.0-SNAPSHOT</version>
   <name>Blazegraph Executable Jar (bigdata legacy path)</name>
   <description>Single Executable Jar file for running the Blazegraph DB platform</description>
   <packaging>jar</packaging>
@@ -44,7 +44,7 @@ Copyright 2010 by TalkingTrends (Amsterdam, The Netherlands)
         <includes>
           <include>**/*.xml</include>
           <include>**/*.properties</include>
-          <include>**/org.openrdf.rio.*</include>
+          <include>**/org.eclipse.rdf4j.rio.*</include>
           <include>**/com.bigdata.*</include>
         </includes>
       </resource>
@@ -204,20 +204,20 @@ ga('send', 'pageview');
       <version>${project.version}</version>
       <exclusions>
         <exclusion>
-          <groupId>org.openrdf.sesame</groupId>
-          <artifactId>sesame-rio-testsuite</artifactId>
+          <groupId>org.eclipse.rdf4j</groupId>
+          <artifactId>rdf4j-rio-testsuite</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.openrdf.sesame</groupId>
-          <artifactId>sesame-sparql-testsuite</artifactId>
+          <groupId>org.eclipse.rdf4j</groupId>
+          <artifactId>rdf4j-sparql-testsuite</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.openrdf.sesame</groupId>
-          <artifactId>sesame-store-testsuite</artifactId>
+          <groupId>org.eclipse.rdf4j</groupId>
+          <artifactId>rdf4j-repository-testsuite</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>javax.servlet</groupId>
-          <artifactId>javax.servlet-api</artifactId>
+          <groupId>jakarta.servlet</groupId>
+          <artifactId>jakarta.servlet-api</artifactId>
         </exclusion>
       </exclusions>
     </dependency>

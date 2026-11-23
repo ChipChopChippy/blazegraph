@@ -21,19 +21,21 @@ public class ByteBufferInputStreamTest extends TestCase {
 	private static final boolean DEBUG = false;
 
 	public void testStream() throws FileNotFoundException, IOException {
-		File f = File.createTempFile( ByteBufferInputStreamTest.class.getName(), "tmp" );
-		f.deleteOnExit();
 		final int l = 100000;
 		long seed = System.currentTimeMillis();
 		if ( DEBUG ) System.err.println( "Seed: " + seed );
 		Random random = new Random( seed );
 
 		for( int n = 1; n < 4; n++ ) {
+			File f = File.createTempFile( ByteBufferInputStreamTest.class.getName(), "tmp" );
+			f.deleteOnExit();
 			final FileOutputStream fos = new FileOutputStream( f );
 			for( int i = 0; i < l * n; i++ ) fos.write( random.nextInt() & 0xFF );
 			fos.close();
 
-			ByteBufferInputStream bis = ByteBufferInputStream.map( new FileInputStream( f ).getChannel(), MapMode.READ_ONLY );
+			FileInputStream mappedFile = new FileInputStream( f );
+			ByteBufferInputStream bis = ByteBufferInputStream.map( mappedFile.getChannel(), MapMode.READ_ONLY );
+			mappedFile.close();
 
 			FileInputStream test = new FileInputStream( f );
 			FileChannel fc = test.getChannel();
@@ -80,6 +82,7 @@ public class ByteBufferInputStreamTest extends TestCase {
 					pos = random.nextInt( l * n );
 					bis.position( pos );
 					if ( DEBUG ) System.err.println( "position(" + pos + ")" );
+					test.close();
 					( test = new FileInputStream( f ) ).skip( pos );
 					fc = test.getChannel();
 					break;

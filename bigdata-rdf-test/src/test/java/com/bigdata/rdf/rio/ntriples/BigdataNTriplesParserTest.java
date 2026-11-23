@@ -5,10 +5,10 @@
  */
 package com.bigdata.rdf.rio.ntriples;
 
-import org.openrdf.rio.RDFParser;
+import org.eclipse.rdf4j.rio.RDFParser;
 
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 
 /**
  * JUnit test for the N-Triples parser.
@@ -21,7 +21,7 @@ public class BigdataNTriplesParserTest extends BigdataNTriplesParserTestCase {
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		valueFactory = BigdataValueFactoryImpl.getInstance(getName());
+		valueFactory = BigdataSimpleValueFactory.getInstance(getName());
 	}
 
 	protected void tearDown() throws Exception {

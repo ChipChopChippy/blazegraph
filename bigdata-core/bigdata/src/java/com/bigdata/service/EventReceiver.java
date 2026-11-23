@@ -34,8 +34,9 @@ import java.util.LinkedHashMap;
 import java.util.UUID;
 import java.util.concurrent.locks.Lock;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.BTree;
 import com.bigdata.btree.Checkpoint;
 import com.bigdata.btree.DefaultTupleSerializer;
@@ -72,7 +73,7 @@ public class EventReceiver implements IEventReceivingService,
      * get mixed up with your tab-delimited events log and you may have to
      * filter it out before you can process the events log analytically.
      */
-    protected static transient final Logger log = Logger
+    protected static transient final Logger log = LogManager
             .getLogger(EventReceiver.class);
     
     /**

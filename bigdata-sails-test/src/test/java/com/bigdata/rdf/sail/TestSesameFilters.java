@@ -30,18 +30,19 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.impl.BindingImpl;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.sail.SailTupleQuery;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.impl.SimpleBinding;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.sail.SailTupleQuery;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.store.BD;
@@ -49,7 +50,7 @@ import com.bigdata.rdf.vocab.NoVocabulary;
 
 public class TestSesameFilters extends ProxyBigdataSailTestCase {
 
-    protected static final Logger log = Logger.getLogger(TestSesameFilters.class);
+    protected static final Logger log = LogManager.getLogger(TestSesameFilters.class);
 
     protected static final boolean INFO = log.isInfoEnabled();
     
@@ -84,11 +85,11 @@ public class TestSesameFilters extends ProxyBigdataSailTestCase {
     public void testRegex() throws Exception {
     	
 //        final Sail sail = new MemoryStore();
-//        sail.initialize();
+//        sail.init();
 //        final Repository repo = new SailRepository(sail);
 
     	final BigdataSail sail = getSail();
-    	sail.initialize();
+    	sail.init();
     	final BigdataSailRepository repo = new BigdataSailRepository(sail);
     	
     	final RepositoryConnection cxn = repo.getConnection();
@@ -101,9 +102,9 @@ public class TestSesameFilters extends ProxyBigdataSailTestCase {
             /*
              * Create some terms.
              */
-            final URI mike = vf.createURI(BD.NAMESPACE + "mike");
-            final URI bryan = vf.createURI(BD.NAMESPACE + "bryan");
-            final URI person = vf.createURI(BD.NAMESPACE + "Person");
+            final IRI mike = vf.createIRI(BD.NAMESPACE + "mike");
+            final IRI bryan = vf.createIRI(BD.NAMESPACE + "bryan");
+            final IRI person = vf.createIRI(BD.NAMESPACE + "Person");
             final Literal l1 = vf.createLiteral("mike personick");
             final Literal l2 = vf.createLiteral("bryan thompson");
 
@@ -141,8 +142,8 @@ public class TestSesameFilters extends ProxyBigdataSailTestCase {
 	           
 	            final Collection<BindingSet> answer = new LinkedList<BindingSet>();
 	            answer.add(createBindingSet(
-	            		new BindingImpl("s", mike),
-	            		new BindingImpl("label", l1)
+	            		new SimpleBinding("s", mike),
+	            		new SimpleBinding("label", l1)
 	            		));
 
 	            final TupleQueryResult result = tupleQuery.evaluate();

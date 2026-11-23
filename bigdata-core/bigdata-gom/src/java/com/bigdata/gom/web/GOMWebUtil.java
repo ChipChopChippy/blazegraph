@@ -1,9 +1,9 @@
 package com.bigdata.gom.web;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
 
-import org.openrdf.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.RepositoryException;
 
 import com.bigdata.gom.om.ObjectManager;
 import com.bigdata.journal.ITx;
@@ -102,7 +102,7 @@ public class GOMWebUtil {
 
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
 
-        repo.initialize();
+        repo.init();
 
         om = new ObjectManager(endpoint, repo);
 

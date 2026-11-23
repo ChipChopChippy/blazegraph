@@ -30,8 +30,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 /**
  * Pattern used to guard critical regions that await {@link Condition}s when a
  * concurrent event may cause the {@link Condition} to become unsatisfiable.
@@ -40,7 +41,7 @@ import org.apache.log4j.Logger;
  */
 public class ThreadGuard {
 
-    private static final transient Logger log = Logger.getLogger(ThreadGuard.class);
+    private static final transient Logger log = LogManager.getLogger(ThreadGuard.class);
     
     public static abstract class Guard {
 

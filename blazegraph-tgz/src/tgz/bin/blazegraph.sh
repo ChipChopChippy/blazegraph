@@ -46,7 +46,7 @@ export JETTY_OPTS="\
  -Djetty.overrideWebXml=${JETTY_RESOURCE_BASE}/WEB-INF/override-web.xml\
  -DJETTY_XML=${JETTY_XML}\
  -Djava.util.logging.config.file=${LOGGING_CONFIG}\
- -Dlog4j.configuration=${LOG4J_CONFIG}\
+ -Dlog4j2.configurationFile=${LOG4J_CONFIG}\
 "
 
 export JAVA_OPTS="\

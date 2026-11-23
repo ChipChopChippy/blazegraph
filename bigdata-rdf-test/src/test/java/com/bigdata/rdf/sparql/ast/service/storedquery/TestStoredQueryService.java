@@ -26,10 +26,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package com.bigdata.rdf.sparql.ast.service.storedquery;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQueryResult;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQueryResult;
 
 import com.bigdata.rdf.sail.BigdataSailRepositoryConnection;
 import com.bigdata.rdf.sail.BigdataSailTupleQuery;
@@ -102,7 +102,7 @@ public class TestStoredQueryService extends AbstractDataDrivenSPARQLTestCase {
             
         }
         
-        final URI serviceURI = new URIImpl( NAMESPACE + getName());
+        final IRI serviceURI = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI( NAMESPACE + getName());
         try {
 
             // register the service.
@@ -152,7 +152,7 @@ public class TestStoredQueryService extends AbstractDataDrivenSPARQLTestCase {
             public String getQuery(final ServiceCallCreateParams createParams,
                     final ServiceParams serviceParams) {
                 
-                final URI val = serviceParams.getAsURI(new URIImpl(
+                final IRI val = serviceParams.getAsURI(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                         "http://example.org/book/book"));
 
                 final StringBuilder sb = new StringBuilder();
@@ -169,7 +169,7 @@ public class TestStoredQueryService extends AbstractDataDrivenSPARQLTestCase {
             
         }
         
-        final URI serviceURI = new URIImpl(NAMESPACE+ getName());
+        final IRI serviceURI = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+ getName());
         try {
 
             // register the service.
@@ -221,7 +221,7 @@ public class TestStoredQueryService extends AbstractDataDrivenSPARQLTestCase {
                     ServiceCallCreateParams createParams,
                     ServiceParams serviceParams) throws Exception {
 
-                final URI val = serviceParams.getAsURI(new URIImpl(
+                final IRI val = serviceParams.getAsURI(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                         "http://example.org/book/book"));
 
                 final StringBuilder sb = new StringBuilder();
@@ -246,7 +246,7 @@ public class TestStoredQueryService extends AbstractDataDrivenSPARQLTestCase {
             
         }
         
-        final URI serviceURI = new URIImpl(NAMESPACE+ getName());
+        final IRI serviceURI = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE+ getName());
         try {
 
             // register the service.

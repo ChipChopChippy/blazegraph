@@ -35,8 +35,9 @@ import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.cache.ConcurrentWeakValueCache;
 import com.bigdata.io.ChecksumUtility;
 import com.bigdata.journal.AbstractJournal.ISnapshotData;
@@ -53,7 +54,7 @@ import com.bigdata.util.BytesUtil;
  */
 public class FixedAllocator implements Allocator {
     
-    private static final Logger log = Logger.getLogger(FixedAllocator.class);
+    private static final Logger log = LogManager.getLogger(FixedAllocator.class);
     // Profiling for BLZG-1667 indicated that checking logging level is more expensive than expected
     private static final boolean s_islogDebug = log.isDebugEnabled();
     private static final boolean s_islogTrace = log.isTraceEnabled();

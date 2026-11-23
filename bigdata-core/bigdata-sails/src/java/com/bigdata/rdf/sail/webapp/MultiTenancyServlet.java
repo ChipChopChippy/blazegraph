@@ -35,18 +35,19 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.servlet.Servlet;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.Servlet;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.BNode;
-import org.openrdf.model.Graph;
-import org.openrdf.model.impl.LinkedHashModel;
-import org.openrdf.model.impl.ValueFactoryImpl;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.impl.LinkedHashModel;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 
 import com.bigdata.btree.IndexMetadata;
 import com.bigdata.journal.IIndexManager;
@@ -90,7 +91,7 @@ public class MultiTenancyServlet extends BigdataRDFServlet {
      */
     private static final long serialVersionUID = 1L;
     
-    static private final transient Logger log = Logger.getLogger(MultiTenancyServlet.class); 
+    static private final transient Logger log = LogManager.getLogger(MultiTenancyServlet.class);
 
     /**
      * URL query parameter used to override the servlet init parameter
@@ -341,7 +342,7 @@ public class MultiTenancyServlet extends BigdataRDFServlet {
                 log.info("Format=" + format);
             
             final PropertiesParserFactory parserFactory = PropertiesParserRegistry
-                    .getInstance().get(format);
+                    .getInstance().get(format).orElse(null);
 
             if (parserFactory == null) {
 
@@ -552,7 +553,7 @@ public class MultiTenancyServlet extends BigdataRDFServlet {
                 log.info("Format=" + format);
             
             final PropertiesParserFactory parserFactory = PropertiesParserRegistry
-                    .getInstance().get(format);
+                    .getInstance().get(format).orElse(null);
 
             if (parserFactory == null) {
 
@@ -743,7 +744,7 @@ public class MultiTenancyServlet extends BigdataRDFServlet {
 
         try {
             
-            final Graph g = new LinkedHashModel();
+            final Model g = new LinkedHashModel();
 
             if (describeDefaultNamespace) {
 
@@ -786,10 +787,10 @@ public class MultiTenancyServlet extends BigdataRDFServlet {
     }
     
     /**
-     * Describe a namespace into the supplied Graph object.
+     * Describe a namespace into the supplied Model object.
      */
     private void describeNamespaceTx(final HttpServletRequest req,
-            final Graph g, final String namespace,
+            final Model g, final String namespace,
             final boolean describeEachNamedGraph, final long tx) 
                     throws IOException {
         
@@ -808,7 +809,7 @@ public class MultiTenancyServlet extends BigdataRDFServlet {
             
         }
 
-        final BNode aDataSet = ValueFactoryImpl.getInstance().createBNode();
+        final BNode aDataSet = SimpleValueFactory.getInstance().createBNode();
         
         // Figure out the service end point(s).
         final String[] serviceURI = getServiceURIs(getServletContext(), req);

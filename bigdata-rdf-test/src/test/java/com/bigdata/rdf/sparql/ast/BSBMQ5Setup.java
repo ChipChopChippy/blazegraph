@@ -31,7 +31,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.rdf.internal.XSD;
@@ -157,17 +157,17 @@ public class BSBMQ5Setup {
 
         final String productInstance = "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromProducer1/Product22";
 
-        rdfsLabel = valueFactory.createURI(rdfs + "label");
+        rdfsLabel = valueFactory.createIRI(rdfs + "label");
 
-        productFeature = valueFactory.createURI(bsbm + "productFeature");
+        productFeature = valueFactory.createIRI(bsbm + "productFeature");
 
-        productPropertyNumeric1 = valueFactory.createURI(bsbm
+        productPropertyNumeric1 = valueFactory.createIRI(bsbm
                 + "productPropertyNumeric1");
 
-        productPropertyNumeric2 = valueFactory.createURI(bsbm
+        productPropertyNumeric2 = valueFactory.createIRI(bsbm
                 + "productPropertyNumeric2");
 
-        product53999 = valueFactory.createURI(productInstance);
+        product53999 = valueFactory.createIRI(productInstance);
 
         _120 = valueFactory.createLiteral("120", XSD.INTEGER);
 

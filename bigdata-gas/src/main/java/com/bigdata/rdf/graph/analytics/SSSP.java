@@ -20,11 +20,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Statement;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
 
 import com.bigdata.rdf.graph.BinderBase;
 import com.bigdata.rdf.graph.EdgesEnum;
@@ -54,7 +55,7 @@ import com.bigdata.rdf.graph.impl.BaseGASProgram;
 public class SSSP extends BaseGASProgram<SSSP.VS, SSSP.ES, Integer/* dist */> 
 		implements IPredecessor<SSSP.VS, SSSP.ES, Integer/* dist */> {
 
-    private static final Logger log = Logger.getLogger(SSSP.class);
+    private static final Logger log = LogManager.getLogger(SSSP.class);
 
     /**
      * The length of an edge.

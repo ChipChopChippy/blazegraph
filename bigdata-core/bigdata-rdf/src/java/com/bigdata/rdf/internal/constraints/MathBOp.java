@@ -34,8 +34,9 @@ package com.bigdata.rdf.internal.constraints;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -61,7 +62,7 @@ final public class MathBOp extends IVValueExpression
 	 */
 	private static final long serialVersionUID = 9136864442064392445L;
 
-	private static final transient Logger log = Logger.getLogger(MathBOp.class);
+	private static final transient Logger log = LogManager.getLogger(MathBOp.class);
 
     public interface Annotations extends IVValueExpression.Annotations {
 
@@ -87,7 +88,7 @@ final public class MathBOp extends IVValueExpression
 		CEIL,
 		FLOOR;
 
-		public static MathOp valueOf(org.openrdf.query.algebra.MathExpr.MathOp op) {
+		public static MathOp valueOf(org.eclipse.rdf4j.query.algebra.MathExpr.MathOp op) {
 			switch(op) {
 			case PLUS: return MathOp.PLUS;
 			case MINUS: return MathOp.MINUS;

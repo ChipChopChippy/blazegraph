@@ -33,8 +33,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.URI;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.bop.IConstant;
@@ -60,14 +61,14 @@ import com.bigdata.service.geospatial.impl.GeoSpatialUtility.PointLatLon;
  */
 public class GeoSpatialQuery implements IGeoSpatialQuery {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(GeoSpatialQuery.class);
 
     
     // passed in as parameters
     private final GeoSpatialConfig geoSpatialConfig;
     private final GeoFunction searchFunction;
-    private final URI searchDatatype;
+    private final IRI searchDatatype;
     private final IConstant<?> subject;
     private final TermNode predicate;
     private final TermNode context;
@@ -103,7 +104,7 @@ public class GeoSpatialQuery implements IGeoSpatialQuery {
      * Constructor
      */
     public GeoSpatialQuery(final GeoSpatialConfig geoSpatialConfig,
-            final GeoFunction searchFunction, final URI searchDatatype,
+            final GeoFunction searchFunction, final IRI searchDatatype,
             final IConstant<?> subject, final TermNode predicate,
             final TermNode context, final PointLatLon spatialCircleCenter,
             final Double spatialCircleRadius,
@@ -167,7 +168,7 @@ public class GeoSpatialQuery implements IGeoSpatialQuery {
      */
     private GeoSpatialQuery(final GeoSpatialConfig geoSpatialConfig,
             final GeoFunction searchFunction,
-            final URI searchDatatype,
+            final IRI searchDatatype,
             final IConstant<?> subject, final TermNode predicate,
             final TermNode context, final PointLatLon spatialCircleCenter,
             final Double spatialCircleRadius,
@@ -241,7 +242,7 @@ public class GeoSpatialQuery implements IGeoSpatialQuery {
     }
 
     @Override
-    public URI getSearchDatatype() {
+    public IRI getSearchDatatype() {
         return searchDatatype;
     }
 

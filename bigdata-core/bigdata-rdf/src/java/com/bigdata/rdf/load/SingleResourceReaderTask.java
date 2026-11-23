@@ -8,9 +8,10 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Statement;
-import org.openrdf.rio.RDFFormat;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.rio.RDFFormat;
 
 import com.bigdata.rdf.rio.IStatementBuffer;
 import com.bigdata.rdf.rio.LoadStats;
@@ -27,7 +28,7 @@ import com.bigdata.rdf.rio.RDFParserOptions;
  */
 public class SingleResourceReaderTask implements Runnable {
 
-    protected static final Logger log = Logger.getLogger(SingleResourceReaderTask.class);
+    protected static final Logger log = LogManager.getLogger(SingleResourceReaderTask.class);
 
     /**
      * The resource to be loaded.

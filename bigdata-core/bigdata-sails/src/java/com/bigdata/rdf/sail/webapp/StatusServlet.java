@@ -44,11 +44,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.Banner;
 import com.bigdata.BigdataStatics;
 import com.bigdata.bop.BOpUtility;
@@ -106,7 +107,7 @@ public class StatusServlet extends BigdataRDFServlet {
      */
     private static final long serialVersionUID = 1L;
 
-    static private final transient Logger log = Logger
+    static private final transient Logger log = LogManager
             .getLogger(StatusServlet.class);
 
     /**

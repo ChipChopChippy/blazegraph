@@ -29,7 +29,7 @@ package com.bigdata.rdf.lexicon;
 
 import java.util.Properties;
 
-import org.openrdf.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
 import com.bigdata.io.SerializerUtil;
 import com.bigdata.rdf.axioms.NoAxioms;
@@ -103,7 +103,7 @@ public class TestVocabulary extends AbstractTripleStoreTestCase {
             
             final BigdataURI rdfType = f.asValue(RDF.TYPE);
             final BigdataURI rdfProperty = f.asValue(RDF.PROPERTY);
-            final BigdataURI unknownURI = f.createURI("http://www.bigdata.com/unknown");
+            final BigdataURI unknownURI = f.createIRI("http://www.bigdata.com/unknown");
             
             // resolve term ids.
             store.addTerms(new BigdataValue[] { rdfType, rdfProperty, unknownURI });
@@ -195,7 +195,7 @@ public class TestVocabulary extends AbstractTripleStoreTestCase {
 
             final BigdataURI rdfType = f.asValue(RDF.TYPE);
             final BigdataURI rdfProperty = f.asValue(RDF.PROPERTY);
-            final BigdataURI unknownURI = f.createURI("http://www.bigdata.com/unknown");
+            final BigdataURI unknownURI = f.createIRI("http://www.bigdata.com/unknown");
             
             // resolve term ids.
             store.addTerms(new BigdataValue[] { rdfType, rdfProperty, unknownURI });

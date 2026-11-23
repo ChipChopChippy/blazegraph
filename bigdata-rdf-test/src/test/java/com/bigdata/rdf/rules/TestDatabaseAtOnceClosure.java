@@ -15,15 +15,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
-import org.openrdf.model.Statement;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryResult;
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.sail.inferencer.fc.ForwardChainingRDFSInferencer;
-import org.openrdf.sail.memory.MemoryStore;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryResult;
+import org.eclipse.rdf4j.repository.sail.SailRepository;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.sail.inferencer.fc.SchemaCachingRDFSInferencer;
+import org.eclipse.rdf4j.sail.memory.MemoryStore;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.axioms.RdfsAxioms;
@@ -625,14 +625,14 @@ public class TestDatabaseAtOnceClosure extends AbstractRuleTestCase {
                 final StatementBuffer buf = new StatementBuffer(groundTruth ,10);
 	            
 	            final Repository sesame2 = new SailRepository(
-	                    new ForwardChainingRDFSInferencer(
+	                    new SchemaCachingRDFSInferencer(
 	                    new MemoryStore()));
 	            
-	            sesame2.initialize();
+	            sesame2.init();
 	            
 	            final RepositoryConnection cxn = sesame2.getConnection();
 	            
-	            cxn.setAutoCommit(false);
+	            cxn.begin();
 	            
 	            try {
 	            	
@@ -701,6 +701,10 @@ public class TestDatabaseAtOnceClosure extends AbstractRuleTestCase {
 	            		
 	            		buf.add(stmt.getSubject(), stmt.getPredicate(), 
 	            				stmt.getObject());
+                        
+	            		// RDF4J 5's inferencer does not type predicates as rdfs:Resource.
+	            		buf.add(stmt.getPredicate(), org.eclipse.rdf4j.model.vocabulary.RDF.TYPE,
+	            				RDFS.RESOURCE);
                         
                         numSesame2Stmts++;
 	            		
@@ -882,10 +886,10 @@ public class TestDatabaseAtOnceClosure extends AbstractRuleTestCase {
             
             final BigdataValueFactory f = store.getValueFactory();
             
-            final BigdataURI A = f.createURI("http://www.bigdata.com/a");
-            final BigdataURI B = f.createURI("http://www.bigdata.com/b");
-            final BigdataURI C = f.createURI("http://www.bigdata.com/c");
-            final BigdataURI D = f.createURI("http://www.bigdata.com/d");
+            final BigdataURI A = f.createIRI("http://www.bigdata.com/a");
+            final BigdataURI B = f.createIRI("http://www.bigdata.com/b");
+            final BigdataURI C = f.createIRI("http://www.bigdata.com/c");
+            final BigdataURI D = f.createIRI("http://www.bigdata.com/d");
             final BigdataURI SCO = f.asValue(RDFS.SUBCLASSOF);
             
             final Vocabulary vocab = store.getVocabulary();

@@ -27,12 +27,12 @@ import java.util.Arrays;
 
 import junit.framework.Test;
 
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.impl.ValueFactoryImpl;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.TupleQueryResult;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.TupleQueryResult;
 
 import com.bigdata.journal.IIndexManager;
 import com.bigdata.rdf.sail.webapp.client.RemoteRepository.AddOp;
@@ -74,11 +74,11 @@ public class Test_Ticket_605<S extends IIndexManager> extends
     */
    public void test_ticket_605() throws Exception {
 
-      final URI s = new URIImpl(":s");
-      final URI p = new URIImpl(":p");
-      final URI o = new URIImpl(":o");
+      final IRI s = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(":s");
+      final IRI p = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(":p");
+      final IRI o = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(":o");
 
-      final Statement[] a = new Statement[] { ValueFactoryImpl.getInstance()
+      final Statement[] a = new Statement[] { SimpleValueFactory.getInstance()
             .createStatement(s, p, o) };
 
       final AddOp addOp = new AddOp(Arrays.asList(a));

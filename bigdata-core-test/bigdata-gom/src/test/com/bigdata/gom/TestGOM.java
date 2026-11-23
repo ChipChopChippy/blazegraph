@@ -34,13 +34,14 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParseException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParseException;
 
 import com.bigdata.gom.gpo.BasicSkin;
 import com.bigdata.gom.gpo.GPO;
@@ -56,7 +57,7 @@ import com.bigdata.gom.skin.GenericSkinRegistry;
  */
 public class TestGOM extends ProxyGOMTest {
 
-    private static final Logger log = Logger.getLogger(TestGOM.class);
+    private static final Logger log = LogManager.getLogger(TestGOM.class);
 
     /**
 	 * Simple test loads data from a file and navigates around
@@ -70,11 +71,11 @@ public class TestGOM extends ProxyGOMTest {
 
         final ValueFactory vf = om.getValueFactory();
 
-        final URI s = vf.createURI("gpo:#root");
+        final IRI s = vf.createIRI("gpo:#root");
 
-        final URI rootAttr = vf.createURI("attr:/root");
+        final IRI rootAttr = vf.createIRI("attr:/root");
         om.getGPO(s).getValue(rootAttr);
-        final URI rootId = (URI) om.getGPO(s).getValue(rootAttr);
+        final IRI rootId = (IRI) om.getGPO(s).getValue(rootAttr);
 
         final IGPO rootGPO = om.getGPO(rootId);
 
@@ -84,13 +85,13 @@ public class TestGOM extends ProxyGOMTest {
                     + rootGPO.getType().getStatements());
         }
 
-        final URI typeName = vf.createURI("attr:/type#name");
+        final IRI typeName = vf.createIRI("attr:/type#name");
 
         assertTrue("Company".equals(rootGPO.getType().getValue(typeName)
                 .stringValue()));
 
         // find set of workers for the Company
-        final URI worksFor = vf.createURI("attr:/employee#worksFor");
+        final IRI worksFor = vf.createIRI("attr:/employee#worksFor");
         final ILinkSet linksIn = rootGPO.getLinksIn(worksFor);
         final Iterator<IGPO> workers = linksIn.iterator();
         while (workers.hasNext()) {
@@ -109,8 +110,8 @@ public class TestGOM extends ProxyGOMTest {
 
         final ValueFactory vf = om.getValueFactory();
 
-        final URI keyname = vf.createURI("attr:/test#name");
-        final Resource id = vf.createURI("gpo:test#1");
+        final IRI keyname = vf.createIRI("attr:/test#name");
+        final Resource id = vf.createIRI("gpo:test#1");
 //        om.checkValue(id); // ensure is imported!
 
         final int transCounter = om.beginNativeTransaction();
@@ -130,7 +131,7 @@ public class TestGOM extends ProxyGOMTest {
         ((ObjectMgrModel) om).clearCache();
 
         // reads from backing journal
-        final IGPO gpo = om.getGPO(vf.createURI("gpo:test#1"));
+        final IGPO gpo = om.getGPO(vf.createIRI("gpo:test#1"));
 
         assertTrue("Martyn".equals(gpo.getValue(keyname).stringValue()));
 
@@ -143,11 +144,11 @@ public class TestGOM extends ProxyGOMTest {
 
         final ValueFactory vf = om.getValueFactory();
 
-        final URI keyname = vf.createURI("attr:/test#name");
-        final URI keyage = vf.createURI("attr:/test#age");
-        final URI keyfriend = vf.createURI("attr:/test#friend");
-        final Resource id = vf.createURI("gpo:test#1");
-        final Resource id2 = vf.createURI("gpo:test#2");
+        final IRI keyname = vf.createIRI("attr:/test#name");
+        final IRI keyage = vf.createIRI("attr:/test#age");
+        final IRI keyfriend = vf.createIRI("attr:/test#friend");
+        final Resource id = vf.createIRI("gpo:test#1");
+        final Resource id2 = vf.createIRI("gpo:test#2");
 //        om.checkValue(id); // ensure is imported!
 //        om.checkValue(id2); // ensure is imported!
 
@@ -158,7 +159,7 @@ public class TestGOM extends ProxyGOMTest {
             gpo.setValue(keyname, vf.createLiteral("Martyn"));
             gpo.setValue(keyage, vf.createLiteral(53));
 
-            Iterator<URI> uris = ((GPO) gpo).getPropertyURIs();
+            Iterator<IRI> uris = ((GPO) gpo).getPropertyURIs();
             // should be two
             uris.next();
             uris.next();
@@ -187,8 +188,8 @@ public class TestGOM extends ProxyGOMTest {
 
         {
             // reads from backing journal
-            final IGPO gpo = om.getGPO(vf.createURI("gpo:test#1"));
-            final Iterator<URI> uris = ((GPO) gpo).getPropertyURIs();
+            final IGPO gpo = om.getGPO(vf.createIRI("gpo:test#1"));
+            final Iterator<IRI> uris = ((GPO) gpo).getPropertyURIs();
             // should be two
             uris.next();
             uris.next();
@@ -203,11 +204,11 @@ public class TestGOM extends ProxyGOMTest {
 
         final ValueFactory vf = om.getValueFactory();
 
-        final URI keyname = vf.createURI("attr:/test#name");
-        final URI keyage = vf.createURI("attr:/test#age");
-        final URI parent = vf.createURI("attr:/test#parent");
-        final URI parent2 = vf.createURI("attr:/test#parent2");
-        final URI nme = vf.createURI("gpo:ROOT");
+        final IRI keyname = vf.createIRI("attr:/test#name");
+        final IRI keyage = vf.createIRI("attr:/test#age");
+        final IRI parent = vf.createIRI("attr:/test#parent");
+        final IRI parent2 = vf.createIRI("attr:/test#parent2");
+        final IRI nme = vf.createIRI("gpo:ROOT");
 
         final int transCounter = om.beginNativeTransaction();
         try {
@@ -238,7 +239,7 @@ public class TestGOM extends ProxyGOMTest {
         IGPO gpo = om.getGPO((Resource) om.recall(nme)); // reads from
                                                          // backing journal
 
-        Map<URI, Long> map = gpo.getReverseLinkProperties();
+        Map<IRI, Long> map = gpo.getReverseLinkProperties();
 
         // there should be 3 - the two parent properties plus the name
         // manager
@@ -261,13 +262,13 @@ public class TestGOM extends ProxyGOMTest {
         final ValueFactory vf = om.getValueFactory();
 
         // This is the only required root!
-        final URI clssclssName = vf.createURI("attr:/classClass");
-        final URI descr = vf.createURI("attr:/classClass#description");
+        final IRI clssclssName = vf.createIRI("attr:/classClass");
+        final IRI descr = vf.createIRI("attr:/classClass#description");
 
-        final URI superClss = vf.createURI("attr:/class#super");
-        final URI className = vf.createURI("attr:/class#name");
+        final IRI superClss = vf.createIRI("attr:/class#super");
+        final IRI className = vf.createIRI("attr:/class#name");
 
-        final URI gpoType = vf.createURI("attr:/gpo#type");
+        final IRI gpoType = vf.createIRI("attr:/gpo#type");
 
         final int transCounter = om.beginNativeTransaction();
         try {
@@ -351,11 +352,11 @@ public class TestGOM extends ProxyGOMTest {
         final ValueFactory vf = om.getValueFactory();
 
         final int transCounter = om.beginNativeTransaction();
-        final URI name = vf.createURI("attr:/test#name");
-        final URI ni = vf.createURI("attr:/test#ni");
-        final URI age = vf.createURI("attr:/test#age");
-        final URI mob = vf.createURI("attr:/test#mobile");
-        final URI gender = vf.createURI("attr:/test#mail");
+        final IRI name = vf.createIRI("attr:/test#name");
+        final IRI ni = vf.createIRI("attr:/test#ni");
+        final IRI age = vf.createIRI("attr:/test#age");
+        final IRI mob = vf.createIRI("attr:/test#mobile");
+        final IRI gender = vf.createIRI("attr:/test#mail");
         try {
             // warmup
             for (int i = 0; i < 10000; i++) {
@@ -388,7 +389,7 @@ public class TestGOM extends ProxyGOMTest {
             /*
              * Note that this is a conservative estimate for statements per
              * second since there is only one per object, requiring the object
-             * URI and the Value to be added.
+             * IRI and the Value to be added.
              */
             if (log.isInfoEnabled()) {
 

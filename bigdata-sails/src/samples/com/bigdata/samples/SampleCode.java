@@ -18,31 +18,32 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.StatementImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.Binding;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.GraphQuery;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.algebra.evaluation.QueryBindingSet;
-import org.openrdf.query.impl.BindingImpl;
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryResult;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFWriterRegistry;
-import org.openrdf.rio.helpers.StatementCollector;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.Binding;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.GraphQuery;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.algebra.evaluation.QueryBindingSet;
+import org.eclipse.rdf4j.query.impl.SimpleBinding;
+import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryResult;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFWriterRegistry;
+import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 
 import com.bigdata.journal.IIndexManager;
 import com.bigdata.journal.Journal;
@@ -70,7 +71,7 @@ public class SampleCode {
      * statements from bigdata - if you are, then this will severely impact
      * performance.
      */
-    protected static final Logger log = Logger.getLogger(SampleCode.class);
+    protected static final Logger log = LogManager.getLogger(SampleCode.class);
 
     /**
      * Load a Properties object from a file.
@@ -97,10 +98,10 @@ public class SampleCode {
         
         cxn.setAutoCommit(false);
         try {
-            Resource s = new URIImpl("http://www.bigdata.com/rdf#Mike");
-            URI p = new URIImpl("http://www.bigdata.com/rdf#loves");
-            Value o = new URIImpl("http://www.bigdata.com/rdf#RDF");
-            Statement stmt = new StatementImpl(s, p, o);
+            Resource s = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf#Mike");
+            IRI p = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf#loves");
+            Value o = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf#RDF");
+            Statement stmt = SimpleValueFactory.getInstance().createStatement(s, p, o);
             cxn.add(stmt);
             cxn.commit();
         } catch (Exception ex) {
@@ -151,7 +152,7 @@ public class SampleCode {
      * @param uri
      * @throws Exception
      */
-    public void readSomeData(Repository repo, URI uri) throws Exception {
+    public void readSomeData(Repository repo, IRI uri) throws Exception {
         
         /*
          * With MVCC, you read from a historical state to avoid blocking and
@@ -172,7 +173,7 @@ public class SampleCode {
             while (stmts.hasNext()) {
                 Statement stmt = stmts.next();
                 Resource s = stmt.getSubject();
-                URI p = stmt.getPredicate();
+                IRI p = stmt.getPredicate();
                 Value o = stmt.getObject();
                 // do something with the statement
                 log.info(stmt);
@@ -296,14 +297,14 @@ public class SampleCode {
         RepositoryConnection cxn = repo.getConnection();
         cxn.setAutoCommit(false);
         try {
-            cxn.add(new URIImpl("http://www.bigdata.com/A"), RDFS.LABEL,
-                    new LiteralImpl("Yellow Rose"));
-            cxn.add(new URIImpl("http://www.bigdata.com/B"), RDFS.LABEL,
-                    new LiteralImpl("Red Rose"));
-            cxn.add(new URIImpl("http://www.bigdata.com/C"), RDFS.LABEL,
-                    new LiteralImpl("Old Yellow House"));
-            cxn.add(new URIImpl("http://www.bigdata.com/D"), RDFS.LABEL,
-                    new LiteralImpl("Loud Yell"));
+            cxn.add(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/A"), RDFS.LABEL,
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Yellow Rose"));
+            cxn.add(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/B"), RDFS.LABEL,
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Red Rose"));
+            cxn.add(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/C"), RDFS.LABEL,
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Old Yellow House"));
+            cxn.add(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/D"), RDFS.LABEL,
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Loud Yell"));
             cxn.commit();
         } catch (Exception ex) {
             cxn.rollback();
@@ -334,7 +335,7 @@ public class SampleCode {
         RepositoryConnection cxn = repo.getConnection();
         cxn.setAutoCommit(false);
         try {
-            cxn.remove((Resource)null, (URI)null, (Value)null);
+            cxn.remove((Resource)null, (IRI)null, (Value)null);
             cxn.commit();
             
             cxn.add(getReader(getClass(), "provenance.rdf"), 
@@ -430,15 +431,15 @@ public class SampleCode {
                 && ((Journal) indexManager).getBufferStrategy().getBufferMode()
                         .getStoreType() == StoreTypeEnum.WORM;
 
-        final URI MIKE = new URIImpl(BD.NAMESPACE+"Mike");
-        final URI BRYAN = new URIImpl(BD.NAMESPACE+"Bryan");
-        final URI PERSON = new URIImpl(BD.NAMESPACE+"Person");
+        final IRI MIKE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE+"Mike");
+        final IRI BRYAN = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE+"Bryan");
+        final IRI PERSON = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE+"Person");
         
         final RepositoryConnection cxn = repo.getConnection();
         try {
             cxn.setAutoCommit(false);
 
-            cxn.remove((Resource)null, (URI)null, (Value)null);
+            cxn.remove((Resource)null, (IRI)null, (Value)null);
             cxn.commit();
             
             cxn.add(MIKE, RDF.TYPE, PERSON);
@@ -483,7 +484,7 @@ public class SampleCode {
 
                 Collection<BindingSet> answer = new LinkedList<BindingSet>();
                 answer.add(createBindingSet(
-                        new BindingImpl("s", MIKE)));
+                        new SimpleBinding("s", MIKE)));
                 
                 compare(result, answer);
                 
@@ -626,7 +627,7 @@ public class SampleCode {
             SparqlBuilder sb = new SparqlBuilder();
             sb.addTriplePattern("?x", RDF.TYPE, LUBM.PROFESSOR);
             sb.addTriplePattern("?x", LUBM.WORKS_FOR, 
-                    new URIImpl("http://www.Department0.University0.edu"));
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.Department0.University0.edu"));
             sb.addTriplePattern("?x", LUBM.NAME, "?y1");
             sb.addTriplePattern("?x", LUBM.EMAIL_ADDRESS, "?y2");
             sb.addTriplePattern("?x", LUBM.TELEPHONE, "?y3");
@@ -715,7 +716,7 @@ public class SampleCode {
                 repo.initialize();
 
                 // demonstrate some basic functionality
-                final URI MIKE = new URIImpl(
+                final IRI MIKE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                         "http://www.bigdata.com/rdf#Mike");
                 sampleCode.loadSomeData(repo);
                 System.out.println("Loaded sample data.");

@@ -24,9 +24,10 @@ package com.bigdata.rdf.sail;
 
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.rdf.changesets.ChangeAction;
 import com.bigdata.rdf.changesets.IChangeLog;
@@ -64,7 +65,7 @@ import com.bigdata.striterator.IChunkedOrderedIterator;
  */
 public class RDRHistory implements IChangeLog {
     
-    private static final Logger log = Logger.getLogger(RDRHistory.class);
+    private static final Logger log = LogManager.getLogger(RDRHistory.class);
     
 
     /**
@@ -72,9 +73,9 @@ public class RDRHistory implements IChangeLog {
      */
     public interface Vocab {
     
-        URI ADDED = new URIImpl("blaze:history:added"); 
+        IRI ADDED = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("blaze:history:added"); 
                 
-        URI REMOVED = new URIImpl("blaze:history:removed"); 
+        IRI REMOVED = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("blaze:history:removed"); 
         
     }            
     
@@ -128,7 +129,7 @@ public class RDRHistory implements IChangeLog {
         try {
             
             final IV<?,?>[] ivs = resolveTerms(
-                    new URI[] { Vocab.ADDED, Vocab.REMOVED });
+                    new IRI[] { Vocab.ADDED, Vocab.REMOVED });
             added = ivs[0];
             removed = ivs[1];
             
@@ -145,7 +146,7 @@ public class RDRHistory implements IChangeLog {
     /**
      * Helper method to resolve added and removed terms.
      */
-    protected IV<?,?>[] resolveTerms(final URI[] terms) throws Exception {
+    protected IV<?,?>[] resolveTerms(final IRI[] terms) throws Exception {
         
         final BigdataValueFactory vf = database.getValueFactory();
         

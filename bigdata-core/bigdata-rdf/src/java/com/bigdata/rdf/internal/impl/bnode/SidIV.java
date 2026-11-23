@@ -23,6 +23,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.rdf.internal.impl.bnode;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -31,8 +33,8 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.math.BigInteger;
 
-import org.openrdf.model.BNode;
-import org.openrdf.model.Value;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Value;
 
 import com.bigdata.btree.keys.IKeyBuilder;
 import com.bigdata.btree.keys.KeyBuilder;
@@ -87,7 +89,7 @@ public class SidIV<V extends BigdataBNode> extends AbstractInlineIV<V, ISPO>
 	 */
 	private static final long serialVersionUID = 685148537376856907L;
 	
-//	private static final transient Logger log = Logger.getLogger(SidIV.class);
+//	private static final transient Logger log = LogManager.getLogger(SidIV.class);
 
 	/**
 	 * The inline spo.

@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -62,6 +63,21 @@ public class TestCSVReader extends TestCase2 {
      */
     public TestCSVReader(String name) {
         super(name);
+    }
+
+    private Locale defaultLocale;
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        defaultLocale = Locale.getDefault();
+        Locale.setDefault(Locale.US);
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        Locale.setDefault(defaultLocale);
+        super.tearDown();
     }
 
     public void test_ctor_correctRejection() throws IOException {

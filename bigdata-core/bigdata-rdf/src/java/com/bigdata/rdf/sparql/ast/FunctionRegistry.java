@@ -5,11 +5,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.FN;
-import org.openrdf.model.vocabulary.XMLSchema;
-import org.openrdf.query.algebra.Compare.CompareOp;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.FN;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
+import org.eclipse.rdf4j.query.algebra.Compare.CompareOp;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpContextBase;
@@ -107,85 +107,85 @@ public class FunctionRegistry {
     public interface Annotations extends AggregateBase.Annotations{
     }
 
-	private static ConcurrentMap<URI, Factory> factories = new ConcurrentHashMap<URI, Factory>();
+	private static ConcurrentMap<IRI, Factory> factories = new ConcurrentHashMap<IRI, Factory>();
 
 	public static final String SPARQL_FUNCTIONS = "http://www.w3.org/2006/sparql-functions#";
 	public static final String XPATH_FUNCTIONS = "http://www.w3.org/2005/xpath-functions#";
 
 	/**
-     * Functions in SPARQL 1.0 for which there is not yet any official URI.
+     * Functions in SPARQL 1.0 for which there is not yet any official IRI.
      */
     public static final String SPARQL10_UNDEFINED_FUNCTIONS = "http://www.bigdata.com/sparql-1.0-undefined-functions";
 
     /**
-     * Functions in SPARQL 1.1 for which there is not yet any official URI.
+     * Functions in SPARQL 1.1 for which there is not yet any official IRI.
      */
     public static final String SPARQL11_UNDEFINED_FUNCTIONS = "http://www.bigdata.com/sparql-1.1-undefined-functions";
 
-    public static final URI BOUND = new URIImpl(SPARQL_FUNCTIONS+"bound");
-    public static final URI IS_LITERAL = new URIImpl(SPARQL_FUNCTIONS+"isLiteral");
-    public static final URI IS_BLANK = new URIImpl(SPARQL_FUNCTIONS+"isBlank");
-    public static final URI IS_URI = new URIImpl(SPARQL_FUNCTIONS+"isURI");
-    public static final URI IS_IRI = new URIImpl(SPARQL_FUNCTIONS+"isIRI");
-    public static final URI IS_NUMERIC = new URIImpl(SPARQL_FUNCTIONS+"isNumeric");
+    public static final IRI BOUND = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"bound");
+    public static final IRI IS_LITERAL = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"isLiteral");
+    public static final IRI IS_BLANK = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"isBlank");
+    public static final IRI IS_URI = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"isURI");
+    public static final IRI IS_IRI = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"isIRI");
+    public static final IRI IS_NUMERIC = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"isNumeric");
 
-    public static final URI STR = new URIImpl(SPARQL_FUNCTIONS+"str");
-    public static final URI LANG = new URIImpl(SPARQL_FUNCTIONS+"lang");
-    public static final URI DATATYPE = new URIImpl(SPARQL_FUNCTIONS+"datatype");
-    public static final URI LANG_MATCHES = new URIImpl(SPARQL_FUNCTIONS+"langMatches");
-    public static final URI REGEX = new URIImpl(XPATH_FUNCTIONS+"matches");
-    public static final URI OR = new URIImpl(SPARQL_FUNCTIONS+"logical-or");
-    public static final URI AND = new URIImpl(SPARQL_FUNCTIONS+"logical-and");
-    public static final URI NOT = new URIImpl(XPATH_FUNCTIONS+"not");
-    public static final URI SAME_TERM = new URIImpl(SPARQL_FUNCTIONS+"sameTerm");
-    public static final URI CONCAT = new URIImpl(SPARQL_FUNCTIONS+"concat");
-    public static final URI COALESCE = new URIImpl(SPARQL_FUNCTIONS+"coalesce");
+    public static final IRI STR = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"str");
+    public static final IRI LANG = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"lang");
+    public static final IRI DATATYPE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"datatype");
+    public static final IRI LANG_MATCHES = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"langMatches");
+    public static final IRI REGEX = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"matches");
+    public static final IRI OR = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"logical-or");
+    public static final IRI AND = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"logical-and");
+    public static final IRI NOT = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"not");
+    public static final IRI SAME_TERM = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"sameTerm");
+    public static final IRI CONCAT = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"concat");
+    public static final IRI COALESCE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"coalesce");
 
-    public static final URI IN = new URIImpl(SPARQL_FUNCTIONS+"in");
-    public static final URI NOT_IN = new URIImpl(SPARQL_FUNCTIONS+"notIn");
+    public static final IRI IN = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"in");
+    public static final IRI NOT_IN = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"notIn");
 
-    public static final URI IF = new URIImpl(SPARQL_FUNCTIONS+"if");
+    public static final IRI IF = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"if");
 
-    public static final URI NOW = new URIImpl(XPATH_FUNCTIONS+"now");
-    public static final URI YEAR = new URIImpl(XPATH_FUNCTIONS+"year-from-dateTime");
-    public static final URI MONTH = new URIImpl(XPATH_FUNCTIONS+"month-from-dateTime");
-    public static final URI DAY = new URIImpl(XPATH_FUNCTIONS+"day-from-dateTime");
-    public static final URI HOURS = new URIImpl(XPATH_FUNCTIONS+"hours-from-dateTime");
-    public static final URI MINUTES = new URIImpl(XPATH_FUNCTIONS+"minutes-from-dateTime");
-    public static final URI SECONDS = new URIImpl(XPATH_FUNCTIONS+"seconds-from-dateTime");
-    public static final URI TZ = new URIImpl(XPATH_FUNCTIONS+"tz");
-    public static final URI TIMEZONE = new URIImpl(XPATH_FUNCTIONS+"timezone-from-dateTime");
+    public static final IRI NOW = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"now");
+    public static final IRI YEAR = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"year-from-dateTime");
+    public static final IRI MONTH = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"month-from-dateTime");
+    public static final IRI DAY = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"day-from-dateTime");
+    public static final IRI HOURS = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"hours-from-dateTime");
+    public static final IRI MINUTES = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"minutes-from-dateTime");
+    public static final IRI SECONDS = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"seconds-from-dateTime");
+    public static final IRI TZ = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"tz");
+    public static final IRI TIMEZONE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"timezone-from-dateTime");
     
-    public static final URI MD5 = new URIImpl(SPARQL_FUNCTIONS+"md5");
-    public static final URI SHA1 = new URIImpl(SPARQL_FUNCTIONS+"sha1");
-    public static final URI SHA224 = new URIImpl(SPARQL_FUNCTIONS+"sha224");
-    public static final URI SHA256 = new URIImpl(SPARQL_FUNCTIONS+"sha256");
-    public static final URI SHA384 = new URIImpl(SPARQL_FUNCTIONS+"sha384");
-    public static final URI SHA512 = new URIImpl(SPARQL_FUNCTIONS+"sha512");
+    public static final IRI MD5 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"md5");
+    public static final IRI SHA1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"sha1");
+    public static final IRI SHA224 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"sha224");
+    public static final IRI SHA256 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"sha256");
+    public static final IRI SHA384 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"sha384");
+    public static final IRI SHA512 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"sha512");
 
-    public static final URI UUID = new URIImpl(SPARQL_FUNCTIONS+"uuid");
-    public static final URI STRUUID = new URIImpl(SPARQL_FUNCTIONS+"struuid");
+    public static final IRI UUID = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"uuid");
+    public static final IRI STRUUID = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"struuid");
     
-    public static final URI STR_DT = new URIImpl(SPARQL_FUNCTIONS+"strdt");
-    public static final URI STR_LANG = new URIImpl(SPARQL_FUNCTIONS+"strlang");
-    public static final URI LCASE = FN.LOWER_CASE;//new URIImpl(XPATH_FUNCTIONS+"lower-case");
-    public static final URI UCASE = FN.UPPER_CASE;//new URIImpl(XPATH_FUNCTIONS+"upper-case");
-    public static final URI ENCODE_FOR_URI = FN.ENCODE_FOR_URI;//new URIImpl(SPARQL_FUNCTIONS+"encodeForUri");
-    public static final URI STR_LEN = FN.STRING_LENGTH;//new URIImpl(XPATH_FUNCTIONS+"string-length");
-    public static final URI SUBSTR = FN.SUBSTRING;//new URIImpl(SPARQL_FUNCTIONS+"substr");
-    public static final URI CONTAINS = FN.CONTAINS;
-    public static final URI STARTS_WITH = FN.STARTS_WITH; 
-    public static final URI ENDS_WITH = FN.ENDS_WITH;
-    public static final URI STR_AFTER = FN.SUBSTRING_AFTER; // FIXME implement. See StrAfter
-    public static final URI STR_BEFORE = FN.SUBSTRING_BEFORE; // FIXME implement. See StrBefore
-    public static final URI REPLACE = FN.REPLACE; // FIXME implement. See Replace.
+    public static final IRI STR_DT = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"strdt");
+    public static final IRI STR_LANG = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"strlang");
+    public static final IRI LCASE = FN.LOWER_CASE;//org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"lower-case");
+    public static final IRI UCASE = FN.UPPER_CASE;//org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"upper-case");
+    public static final IRI ENCODE_FOR_URI = FN.ENCODE_FOR_URI;//org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"encodeForUri");
+    public static final IRI STR_LEN = FN.STRING_LENGTH;//org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"string-length");
+    public static final IRI SUBSTR = FN.SUBSTRING;//org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"substr");
+    public static final IRI CONTAINS = FN.CONTAINS;
+    public static final IRI STARTS_WITH = FN.STARTS_WITH; 
+    public static final IRI ENDS_WITH = FN.ENDS_WITH;
+    public static final IRI STR_AFTER = FN.SUBSTRING_AFTER; // FIXME implement. See StrAfter
+    public static final IRI STR_BEFORE = FN.SUBSTRING_BEFORE; // FIXME implement. See StrBefore
+    public static final IRI REPLACE = FN.REPLACE; // FIXME implement. See Replace.
 
     /**
      * The IRI function, as defined in <a
      * href="http://www.w3.org/TR/sparql11-query/#SparqlOps">SPARQL 1.1 Query
      * Language for RDF</a>.
      */
-    public static final URI IRI = new URIImpl(SPARQL11_UNDEFINED_FUNCTIONS
+    public static final IRI IRI = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL11_UNDEFINED_FUNCTIONS
             + "iri");
 
     /**
@@ -193,14 +193,14 @@ public class FunctionRegistry {
      * href="http://www.w3.org/TR/sparql11-query/#SparqlOps">SPARQL 1.1 Query
      * Language for RDF</a>.
      */
-    public static final URI BNODE = new URIImpl(SPARQL11_UNDEFINED_FUNCTIONS+ "bnode");
+    public static final IRI BNODE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL11_UNDEFINED_FUNCTIONS+ "bnode");
 
     /**
      * The EXISTS(graphPattern) function as defined in <a
      * href="http://www.w3.org/TR/sparql11-query/#SparqlOps">SPARQL 1.1 Query
      * Language for RDF</a>.
      */
-    public static final URI EXISTS = new URIImpl(SPARQL11_UNDEFINED_FUNCTIONS
+    public static final IRI EXISTS = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL11_UNDEFINED_FUNCTIONS
             + "exists");
 
     /**
@@ -208,45 +208,45 @@ public class FunctionRegistry {
      * href="http://www.w3.org/TR/sparql11-query/#SparqlOps">SPARQL 1.1 Query
      * Language for RDF</a>.
      */
-    public static final URI NOT_EXISTS = new URIImpl(
+    public static final IRI NOT_EXISTS = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
             SPARQL11_UNDEFINED_FUNCTIONS + "not-exists");
 
-    public static final URI EQ = new URIImpl(XPATH_FUNCTIONS+"equal-to");
-    public static final URI NE = new URIImpl(XPATH_FUNCTIONS+"not-equal-to");
-    public static final URI GT = new URIImpl(XPATH_FUNCTIONS+"greater-than");
-    public static final URI GE = new URIImpl(XPATH_FUNCTIONS+"greater-than-or-equal-to");
-    public static final URI LT = new URIImpl(XPATH_FUNCTIONS+"less-than");
-    public static final URI LE = new URIImpl(XPATH_FUNCTIONS+"less-than-or-equal-to");
+    public static final IRI EQ = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"equal-to");
+    public static final IRI NE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"not-equal-to");
+    public static final IRI GT = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"greater-than");
+    public static final IRI GE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"greater-than-or-equal-to");
+    public static final IRI LT = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"less-than");
+    public static final IRI LE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"less-than-or-equal-to");
 
-    public static final URI ADD = new URIImpl(XPATH_FUNCTIONS+"numeric-add");
-    public static final URI SUBTRACT = new URIImpl(XPATH_FUNCTIONS+"numeric-subtract");
-    public static final URI MULTIPLY = new URIImpl(XPATH_FUNCTIONS+"numeric-multiply");
-    public static final URI DIVIDE = new URIImpl(XPATH_FUNCTIONS+"numeric-divide");
+    public static final IRI ADD = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"numeric-add");
+    public static final IRI SUBTRACT = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"numeric-subtract");
+    public static final IRI MULTIPLY = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"numeric-multiply");
+    public static final IRI DIVIDE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"numeric-divide");
     
-    public static final URI ABS   = FN.NUMERIC_ABS;//new URIImpl(XPATH_FUNCTIONS+"numeric-abs");
-    public static final URI ROUND = FN.NUMERIC_ROUND;//new URIImpl(SPARQL_FUNCTIONS+"numeric-round");
-    public static final URI CEIL  = FN.NUMERIC_CEIL;//new URIImpl(SPARQL_FUNCTIONS+"numeric-ceil");
-    public static final URI FLOOR = FN.NUMERIC_FLOOR;//new URIImpl(SPARQL_FUNCTIONS+"numeric-floor");
-    public static final URI RAND  = new URIImpl(SPARQL_FUNCTIONS+"numeric-rand");
+    public static final IRI ABS   = FN.NUMERIC_ABS;//org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(XPATH_FUNCTIONS+"numeric-abs");
+    public static final IRI ROUND = FN.NUMERIC_ROUND;//org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"numeric-round");
+    public static final IRI CEIL  = FN.NUMERIC_CEIL;//org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"numeric-ceil");
+    public static final IRI FLOOR = FN.NUMERIC_FLOOR;//org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"numeric-floor");
+    public static final IRI RAND  = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"numeric-rand");
 
-    public static final URI AVERAGE = new URIImpl(SPARQL_FUNCTIONS+"average");
-    public static final URI COUNT = new URIImpl(SPARQL_FUNCTIONS+"count");
-    public static final URI GROUP_CONCAT = new URIImpl(SPARQL_FUNCTIONS+"groupConcat");
-    public static final URI MAX = new URIImpl(SPARQL_FUNCTIONS+"max");
-    public static final URI MIN = new URIImpl(SPARQL_FUNCTIONS+"min");
-    public static final URI SAMPLE = new URIImpl(SPARQL_FUNCTIONS+"sample");
-    public static final URI SUM = new URIImpl(SPARQL_FUNCTIONS+"sum");
+    public static final IRI AVERAGE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"average");
+    public static final IRI COUNT = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"count");
+    public static final IRI GROUP_CONCAT = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"groupConcat");
+    public static final IRI MAX = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"max");
+    public static final IRI MIN = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"min");
+    public static final IRI SAMPLE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"sample");
+    public static final IRI SUM = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(SPARQL_FUNCTIONS+"sum");
 
-    public static final URI XSD_BOOL = XMLSchema.BOOLEAN;
-    public static final URI XSD_DT = XMLSchema.DATETIME;
-    public static final URI XSD_DEC = XMLSchema.DECIMAL;
-    public static final URI XSD_DBL = XMLSchema.DOUBLE;
-    public static final URI XSD_FLT = XMLSchema.FLOAT;
-    public static final URI XSD_INT = XMLSchema.INTEGER;
-    public static final URI XSD_STR = XMLSchema.STRING;
-    public static final URI XSD_DATE = XMLSchema.DATE;
-    public static final URI XSD_LONG = XMLSchema.LONG;
-    public static final URI XSD_UNSIGNED_LONG = XMLSchema.UNSIGNED_LONG;
+    public static final IRI XSD_BOOL = XSD.BOOLEAN;
+    public static final IRI XSD_DT = XSD.DATETIME;
+    public static final IRI XSD_DEC = XSD.DECIMAL;
+    public static final IRI XSD_DBL = XSD.DOUBLE;
+    public static final IRI XSD_FLT = XSD.FLOAT;
+    public static final IRI XSD_INT = XSD.INTEGER;
+    public static final IRI XSD_STR = XSD.STRING;
+    public static final IRI XSD_DATE = XSD.DATE;
+    public static final IRI XSD_LONG = XSD.LONG;
+    public static final IRI XSD_UNSIGNED_LONG = XSD.UNSIGNED_LONG;
 
     static {
         add(AVERAGE, new AggregateFactory() {
@@ -894,17 +894,17 @@ public class FunctionRegistry {
 
 		add(FLOOR, new NumericFactory(NumericOp.FLOOR));
 
-	    add(XSD_BOOL, new CastFactory(XMLSchema.BOOLEAN.toString()));
+	    add(XSD_BOOL, new CastFactory(XSD.BOOLEAN.toString()));
 
-	    add(XSD_DT, new CastFactory(XMLSchema.DATETIME.toString()));
+	    add(XSD_DT, new CastFactory(XSD.DATETIME.toString()));
 
-	    add(XSD_DEC, new CastFactory(XMLSchema.DECIMAL.toString()));
+	    add(XSD_DEC, new CastFactory(XSD.DECIMAL.toString()));
 
-	    add(XSD_DBL, new CastFactory(XMLSchema.DOUBLE.toString()));
+	    add(XSD_DBL, new CastFactory(XSD.DOUBLE.toString()));
 
-	    add(XSD_FLT, new CastFactory(XMLSchema.FLOAT.toString()));
+	    add(XSD_FLT, new CastFactory(XSD.FLOAT.toString()));
 
-	    add(XSD_INT, new CastFactory(XMLSchema.INTEGER.toString()));
+	    add(XSD_INT, new CastFactory(XSD.INTEGER.toString()));
 
         add(XSD_LONG, new Factory() {
             public IValueExpression<? extends IV> create(final BOpContextBase context, final GlobalAnnotations globals,
@@ -938,7 +938,7 @@ public class FunctionRegistry {
 	     * Changed the xsd:string cast operator to use XsdStrBOp instead of the
 	     * Sesame cast function.
 	     */
-//	    add(XSD_STR, new CastFactory(XMLSchema.STRING.toString()));
+//	    add(XSD_STR, new CastFactory(XSD.STRING.toString()));
 		add(XSD_STR, new Factory() {
 			public IValueExpression<? extends IV> create(final BOpContextBase context, final GlobalAnnotations globals,
 					Map<String, Object> scalarValues, final ValueExpressionNode... args) {
@@ -1026,13 +1026,13 @@ public class FunctionRegistry {
        
     }
 
-    public static boolean containsFunction(URI functionUri){
+    public static boolean containsFunction(IRI functionUri){
         
         return factories.containsKey(functionUri);
         
     }
 
-    public static boolean isAggregate(final URI functionUri) {
+    public static boolean isAggregate(final IRI functionUri) {
 
         final Factory f = factories.get(functionUri);
 
@@ -1081,7 +1081,7 @@ public class FunctionRegistry {
      * @param globals
      *            The global annotations, including the lexicon namespace.
      * @param functionURI
-     *            The function URI.
+     *            The function IRI.
      * @param scalarValues
      *            Scalar values for the function (optional). This is used for
      *            things like the <code>separator</code> in GROUP_CONCAT.
@@ -1092,7 +1092,7 @@ public class FunctionRegistry {
      */
     public static final IValueExpression<? extends IV> toVE(
             final BOpContextBase context,// BLZG-1343
-			final GlobalAnnotations globals, final URI functionURI,
+			final GlobalAnnotations globals, final IRI functionURI,
 			final Map<String,Object> scalarValues,
 			final ValueExpressionNode... args) {
 
@@ -1106,7 +1106,7 @@ public class FunctionRegistry {
 //             * TODO If we eagerly translate FunctionNodes in the AST to IV value
 //             * expressions then we should probably attach a function which will
 //             * result in a runtime type error when it encounters value
-//             * expression for a function URI which was not known to the backend.
+//             * expression for a function IRI which was not known to the backend.
 //             * However, if we handle this translation lazily then this might not
 //             * be an issue.
 //             */
@@ -1132,15 +1132,15 @@ public class FunctionRegistry {
      * Register a factory for a function.
      * 
      * @param functionURI
-     *            The function URI.
+     *            The function IRI.
      * @param factory
      *            The factory.
      * 
      * @throws UnsupportedOperationException
      *             if there is already a {@link Factory} registered for that
-     *             URI.
+     *             IRI.
      */
-    public static final void add(final URI functionURI, final Factory factory) {
+    public static final void add(final IRI functionURI, final Factory factory) {
 
         if (factories.putIfAbsent(functionURI, factory) != null) {
 
@@ -1154,16 +1154,16 @@ public class FunctionRegistry {
      * Register an alias for a functionURI which has already been declared.
      * 
      * @param functionURI
-     *            The function URI.
+     *            The function IRI.
      * @param aliasURI
      *            The alias.
      * 
      * @throws UnsupportedOperationException
-     *             if the function URI has not been declared.
+     *             if the function IRI has not been declared.
      * @throws UnsupportedOperationException
-     *             if the alias URI has already been declared.
+     *             if the alias IRI has already been declared.
      */
-    public static final void addAlias(final URI functionURI, final URI aliasURI) {
+    public static final void addAlias(final IRI functionURI, final IRI aliasURI) {
 
         if (!factories.containsKey(functionURI)) {
 
@@ -1182,19 +1182,19 @@ public class FunctionRegistry {
      * Remove a registered function {@link Factory}.
      * 
      * @param functionURI
-     *            The {@link URI} of the function.
+     *            The {@link IRI} of the function.
      *            
      * @return The factory -or- <code>null</code> if there was no function
-     *         registered for that {@link URI}.
+     *         registered for that {@link IRI}.
      */
-    public static Factory remove(final URI functionURI) {
+    public static Factory remove(final IRI functionURI) {
         
         return factories.remove(functionURI);
         
     }
     
     /**
-     * An interface for creating {@link IValueExpression}s from a function URI
+     * An interface for creating {@link IValueExpression}s from a function IRI
      * and its arguments.
      */
 	public static interface Factory {
@@ -1262,7 +1262,7 @@ public class FunctionRegistry {
 				AST2BOpUtility.toVE(context, globals, args[1]);
 
 	    	/*
-	         * If we are dealing with a URI constant we can use 
+	         * If we are dealing with a IRI constant we can use 
 	         * SparqlTypeErrorBOp for any operator other than EQ, NE.
 	         *
 	    	 */
@@ -1562,7 +1562,7 @@ public class FunctionRegistry {
             if (args.length == 2) {
 
                 /*
-                 * "foo IN(bar)" is SameTerm(foo,bar) if bar is a URI, otherwise CompareBOp.
+                 * "foo IN(bar)" is SameTerm(foo,bar) if bar is a IRI, otherwise CompareBOp.
                  */
 
 //            	final IValueExpression<? extends IV> val = AST2BOpUtility.toVE(context,globals, args[1]);
@@ -1733,9 +1733,9 @@ public class FunctionRegistry {
     
     private static class UnknownFunctionFactory implements Factory {
     	
-    	private URI functionURI;
+    	private IRI functionURI;
     	
-    	public UnknownFunctionFactory(final URI functionURI) {
+    	public UnknownFunctionFactory(final IRI functionURI) {
     		
     		this.functionURI = functionURI;
     		
@@ -1761,7 +1761,7 @@ public class FunctionRegistry {
 		
 		private static final String FUNCTION_URI = "FUNCTION_URI";
 
-		public UnknownFunctionBOp(final URI functionURI) {
+		public UnknownFunctionBOp(final IRI functionURI) {
 			
 			this(BOp.NOARGS, NV.asMap(FUNCTION_URI, functionURI));
 			

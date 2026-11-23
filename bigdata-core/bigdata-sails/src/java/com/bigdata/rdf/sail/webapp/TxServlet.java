@@ -27,11 +27,12 @@ import java.io.StringWriter;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.journal.ITx;
 import com.bigdata.journal.Journal;
 import com.bigdata.journal.ValidationError;
@@ -75,7 +76,7 @@ public class TxServlet extends BigdataRDFServlet {
      */
    private static final long serialVersionUID = 1L;
 
-   static private final transient Logger log = Logger
+   static private final transient Logger log = LogManager
          .getLogger(TxServlet.class);
 
    /**

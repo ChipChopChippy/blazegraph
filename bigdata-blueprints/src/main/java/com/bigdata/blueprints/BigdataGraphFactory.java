@@ -22,6 +22,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.blueprints;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.Properties;
 
 import com.bigdata.BigdataStatics;
@@ -38,7 +40,7 @@ import com.bigdata.rdf.sail.remote.BigdataSailFactory;
  */
 public class BigdataGraphFactory  {
 
-//    private static final transient Logger log = Logger.getLogger(BigdataGraphFactory.class);
+//    private static final transient Logger log = LogManager.getLogger(BigdataGraphFactory.class);
 
    /**
     * Connect to a remote bigdata instance.

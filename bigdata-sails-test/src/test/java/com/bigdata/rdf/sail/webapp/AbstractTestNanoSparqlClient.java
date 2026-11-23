@@ -43,34 +43,34 @@ import java.util.concurrent.ExecutionException;
 
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.server.Server;
-import org.openrdf.model.Graph;
-import org.openrdf.model.Literal;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.LinkedHashModel;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.StatementImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.impl.ValueFactoryImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.GraphQueryResult;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.repository.RepositoryResult;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParseException;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.RDFParserFactory;
-import org.openrdf.rio.RDFParserRegistry;
-import org.openrdf.rio.RDFWriter;
-import org.openrdf.rio.RDFWriterFactory;
-import org.openrdf.rio.RDFWriterRegistry;
-import org.openrdf.rio.helpers.StatementCollector;
-import org.openrdf.sail.SailException;
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.LinkedHashModel;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.GraphQueryResult;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.repository.RepositoryResult;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFParseException;
+import org.eclipse.rdf4j.rio.RDFParser;
+import org.eclipse.rdf4j.rio.RDFParserFactory;
+import org.eclipse.rdf4j.rio.RDFParserRegistry;
+import org.eclipse.rdf4j.rio.RDFWriter;
+import org.eclipse.rdf4j.rio.RDFWriterFactory;
+import org.eclipse.rdf4j.rio.RDFWriterRegistry;
+import org.eclipse.rdf4j.rio.helpers.StatementCollector;
+import org.eclipse.rdf4j.sail.SailException;
 
 import com.bigdata.BigdataStatics;
 import com.bigdata.journal.IIndexManager;
@@ -180,7 +180,7 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
        boolean ok = false;
        final BigdataSail sail = new BigdataSail(namespace,indexManager);
        try {
-           sail.initialize();
+           sail.init();
            sail.create(properties);
         if(log.isInfoEnabled())
         	log.info("Created tripleStore: " + namespace);
@@ -254,7 +254,7 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
         {
             final BigdataSail sail = new BigdataSail(lnamespace, indexManager);
             try {
-                sail.initialize();
+                sail.init();
                 final BigdataSailConnection con = sail.getUnisolatedConnection();
                 try {
                     final AbstractTripleStore tripleStore = con.getTripleStore();
@@ -552,12 +552,12 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
    /**
     * Count matches of the triple pattern.
     */
-   static protected int countMatches(final Graph g, final Resource s,
-           final URI p, final Value o) {
+   static protected int countMatches(final Model g, final Resource s,
+           final IRI p, final Value o) {
 
        int n = 0;
 
-       final Iterator<Statement> itr = g.match(s, p, o);
+       final Iterator<Statement> itr = g.filter(s, p, o).iterator();
 
        while (itr.hasNext()) {
 
@@ -574,12 +574,12 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
    /**
     * Return the statements matching the triple pattern.
     */
-   static protected Statement[] getMatches(final Graph g, final Resource s,
-           final URI p, final Value o) {
+   static protected Statement[] getMatches(final Model g, final Resource s,
+           final IRI p, final Value o) {
 
        final List<Statement> out = new LinkedList<Statement>();
 
-       final Iterator<Statement> itr = g.match(s, p, o);
+       final Iterator<Statement> itr = g.filter(s, p, o).iterator();
 
        while (itr.hasNext()) {
 
@@ -594,7 +594,7 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
    /**
     * Compare two graphs for equality.
     * <p>
-    * Note: This is not very efficient if the {@link Graph} implementations are
+    * Note: This is not very efficient if the {@link Model} implementations are
     * not indexed.
     * <p>
     * Note: This does not handle equality testing with blank nodes (it does not
@@ -604,7 +604,7 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
     * @param actual
     * @throws Exception
     */
-  static protected void assertSameGraph(final Graph expected,
+  static protected void assertSameGraph(final Model expected,
         final IPreparedGraphQuery actual) throws Exception {
 
      assertSameGraph(expected, asGraph(actual));
@@ -614,7 +614,7 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
   /**
    * Compare two graphs for equality.
    * <p>
-   * Note: This is not very efficient if the {@link Graph} implementations are
+   * Note: This is not very efficient if the {@link Model} implementations are
    * not indexed.
    * <p>
    * Note: This does not handle equality testing with blank nodes (it does not
@@ -623,7 +623,7 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
    * @param expected
    * @param actual
    */
-  static protected void assertSameGraph(final Graph expected, final Graph actual) {
+  static protected void assertSameGraph(final Model expected, final Model actual) {
 
      for (Statement s : expected) {
 
@@ -647,14 +647,14 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
    * 
    * @throws Exception
    */
-  static protected Graph asGraph(final IPreparedGraphQuery preparedQuery)
+  static protected Model asGraph(final IPreparedGraphQuery preparedQuery)
         throws Exception {
 
      final GraphQueryResult result = preparedQuery.evaluate();
 
      try {
 
-        final Graph g = new LinkedHashModel();
+        final Model g = new LinkedHashModel();
 
         while (result.hasNext()) {
 
@@ -676,10 +676,10 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
    * @deprecated by {@link #asGraph(IPreparedGraphQuery)} which can ensure that
    *             the {@link GraphQueryResult} is closed.
    */
-  static protected Graph asGraph(final GraphQueryResult result) throws Exception {
+  static protected Model asGraph(final GraphQueryResult result) throws Exception {
 
      try {
-        final Graph g = new LinkedHashModel();
+        final Model g = new LinkedHashModel();
 
         while (result.hasNext()) {
 
@@ -731,10 +731,10 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
     protected byte[] genNTRIPLES(final int ntriples, final RDFFormat format)
             throws RDFHandlerException {
 
-        final Graph g = genNTRIPLES2(ntriples);
+        final Model g = genNTRIPLES2(ntriples);
         
         final RDFWriterFactory writerFactory = RDFWriterRegistry.getInstance()
-                .get(format);
+                .get(format).orElse(null);
 
         if (writerFactory == null)
             fail("RDFWriterFactory not found: format=" + format);
@@ -757,21 +757,21 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
         
     }
     
-    protected Graph genNTRIPLES2(final int ntriples)
+    protected Model genNTRIPLES2(final int ntriples)
 			throws RDFHandlerException {
 
-		final Graph g = new LinkedHashModel();
+		final Model g = new LinkedHashModel();
 
-		final ValueFactory f = new ValueFactoryImpl();
+		final ValueFactory f = SimpleValueFactory.getInstance();
 
-		final URI s = f.createURI("http://www.bigdata.org/b");
+		final IRI s = f.createIRI("http://www.bigdata.org/b");
 
-		final URI rdfType = f
-				.createURI("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
+		final IRI rdfType = f
+				.createIRI("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
 
 		for (int i = 0; i < ntriples; i++) {
 
-			final URI o = f.createURI("http://www.bigdata.org/c#" + i);
+			final IRI o = f.createIRI("http://www.bigdata.org/c#" + i);
 
 			g.add(s, rdfType, o);
 
@@ -816,7 +816,7 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
 
         }
         
-        return new LiteralImpl(sb.toString());
+        return org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral(sb.toString());
         
     }
 
@@ -886,10 +886,10 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
 
     protected long doDeleteWithAccessPath(//
 //            final String servlet,//
-            final URI s,//
-            final URI p,//
+            final IRI s,//
+            final IRI p,//
             final Value o,//
-            final URI... c//
+            final IRI... c//
             ) throws Exception {
     	
     	final RemoveOp remove = new RemoveOp(s, p, o, c);
@@ -986,12 +986,12 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
 
     }
     
-    protected static Graph readGraphFromFile(final File file) throws RDFParseException, RDFHandlerException, IOException {
+    protected static Model readGraphFromFile(final File file) throws RDFParseException, RDFHandlerException, IOException {
         
-        final RDFFormat format = RDFFormat.forFileName(file.getName());
+        final RDFFormat format = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(file.getName());
         
         final RDFParserFactory rdfParserFactory = RDFParserRegistry
-                .getInstance().get(format);
+                .getInstance().get(format).orElse(null);
 
         if (rdfParserFactory == null) {
             throw new RuntimeException("Parser not found: file=" + file
@@ -1001,14 +1001,13 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
         final RDFParser rdfParser = rdfParserFactory
                 .getParser();
 
-        rdfParser.setValueFactory(new ValueFactoryImpl());
+        rdfParser.setValueFactory(SimpleValueFactory.getInstance());
 
-        rdfParser.setVerifyData(true);
+        com.bigdata.rdf.rio.RDFParserOptions.setVerifyData(rdfParser, true);
 
-        rdfParser.setStopAtFirstError(true);
+        
 
-        rdfParser
-                .setDatatypeHandling(RDFParser.DatatypeHandling.IGNORE);
+        com.bigdata.rdf.rio.RDFParserOptions.setDatatypeHandling(rdfParser, com.bigdata.rdf.rio.DatatypeHandling.IGNORE);
 
         final StatementCollector rdfHandler = new StatementCollector();
         
@@ -1026,7 +1025,7 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
             r.close();
         }
         
-        final Graph g = new LinkedHashModel();
+        final Model g = new LinkedHashModel();
         
         g.addAll(rdfHandler.getStatements());
 
@@ -1046,11 +1045,11 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
      * 
      * @throws RDFHandlerException
      */
-    static protected byte[] writeOnBuffer(final RDFFormat format, final Graph g)
+    static protected byte[] writeOnBuffer(final RDFFormat format, final Model g)
             throws RDFHandlerException {
 
         final RDFWriterFactory writerFactory = RDFWriterRegistry.getInstance()
-                .get(format);
+                .get(format).orElse(null);
 
         if (writerFactory == null)
             fail("RDFWriterFactory not found: format=" + format);
@@ -1081,12 +1080,12 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
      * 
      * @return The graph.
      */
-    protected Graph loadGraphFromResource(final String resource)
+    protected Model loadGraphFromResource(final String resource)
             throws RDFParseException, RDFHandlerException, IOException {
 
-//        final RDFFormat rdfFormat = RDFFormat.forFileName(resource);
+//        final RDFFormat rdfFormat = com.bigdata.rdf.rio.RDF4JFormatUtil.forFileName(resource);
 
-        final Graph g = readGraphFromFile(new File(resource));
+        final Model g = readGraphFromFile(new File(resource));
 
         return g;
 
@@ -1103,8 +1102,8 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
      * @throws Exception
      */
     protected long doInsertByBody(final String method,
-            /*final String servlet,*/ final RDFFormat rdfFormat, final Graph g,
-            final URI defaultContext) throws Exception {
+            /*final String servlet,*/ final RDFFormat rdfFormat, final Model g,
+            final IRI defaultContext) throws Exception {
 
         final byte[] wireData = writeOnBuffer(rdfFormat, g);
 
@@ -1154,17 +1153,17 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
     protected void doDescribeTest(final String method, final RDFFormat format)
             throws Exception {
         
-        final URI mike = new URIImpl(BD.NAMESPACE + "Mike");
-        final URI bryan = new URIImpl(BD.NAMESPACE + "Bryan");
-        final URI person = new URIImpl(BD.NAMESPACE + "Person");
-        final URI likes = new URIImpl(BD.NAMESPACE + "likes");
-        final URI rdf = new URIImpl(BD.NAMESPACE + "RDF");
-        final URI rdfs = new URIImpl(BD.NAMESPACE + "RDFS");
-        final Literal label1 = new LiteralImpl("Mike");
-        final Literal label2 = new LiteralImpl("Bryan");
+        final IRI mike = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Mike");
+        final IRI bryan = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Bryan");
+        final IRI person = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Person");
+        final IRI likes = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "likes");
+        final IRI rdf = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "RDF");
+        final IRI rdfs = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "RDFS");
+        final Literal label1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Mike");
+        final Literal label2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Bryan");
 
       {
-         final Graph g = new LinkedHashModel();
+         final Model g = new LinkedHashModel();
          g.add(mike, RDF.TYPE, person);
          g.add(mike, likes, rdf);
          g.add(mike, RDFS.LABEL, label1);
@@ -1176,11 +1175,11 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
       }
 
         // The expected results.
-        final Graph expected = new LinkedHashModel();
+        final Model expected = new LinkedHashModel();
         {
-            expected.add(new StatementImpl(mike, likes, rdf));
-            expected.add(new StatementImpl(mike, RDF.TYPE, person));
-            expected.add(new StatementImpl(mike, RDFS.LABEL, label1));
+            expected.add(SimpleValueFactory.getInstance().createStatement(mike, likes, rdf));
+            expected.add(SimpleValueFactory.getInstance().createStatement(mike, RDF.TYPE, person));
+            expected.add(SimpleValueFactory.getInstance().createStatement(mike, RDFS.LABEL, label1));
         }
         
         // Run the query and verify the results.
@@ -1209,17 +1208,17 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
     */
     protected void setupDataOnServer() throws Exception {
         
-        final URI mike = new URIImpl(BD.NAMESPACE + "Mike");
-        final URI bryan = new URIImpl(BD.NAMESPACE + "Bryan");
-        final URI person = new URIImpl(BD.NAMESPACE + "Person");
-        final URI likes = new URIImpl(BD.NAMESPACE + "likes");
-        final URI rdf = new URIImpl(BD.NAMESPACE + "RDF");
-        final URI rdfs = new URIImpl(BD.NAMESPACE + "RDFS");
-        final Literal label1 = new LiteralImpl("Mike");
-        final Literal label2 = new LiteralImpl("Bryan");
+        final IRI mike = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Mike");
+        final IRI bryan = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Bryan");
+        final IRI person = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Person");
+        final IRI likes = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "likes");
+        final IRI rdf = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "RDF");
+        final IRI rdfs = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "RDFS");
+        final Literal label1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Mike");
+        final Literal label2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Bryan");
 
       {
-         final Graph g = new LinkedHashModel();
+         final Model g = new LinkedHashModel();
          g.add(mike, RDF.TYPE, person);
          g.add(mike, likes, rdf);
          g.add(mike, RDFS.LABEL, label1);
@@ -1238,20 +1237,20 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
      */
     protected void setupQuadsDataOnServer() throws Exception {
         
-        final URI mike = new URIImpl(BD.NAMESPACE + "Mike");
-        final URI bryan = new URIImpl(BD.NAMESPACE + "Bryan");
-        final URI person = new URIImpl(BD.NAMESPACE + "Person");
-        final URI likes = new URIImpl(BD.NAMESPACE + "likes");
-        final URI rdf = new URIImpl(BD.NAMESPACE + "RDF");
-        final URI rdfs = new URIImpl(BD.NAMESPACE + "RDFS");
-        final URI c1 = new URIImpl(BD.NAMESPACE + "c1");
-        final URI c2 = new URIImpl(BD.NAMESPACE + "c2");
-        final URI c3 = new URIImpl(BD.NAMESPACE + "c3");
-        final Literal label1 = new LiteralImpl("Mike");
-        final Literal label2 = new LiteralImpl("Bryan");
+        final IRI mike = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Mike");
+        final IRI bryan = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Bryan");
+        final IRI person = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Person");
+        final IRI likes = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "likes");
+        final IRI rdf = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "RDF");
+        final IRI rdfs = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "RDFS");
+        final IRI c1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "c1");
+        final IRI c2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "c2");
+        final IRI c3 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "c3");
+        final Literal label1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Mike");
+        final Literal label2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Bryan");
 
       {
-         final Graph g = new LinkedHashModel();
+         final Model g = new LinkedHashModel();
          g.add(mike, RDF.TYPE, person, c1, c2, c3);
          g.add(mike, likes, rdf, c1, c2, c3);
          g.add(mike, RDFS.LABEL, label1, c1, c2, c3);
@@ -1267,17 +1266,17 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
             throws Exception {
         
         setupDataOnServer();
-        final URI mike = new URIImpl(BD.NAMESPACE + "Mike");
-        final URI bryan = new URIImpl(BD.NAMESPACE + "Bryan");
-        final URI person = new URIImpl(BD.NAMESPACE + "Person");
+        final IRI mike = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Mike");
+        final IRI bryan = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Bryan");
+        final IRI person = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + "Person");
 
         // The expected results.
-        final Graph expected = new LinkedHashModel();
+        final Model expected = new LinkedHashModel();
         {
-//            expected.add(new StatementImpl(mike, likes, rdf));
-            expected.add(new StatementImpl(mike, RDF.TYPE, person));
-            expected.add(new StatementImpl(bryan, RDF.TYPE, person));
-//            expected.add(new StatementImpl(mike, RDFS.LABEL, label1));
+//            expected.add(SimpleValueFactory.getInstance().createStatement(mike, likes, rdf));
+            expected.add(SimpleValueFactory.getInstance().createStatement(mike, RDF.TYPE, person));
+            expected.add(SimpleValueFactory.getInstance().createStatement(bryan, RDF.TYPE, person));
+//            expected.add(SimpleValueFactory.getInstance().createStatement(mike, RDFS.LABEL, label1));
         }
         
         // Run the query and verify the results.
@@ -1295,7 +1294,7 @@ public abstract class AbstractTestNanoSparqlClient<S extends IIndexManager> exte
 
             final IPreparedGraphQuery query = m_repo.prepareGraphQuery(queryStr);
 
-//            final Graph actual = asGraph(query.evaluate());
+//            final Model actual = asGraph(query.evaluate());
 
             assertSameGraph(expected, query);
             

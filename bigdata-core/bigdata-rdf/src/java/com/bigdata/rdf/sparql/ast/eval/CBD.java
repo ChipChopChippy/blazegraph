@@ -26,16 +26,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package com.bigdata.rdf.sparql.ast.eval;
 
-import info.aduna.iteration.CloseableIteration;
+import org.eclipse.rdf4j.common.iteration.CloseableIteration;
 
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.algebra.evaluation.iterator.CollectionIteration;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.common.iteration.CloseableIteratorIteration;
 
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.bop.bindingSet.ListBindingSet;
@@ -70,7 +71,7 @@ import com.bigdata.rdf.store.AbstractTripleStore;
  */
 public class CBD {
 
-    private static final Logger log = Logger.getLogger(CBD.class);
+    private static final Logger log = LogManager.getLogger(CBD.class);
    
     /** The {@link AbstractTripleStore}. */
     private final AbstractTripleStore store;
@@ -195,8 +196,8 @@ public class CBD {
      * 
      * @throws QueryEvaluationException
      */
-    CloseableIteration<BigdataStatement, QueryEvaluationException> computeClosure(
-            CloseableIteration<BigdataStatement, QueryEvaluationException> src)
+    CloseableIteration<BigdataStatement> computeClosure(
+            CloseableIteration<BigdataStatement> src)
             throws QueryEvaluationException {
 
         // Round ZERO (0) is the top-level describe.
@@ -280,8 +281,7 @@ public class CBD {
          * top-level DESCRIBE query.
          */
 
-        return new CollectionIteration<BigdataStatement, QueryEvaluationException>(
-                stmts);
+        return new CloseableIteratorIteration<>(stmts.iterator());
 
     }
 
@@ -381,7 +381,7 @@ public class CBD {
      * @throws QueryEvaluationException
      */
     private static Set<IV<?, ?>> consumeStatements(
-            final CloseableIteration<BigdataStatement, QueryEvaluationException> src,
+            final CloseableIteration<BigdataStatement> src,
             final Set<BigdataStatement> stmts, final Set<IV<?, ?>> bnodes_tm1)
             throws QueryEvaluationException {
 
@@ -451,7 +451,7 @@ public class CBD {
      *         be read.
      * @throws QueryEvaluationException
      */
-    private CloseableIteration<BigdataStatement, QueryEvaluationException> doRound(
+    private CloseableIteration<BigdataStatement> doRound(
             final Set<IV<?, ?>> bnodeIVs) throws QueryEvaluationException {
 
         /*
@@ -485,13 +485,13 @@ public class CBD {
                 && !optimizedQuery.hasSlice();
 
         // Solutions to the WHERE clause (as projected).
-        final CloseableIteration<BindingSet, QueryEvaluationException> solutions = ASTEvalHelper
+        final CloseableIteration<BindingSet> solutions = ASTEvalHelper
                 .evaluateQuery(astContainer, context, materializeProjectionInQuery//
                         , optimizedQuery.getProjection().getProjectionVars()//
                 );
 
         // Constructed Statements.
-        final CloseableIteration<BigdataStatement, QueryEvaluationException> src =
+        final CloseableIteration<BigdataStatement> src =
                 new ASTConstructIterator(context, store, //
                         optimizedQuery.getConstruct(), //
                         optimizedQuery.getWhereClause(),//

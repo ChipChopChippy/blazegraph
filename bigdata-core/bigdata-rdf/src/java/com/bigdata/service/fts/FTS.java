@@ -24,8 +24,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.service.fts;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.rdf.store.BDS;
 
@@ -69,7 +69,7 @@ import com.bigdata.rdf.store.BDS;
  *   ?res fts:endpoint  "http://my.external.solr.endpoint:5656" .
  *   ?res fts:endpointType  "Solr" .
  *   ?res fts:params "defType=dismax&bf=uses^50" .
- *   ?res fts:searchResultType "URI" .
+ *   ?res fts:searchResultType "IRI" .
  *   ?res fts:score ?score .
  *   ?res fts:snippet ?snippet . 
  * }
@@ -203,10 +203,10 @@ public interface FTS {
 
    /**
     * Target type for extracted entities, determining whether they are
-    * parsed into a literal or interpreted as a URI.
+    * parsed into a literal or interpreted as a IRI.
     */
    public static enum SearchResultType {
-      URI,
+      IRI,
       LITERAL
    }
        
@@ -234,7 +234,7 @@ public interface FTS {
     * You may want to use {@link FTS#RESULT_FIELD} to fix the result field
     * that is mapped to the result variable.
     */
-   final URI SEARCH = new URIImpl(NAMESPACE + "search");
+   final IRI SEARCH = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "search");
     
    /**
     * Magic predicate used to specify the Solr endpoint to be queried. If not
@@ -254,7 +254,7 @@ public interface FTS {
     * The endpoint must be provided as a literal, including protocol, IP or
     * hostname, and port to be queried.
     */
-   final URI ENDPOINT = new URIImpl(NAMESPACE + "endpoint");
+   final IRI ENDPOINT = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "endpoint");
       
    
    /**
@@ -275,7 +275,7 @@ public interface FTS {
     * The endpoint must be provided as a literal, according to the 
     * {@link EndpointType} enum values.
     */
-   final URI ENDPOINT_TYPE = new URIImpl(NAMESPACE + "endpointType");
+   final IRI ENDPOINT_TYPE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "endpointType");
 
    
    
@@ -296,14 +296,14 @@ public interface FTS {
     * The params need to be a correct string according to Solr specifications
     * and it must be provided as a literal.
     */
-   final URI PARAMS = new URIImpl(NAMESPACE + "params");
+   final IRI PARAMS = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "params");
     
    /**
     * Magic predicate used to specify the type of the values stored in the Solr
     * field or fields from which data is extracted (the latter one being
     * specified as part of the PARAMS predicate above. If there are multiple
     * output fields, all of the will be included and the type specified refers
-    * to all of them. Default is URI, which converts the field into a URI; if
+    * to all of them. Default is IRI, which converts the field into a IRI; if
     * conversion fails, the value is ignored. 
     * <p>
     * 
@@ -317,10 +317,10 @@ public interface FTS {
     * 
     * </pre>
     * 
-    * Allowed values are "URI" and "LITERAL"; if none of these values is
+    * Allowed values are "IRI" and "LITERAL"; if none of these values is
     * provided, the {@value #DEFAULT_SEARCH_RESULT_TYPE} will be used.
     */   
-   final URI SEARCH_RESULT_TYPE = new URIImpl(NAMESPACE + "searchResultType");
+   final IRI SEARCH_RESULT_TYPE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "searchResultType");
 
    /**
     * Magic predicate used to query for free text search metadata to set a
@@ -343,7 +343,7 @@ public interface FTS {
     * Timeout specified in milliseconds, as literal. If not specified or not
     * a valid integer, the {@value #DEFAULT_TIMEOUT} is used.
     */
-   final URI TIMEOUT = new URIImpl(NAMESPACE + "timeout");
+   final IRI TIMEOUT = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "timeout");
 
    
    /**
@@ -368,7 +368,7 @@ public interface FTS {
     * to fix the result field that is mapped to the score variable.
     * 
     */
-   final URI SCORE = new URIImpl(NAMESPACE + "score");
+   final IRI SCORE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "score");
 
    /**
     * Magic predicate to indicate the output variable in which a sample
@@ -390,7 +390,7 @@ public interface FTS {
     * In order to use this, you need to set {@link FTS#SNIPPET_FIELD} to fix
     * the result field that is mapped to the snippet variable.
     */
-   final URI SNIPPET = new URIImpl(NAMESPACE + "snippet");
+   final IRI SNIPPET = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "snippet");
    
    /**
     * Magic predicate to indicate the external search service result field
@@ -406,7 +406,7 @@ public interface FTS {
     * 
     * </pre>
     */
-   final URI SEARCH_FIELD = new URIImpl(NAMESPACE + "searchField");
+   final IRI SEARCH_FIELD = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "searchField");
    
    /**
     * Magic predicate to indicate the external search service field whose
@@ -422,7 +422,7 @@ public interface FTS {
     * 
     * </pre>
     */
-   final URI SNIPPET_FIELD = new URIImpl(NAMESPACE + "snippetField");
+   final IRI SNIPPET_FIELD = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "snippetField");
    
    /**
     * Magic predicate to indicate the external search service field whose
@@ -438,7 +438,7 @@ public interface FTS {
     * 
     * </pre>
     */
-   final URI SCORE_FIELD = new URIImpl(NAMESPACE + "scoreField");   
+   final IRI SCORE_FIELD = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(NAMESPACE + "scoreField");   
 
    /**
     * Configuration property starting with FTS_CUSTOM_TYPE can be used to specify

@@ -25,17 +25,17 @@ package com.bigdata.rdf.sail;
 
 import java.util.Properties;
 
-import org.openrdf.model.BNode;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.BNodeImpl;
-import org.openrdf.model.impl.ContextStatementImpl;
-import org.openrdf.model.impl.StatementImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryResult;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleBNode;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryResult;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.model.BigdataStatement;
@@ -77,20 +77,20 @@ public class TestReadWriteTransactions extends ProxyBigdataSailTestCase {
         
     }
     
-    private URI uri(String s) {
-        return new URIImpl(BD.NAMESPACE + s);
+    private IRI uri(String s) {
+        return org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(BD.NAMESPACE + s);
     }
     
     private BNode bnode(String id) {
-        return new BNodeImpl(id);
+        return org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createBNode(id);
     }
     
-    private Statement stmt(Resource s, URI p, Value o) {
-        return new StatementImpl(s, p, o);
+    private Statement stmt(Resource s, IRI p, Value o) {
+        return SimpleValueFactory.getInstance().createStatement(s, p, o);
     }
     
-    private Statement stmt(Resource s, URI p, Value o, Resource c) {
-        return new ContextStatementImpl(s, p, o, c);
+    private Statement stmt(Resource s, IRI p, Value o, Resource c) {
+        return SimpleValueFactory.getInstance().createStatement(s, p, o, c);
     }
     
     /**
@@ -102,7 +102,7 @@ public class TestReadWriteTransactions extends ProxyBigdataSailTestCase {
         // final LocalTripleStore store = (LocalTripleStore) getStore();
         final BigdataSail sail = getSail();
         try {
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         final BigdataSailRepositoryConnection isolated = 
             (BigdataSailRepositoryConnection) repo.getReadWriteConnection();
@@ -120,7 +120,7 @@ public class TestReadWriteTransactions extends ProxyBigdataSailTestCase {
         try {
 
             // final long s = 1, p = 2, o = 3;
-            final URI s = uri("a"), p = uri("b"), o = uri("c");
+            final IRI s = uri("a"), p = uri("b"), o = uri("c");
 
             // add the statement.
 //            store.addStatements(new SPO[] { //
@@ -192,7 +192,7 @@ public class TestReadWriteTransactions extends ProxyBigdataSailTestCase {
 //        final LocalTripleStore store = (LocalTripleStore) getStore();
         final BigdataSail sail = getSail();
         try {
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         final RepositoryConnection store = repo.getReadWriteConnection();
         store.setAutoCommit(false);
@@ -201,7 +201,7 @@ public class TestReadWriteTransactions extends ProxyBigdataSailTestCase {
         store.rollback();
         
 //        final long s = 1, p = 2, o = 3;
-        final URI s = uri("a"), p = uri("b"), o = uri("c");
+        final IRI s = uri("a"), p = uri("b"), o = uri("c");
 
         try {
             
@@ -237,7 +237,7 @@ public class TestReadWriteTransactions extends ProxyBigdataSailTestCase {
         // final LocalTripleStore store = (LocalTripleStore) getStore();
         final BigdataSail sail = getSail();
         try {
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         final RepositoryConnection tx1 = repo.getReadWriteConnection();
         tx1.setAutoCommit(false);
@@ -247,11 +247,11 @@ public class TestReadWriteTransactions extends ProxyBigdataSailTestCase {
         try {
 
             // final long s = 1, p = 2, o = 3;
-            final URI s = uri("a"), p = uri("b"), o = uri("c");
+            final IRI s = uri("a"), p = uri("b"), o = uri("c");
 
             final BNode sid1 = bnode("1"), sid2 = bnode("2");
 
-            final URI author = uri("author"), mike = uri("mike"), bryan = uri("bryan");
+            final IRI author = uri("author"), mike = uri("mike"), bryan = uri("bryan");
             
             // add the statement.
 //            store.addStatements(new SPO[] { //
@@ -326,7 +326,7 @@ public class TestReadWriteTransactions extends ProxyBigdataSailTestCase {
 //    public void test_stress() throws Exception {
 //        
 //        final BigdataSail sail = getSail();
-//        sail.initialize();
+//        sail.init();
 //        final BigdataSailRepository repo = new BigdataSailRepository(sail);
 //
 //        try {

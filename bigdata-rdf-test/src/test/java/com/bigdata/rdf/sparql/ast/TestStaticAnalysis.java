@@ -29,12 +29,13 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.bop.BOpUtility;
 import com.bigdata.bop.IBindingSet;
@@ -79,7 +80,7 @@ import com.bigdata.rdf.vocab.decls.FOAFVocabularyDecl;
  */
 public class TestStaticAnalysis extends AbstractASTEvaluationTestCase {
 
-    private final static Logger log = Logger
+    private final static Logger log = LogManager
             .getLogger(TestStaticAnalysis.class);
     
     /**
@@ -1161,7 +1162,7 @@ public class TestStaticAnalysis extends AbstractASTEvaluationTestCase {
          
             endpoint1 = (ServiceNode) whereClause.get(0);
             
-            assertEquals(endpoint1.getServiceRef().getValue(), new URIImpl(
+            assertEquals(endpoint1.getServiceRef().getValue(), org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                     "http://localhost:18080/openrdf/repositories/endpoint1"));
 
             optionalGroup = (JoinGroupNode) whereClause.get(1);
@@ -1170,7 +1171,7 @@ public class TestStaticAnalysis extends AbstractASTEvaluationTestCase {
 
             endpoint2 = (ServiceNode) optionalGroup.get(0);
             
-            assertEquals(endpoint2.getServiceRef().getValue(), new URIImpl(
+            assertEquals(endpoint2.getServiceRef().getValue(), org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                     "http://localhost:18080/openrdf/repositories/endpoint2"));
 
 //            final Iterator<ServiceNode> itr = BOpUtility.visitAll(
@@ -1178,12 +1179,12 @@ public class TestStaticAnalysis extends AbstractASTEvaluationTestCase {
 //            
 //            endpoint1 = itr.next();
 //            
-//            assertEquals(endpoint1.getServiceRef().getValue(), new URIImpl(
+//            assertEquals(endpoint1.getServiceRef().getValue(), org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
 //                    "http://localhost:18080/openrdf/repositories/endpoint1"));
 //
 //            endpoint2 = itr.next();
 //            
-//            assertEquals(endpoint2.getServiceRef().getValue(), new URIImpl(
+//            assertEquals(endpoint2.getServiceRef().getValue(), org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
 //                    "http://localhost:18080/openrdf/repositories/endpoint2"));
 //            
 //            assertFalse(itr.hasNext());
@@ -1475,8 +1476,8 @@ public class TestStaticAnalysis extends AbstractASTEvaluationTestCase {
      */
     public void test_static_analysis_getMaybeProducedBindings() {
 
-        final IV<?, ?> p = makeIV(new URIImpl("http://example/p"));
-        final IV<?, ?> q = makeIV(new URIImpl("http://example/q"));
+        final IV<?, ?> p = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/p"));
+        final IV<?, ?> q = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/q"));
 
         // The source AST.
         final QueryRoot queryRoot = new QueryRoot(QueryType.SELECT);
@@ -1606,8 +1607,8 @@ public class TestStaticAnalysis extends AbstractASTEvaluationTestCase {
      */
     public void test_static_analysis_minus_sharedVariables() {
         
-        final IV<?,?> p = makeIV(new URIImpl("http://example/p"));
-        final IV<?,?> q = makeIV(new URIImpl("http://example/q"));
+        final IV<?,?> p = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/p"));
+        final IV<?,?> q = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/q"));
 
         // The source AST.
         final QueryRoot queryRoot = new QueryRoot(QueryType.SELECT);
@@ -1836,9 +1837,9 @@ public class TestStaticAnalysis extends AbstractASTEvaluationTestCase {
      */
     public void test_static_analysis_minus_and_optional() {
         
-        final IV<?,?> p = makeIV(new URIImpl("http://example/p"));
-        final IV<?,?> q = makeIV(new URIImpl("http://example/q"));
-        final IV<?, ?> three = makeIV(new LiteralImpl("3.0", XSD.DECIMAL));
+        final IV<?,?> p = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/p"));
+        final IV<?,?> q = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/q"));
+        final IV<?, ?> three = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("3.0", XSD.DECIMAL));
 
         // The source AST.
         final QueryRoot queryRoot = new QueryRoot(QueryType.SELECT);
@@ -2062,9 +2063,9 @@ public class TestStaticAnalysis extends AbstractASTEvaluationTestCase {
      */
     public void test_static_analysis_subGroups_and_optional() {
         
-        final IV<?,?> p = makeIV(new URIImpl("http://example/p"));
-        final IV<?,?> q = makeIV(new URIImpl("http://example/q"));
-        final IV<?, ?> three = makeIV(new LiteralImpl("3.0", XSD.DECIMAL));
+        final IV<?,?> p = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/p"));
+        final IV<?,?> q = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example/q"));
+        final IV<?, ?> three = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("3.0", XSD.DECIMAL));
 
         // The source AST.
         final QueryRoot queryRoot = new QueryRoot(QueryType.SELECT);
@@ -2350,17 +2351,17 @@ public class TestStaticAnalysis extends AbstractASTEvaluationTestCase {
         @SuppressWarnings("rawtypes")
         final IV a = makeIV(RDF.TYPE);
         @SuppressWarnings("rawtypes")
-        final IV polititian = makeIV(new URIImpl("http://www.rdfabout.com/rdf/schema/politico/Politician"));
+        final IV polititian = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.rdfabout.com/rdf/schema/politico/Politician"));
         @SuppressWarnings("rawtypes")
-        final IV name = makeIV(new URIImpl("http://www.rdfabout.com/rdf/schema/usgovt/name"));
+        final IV name = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.rdfabout.com/rdf/schema/usgovt/name"));
         @SuppressWarnings("rawtypes")
-        final IV sponsor = makeIV(new URIImpl("http://www.rdfabout.com/rdf/schema/usgovt/sponsor"));
+        final IV sponsor = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.rdfabout.com/rdf/schema/usgovt/sponsor"));
         @SuppressWarnings("rawtypes")
-        final IV title = makeIV(new URIImpl("http://www.rdfabout.com/rdf/schema/usgovt/title"));
+        final IV title = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.rdfabout.com/rdf/schema/usgovt/title"));
         @SuppressWarnings("rawtypes")
-        final IV N = makeIV(new URIImpl("http://www.w3.org/2001/vcard-rdf/3.0#N"));
+        final IV N = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.w3.org/2001/vcard-rdf/3.0#N"));
         @SuppressWarnings("rawtypes")
-        final IV family = makeIV(new URIImpl("http://www.w3.org/2001/vcard-rdf/3.0#Family"));
+        final IV family = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.w3.org/2001/vcard-rdf/3.0#Family"));
 
         // The source AST.
         final QueryRoot queryRoot = new QueryRoot(QueryType.SELECT);
@@ -2787,9 +2788,9 @@ public class TestStaticAnalysis extends AbstractASTEvaluationTestCase {
         @SuppressWarnings("rawtypes")
         final IV foafPerson = makeIV(FOAFVocabularyDecl.Person);
         @SuppressWarnings("rawtypes")
-        final IV age = makeIV(new URIImpl("http://example.org/age"));
+        final IV age = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/age"));
         @SuppressWarnings("rawtypes")
-        final IV grade = makeIV(new URIImpl("http://example.org/grade"));
+        final IV grade = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/grade"));
 
         // The source AST.
         QueryRoot queryRoot = new QueryRoot(QueryType.SELECT);
@@ -2919,9 +2920,9 @@ public class TestStaticAnalysis extends AbstractASTEvaluationTestCase {
         @SuppressWarnings("rawtypes")
         final IV foafPerson = makeIV(FOAFVocabularyDecl.Person);
         @SuppressWarnings("rawtypes")
-        final IV age = makeIV(new URIImpl("http://example.org/age"));
+        final IV age = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/age"));
         @SuppressWarnings("rawtypes")
-        final IV grade = makeIV(new URIImpl("http://example.org/grade"));
+        final IV grade = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/grade"));
 
         // The source AST.
         QueryRoot queryRoot = new QueryRoot(QueryType.SELECT);
@@ -3087,9 +3088,9 @@ public class TestStaticAnalysis extends AbstractASTEvaluationTestCase {
         @SuppressWarnings("rawtypes")
         final IV foafPerson = makeIV(FOAFVocabularyDecl.Person);
         @SuppressWarnings("rawtypes")
-        final IV age = makeIV(new URIImpl("http://example.org/age"));
+        final IV age = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/age"));
         @SuppressWarnings("rawtypes")
-        final IV grade = makeIV(new URIImpl("http://example.org/grade"));
+        final IV grade = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/grade"));
 
         // The source AST.
         QueryRoot queryRoot = new QueryRoot(QueryType.SELECT);
@@ -3223,9 +3224,9 @@ public class TestStaticAnalysis extends AbstractASTEvaluationTestCase {
         @SuppressWarnings("rawtypes")
         final IV foafPerson = makeIV(FOAFVocabularyDecl.Person);
         @SuppressWarnings("rawtypes")
-        final IV age = makeIV(new URIImpl("http://example.org/age"));
+        final IV age = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/age"));
         @SuppressWarnings("rawtypes")
-        final IV grade = makeIV(new URIImpl("http://example.org/grade"));
+        final IV grade = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/grade"));
 
         // The source AST.
         QueryRoot queryRoot = new QueryRoot(QueryType.SELECT);
@@ -3302,9 +3303,9 @@ public class TestStaticAnalysis extends AbstractASTEvaluationTestCase {
         @SuppressWarnings("rawtypes")
         final IV foafPerson = makeIV(FOAFVocabularyDecl.Person);
         @SuppressWarnings("rawtypes")
-        final IV age = makeIV(new URIImpl("http://example.org/age"));
+        final IV age = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/age"));
         @SuppressWarnings("rawtypes")
-        final IV grade = makeIV(new URIImpl("http://example.org/grade"));
+        final IV grade = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/grade"));
 
         // The source AST.
         QueryRoot queryRoot = new QueryRoot(QueryType.SELECT);
@@ -3379,9 +3380,9 @@ public class TestStaticAnalysis extends AbstractASTEvaluationTestCase {
         @SuppressWarnings("rawtypes")
         final IV foafPerson = makeIV(FOAFVocabularyDecl.Person);
         @SuppressWarnings("rawtypes")
-        final IV age = makeIV(new URIImpl("http://example.org/age"));
+        final IV age = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/age"));
         @SuppressWarnings("rawtypes")
-        final IV grade = makeIV(new URIImpl("http://example.org/grade"));
+        final IV grade = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/grade"));
 
         // The source AST.
         QueryRoot queryRoot = new QueryRoot(QueryType.SELECT);
@@ -3468,11 +3469,11 @@ public class TestStaticAnalysis extends AbstractASTEvaluationTestCase {
         @SuppressWarnings("rawtypes")
         final IV foafPerson = makeIV(FOAFVocabularyDecl.Person);
         @SuppressWarnings("rawtypes")
-        final IV age = makeIV(new URIImpl("http://example.org/age"));
+        final IV age = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/age"));
         @SuppressWarnings("rawtypes")
-        final IV grade = makeIV(new URIImpl("http://example.org/grade"));
+        final IV grade = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/grade"));
         @SuppressWarnings("rawtypes")
-        final IV serviceUri = makeIV(new URIImpl("http://example.org/service"));
+        final IV serviceUri = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/service"));
 
         // The source AST.
         QueryRoot queryRoot = new QueryRoot(QueryType.SELECT);
@@ -3548,11 +3549,11 @@ public class TestStaticAnalysis extends AbstractASTEvaluationTestCase {
 //    public void test_static_analysis_inScope_01() {
 //
 //        @SuppressWarnings("rawtypes")
-//        final IV x = makeIV(new URIImpl("http://example.org/x"));
+//        final IV x = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/x"));
 //        @SuppressWarnings("rawtypes")
-//        final IV p = makeIV(new URIImpl("http://example.org/p"));
+//        final IV p = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://example.org/p"));
 //        @SuppressWarnings("rawtypes")
-//        final IV one = makeIV(new LiteralImpl("1", XSD.INTEGER));
+//        final IV one = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("1", XSD.INTEGER));
 //
 //        // The source AST.
 //        QueryRoot queryRoot = new QueryRoot(QueryType.SELECT);

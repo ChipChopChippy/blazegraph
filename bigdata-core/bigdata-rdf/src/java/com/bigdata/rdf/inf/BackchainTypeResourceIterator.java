@@ -31,8 +31,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.IPredicate;
 import com.bigdata.bop.IVariableOrConstant;
 import com.bigdata.rdf.internal.IV;
@@ -81,7 +82,7 @@ import cutthecrap.utils.striterators.Striterator;
 public class BackchainTypeResourceIterator implements
 		IChunkedOrderedIterator<ISPO> {
 
-	protected static final Logger log = Logger
+	protected static final Logger log = LogManager
 			.getLogger(BackchainTypeResourceIterator.class);
 
 	private final IChunkedOrderedIterator<ISPO> _src;

@@ -28,12 +28,12 @@ import java.util.Properties;
 
 import junit.framework.Test;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.repository.RepositoryConnection;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
 
 import com.bigdata.journal.IIndexManager;
 import com.bigdata.rdf.sail.BigdataSail;
@@ -94,7 +94,7 @@ public class Test_REST_ESTCARD<S extends IIndexManager> extends
 
 		doInsertbyURL("POST", packagePath + "test_estcard.ttl");
 
-		final long rangeCount = m_repo.rangeCount(new URIImpl(
+		final long rangeCount = m_repo.rangeCount(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
 				"http://www.bigdata.com/Mike"),// s
 				null,// p
 				null// o
@@ -137,7 +137,7 @@ public class Test_REST_ESTCARD<S extends IIndexManager> extends
 
 		final long rangeCount = m_repo.rangeCount(null,// s
 				null,// p
-				new LiteralImpl("Mike")// o
+				org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("Mike")// o
 				// null // c
 				);
 
@@ -149,7 +149,7 @@ public class Test_REST_ESTCARD<S extends IIndexManager> extends
 
 		doInsertbyURL("POST", packagePath + "test_estcard.ttl");
 
-		final long rangeCount = m_repo.rangeCount(new URIImpl(
+		final long rangeCount = m_repo.rangeCount(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
 				"http://www.bigdata.com/Mike"),// s,
 				RDF.TYPE,// p
 				null// ,// o
@@ -189,7 +189,7 @@ public class Test_REST_ESTCARD<S extends IIndexManager> extends
 		final long rangeCount = m_repo.rangeCount(null,// s,
 				null,// p
 				null,// o
-				new URIImpl("http://www.bigdata.com/")// c
+				org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/")// c
 				);
 
 		assertEquals(3, rangeCount);
@@ -206,7 +206,7 @@ public class Test_REST_ESTCARD<S extends IIndexManager> extends
 		final long rangeCount = m_repo.rangeCount(null,// s,
 				null,// p
 				null,// o
-				new URIImpl("http://www.bigdata.com/c1")// c
+				org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/c1")// c
 				);
 
 		assertEquals(2, rangeCount);
@@ -220,11 +220,11 @@ public class Test_REST_ESTCARD<S extends IIndexManager> extends
 
 		doInsertbyURL("POST", packagePath + "test_estcard.trig");
 
-		final long rangeCount = m_repo.rangeCount(new URIImpl(
+		final long rangeCount = m_repo.rangeCount(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
 				"http://www.bigdata.com/Mike"),// s,
 				null,// p
 				null,// o
-				new URIImpl("http://www.bigdata.com/c1")// c
+				org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/c1")// c
 				);
 
 		assertEquals(1, rangeCount);

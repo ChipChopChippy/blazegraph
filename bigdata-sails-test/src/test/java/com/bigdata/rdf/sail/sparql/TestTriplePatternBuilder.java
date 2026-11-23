@@ -27,14 +27,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sail.sparql;
 
-import info.aduna.net.ParsedURI;
+import org.eclipse.rdf4j.common.net.ParsedIRI;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.rdf.internal.XSD;
 import com.bigdata.rdf.sail.sparql.ast.ParseException;
@@ -131,7 +131,7 @@ public class TestTriplePatternBuilder extends
         {
 
             final ConstantNode s = new ConstantNode(
-                    makeIV(valueFactory.createURI("http://www.bigdata.com/s")));
+                    makeIV(valueFactory.createIRI("http://www.bigdata.com/s")));
 
             final VarNode p = new VarNode("p");
             
@@ -177,7 +177,7 @@ public class TestTriplePatternBuilder extends
             final VarNode s = new VarNode("s");
             
             final ConstantNode p = new ConstantNode(
-                    makeIV(valueFactory.createURI("http://www.bigdata.com/p")));
+                    makeIV(valueFactory.createIRI("http://www.bigdata.com/p")));
 
             final VarNode o = new VarNode("o");
 
@@ -223,7 +223,7 @@ public class TestTriplePatternBuilder extends
             final VarNode p = new VarNode("p");
             
             final ConstantNode o = new ConstantNode(
-                    makeIV(valueFactory.createURI("http://www.bigdata.com/o")));
+                    makeIV(valueFactory.createIRI("http://www.bigdata.com/o")));
 
             {
                 final Map<String, String> prefixDecls = new LinkedHashMap<String, String>(PrefixDeclProcessor.defaultDecls);
@@ -263,12 +263,12 @@ public class TestTriplePatternBuilder extends
         {
 
             final ConstantNode s = new ConstantNode(
-                    makeIV(valueFactory.createURI("http://www.bigdata.com/s")));
+                    makeIV(valueFactory.createIRI("http://www.bigdata.com/s")));
             
             final VarNode p = new VarNode("p");
             
             final ConstantNode o = new ConstantNode(
-                    makeIV(valueFactory.createURI("http://www.bigdata.com/o")));
+                    makeIV(valueFactory.createIRI("http://www.bigdata.com/o")));
 
             {
                 final Map<String, String> prefixDecls = new LinkedHashMap<String, String>(PrefixDeclProcessor.defaultDecls);
@@ -308,10 +308,10 @@ public class TestTriplePatternBuilder extends
         {
 
             final ConstantNode s = new ConstantNode(
-                    makeIV(valueFactory.createURI("http://www.bigdata.com/s")));
+                    makeIV(valueFactory.createIRI("http://www.bigdata.com/s")));
             
             final ConstantNode p = new ConstantNode(
-                    makeIV(valueFactory.createURI("http://www.bigdata.com/p")));
+                    makeIV(valueFactory.createIRI("http://www.bigdata.com/p")));
 
             final VarNode o = new VarNode("o");
 
@@ -353,13 +353,13 @@ public class TestTriplePatternBuilder extends
         {
 
             final ConstantNode s = new ConstantNode(
-                    makeIV(valueFactory.createURI("http://www.bigdata.com/s")));
+                    makeIV(valueFactory.createIRI("http://www.bigdata.com/s")));
             
             final ConstantNode p = new ConstantNode(
-                    makeIV(valueFactory.createURI("http://www.bigdata.com/p")));
+                    makeIV(valueFactory.createIRI("http://www.bigdata.com/p")));
             
             final ConstantNode o = new ConstantNode(
-                    makeIV(valueFactory.createURI("http://www.bigdata.com/o")));
+                    makeIV(valueFactory.createIRI("http://www.bigdata.com/o")));
 
             final VarNode x = new VarNode("x");
 
@@ -490,10 +490,10 @@ public class TestTriplePatternBuilder extends
         {
 
             final ConstantNode foo = new ConstantNode(
-                    makeIV(valueFactory.createURI("http://www.bigdata.com/foo")));
+                    makeIV(valueFactory.createIRI("http://www.bigdata.com/foo")));
 
             final ConstantNode bar = new ConstantNode(
-                    makeIV(valueFactory.createURI("http://www.bigdata.com/bar")));
+                    makeIV(valueFactory.createIRI("http://www.bigdata.com/bar")));
 
             {
                 final Map<String, String> prefixDecls = new LinkedHashMap<String, String>(PrefixDeclProcessor.defaultDecls);
@@ -588,13 +588,13 @@ public class TestTriplePatternBuilder extends
         {
 
             final ConstantNode foo = new ConstantNode(
-                    makeIV(valueFactory.createURI("http://www.bigdata.com/foo")));
+                    makeIV(valueFactory.createIRI("http://www.bigdata.com/foo")));
 
             final ConstantNode bar = new ConstantNode(
-                    makeIV(valueFactory.createURI("http://www.bigdata.com/bar")));
+                    makeIV(valueFactory.createIRI("http://www.bigdata.com/bar")));
 
             final ConstantNode goo = new ConstantNode(
-                    makeIV(valueFactory.createURI("http://www.bigdata.com/goo")));
+                    makeIV(valueFactory.createIRI("http://www.bigdata.com/goo")));
 
             {
                 final Map<String, String> prefixDecls = new LinkedHashMap<String, String>(PrefixDeclProcessor.defaultDecls);
@@ -720,7 +720,7 @@ public class TestTriplePatternBuilder extends
                 expected.setWhereClause(whereClause);
 
                 final ConstantNode p = new ConstantNode(
-                        makeIV(valueFactory.createURI("http://example.org/p")));
+                        makeIV(valueFactory.createIRI("http://example.org/p")));
                 
                 final ConstantNode v = new ConstantNode(
                         makeIV(valueFactory.createLiteral("v")));
@@ -786,7 +786,7 @@ public class TestTriplePatternBuilder extends
                 expected.setWhereClause(whereClause);
 
                 final ConstantNode p = new ConstantNode(
-                        makeIV(valueFactory.createURI("http://example.org/p")));
+                        makeIV(valueFactory.createIRI("http://example.org/p")));
                 
                 final ConstantNode v = new ConstantNode(
                         makeIV(valueFactory.createLiteral("v")));
@@ -857,10 +857,10 @@ public class TestTriplePatternBuilder extends
                 expected.setWhereClause(whereClause);
 
                 final ConstantNode p = new ConstantNode(
-                        makeIV(valueFactory.createURI("http://example.org/p")));
+                        makeIV(valueFactory.createIRI("http://example.org/p")));
 
                 final ConstantNode q = new ConstantNode(
-                        makeIV(valueFactory.createURI("http://example.org/q")));
+                        makeIV(valueFactory.createIRI("http://example.org/q")));
 
                 final ConstantNode v = new ConstantNode(
                         makeIV(valueFactory.createLiteral("v")));
@@ -937,13 +937,13 @@ public class TestTriplePatternBuilder extends
                 expected.setWhereClause(whereClause);
 
                 final ConstantNode x = new ConstantNode(
-                        makeIV(valueFactory.createURI("http://example.org/x")));
+                        makeIV(valueFactory.createIRI("http://example.org/x")));
 
                 final ConstantNode p = new ConstantNode(
-                        makeIV(valueFactory.createURI("http://example.org/p")));
+                        makeIV(valueFactory.createIRI("http://example.org/p")));
 
                 final ConstantNode q = new ConstantNode(
-                        makeIV(valueFactory.createURI("http://example.org/q")));
+                        makeIV(valueFactory.createIRI("http://example.org/q")));
 
                 final ConstantNode v = new ConstantNode(
                         makeIV(valueFactory.createLiteral("v")));
@@ -1025,16 +1025,16 @@ public class TestTriplePatternBuilder extends
                 expected.setWhereClause(whereClause);
 
                 final ConstantNode foaf_name = new ConstantNode(
-                        makeIV(valueFactory.createURI(FOAFVocabularyDecl.name
+                        makeIV(valueFactory.createIRI(FOAFVocabularyDecl.name
                                 .stringValue())));
 
                 final ConstantNode foaf_mbox = new ConstantNode(
-                        makeIV(valueFactory.createURI(FOAFVocabularyDecl.mbox
+                        makeIV(valueFactory.createIRI(FOAFVocabularyDecl.mbox
                                 .stringValue())));
 
                 final ConstantNode mailto = new ConstantNode(
                         makeIV(valueFactory
-                                .createURI("mailto:alice@example.org")));
+                                .createIRI("mailto:alice@example.org")));
 
                 final VarNode bnode = new VarNode("-anon-11");
                 bnode.setAnonymous(true);
@@ -1129,11 +1129,11 @@ public class TestTriplePatternBuilder extends
                 final VarNode b3 = makeAnon(new VarNode("-anon-1-34"));
                 
                 final ConstantNode rdfFirst = new ConstantNode(
-                        makeIV(valueFactory.createURI(RDF.FIRST.stringValue())));
+                        makeIV(valueFactory.createIRI(RDF.FIRST.stringValue())));
                 final ConstantNode rdfRest = new ConstantNode(
-                        makeIV(valueFactory.createURI(RDF.REST.stringValue())));
+                        makeIV(valueFactory.createIRI(RDF.REST.stringValue())));
                 final ConstantNode rdfNil= new ConstantNode(
-                        makeIV(valueFactory.createURI(RDF.NIL.stringValue())));
+                        makeIV(valueFactory.createIRI(RDF.NIL.stringValue())));
 
                 final ConstantNode ONE = new ConstantNode(
                         makeIV(valueFactory.createLiteral("1", XSD.INTEGER)));
@@ -1142,7 +1142,7 @@ public class TestTriplePatternBuilder extends
                 final ConstantNode FOUR = new ConstantNode(
                         makeIV(valueFactory.createLiteral("4", XSD.INTEGER)));
                 final ConstantNode p = new ConstantNode(
-                        makeIV(valueFactory.createURI("http://example.org/ns#p")));
+                        makeIV(valueFactory.createIRI("http://example.org/ns#p")));
                 final ConstantNode w = new ConstantNode(
                         makeIV(valueFactory.createLiteral("w")));
 
@@ -1244,20 +1244,20 @@ public class TestTriplePatternBuilder extends
                 final VarNode b4 = makeAnon(new VarNode("-anon-35"));
                 
                 final ConstantNode rdfFirst = new ConstantNode(
-                        makeIV(valueFactory.createURI(RDF.FIRST.stringValue())));
+                        makeIV(valueFactory.createIRI(RDF.FIRST.stringValue())));
                 final ConstantNode rdfRest = new ConstantNode(
-                        makeIV(valueFactory.createURI(RDF.REST.stringValue())));
+                        makeIV(valueFactory.createIRI(RDF.REST.stringValue())));
                 final ConstantNode rdfNil= new ConstantNode(
-                        makeIV(valueFactory.createURI(RDF.NIL.stringValue())));
+                        makeIV(valueFactory.createIRI(RDF.NIL.stringValue())));
 
                 final ConstantNode ONE = new ConstantNode(
                         makeIV(valueFactory.createLiteral("1", XSD.INTEGER)));
                 final ConstantNode TWO = new ConstantNode(
                         makeIV(valueFactory.createLiteral("2", XSD.INTEGER)));
                 final ConstantNode p = new ConstantNode(
-                        makeIV(valueFactory.createURI("http://example.org/ns#p")));
+                        makeIV(valueFactory.createIRI("http://example.org/ns#p")));
                 final ConstantNode q = new ConstantNode(
-                        makeIV(valueFactory.createURI("http://example.org/ns#q")));
+                        makeIV(valueFactory.createIRI("http://example.org/ns#q")));
 
 //                     _:b0  rdf:first  1 ;
 //                           rdf:rest   _:b1 .
@@ -1352,15 +1352,15 @@ public class TestTriplePatternBuilder extends
                 final VarNode b0 = makeAnon(new VarNode("-anon-11"));
 
                 final ConstantNode rdfFirst = new ConstantNode(
-                        makeIV(valueFactory.createURI(RDF.FIRST.stringValue())));
+                        makeIV(valueFactory.createIRI(RDF.FIRST.stringValue())));
                 final ConstantNode rdfRest = new ConstantNode(
-                        makeIV(valueFactory.createURI(RDF.REST.stringValue())));
+                        makeIV(valueFactory.createIRI(RDF.REST.stringValue())));
                 final ConstantNode rdfNil= new ConstantNode(
-                        makeIV(valueFactory.createURI(RDF.NIL.stringValue())));
+                        makeIV(valueFactory.createIRI(RDF.NIL.stringValue())));
 
                 final ConstantNode x = new ConstantNode(
                         makeIV(valueFactory
-                                .createURI("http://example.org/ns#x")));
+                                .createIRI("http://example.org/ns#x")));
 
                 final ConstantNode ONE = new ConstantNode(
                         makeIV(valueFactory.createLiteral("1", XSD.INTEGER)));
@@ -1455,15 +1455,15 @@ public class TestTriplePatternBuilder extends
                 final VarNode b0 = makeAnon(new VarNode("-anon-11"));
                 
                 final ConstantNode rdfFirst = new ConstantNode(
-                        makeIV(valueFactory.createURI(RDF.FIRST.stringValue())));
+                        makeIV(valueFactory.createIRI(RDF.FIRST.stringValue())));
                 final ConstantNode rdfRest = new ConstantNode(
-                        makeIV(valueFactory.createURI(RDF.REST.stringValue())));
+                        makeIV(valueFactory.createIRI(RDF.REST.stringValue())));
                 final ConstantNode rdfNil= new ConstantNode(
-                        makeIV(valueFactory.createURI(RDF.NIL.stringValue())));
+                        makeIV(valueFactory.createIRI(RDF.NIL.stringValue())));
 
                 final ConstantNode x = new ConstantNode(
                         makeIV(valueFactory
-                                .createURI("http://example.org/ns#x")));
+                                .createIRI("http://example.org/ns#x")));
 
 //                *       Join
 //                *          Join
@@ -1570,15 +1570,15 @@ public class TestTriplePatternBuilder extends
                 final VarNode b1 = makeAnon(new VarNode("-anon-1-12"));
                 
                 final ConstantNode rdfFirst = new ConstantNode(
-                        makeIV(valueFactory.createURI(RDF.FIRST.stringValue())));
+                        makeIV(valueFactory.createIRI(RDF.FIRST.stringValue())));
                 final ConstantNode rdfRest = new ConstantNode(
-                        makeIV(valueFactory.createURI(RDF.REST.stringValue())));
+                        makeIV(valueFactory.createIRI(RDF.REST.stringValue())));
                 final ConstantNode rdfNil= new ConstantNode(
-                        makeIV(valueFactory.createURI(RDF.NIL.stringValue())));
+                        makeIV(valueFactory.createIRI(RDF.NIL.stringValue())));
 
                 final ConstantNode x = new ConstantNode(
                         makeIV(valueFactory
-                                .createURI("http://example.org/ns#x")));
+                                .createIRI("http://example.org/ns#x")));
 
 //                *       Join
 //                *          Join
@@ -1671,11 +1671,11 @@ public class TestTriplePatternBuilder extends
 
                 final ConstantNode book1 = new ConstantNode(
                         makeIV(valueFactory
-                                .createURI("http://example.org/book/book1")));
+                                .createIRI("http://example.org/book/book1")));
 
                 final ConstantNode dc_title = new ConstantNode(
                         makeIV(valueFactory
-                                .createURI(DCElementsVocabularyDecl.title
+                                .createIRI(DCElementsVocabularyDecl.title
                                         .stringValue())));
 
                 whereClause.addChild(new StatementPatternNode(book1, dc_title,
@@ -1695,7 +1695,7 @@ public class TestTriplePatternBuilder extends
     /**
      * Base URI resolution appears to be busted per [1]. This static flag is
      * used to disable the base URI resolution tests which fail until the
-     * underlying issue is fixed in {@link ParsedURI#resolve(ParsedURI)}.
+     * underlying issue is fixed in {@link ParsedIRI#resolve(ParsedIRI)}.
      * 
      * [1] http://www.openrdf.org/issues/browse/SES-838
      */
@@ -1752,11 +1752,11 @@ public class TestTriplePatternBuilder extends
                 // Note: "
                 final ConstantNode book1 = new ConstantNode(
                         makeIV(valueFactory
-                                .createURI("http://example.org/book/book1")));
+                                .createIRI("http://example.org/book/book1")));
 
                 final ConstantNode dc_title = new ConstantNode(
                         makeIV(valueFactory
-                                .createURI(DCElementsVocabularyDecl.title
+                                .createIRI(DCElementsVocabularyDecl.title
                                         .stringValue())));
 
                 whereClause.addChild(new StatementPatternNode(book1, dc_title,
@@ -1824,11 +1824,11 @@ public class TestTriplePatternBuilder extends
                 // Note: "
                 final ConstantNode book1 = new ConstantNode(
                         makeIV(valueFactory
-                                .createURI("http://example.org/book/book1")));
+                                .createIRI("http://example.org/book/book1")));
 
                 final ConstantNode dc_title = new ConstantNode(
                         makeIV(valueFactory
-                                .createURI(DCElementsVocabularyDecl.title
+                                .createIRI(DCElementsVocabularyDecl.title
                                         .stringValue())));
 
                 whereClause.addChild(new StatementPatternNode(book1, dc_title,
@@ -1894,11 +1894,11 @@ public class TestTriplePatternBuilder extends
 
                 final ConstantNode book1 = new ConstantNode(
                         makeIV(valueFactory
-                                .createURI("http://example.org/book/book1")));
+                                .createIRI("http://example.org/book/book1")));
 
                 final ConstantNode dc_title = new ConstantNode(
                         makeIV(valueFactory
-                                .createURI(DCElementsVocabularyDecl.title
+                                .createIRI(DCElementsVocabularyDecl.title
                                         .stringValue())));
 
                 whereClause.addChild(new StatementPatternNode(book1, dc_title,

@@ -45,12 +45,13 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.Banner;
 import com.bigdata.bop.engine.QueryEngine;
 import com.bigdata.bop.fed.QueryEngineFactory;
@@ -87,7 +88,7 @@ import com.bigdata.util.httpd.AbstractHTTPD;
 public class BigdataRDFServletContextListener implements
         ServletContextListener {
 
-    private static final transient Logger log = Logger
+    private static final transient Logger log = LogManager
             .getLogger(BigdataRDFServletContextListener.class);
 
     private Journal jnl = null;
@@ -117,7 +118,7 @@ public class BigdataRDFServletContextListener implements
      * that it is NOT possible to actual modify the init parameters specified in
      * the <code>web.xml</code> file. Therefore, we attach the overrides as an
      * attribute and then consult them from within
-     * {@link BigdataRDFServletContextListener#contextInitialized(javax.servlet.ServletContextEvent)}
+     * {@link BigdataRDFServletContextListener#contextInitialized(jakarta.servlet.ServletContextEvent)}
      * .
      */
     public static final String INIT_PARAM_OVERRIDES = "INIT_PARAMS_OVERRIDES";

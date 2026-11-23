@@ -106,13 +106,13 @@ public class TestNativeDistinctFilter extends TestCase2 {
                 final BigdataValueFactory vf = kb.getValueFactory();
                 final String uriString = "http://bigdata.com/";
                 final BigdataURI _knows = vf.asValue(FOAFVocabularyDecl.knows);
-                final BigdataURI _brad = vf.createURI(uriString+"brad");
-                final BigdataURI _john = vf.createURI(uriString+"john");
-                final BigdataURI _fred = vf.createURI(uriString+"fred");
-                final BigdataURI _mary = vf.createURI(uriString+"mary");
-                final BigdataURI _paul = vf.createURI(uriString+"paul");
-                final BigdataURI _leon = vf.createURI(uriString+"leon");
-                final BigdataURI _luke = vf.createURI(uriString+"luke");
+                final BigdataURI _brad = vf.createIRI(uriString+"brad");
+                final BigdataURI _john = vf.createIRI(uriString+"john");
+                final BigdataURI _fred = vf.createIRI(uriString+"fred");
+                final BigdataURI _mary = vf.createIRI(uriString+"mary");
+                final BigdataURI _paul = vf.createIRI(uriString+"paul");
+                final BigdataURI _leon = vf.createIRI(uriString+"leon");
+                final BigdataURI _luke = vf.createIRI(uriString+"luke");
 
                 final BigdataValue[] a = new BigdataValue[] {
                       _knows,//

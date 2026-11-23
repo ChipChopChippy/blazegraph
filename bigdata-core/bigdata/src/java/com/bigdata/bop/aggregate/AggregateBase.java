@@ -2,8 +2,8 @@ package com.bigdata.bop.aggregate;
 
 import java.util.Map;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.impl.LiteralImpl;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -196,6 +196,6 @@ abstract public class AggregateBase<E> extends ImmutableBOp implements IAggregat
     protected static final transient NumericIV ZERO = new XSDNumericIV<BigdataLiteral>(0);
 
     /** An empty string. */
-    protected static final transient Literal EMPTY_LITERAL = new LiteralImpl("");
+    protected static final transient Literal EMPTY_LITERAL = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("");
 
 }

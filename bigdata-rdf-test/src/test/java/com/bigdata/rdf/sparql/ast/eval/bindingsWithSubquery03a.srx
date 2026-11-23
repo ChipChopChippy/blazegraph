@@ -16,8 +16,8 @@
      </result>
      <result>
       <binding name="s"><uri>http://s</uri></binding>
-      <binding name="p"><uri>http://p2</uri></binding>
-      <binding name="o"><uri>http://o2</uri></binding>
+      <binding name="p"><uri>http://p</uri></binding>
+      <binding name="o"><uri>http://o</uri></binding>
      </result>
    </results>
 </sparql>

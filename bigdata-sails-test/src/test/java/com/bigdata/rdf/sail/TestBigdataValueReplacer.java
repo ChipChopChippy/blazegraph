@@ -27,22 +27,24 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sail;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Properties;
 
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.impl.MapBindingSet;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.sail.SailException;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.impl.MapBindingSet;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.sail.SailException;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.model.BigdataValue;
@@ -73,7 +75,7 @@ public class TestBigdataValueReplacer extends ProxyBigdataSailTestCase {
     @Override
     public Properties getProperties() {
         
-//        Logger.getLogger(BigdataValueReplacer.class).setLevel(Level.ALL);
+//        LogManager.getLogger(BigdataValueReplacer.class).setLevel(Level.ALL);
         
         final Properties props = super.getProperties();
         
@@ -105,7 +107,7 @@ public class TestBigdataValueReplacer extends ProxyBigdataSailTestCase {
 
         try {
 
-            sail.initialize();
+            sail.init();
             final BigdataSailRepository repo = new BigdataSailRepository(sail);
             final BigdataSailRepositoryConnection cxn = (BigdataSailRepositoryConnection) repo
                     .getConnection();
@@ -118,7 +120,7 @@ public class TestBigdataValueReplacer extends ProxyBigdataSailTestCase {
                  * because some of the terms in the query are undefined in the
                  * database.
                  */
-                cxn.add(new URIImpl("s:1"), new URIImpl("p:1"), new URIImpl(
+                cxn.add(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("s:1"), org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("p:1"), org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(
                         "s:2"));
 
                 final String query = "select ?a ?b WHERE {?a <p:1> ?b}";
@@ -130,11 +132,11 @@ public class TestBigdataValueReplacer extends ProxyBigdataSailTestCase {
                  * Setup some bindings.  
                  */
                 // bind to a term in the database.
-                q.setBinding("a", new URIImpl("s:1"));
+                q.setBinding("a", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("s:1"));
                 // bind to a term in the database.
-                q.setBinding("b", new URIImpl("s:2"));
+                q.setBinding("b", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("s:2"));
                 // bind to a term NOT found in the database.
-                q.setBinding("notused", new LiteralImpl("lit"));
+                q.setBinding("notused", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("lit"));
                 
                 /*
                  * Evaluate the query and verify that the correct solution
@@ -143,8 +145,8 @@ public class TestBigdataValueReplacer extends ProxyBigdataSailTestCase {
                 final Collection<BindingSet> expected = new LinkedList<BindingSet>();
                 {
                     final MapBindingSet bset = new MapBindingSet();
-                    bset.addBinding("a", new URIImpl("s:1"));
-                    bset.addBinding("b", new URIImpl("s:2"));
+                    bset.addBinding("a", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("s:1"));
+                    bset.addBinding("b", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("s:2"));
                     expected.add(bset);
                 }
                 final TupleQueryResult result = q.evaluate();

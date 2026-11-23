@@ -30,15 +30,15 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Properties;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.impl.BindingImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleLiteral;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.impl.SimpleBinding;
 
 /**
  * Unit tests the optionals aspects of the {@link BigdataSail} implementation.
@@ -69,27 +69,27 @@ public class TestOptionals extends QuadsTestCase {
     /**
      * foaf:name
      */
-    final URI FOAF_NAME = new URIImpl(FOAF+"name"); 
+    final IRI FOAF_NAME = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(FOAF+"name"); 
     
     /**
      * foaf:mbox
      */
-    final URI FOAF_MBOX = new URIImpl(FOAF+"mbox"); 
+    final IRI FOAF_MBOX = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(FOAF+"mbox"); 
     
     /**
      * foaf:nick
      */
-    final URI FOAF_NICK = new URIImpl(FOAF+"nick"); 
+    final IRI FOAF_NICK = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(FOAF+"nick"); 
     
     /**
      * foaf:PersonalProfileDocument
      */
-    final URI FOAF_PPD = new URIImpl(FOAF+"PersonalProfileDocument"); 
+    final IRI FOAF_PPD = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(FOAF+"PersonalProfileDocument"); 
     
     /**
      * foaf:knows
      */
-    final URI FOAF_KNOWS = new URIImpl(FOAF+"knows"); 
+    final IRI FOAF_KNOWS = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(FOAF+"knows"); 
     
     /**
      * The dc: namespace.
@@ -99,12 +99,12 @@ public class TestOptionals extends QuadsTestCase {
     /**
      * dc:publisher
      */
-    final URI DC_PUBLISHER = new URIImpl(DC+"publisher"); 
+    final IRI DC_PUBLISHER = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(DC+"publisher"); 
     
     /**
      * dc:title
      */
-    final URI DC_TITLE = new URIImpl(DC+"title"); 
+    final IRI DC_TITLE = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(DC+"title"); 
     
     
     /**
@@ -115,7 +115,7 @@ public class TestOptionals extends QuadsTestCase {
     public void testLeftJoins() throws Exception {
 
         final BigdataSail sail = getSail();
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         final BigdataSailRepositoryConnection cxn = 
             (BigdataSailRepositoryConnection) repo.getConnection();
@@ -123,36 +123,36 @@ public class TestOptionals extends QuadsTestCase {
         
         try {
     
-            final URI book1 = new URIImpl("http://www.bigdata.com/rdf#book1");
-            final URI book2 = new URIImpl("http://www.bigdata.com/rdf#book2");
-            final URI book3 = new URIImpl("http://www.bigdata.com/rdf#book3");
-            final URI price = new URIImpl("http://www.bigdata.com/rdf#price");
-            final URI XSD_INTEGER = new URIImpl("http://www.w3.org/2001/XMLSchema#integer");
+            final IRI book1 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf#book1");
+            final IRI book2 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf#book2");
+            final IRI book3 = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf#book3");
+            final IRI price = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf#price");
+            final IRI XSD_INTEGER = org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.w3.org/2001/XMLSchema#integer");
 /**/            
             cxn.add(
                     book1,
                     DC_TITLE,
-                    new LiteralImpl("TITLE 1")
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("TITLE 1")
                     );
             cxn.add(
                     book1,
                     price,
-                    new LiteralImpl("10", XSD_INTEGER)
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("10", XSD_INTEGER)
                     );
             cxn.add(
                     book2,
                     DC_TITLE,
-                    new LiteralImpl("TITLE 2")
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("TITLE 2")
                     );
             cxn.add(
                     book2,
                     price,
-                    new LiteralImpl("20", XSD_INTEGER)
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("20", XSD_INTEGER)
                     );
             cxn.add(
                     book3,
                     DC_TITLE,
-                    new LiteralImpl("TITLE 3")
+                    org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("TITLE 3")
                     );
 /**/
 
@@ -183,11 +183,11 @@ public class TestOptionals extends QuadsTestCase {
 
             Collection<BindingSet> answer = new LinkedList<BindingSet>();
             answer.add(createBindingSet(
-                    new BindingImpl("title", new LiteralImpl("TITLE 1")), new BindingImpl("price", new LiteralImpl("10", XSD_INTEGER))));
+                    new SimpleBinding("title", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("TITLE 1")), new SimpleBinding("price", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("10", XSD_INTEGER))));
             answer.add(createBindingSet(
-                    new BindingImpl("title", new LiteralImpl("TITLE 2")), new BindingImpl("price", new LiteralImpl("20", XSD_INTEGER))));
+                    new SimpleBinding("title", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("TITLE 2")), new SimpleBinding("price", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("20", XSD_INTEGER))));
             answer.add(createBindingSet(
-                    new BindingImpl("title", new LiteralImpl("TITLE 3"))));
+                    new SimpleBinding("title", org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createLiteral("TITLE 3"))));
             
             compare(result, answer);
             
@@ -209,7 +209,7 @@ public class TestOptionals extends QuadsTestCase {
         properties.put("com.bigdata.rdf.store.AbstractTripleStore.justify", "false");
         
         final BigdataSail sail = getSail(properties);
-        sail.initialize();
+        sail.init();
         final BigdataSailRepository repo = new BigdataSailRepository(sail);
         final BigdataSailRepositoryConnection cxn = 
             (BigdataSailRepositoryConnection) repo.getConnection();
@@ -219,9 +219,9 @@ public class TestOptionals extends QuadsTestCase {
     
             final ValueFactory vf = sail.getValueFactory();
             
-            cxn.add(vf.createURI("u:1"), 
-                    vf.createURI("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"), 
-                    vf.createURI("u:2"));
+            cxn.add(vf.createIRI("u:1"), 
+                    vf.createIRI("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"), 
+                    vf.createIRI("u:2"));
 
             cxn.commit();
             
@@ -233,7 +233,7 @@ public class TestOptionals extends QuadsTestCase {
                 "}";
             
             TupleQuery q = cxn.prepareTupleQuery(QueryLanguage.SPARQL, query);
-            q.setBinding("subj", vf.createURI("u:1"));
+            q.setBinding("subj", vf.createIRI("u:1"));
             TupleQueryResult tqr = q.evaluate();
             assertTrue(tqr.hasNext());
             final BindingSet tmp = tqr.next();

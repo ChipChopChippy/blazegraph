@@ -22,12 +22,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.rdf.sail;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.concurrent.TimeUnit;
 
-import org.openrdf.query.GraphQueryResult;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.algebra.evaluation.QueryBindingSet;
-import org.openrdf.repository.sail.SailGraphQuery;
+import org.eclipse.rdf4j.query.GraphQueryResult;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.algebra.evaluation.QueryBindingSet;
+import org.eclipse.rdf4j.repository.sail.SailGraphQuery;
 
 import com.bigdata.rdf.sparql.ast.ASTContainer;
 import com.bigdata.rdf.sparql.ast.BindingsClause;
@@ -39,7 +41,7 @@ import com.bigdata.rdf.store.AbstractTripleStore;
 public class BigdataSailGraphQuery extends SailGraphQuery implements
         BigdataSailQuery {
 
-    // private static Logger log = Logger.getLogger(BigdataSailGraphQuery.class);
+    // private static Logger log = LogManager.getLogger(BigdataSailGraphQuery.class);
 
     private final ASTContainer astContainer;
 

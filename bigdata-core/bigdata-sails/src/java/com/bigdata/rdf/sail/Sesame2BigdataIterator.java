@@ -29,7 +29,7 @@ package com.bigdata.rdf.sail;
 
 import java.util.NoSuchElementException;
 
-import info.aduna.iteration.CloseableIteration;
+import org.eclipse.rdf4j.common.iteration.CloseableIteration;
 
 import cutthecrap.utils.striterators.ICloseableIterator;
 
@@ -49,11 +49,11 @@ import cutthecrap.utils.striterators.ICloseableIterator;
 public class Sesame2BigdataIterator<T, E extends Exception> implements
         ICloseableIterator<T> {
 
-    private final CloseableIteration<? extends T,E> src;
+    private final CloseableIteration<? extends T> src;
     
     private volatile boolean open = true;
     
-    public Sesame2BigdataIterator(final CloseableIteration<? extends T,E> src) {
+    public Sesame2BigdataIterator(final CloseableIteration<? extends T> src) {
         
         if (src == null)
             throw new IllegalArgumentException();

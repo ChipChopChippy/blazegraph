@@ -31,10 +31,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.openrdf.model.URI;
-import org.openrdf.query.Binding;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.impl.MapBindingSet;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.query.Binding;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.impl.MapBindingSet;
 
 import com.bigdata.bop.Constant;
 import com.bigdata.bop.IBindingSet;
@@ -62,20 +62,20 @@ public class ServiceCallUtility {
 
     private static final String ERR_NOT_BOUND = "Service reference variable is not bound";
 
-    private static final String ERR_NOT_URI = "Service reference does not evaluate to a URI";
+    private static final String ERR_NOT_URI = "Service reference does not evaluate to a IRI";
 
     private static final String ERR_NOT_MATERIALIZED = "Service reference is not materialized";
     
     /**
-     * Return the effective service URI IFF the value expression for the service
+     * Return the effective service IRI IFF the value expression for the service
      * reference is a constant.
      * 
-     * @return The effective service URI IFF it is a constant and otherwise
+     * @return The effective service IRI IFF it is a constant and otherwise
      *         <code>null</code>.
      * 
      * @throws RuntimeException
      *             if the service reference is a constant but does not evaluate
-     *             to a {@link URI}.
+     *             to a {@link IRI}.
      * @throws NotMaterializedException
      *             if the service reference evaluates to an {@link IV} which is
      *             not materialized.
@@ -105,7 +105,7 @@ public class ServiceCallUtility {
     }
     
     /**
-     * Return the effective service URI.
+     * Return the effective service IRI.
      * 
      * @param bset
      *            A solution which will be used to evaluate the service
@@ -116,7 +116,7 @@ public class ServiceCallUtility {
      * @throws RuntimeException
      *             if the service reference is not bound.
      * @throws RuntimeException
-     *             if the service reference does not evaluate to a {@link URI}.
+     *             if the service reference does not evaluate to a {@link IRI}.
      * @throws NotMaterializedException
      *             if the service reference evaluates to an {@link IV} which is
      *             not materialized.

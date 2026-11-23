@@ -26,10 +26,10 @@ package com.bigdata.rdf.internal.impl.extensions;
 import java.util.Collections;
 import java.util.Set;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.rdf.internal.IDatatypeURIResolver;
 import com.bigdata.rdf.internal.IExtension;
@@ -58,8 +58,8 @@ public class CompressedTimestampExtension<V extends BigdataValue> implements IEx
 
     private final BigdataURI datatype;
     
-    public static final URI COMPRESSED_TIMESTAMP = 
-        new URIImpl("http://www.bigdata.com/rdf/datatype#compressedTimestamp");
+    public static final IRI COMPRESSED_TIMESTAMP = 
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.bigdata.com/rdf/datatype#compressedTimestamp");
 
     
     public CompressedTimestampExtension(final IDatatypeURIResolver resolver) {

@@ -31,6 +31,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package com.bigdata.rdf.sail.sparql;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Collection;
@@ -38,15 +40,15 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.openrdf.model.BNode;
-import org.openrdf.model.Statement;
-import org.openrdf.model.Value;
-import org.openrdf.query.algebra.StatementPattern.Scope;
-import org.openrdf.repository.sail.helpers.SPARQLUpdateDataBlockParser;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParseException;
-import org.openrdf.rio.helpers.BasicParserSettings;
-import org.openrdf.rio.helpers.StatementCollector;
+import org.eclipse.rdf4j.model.BNode;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.repository.sail.helpers.SPARQLUpdateDataBlockParser;
+import org.eclipse.rdf4j.rio.RDFHandlerException;
+import org.eclipse.rdf4j.rio.RDFParseException;
+import org.eclipse.rdf4j.rio.helpers.BasicParserSettings;
+import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 
 import com.bigdata.bop.BOpUtility;
 import com.bigdata.rdf.internal.IV;
@@ -118,7 +120,7 @@ import com.bigdata.rdf.spo.SPO;
  */
 public class UpdateExprBuilder extends BigdataExprBuilder {
 
-//    private static final Logger log = Logger.getLogger(UpdateExprBuilder.class);
+//    private static final Logger log = LogManager.getLogger(UpdateExprBuilder.class);
 
     public UpdateExprBuilder(final BigdataASTContext context) {
         

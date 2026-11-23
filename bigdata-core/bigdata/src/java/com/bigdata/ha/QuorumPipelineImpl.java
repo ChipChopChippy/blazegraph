@@ -49,8 +49,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.ha.msg.HAMessageWrapper;
 import com.bigdata.ha.msg.HASendState;
 import com.bigdata.ha.msg.IHAMessage;
@@ -175,7 +176,7 @@ abstract public class QuorumPipelineImpl<S extends HAPipelineGlue> /*extends
         QuorumStateChangeListenerBase */implements QuorumPipeline<S>,
         QuorumStateChangeListener {
 
-    static private transient final Logger log = Logger
+    static private transient final Logger log = LogManager
             .getLogger(QuorumPipelineImpl.class);
 
     /**

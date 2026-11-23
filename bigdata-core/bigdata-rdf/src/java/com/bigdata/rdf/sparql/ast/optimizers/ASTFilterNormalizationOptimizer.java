@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.IBindingSet;
@@ -274,7 +274,7 @@ public class ASTFilterNormalizationOptimizer extends AbstractJoinGroupOptimizer 
       }
       
       final FunctionNode functionNode = (FunctionNode)vexp;
-      final URI functionURI = functionNode.getFunctionURI();
+      final IRI functionURI = functionNode.getFunctionURI();
       
       if (functionURI.equals(FunctionRegistry.BOUND)) {
          
@@ -307,7 +307,7 @@ public class ASTFilterNormalizationOptimizer extends AbstractJoinGroupOptimizer 
       }
       
       final FunctionNode functionNode = (FunctionNode)vexp;
-      final URI functionURI = functionNode.getFunctionURI();
+      final IRI functionURI = functionNode.getFunctionURI();
       
       if (functionURI.equals(FunctionRegistry.NOT)) {
          
@@ -319,7 +319,7 @@ public class ASTFilterNormalizationOptimizer extends AbstractJoinGroupOptimizer 
          }
          
          final FunctionNode innerFunctionNode = (FunctionNode)innerVexp;
-         final URI innerFunctionURI = innerFunctionNode.getFunctionURI();
+         final IRI innerFunctionURI = innerFunctionNode.getFunctionURI();
 
          if (innerFunctionURI.equals(FunctionRegistry.BOUND)) {
 
@@ -352,7 +352,7 @@ public class ASTFilterNormalizationOptimizer extends AbstractJoinGroupOptimizer 
       }
       
       final FunctionNode functionNode = (FunctionNode)vexpr;
-      final URI functionURI = functionNode.getFunctionURI();
+      final IRI functionURI = functionNode.getFunctionURI();
       
       if (functionURI.equals(FunctionRegistry.AND) || 
           functionURI.equals(FunctionRegistry.OR)) {

@@ -30,10 +30,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
 
-import org.apache.log4j.Logger;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParseException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.RDFParseException;
 
 import com.bigdata.gom.alchemy.owl.OWLClassSkin;
 import com.bigdata.gom.alchemy.owl.OWLOntologySkin;
@@ -46,7 +47,7 @@ public class TestOWLSkin extends LocalGOMTestCase {
 //	ObjectManager m_om = null;
 //	ValueFactory m_vf = null;
 
-    private static final Logger log = Logger.getLogger(TestOwlGOM.class);
+    private static final Logger log = LogManager.getLogger(TestOwlGOM.class);
 
 	public void testOWLwithProperties() throws RDFParseException, RepositoryException, IOException {
 		showOntology("testowl2.xml");

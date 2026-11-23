@@ -3,8 +3,9 @@ package com.bigdata.striterator;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.IIndex;
 
 /**
@@ -25,7 +26,7 @@ import com.bigdata.btree.IIndex;
  */
 public class ChunkedConvertingIterator<E, F> implements IChunkedOrderedIterator<F> {
 
-    private final static Logger log = Logger
+    private final static Logger log = LogManager
             .getLogger(ChunkedConvertingIterator.class);
 
     private final IChunkedOrderedIterator<E> src;

@@ -23,8 +23,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 package com.bigdata.btree;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.IndexMetadata.Options;
 
 /**
@@ -36,7 +37,7 @@ import com.bigdata.btree.IndexMetadata.Options;
  */
 public class IndexSegmentPlan {
 
-    protected static final transient Logger log = Logger
+    protected static final transient Logger log = LogManager
             .getLogger(IndexSegmentPlan.class);
 
     /**

@@ -31,8 +31,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.impl.URIImpl;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
 
 import com.bigdata.rdf.vocab.VocabularyDecl;
 import com.bigdata.service.geospatial.GeoSpatial;
@@ -47,15 +47,15 @@ import com.bigdata.service.geospatial.GeoSpatial;
 public class GeoSpatialVocabularyDecl implements VocabularyDecl {
 
     // TODO: proper registration of datatypes passed in via config
-    static private final URI[] uris = new URI[]{
-        new URIImpl(GeoSpatial.NAMESPACE),//
+    static private final IRI[] uris = new IRI[]{
+        org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(GeoSpatial.NAMESPACE),//
         GeoSpatial.DEFAULT_DATATYPE,
     };
 
     public GeoSpatialVocabularyDecl() {
     }
     
-    public Iterator<URI> values() {
+    public Iterator<IRI> values() {
 
         return Collections.unmodifiableList(Arrays.asList(uris)).iterator();
         

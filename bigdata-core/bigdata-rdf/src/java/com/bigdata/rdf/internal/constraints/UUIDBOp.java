@@ -106,7 +106,7 @@ public class UUIDBOp extends IVValueExpression<IV> implements INeedsMaterializat
             
         } else {
             
-            final BigdataURI uri = vf.createURI("urn:uuid:" + uuid.toString());
+            final BigdataURI uri = vf.createIRI("urn:uuid:" + uuid.toString());
             
             return DummyConstantNode.toDummyIV(uri);
             

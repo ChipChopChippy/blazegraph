@@ -21,9 +21,10 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.IBindingSet;
 import com.bigdata.bop.IPredicate;
 import com.bigdata.bop.IVariable;
@@ -141,12 +142,12 @@ import com.bigdata.util.concurrent.LatchedExecutor;
  */
 abstract public class JoinTask implements Callable<Void> {
 
-    static protected final Logger log = Logger.getLogger(JoinTask.class);
+    static protected final Logger log = LogManager.getLogger(JoinTask.class);
 
     /**
      * True iff the {@link #log} level is WARN or less.
      */
-    static final protected boolean WARN = log.isEnabledFor(Level.WARN);
+    static final protected boolean WARN = log.isEnabled(Level.WARN);
 
     /**
      * True iff the {@link #log} level is INFO or less.

@@ -41,8 +41,9 @@ import java.util.StringTokenizer;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.counters.AbstractStatisticsCollector;
 import com.bigdata.journal.ITransactionService;
 
@@ -67,7 +68,7 @@ import com.bigdata.journal.ITransactionService;
  */
 public class Event implements Serializable {
 
-    protected static transient final Logger log = Logger.getLogger(Event.class);
+    protected static transient final Logger log = LogManager.getLogger(Event.class);
 
     /**
      * 

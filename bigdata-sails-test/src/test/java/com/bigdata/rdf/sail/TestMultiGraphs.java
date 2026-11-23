@@ -30,22 +30,23 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.Binding;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.impl.BindingImpl;
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.repository.sail.SailRepositoryConnection;
-import org.openrdf.sail.Sail;
-import org.openrdf.sail.memory.MemoryStore;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.Binding;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQuery;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.impl.SimpleBinding;
+import org.eclipse.rdf4j.repository.sail.SailRepository;
+import org.eclipse.rdf4j.repository.sail.SailRepositoryConnection;
+import org.eclipse.rdf4j.sail.Sail;
+import org.eclipse.rdf4j.sail.memory.MemoryStore;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.store.BD;
@@ -57,7 +58,7 @@ import com.bigdata.rdf.vocab.NoVocabulary;
  */
 public class TestMultiGraphs extends ProxyBigdataSailTestCase {
 
-    protected static final Logger log = Logger.getLogger(TestMultiGraphs.class);
+    protected static final Logger log = LogManager.getLogger(TestMultiGraphs.class);
     
     @Override
     public Properties getProperties() {
@@ -113,7 +114,7 @@ public class TestMultiGraphs extends ProxyBigdataSailTestCase {
             repo = new SailRepository(sail);
         }
         
-        repo.initialize();
+        repo.init();
         cxn = repo.getConnection();
         
         try {
@@ -130,15 +131,15 @@ public class TestMultiGraphs extends ProxyBigdataSailTestCase {
             
             final String ns = BD.NAMESPACE;
             
-            final URI mike = vf.createURI(ns+"Mike");
-//            URI bryan = vf.createURI(ns+"Bryan");
-            final URI person = vf.createURI(ns+"Person");
-            final URI likes = vf.createURI(ns+"likes");
-            final URI rdf = vf.createURI(ns+"RDF");
+            final IRI mike = vf.createIRI(ns+"Mike");
+//            IRI bryan = vf.createIRI(ns+"Bryan");
+            final IRI person = vf.createIRI(ns+"Person");
+            final IRI likes = vf.createIRI(ns+"likes");
+            final IRI rdf = vf.createIRI(ns+"RDF");
             final Literal l1 = vf.createLiteral("Mike");
 //            Literal l2 = vf.createLiteral("Bryan");
-            final URI g1 = vf.createURI(ns+"graph1");
-            final URI g2 = vf.createURI(ns+"graph2");
+            final IRI g1 = vf.createIRI(ns+"graph1");
+            final IRI g2 = vf.createIRI(ns+"graph2");
 /**/
             cxn.setNamespace("ns", ns);
             
@@ -184,16 +185,16 @@ public class TestMultiGraphs extends ProxyBigdataSailTestCase {
  
                 final Collection<BindingSet> solution = new LinkedList<BindingSet>();
                 solution.add(createBindingSet(new Binding[] {
-                    new BindingImpl("p", RDF.TYPE),
-                    new BindingImpl("o", person),
+                    new SimpleBinding("p", RDF.TYPE),
+                    new SimpleBinding("o", person),
                 }));
                 solution.add(createBindingSet(new Binding[] {
-                    new BindingImpl("p", likes),
-                    new BindingImpl("o", rdf),
+                    new SimpleBinding("p", likes),
+                    new SimpleBinding("o", rdf),
                 }));
                 solution.add(createBindingSet(new Binding[] {
-                    new BindingImpl("p", RDFS.LABEL),
-                    new BindingImpl("o", l1),
+                    new SimpleBinding("p", RDFS.LABEL),
+                    new SimpleBinding("o", l1),
                 }));
                 
                 compare(result, solution);
@@ -224,16 +225,16 @@ public class TestMultiGraphs extends ProxyBigdataSailTestCase {
  
                 final Collection<BindingSet> solution = new LinkedList<BindingSet>();
                 solution.add(createBindingSet(new Binding[] {
-                    new BindingImpl("p", RDF.TYPE),
-                    new BindingImpl("o", person),
+                    new SimpleBinding("p", RDF.TYPE),
+                    new SimpleBinding("o", person),
                 }));
                 solution.add(createBindingSet(new Binding[] {
-                    new BindingImpl("p", likes),
-                    new BindingImpl("o", rdf),
+                    new SimpleBinding("p", likes),
+                    new SimpleBinding("o", rdf),
                 }));
                 solution.add(createBindingSet(new Binding[] {
-                    new BindingImpl("p", RDFS.LABEL),
-                    new BindingImpl("o", l1),
+                    new SimpleBinding("p", RDFS.LABEL),
+                    new SimpleBinding("o", l1),
                 }));
                 
                 compare(result, solution);

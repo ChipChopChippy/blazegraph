@@ -33,8 +33,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpUtility;
 import com.bigdata.bop.IBindingSet;
@@ -77,7 +78,7 @@ import com.bigdata.rdf.sparql.ast.eval.IEvaluationContext;
  */
 public class ASTStaticJoinOptimizer implements IASTOptimizer {
 
-    public static final Logger log = Logger
+    public static final Logger log = LogManager
             .getLogger(ASTStaticJoinOptimizer.class);
 
     public interface Annotations extends AST2BOpBase.Annotations {

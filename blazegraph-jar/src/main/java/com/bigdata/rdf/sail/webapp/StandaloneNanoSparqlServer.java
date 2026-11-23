@@ -140,7 +140,11 @@ public class StandaloneNanoSparqlServer extends NanoSparqlServer {
         
         //Set the resource base to inside of the jar file
 		System.setProperty("jetty.home",
-				jettyXml.getClass().getResource("/war").toExternalForm());
+				StandaloneNanoSparqlServer.class.getResource("/war").toExternalForm());
+		if (System.getProperty("jetty.overrideWebXml") == null) {
+			System.setProperty("jetty.overrideWebXml",
+					StandaloneNanoSparqlServer.class.getResource("/war/WEB-INF/override-web.xml").toExternalForm());
+		}
 
         // Create the service.
         final Server server = StandaloneNanoSparqlServer.newInstance(port, jettyXml,

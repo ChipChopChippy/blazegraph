@@ -47,7 +47,7 @@ import com.bigdata.rdf.internal.impl.literal.XSDNumericIV;
 import com.bigdata.rdf.model.BigdataLiteral;
 import com.bigdata.rdf.model.BigdataValue;
 import com.bigdata.rdf.model.BigdataValueFactory;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.rdf.sparql.ast.GlobalAnnotations;
 import com.bigdata.rdf.store.AbstractTripleStore;
 
@@ -251,7 +251,7 @@ public class TestMIN extends TestCase2 {
      */
     public void test_min_uses_ORDER_BY_not_LT() {
         
-        final BigdataValueFactory f = BigdataValueFactoryImpl.getInstance(getName());
+        final BigdataValueFactory f = BigdataSimpleValueFactory.getInstance(getName());
         
         final IVariable<IV> org = Var.var("org");
         final IVariable<IV> auth = Var.var("auth");

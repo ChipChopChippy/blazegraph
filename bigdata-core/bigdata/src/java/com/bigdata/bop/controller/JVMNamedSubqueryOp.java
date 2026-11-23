@@ -32,8 +32,9 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.bop.BOp;
 import com.bigdata.bop.BOpContext;
 import com.bigdata.bop.BOpEvaluationContext;
@@ -77,7 +78,7 @@ import cutthecrap.utils.striterators.SingleValueIterator;
 public class JVMNamedSubqueryOp extends PipelineOp implements INamedSubqueryOp,
         ISingleThreadedOp {
 
-    static private final transient Logger log = Logger
+    static private final transient Logger log = LogManager
             .getLogger(JVMNamedSubqueryOp.class);
 
     /**

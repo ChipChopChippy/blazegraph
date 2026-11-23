@@ -27,12 +27,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.internal;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import com.bigdata.rdf.vocab.Vocabulary;
 
 /**
- * An exception thrown when a request is made for a {@link URI} which was not
+ * An exception thrown when a request is made for a {@link IRI} which was not
  * declared in the {@link Vocabulary}.
  * 
  * @author <a href="mailto:thompsonbry@users.sourceforge.net">Bryan Thompson</a>

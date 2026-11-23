@@ -33,8 +33,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.log4j.Logger;
-import org.openrdf.model.BNode;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.eclipse.rdf4j.model.BNode;
 
 import com.bigdata.blueprints.BigdataGraphEdit.Action;
 import com.bigdata.bop.engine.IRunningQuery;
@@ -74,7 +75,7 @@ import com.tinkerpop.blueprints.TransactionalGraph;
  */
 public class BigdataGraphEmbedded extends BigdataGraph implements TransactionalGraph, IChangeLog {
 	
-    private final transient static Logger log = Logger.getLogger(BigdataGraphEmbedded.class);
+    private final transient static Logger log = LogManager.getLogger(BigdataGraphEmbedded.class);
     
     public static interface Options {
         

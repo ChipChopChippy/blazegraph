@@ -48,7 +48,7 @@ import java.util.logging.SimpleFormatter;
  */
 public class Log4jLoggingHandler extends Handler {
 
-    private final org.apache.log4j.Logger log4jLogger;
+    private final org.apache.logging.log4j.Logger log4jLogger;
 
     public Log4jLoggingHandler() {
         String log4jLoggerName = 
@@ -75,8 +75,7 @@ public class Log4jLoggingHandler extends Handler {
             reportError(null, e, ErrorManager.FORMAT_FAILURE);
             return;
         }
-        log4jLogger.callAppenders
-            ( new XLoggingEvent(log4jLogger, record, formattedMessage) );
+        publish(record, formattedMessage);
     }
 
     public void close() { /* no-op */ }
@@ -84,48 +83,27 @@ public class Log4jLoggingHandler extends Handler {
     public void flush() { /* no-op */ }
 
 
-    static class XLoggingEvent extends org.apache.log4j.spi.LoggingEvent {
-
-        private final String origLoggerName;
-
-        public XLoggingEvent(org.apache.log4j.Logger log4jLogger,
-                             LogRecord record,
-                             String formattedMessage)
-        {
-            super( "org.apache.log4j.Logger",
-                   log4jLogger,
-                   record.getMillis(),
-                   translateLevel(record.getLevel()),
-                   formattedMessage,
-                   record.getThrown() );
-
-            this.origLoggerName = record.getLoggerName();
+    private static org.apache.logging.log4j.Level translateLevel(
+            java.util.logging.Level level) {
+        int value = level.intValue();
+        if (value > java.util.logging.Level.SEVERE.intValue()) {
+            return org.apache.logging.log4j.Level.FATAL;
+        } else if (value >= java.util.logging.Level.SEVERE.intValue()) {
+            return org.apache.logging.log4j.Level.ERROR;
+        } else if (value >= java.util.logging.Level.WARNING.intValue()) {
+            return org.apache.logging.log4j.Level.WARN;
+        } else if (value >= java.util.logging.Level.INFO.intValue()) {
+            return org.apache.logging.log4j.Level.INFO;
+        } else if (value >= java.util.logging.Level.CONFIG.intValue()) {
+            return org.apache.logging.log4j.Level.INFO;
+        } else if (value >= java.util.logging.Level.FINE.intValue()) {
+            return org.apache.logging.log4j.Level.DEBUG;
         }
+        return org.apache.logging.log4j.Level.TRACE;
+    }
 
-        // Override to return the name of the java.util logger
-        public String getLoggerName() {
-            return origLoggerName;
-        }
-
-        protected static org.apache.log4j.Level translateLevel
-                                              (java.util.logging.Level level)
-        {
-            int lv = level.intValue();
-            if(lv > java.util.logging.Level.SEVERE.intValue()) {
-                return org.apache.log4j.Level.FATAL;
-            } else if(lv == java.util.logging.Level.SEVERE.intValue()) {
-                return org.apache.log4j.Level.ERROR;
-            } else if(lv >= java.util.logging.Level.WARNING.intValue()) {
-                return org.apache.log4j.Level.WARN;
-            } else if(lv >= java.util.logging.Level.INFO.intValue()) {
-                return org.apache.log4j.Level.INFO;
-            } else if(lv >= java.util.logging.Level.CONFIG.intValue()) {
-                return org.apache.log4j.Level.INFO;
-            } else if(lv >= java.util.logging.Level.FINE.intValue()) {
-                return org.apache.log4j.Level.DEBUG;
-            } else {
-                return org.apache.log4j.Level.TRACE;
-            }
-        }
+    private void publish(LogRecord record, String formattedMessage) {
+        log4jLogger.log(translateLevel(record.getLevel()), formattedMessage,
+                record.getThrown());
     }
 }

@@ -10,8 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.logging.log4j.LogManager;
 import com.bigdata.btree.BTree;
 import com.bigdata.btree.BTreeCounters;
 import com.bigdata.btree.ITuple;
@@ -31,7 +32,7 @@ import com.bigdata.service.IDataService;
  */
 public class OverflowMetadata {
 
-    protected static final Logger log = Logger.getLogger(OverflowMetadata.class);
+    protected static final Logger log = LogManager.getLogger(OverflowMetadata.class);
     
     /**
      * The resource manager.

@@ -72,7 +72,7 @@ import com.bigdata.striterator.ChunkedArrayIterator;
  * against a local database instance.
  * 
  * <pre>
- * -Dlog4j.configuration=bigdata/src/resources/logging/log4j.properties
+ * -Dlog4j2.configurationFile=bigdata/src/resources/logging/log4j2.properties
  * </pre>
  * 
  * @author <a href="mailto:thompsonbry@users.sourceforge.net">Bryan Thompson</a>

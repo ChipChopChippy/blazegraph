@@ -30,12 +30,12 @@ package com.bigdata.rdf.sail.sparql;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.openrdf.model.vocabulary.FOAF;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.model.vocabulary.RDFS;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.algebra.StatementPattern;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.model.vocabulary.FOAF;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
+import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.algebra.StatementPattern;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.rdf.internal.XSD;
 import com.bigdata.rdf.sail.sparql.ast.ParseException;
@@ -387,7 +387,7 @@ public class TestSubqueryPatterns extends
 
                 whereClause.addChild(new AssignmentNode(new VarNode("o"),
                         new ConstantNode(makeIV(valueFactory
-                                .createURI("http://www.bigdata.com")))));
+                                .createIRI("http://www.bigdata.com")))));
 
                 final JoinGroupNode wrapperGroup = new JoinGroupNode();
                 whereClause.addChild(wrapperGroup);
@@ -449,7 +449,7 @@ public class TestSubqueryPatterns extends
             final VarNode o = new VarNode("o");
             
             final ConstantNode const1 = new ConstantNode(
-                    makeIV(valueFactory.createURI("http://www.bigdata.com")));
+                    makeIV(valueFactory.createIRI("http://www.bigdata.com")));
             
             final ConstantNode const2 = new ConstantNode(
                     makeIV(valueFactory.createLiteral("12", XSD.INTEGER)));
@@ -552,13 +552,13 @@ public class TestSubqueryPatterns extends
         {
 
             final ConstantNode rdfType = new ConstantNode(
-                    makeIV(valueFactory.createURI(RDF.TYPE.stringValue())));
+                    makeIV(valueFactory.createIRI(RDF.TYPE.stringValue())));
 
             final ConstantNode foafPerson = new ConstantNode(
-                    makeIV(valueFactory.createURI(FOAF.PERSON.stringValue())));
+                    makeIV(valueFactory.createIRI(FOAF.PERSON.stringValue())));
 
             final ConstantNode foafName = new ConstantNode(
-                    makeIV(valueFactory.createURI(FOAF.NAME.stringValue())));
+                    makeIV(valueFactory.createIRI(FOAF.NAME.stringValue())));
 
             final VarNode person = new VarNode("person");
 
@@ -629,13 +629,13 @@ public class TestSubqueryPatterns extends
         {
 
             final ConstantNode rdfType = new ConstantNode(
-                    makeIV(valueFactory.createURI(RDF.TYPE.stringValue())));
+                    makeIV(valueFactory.createIRI(RDF.TYPE.stringValue())));
 
             final ConstantNode foafPerson = new ConstantNode(
-                    makeIV(valueFactory.createURI(FOAF.PERSON.stringValue())));
+                    makeIV(valueFactory.createIRI(FOAF.PERSON.stringValue())));
 
             final ConstantNode foafName = new ConstantNode(
-                    makeIV(valueFactory.createURI(FOAF.NAME.stringValue())));
+                    makeIV(valueFactory.createIRI(FOAF.NAME.stringValue())));
 
             final VarNode person = new VarNode("person");
 
@@ -729,7 +729,7 @@ public class TestSubqueryPatterns extends
             final VarNode x = new VarNode("x");
 
             final TermNode subPropertyOf = new ConstantNode(
-                    makeIV(valueFactory.createURI(RDFS.SUBPROPERTYOF
+                    makeIV(valueFactory.createIRI(RDFS.SUBPROPERTYOF
                             .stringValue())));
             
             {
@@ -836,7 +836,7 @@ public class TestSubqueryPatterns extends
 //            final VarNode x = new VarNode("x");
 //
 //            final TermNode subPropertyOf = new ConstantNode(
-//                    makeIV(valueFactory.createURI(RDFS.SUBPROPERTYOF
+//                    makeIV(valueFactory.createIRI(RDFS.SUBPROPERTYOF
 //                            .stringValue())));
 //            
 //            {
@@ -944,7 +944,7 @@ public class TestSubqueryPatterns extends
 //            final VarNode x = new VarNode("x");
 //
 //            final TermNode subPropertyOf = new ConstantNode(
-//                    makeIV(valueFactory.createURI(RDFS.SUBPROPERTYOF
+//                    makeIV(valueFactory.createIRI(RDFS.SUBPROPERTYOF
 //                            .stringValue())));
 //            
 //            {

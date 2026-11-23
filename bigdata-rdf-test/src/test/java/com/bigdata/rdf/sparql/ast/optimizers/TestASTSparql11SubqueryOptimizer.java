@@ -30,9 +30,9 @@ package com.bigdata.rdf.sparql.ast.optimizers;
 import java.util.Collections;
 import java.util.LinkedList;
 
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.query.algebra.StatementPattern.Scope;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.query.algebra.StatementPattern.Scope;
 
 import com.bigdata.BigdataStatics;
 import com.bigdata.bop.IBindingSet;
@@ -143,11 +143,11 @@ public class TestASTSparql11SubqueryOptimizer extends AbstractASTEvaluationTestC
         final IBindingSet[] bsets = new IBindingSet[]{};
 
         @SuppressWarnings("rawtypes")
-        final IV p = makeIV(new URIImpl("http://www.example.org/p"));
+        final IV p = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.example.org/p"));
         @SuppressWarnings("rawtypes")
         final IV a = makeIV(RDF.TYPE);
         @SuppressWarnings("rawtypes")
-        final IV ty = makeIV(new URIImpl("http://www.example.org/ty"));
+        final IV ty = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.example.org/ty"));
 
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -297,11 +297,11 @@ public class TestASTSparql11SubqueryOptimizer extends AbstractASTEvaluationTestC
         final IBindingSet[] bsets = new IBindingSet[]{};
 
         @SuppressWarnings("rawtypes")
-        final IV p = makeIV(new URIImpl("http://www.example.org/p"));
+        final IV p = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.example.org/p"));
         @SuppressWarnings("rawtypes")
         final IV a = makeIV(RDF.TYPE);
         @SuppressWarnings("rawtypes")
-        final IV ty = makeIV(new URIImpl("http://www.example.org/ty"));
+        final IV ty = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.example.org/ty"));
 
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -463,11 +463,11 @@ public class TestASTSparql11SubqueryOptimizer extends AbstractASTEvaluationTestC
         final IBindingSet[] bsets = new IBindingSet[]{};
 
         @SuppressWarnings("rawtypes")
-        final IV p = makeIV(new URIImpl("http://www.example.org/p"));
+        final IV p = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.example.org/p"));
         @SuppressWarnings("rawtypes")
         final IV a = makeIV(RDF.TYPE);
         @SuppressWarnings("rawtypes")
-        final IV ty = makeIV(new URIImpl("http://www.example.org/ty"));
+        final IV ty = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.example.org/ty"));
 
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -590,11 +590,11 @@ public class TestASTSparql11SubqueryOptimizer extends AbstractASTEvaluationTestC
         final IBindingSet[] bsets = new IBindingSet[]{};
 
         @SuppressWarnings("rawtypes")
-        final IV p = makeIV(new URIImpl("http://www.example.org/p"));
+        final IV p = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.example.org/p"));
         @SuppressWarnings("rawtypes")
         final IV a = makeIV(RDF.TYPE);
         @SuppressWarnings("rawtypes")
-        final IV ty = makeIV(new URIImpl("http://www.example.org/ty"));
+        final IV ty = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.example.org/ty"));
 
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);
@@ -729,11 +729,11 @@ public class TestASTSparql11SubqueryOptimizer extends AbstractASTEvaluationTestC
         final IBindingSet[] bsets = new IBindingSet[]{};
 
         @SuppressWarnings("rawtypes")
-        final IV p = makeIV(new URIImpl("http://www.example.org/p"));
+        final IV p = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.example.org/p"));
         @SuppressWarnings("rawtypes")
         final IV a = makeIV(RDF.TYPE);
         @SuppressWarnings("rawtypes")
-        final IV ty = makeIV(new URIImpl("http://www.example.org/ty"));
+        final IV ty = makeIV(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI("http://www.example.org/ty"));
 
         // The source AST.
         final QueryRoot given = new QueryRoot(QueryType.SELECT);

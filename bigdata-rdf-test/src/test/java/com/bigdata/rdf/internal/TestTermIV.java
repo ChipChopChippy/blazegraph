@@ -38,7 +38,7 @@ import com.bigdata.rdf.internal.impl.TermId;
 import com.bigdata.rdf.lexicon.BlobsIndexHelper;
 import com.bigdata.rdf.model.BigdataURI;
 import com.bigdata.rdf.model.BigdataValue;
-import com.bigdata.rdf.model.BigdataValueFactoryImpl;
+import com.bigdata.rdf.model.BigdataSimpleValueFactory;
 import com.bigdata.util.Bytes;
 
 /**
@@ -65,7 +65,7 @@ public class TestTermIV extends TestCase2 {
         
         assertTrue(iv.isNullIV());
         
-        assertEquals(VTE.URI, iv.getVTE());
+        assertEquals(VTE.IRI, iv.getVTE());
 
         assertEquals(0L, iv.getTermId());
 
@@ -83,10 +83,10 @@ public class TestTermIV extends TestCase2 {
 
     public void test_TermIV_isExtensionIV() {
 
-        final TermId<BigdataURI> iv = new TermId<BigdataURI>(VTE.URI,
+        final TermId<BigdataURI> iv = new TermId<BigdataURI>(VTE.IRI,
                 12L);
 
-        assertEquals(VTE.URI, iv.getVTE());
+        assertEquals(VTE.IRI, iv.getVTE());
 
         assertFalse(iv.isInline());
 
@@ -128,7 +128,7 @@ public class TestTermIV extends TestCase2 {
 
         assertEquals(iv, iv2);
 
-        final BigdataValue value = BigdataValueFactoryImpl.getInstance(
+        final BigdataValue value = BigdataSimpleValueFactory.getInstance(
                 getName()).createLiteral("foo");
         
         iv2.setValue(value);
@@ -140,7 +140,7 @@ public class TestTermIV extends TestCase2 {
     
     public void test_TermId_URI() {
 
-        doTermIVTest(VTE.URI, 12L);
+        doTermIVTest(VTE.IRI, 12L);
 
     }
 
@@ -158,21 +158,21 @@ public class TestTermIV extends TestCase2 {
 
     public void test_TermId_URI_Counter_ONE() {
 
-        doTermIVTest(VTE.URI,1L);
+        doTermIVTest(VTE.IRI,1L);
 
     }
 
     public void test_TermId_URI_Counter_MINUS_ONE() {
         
         if (!IVUtility.PACK_TIDS)
-            doTermIVTest(VTE.URI, -1L);
+            doTermIVTest(VTE.IRI, -1L);
         
     }
 
     public void test_TermId_URI_Counter_MIN_VALUE() {
 
         if (!IVUtility.PACK_TIDS)
-            doTermIVTest(VTE.URI, Long.MIN_VALUE);
+            doTermIVTest(VTE.IRI, Long.MIN_VALUE);
 
     }
 
@@ -182,13 +182,13 @@ public class TestTermIV extends TestCase2 {
      */
 //    public void test_TermId_URI_Counter_ZERO() {
 //
-//        doTermIVTest(VTE.URI, 0);
+//        doTermIVTest(VTE.IRI, 0);
 //
 //    }
 
     public void test_TermId_URI_Counter_MAX_VALUE() {
 
-        doTermIVTest(VTE.URI, Long.MAX_VALUE);
+        doTermIVTest(VTE.IRI, Long.MAX_VALUE);
 
     }
 
@@ -243,7 +243,7 @@ public class TestTermIV extends TestCase2 {
             // assertEquals(dte, v.getInternalDataTypeEnum());
 
             switch (vte) {
-            case URI:
+            case IRI:
                 assertTrue(v.isURI());
                 assertFalse(v.isBNode());
                 assertFalse(v.isLiteral());
@@ -314,7 +314,7 @@ public class TestTermIV extends TestCase2 {
             }
 
             switch (vte) {
-            case URI:
+            case IRI:
                 assertTrue(v.isURI());
                 assertFalse(v.isBNode());
                 assertFalse(v.isLiteral());

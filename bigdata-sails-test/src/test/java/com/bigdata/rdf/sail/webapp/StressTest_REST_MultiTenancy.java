@@ -35,10 +35,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.openrdf.model.Statement;
-import org.openrdf.model.impl.StatementImpl;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.query.QueryEvaluationException;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
+import org.eclipse.rdf4j.model.impl.SimpleIRI;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
 
 import com.bigdata.journal.BufferMode;
 import com.bigdata.journal.IIndexManager;
@@ -376,8 +376,8 @@ public class StressTest_REST_MultiTenancy<S extends IIndexManager> extends
 
    private static Statement generateTriple() {
 
-      return new StatementImpl(new URIImpl(URI_PREFIX + UUID.randomUUID()),
-            new URIImpl(URI_PREFIX + UUID.randomUUID()), new URIImpl(URI_PREFIX
+      return SimpleValueFactory.getInstance().createStatement(org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(URI_PREFIX + UUID.randomUUID()),
+            org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(URI_PREFIX + UUID.randomUUID()), org.eclipse.rdf4j.model.impl.SimpleValueFactory.getInstance().createIRI(URI_PREFIX
                   + UUID.randomUUID()));
 
    }

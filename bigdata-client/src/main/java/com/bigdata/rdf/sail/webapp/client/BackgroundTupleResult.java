@@ -12,23 +12,23 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryResultHandlerException;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.TupleQueryResultHandler;
-import org.openrdf.query.TupleQueryResultHandlerException;
-import org.openrdf.query.impl.TupleQueryResultImpl;
-import org.openrdf.query.resultio.QueryResultParseException;
-import org.openrdf.query.resultio.TupleQueryResultParser;
-import org.openrdf.repository.sparql.query.QueueCursor;
+import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.QueryResultHandlerException;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.query.TupleQueryResultHandler;
+import org.eclipse.rdf4j.query.TupleQueryResultHandlerException;
+import org.eclipse.rdf4j.query.impl.IteratingTupleQueryResult;
+import org.eclipse.rdf4j.query.resultio.QueryResultParseException;
+import org.eclipse.rdf4j.query.resultio.TupleQueryResultParser;
+import org.eclipse.rdf4j.query.impl.QueueCursor;
 
 /**
  * Provides concurrent access to tuple results as they are being parsed.
  * 
  * @author James Leigh
  */
-public class BackgroundTupleResult extends TupleQueryResultImpl implements
+public class BackgroundTupleResult extends IteratingTupleQueryResult implements
 		TupleQueryResult, Runnable, TupleQueryResultHandler {
 
 	final private Object closeLock = new Object();

@@ -1,11 +1,13 @@
 package com.bigdata.rdf.sail;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.concurrent.TimeUnit;
 
-import org.openrdf.query.Dataset;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.algebra.evaluation.QueryBindingSet;
-import org.openrdf.repository.sail.SailBooleanQuery;
+import org.eclipse.rdf4j.query.Dataset;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
+import org.eclipse.rdf4j.query.algebra.evaluation.QueryBindingSet;
+import org.eclipse.rdf4j.repository.sail.SailBooleanQuery;
 
 import com.bigdata.rdf.sparql.ast.ASTContainer;
 import com.bigdata.rdf.sparql.ast.BindingsClause;
@@ -17,7 +19,7 @@ import com.bigdata.rdf.store.AbstractTripleStore;
 public class BigdataSailBooleanQuery extends SailBooleanQuery 
         implements BigdataSailQuery {
 
-//    private static Logger log = Logger.getLogger(BigdataSailBooleanQuery.class);
+//    private static Logger log = LogManager.getLogger(BigdataSailBooleanQuery.class);
 
     private final ASTContainer astContainer;
 

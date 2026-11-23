@@ -27,6 +27,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.bigdata.rdf.sparql.ast.eval.reif;
 
+
+import org.apache.logging.log4j.LogManager;
 import java.util.Properties;
 
 import com.bigdata.BigdataStatics;
@@ -86,7 +88,7 @@ import com.bigdata.rdf.vocab.decls.DCTermsVocabularyDecl;
  */
 public class TestReificationDoneRightEval extends AbstractDataDrivenSPARQLTestCase {
 
-//    private static final Logger log = Logger.getLogger(TestReificationDoneRight.class);
+//    private static final Logger log = LogManager.getLogger(TestReificationDoneRight.class);
 	
 	public static final String TEST_RESOURCE_PREFIX = "/com/bigdata/rdf/sparql/ast/eval/reif/";
     
@@ -112,14 +114,14 @@ public class TestReificationDoneRightEval extends AbstractDataDrivenSPARQLTestCa
 
 		final BigdataValueFactory vf = store.getValueFactory();
 
-		final BigdataURI SAP = vf.createURI("http://example.com/SAP");
-		final BigdataURI bought = vf.createURI("http://example.com/bought");
-		final BigdataURI sybase = vf.createURI("http://example.com/sybase");
-		final BigdataURI dcSource = vf.createURI(DCTermsVocabularyDecl.NAMESPACE+"source");
-		final BigdataURI dcCreated = vf.createURI(DCTermsVocabularyDecl.NAMESPACE+"created");
-		final BigdataURI newsSybase = vf.createURI("http://example.com/news/us-sybase");
+		final BigdataURI SAP = vf.createIRI("http://example.com/SAP");
+		final BigdataURI bought = vf.createIRI("http://example.com/bought");
+		final BigdataURI sybase = vf.createIRI("http://example.com/sybase");
+		final BigdataURI dcSource = vf.createIRI(DCTermsVocabularyDecl.NAMESPACE+"source");
+		final BigdataURI dcCreated = vf.createIRI(DCTermsVocabularyDecl.NAMESPACE+"created");
+		final BigdataURI newsSybase = vf.createIRI("http://example.com/news/us-sybase");
 		final BigdataLiteral createdDate = vf.createLiteral("2011-04-05T12:00:00Z",XSD.DATETIME);
-		final BigdataURI g1 = vf.createURI("http://example.com/g1");
+		final BigdataURI g1 = vf.createIRI("http://example.com/g1");
 
 		// Add/resolve the terms against the lexicon.
 		final BigdataValue[] terms = new BigdataValue[] { SAP, bought, sybase,
@@ -191,14 +193,14 @@ public class TestReificationDoneRightEval extends AbstractDataDrivenSPARQLTestCa
 
 		final BigdataValueFactory vf = store.getValueFactory();
 
-		final BigdataURI SAP = vf.createURI("http://example.com/SAP");
-		final BigdataURI bought = vf.createURI("http://example.com/bought");
-		final BigdataURI sybase = vf.createURI("http://example.com/sybase");
-		final BigdataURI dcSource = vf.createURI(DCTermsVocabularyDecl.NAMESPACE+"source");
-		final BigdataURI dcCreated = vf.createURI(DCTermsVocabularyDecl.NAMESPACE+"created");
-		final BigdataURI newsSybase = vf.createURI("http://example.com/news/us-sybase");
+		final BigdataURI SAP = vf.createIRI("http://example.com/SAP");
+		final BigdataURI bought = vf.createIRI("http://example.com/bought");
+		final BigdataURI sybase = vf.createIRI("http://example.com/sybase");
+		final BigdataURI dcSource = vf.createIRI(DCTermsVocabularyDecl.NAMESPACE+"source");
+		final BigdataURI dcCreated = vf.createIRI(DCTermsVocabularyDecl.NAMESPACE+"created");
+		final BigdataURI newsSybase = vf.createIRI("http://example.com/news/us-sybase");
 		final BigdataLiteral createdDate = vf.createLiteral("2011-04-05T12:00:00Z",XSD.DATETIME);
-		final BigdataURI g1 = vf.createURI("http://example.com/g1");
+		final BigdataURI g1 = vf.createIRI("http://example.com/g1");
 
 		// Add/resolve the terms against the lexicon.
 		final BigdataValue[] terms = new BigdataValue[] { SAP, bought, sybase,
