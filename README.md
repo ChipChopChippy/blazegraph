@@ -1,5 +1,18 @@
-## Welcome to the Blazegraph21 Database ##
-Blazegraph™ DB is a ultra high-performance graph database supporting Blueprints and RDF/SPARQL APIs. It supports up to 50 Billion edges on a single machine. It is in production use for Fortune 500 customers such as EMC, Autodesk, and many others.  It is supporting key [Precision Medicine](http://www.syapse.com) applications and has wide-spread usage for life science applications.  It is used extensively to support Cyber analytics in commercial and government applications.  It powers the Wikimedia Foundation's [Wikidata Query Service](https://query.wikidata.org/). 
+## Welcome to Blazegraph 3 ##
+
+Blazegraph 3 is a new beginning for the Blazegraph project, distinguished from
+the original, archived Blazegraph version. The code retains the logic and
+capabilities of its predecessor and is now maintained by a new group of
+maintainers. Associated libraries have been updated for this release.
+
+The project owes a continuing debt to the original developers whose work made
+this release possible.
+
+Blazegraph is a high-performance graph database supporting Blueprints and
+RDF/SPARQL APIs. It supports up to 50 billion edges on a single machine and
+powers the Wikimedia Foundation's [Wikidata Query Service](https://query.wikidata.org/).
+
+This software is provided on an "AS IS" basis, without warranties of any kind.
 
 ![image](http://blog.blazegraph.com/wp-content/uploads/2015/07/blazegraph_by_systap_favicon.png)
 
@@ -39,16 +52,13 @@ If you enable authentication and expose the Blazegraph workbench, you should als
 ### Building the code ###
 As a quick start, run `mvn install -DskipTests` or the utility script `./scripts/mavenInstall.sh `.
 
-Build with JDK 28; the project compiles against the Java 21 API so the resulting
-artifacts can also be used by Java 21 clients. To build the standalone executable JAR, run
+Blazegraph 3 requires JDK 28 or later to build and run. To build the standalone executable JAR, run
 `mvn -PDeployment -pl blazegraph-jar -am package -DskipTests`. Start it with
 `java -jar blazegraph-jar/target/blazegraph-jar-3.0.0-SNAPSHOT.jar` and open
 `http://localhost:9999/blazegraph/`. The build skips tests and uses the current
 snapshot version; it is not a published release.
 
 For more detailed maven information see the [wiki](https://wiki.blazegraph.com/wiki/index.php/MavenNotes). 
-
-If you build with Java 7, you need to add Maven options for TLS 1.2, i.e. `export MAVEN_OPTS="-Dhttps.protocols=TLSv1.2"`.
 
 ### Samples and Examples ###
 There are code samples and examples to get started with the Blazegraph Database [here] (https://github.com/blazegraph/blazegraph-samples).  Tinkerpop3 examples are included directly within the Tinkerpop3 repository per below.
