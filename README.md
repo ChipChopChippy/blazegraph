@@ -39,7 +39,8 @@ If you enable authentication and expose the Blazegraph workbench, you should als
 ### Building the code ###
 As a quick start, run `mvn install -DskipTests` or the utility script `./scripts/mavenInstall.sh `.
 
-To build the standalone executable JAR with Java 21, run
+Build with JDK 28; the project compiles against the Java 21 API so the resulting
+artifacts can also be used by Java 21 clients. To build the standalone executable JAR, run
 `mvn -PDeployment -pl blazegraph-jar -am package -DskipTests`. Start it with
 `java -jar blazegraph-jar/target/blazegraph-jar-3.0.0-SNAPSHOT.jar` and open
 `http://localhost:9999/blazegraph/`. The build skips tests and uses the current
