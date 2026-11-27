@@ -1,0 +1,435 @@
+<mat-sidenav-container class="workbench-shell">
+  <mat-sidenav class="sidebar" mode="side" opened>
+    <a class="brand" href="./" aria-label="Blazegraph 3 overview">
+      <span class="brand-mark">B</span>
+      <span class="brand-copy">
+        <strong>Blazegraph</strong>
+        <small>DATABASE · 3</small>
+      </span>
+    </a>
+
+    @for (group of namespaceGroups(); track group) {
+      <div class="nav-group">
+        <div class="nav-heading">{{ group }}</div>
+        @for (item of navigation; track item.id) {
+          @if (item.group === group) {
+            <button
+              type="button"
+              class="nav-item"
+              [attr.aria-label]="item.label"
+              [class.active]="activeView() === item.id"
+              (click)="selectView(item.id)"
+            >
+              <span class="nav-glyph" aria-hidden="true">{{ item.glyph }}</span>
+              <span>{{ item.label }}</span>
+            </button>
+          }
+        }
+      </div>
+    }
+
+    <div class="sidebar-bottom">
+      <a href="legacy.html">Classic workbench</a>
+      <span>Blazegraph 3</span>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <header class="topbar">
+      <div class="breadcrumbs">
+        <span>Blazegraph 3</span>
+        <span class="breadcrumb-divider">/</span>
+        <strong>{{ activeLabel() }}</strong>
+      </div>
+      <div class="topbar-actions">
+        <mat-form-field class="namespace-picker" appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Active namespace</mat-label>
+          <mat-select
+            [ngModel]="currentNamespace()"
+            (ngModelChange)="setCurrentNamespace($event)"
+            aria-label="Active namespace"
+          >
+            @for (namespace of namespaces(); track trackNamespace($index, namespace)) {
+              <mat-option [value]="namespace.name">{{ namespace.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-checkbox
+          [checked]="loadBalanced()"
+          (change)="toggleLoadBalanced($event.checked)"
+          aria-label="Use high availability load balancer"
+        >HA</mat-checkbox>
+      </div>
+    </header>
+
+    <main class="content">
+      @if (activeView() === 'overview') {
+        <section class="page-heading">
+          <div>
+            <div class="eyebrow">DATABASE WORKSPACE</div>
+            <h1>Good to see you.</h1>
+            <p>Query, load, and explore your graph data from one place.</p>
+          </div>
+          <div class="health-pill" [class.attention]="healthLabel() === 'Attention'">
+            <span class="health-dot"></span>
+            {{ healthLabel() }}
+          </div>
+        </section>
+
+        <section class="welcome-card">
+          <div class="welcome-copy">
+            <div class="eyebrow">YOUR GRAPH DATABASE</div>
+            <h2>Make your data<br>work together.</h2>
+            <p>Explore connected data, run SPARQL queries, and manage namespaces in your Blazegraph instance.</p>
+            <button mat-flat-button type="button" (click)="selectView('query')">Open query editor <span aria-hidden="true">→</span></button>
+          </div>
+          <div class="graph-art" aria-hidden="true">
+            <span class="graph-line line-one"></span><span class="graph-line line-two"></span>
+            <span class="graph-line line-three"></span><span class="graph-line line-four"></span>
+            <i class="graph-node node-one"></i><i class="graph-node node-two"></i>
+            <i class="graph-node node-three"></i><i class="graph-node node-four"></i>
+            <i class="graph-node node-five"></i><i class="graph-node node-six"></i>
+          </div>
+        </section>
+
+        <div class="section-title">
+          <div><h2>Workspace</h2><p>Jump back into your workflow.</p></div>
+        </div>
+        <section class="quick-grid">
+          <button class="quick-card" type="button" (click)="selectView('query')">
+            <span class="quick-icon query-icon">⌕</span>
+            <span class="quick-title">Run a query</span>
+            <span class="quick-description">Explore your graph with SPARQL.</span>
+            <span class="quick-arrow">→</span>
+          </button>
+          <button class="quick-card" type="button" (click)="selectView('update')">
+            <span class="quick-icon update-icon">↥</span>
+            <span class="quick-title">Load data</span>
+            <span class="quick-description">Upload RDF or apply an update.</span>
+            <span class="quick-arrow">→</span>
+          </button>
+          <button class="quick-card" type="button" (click)="selectView('namespaces')">
+            <span class="quick-icon namespace-icon">▦</span>
+            <span class="quick-title">Manage namespaces</span>
+            <span class="quick-description">Configure how your data is stored.</span>
+            <span class="quick-arrow">→</span>
+          </button>
+        </section>
+
+        <section class="overview-bottom">
+          <mat-card class="surface-card current-card">
+            <div class="card-overline">ACTIVE NAMESPACE</div>
+            <h3>{{ currentNamespace() }}</h3>
+            <p>Your current graph workspace. Queries and updates are scoped here.</p>
+            <button mat-button type="button" (click)="selectView('namespaces')">View namespaces <span aria-hidden="true">→</span></button>
+          </mat-card>
+          <mat-card class="surface-card help-card">
+            <div class="card-overline">GETTING STARTED</div>
+            <h3>New to Blazegraph?</h3>
+            <p>Learn about SPARQL, graph namespaces, and the REST API.</p>
+            <a mat-button href="https://wiki.blazegraph.com/wiki/index.php/Main_Page" target="_blank" rel="noopener">Open documentation <span aria-hidden="true">↗</span></a>
+          </mat-card>
+        </section>
+      }
+
+      @if (activeView() === 'query') {
+        <section class="page-heading compact-heading">
+          <div>
+            <div class="eyebrow">WORKSPACE / QUERY</div>
+            <h1>Query your graph</h1>
+            <p>Write and run SPARQL against <strong>{{ currentNamespace() }}</strong>.</p>
+          </div>
+        </section>
+        <mat-card class="surface-card editor-card">
+          <div class="editor-toolbar">
+            <div><h2>SPARQL query</h2><span class="muted">Results are returned as SPARQL JSON.</span></div>
+            <div class="editor-options">
+              <mat-checkbox [(ngModel)]="analytic">Analytic</mat-checkbox>
+              <mat-checkbox [(ngModel)]="explain">Explain</mat-checkbox>
+            </div>
+          </div>
+          <mat-form-field appearance="outline" class="full-width code-field">
+            <textarea matInput rows="13" spellcheck="false" aria-label="SPARQL query" [(ngModel)]="queryText" (keydown.control.enter)="runQuery()" (keydown.meta.enter)="runQuery()"></textarea>
+          </mat-form-field>
+          @if (queryError()) { <p class="feedback error-feedback" role="alert">{{ queryError() }}</p> }
+          <div class="editor-actions">
+            <span class="muted">Ctrl / Cmd + Enter to run</span>
+            <div>
+              <button mat-button type="button" (click)="clearQueryResults()">Clear results</button>
+              <button mat-flat-button type="button" [disabled]="queryRunning()" (click)="runQuery()">
+                @if (queryRunning()) { <mat-spinner diameter="18"></mat-spinner> } @else { Run query }
+              </button>
+            </div>
+          </div>
+        </mat-card>
+
+        @if (queryResults(); as result) {
+          <mat-card class="surface-card results-card">
+            <div class="results-heading">
+              <div><h2>Results</h2><span class="muted">{{ totalResults() }} rows</span></div>
+              <button mat-button type="button" (click)="exportResults()">Download JSON</button>
+            </div>
+            @if (result.head.vars.length) {
+              <div class="table-scroll">
+                <table mat-table [dataSource]="pagedResults()" class="results-table">
+                  @for (column of result.head.vars; track column) {
+                    <ng-container [matColumnDef]="column">
+                      <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+                      <td mat-cell *matCellDef="let row">
+                        <span class="result-value">{{ cellValue(row, column) }}</span>
+                      </td>
+                    </ng-container>
+                  }
+                  <tr mat-header-row *matHeaderRowDef="result.head.vars"></tr>
+                  <tr mat-row *matRowDef="let row; columns: result.head.vars"></tr>
+                </table>
+              </div>
+            } @else {
+              <p class="empty-state">The query completed without tabular results.</p>
+            }
+            <div class="pagination">
+              <span class="muted">Page {{ queryPage() + 1 }} of {{ pageCount() }}</span>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Rows</mat-label>
+                <mat-select [ngModel]="queryPageSize()" (ngModelChange)="setQueryPageSize($event)">
+                  <mat-option [value]="25">25</mat-option>
+                  <mat-option [value]="50">50</mat-option>
+                  <mat-option [value]="100">100</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <button mat-button type="button" [disabled]="queryPage() === 0" (click)="moveQueryPage(-1)">Previous</button>
+              <button mat-button type="button" [disabled]="queryPage() >= pageCount() - 1" (click)="moveQueryPage(1)">Next</button>
+            </div>
+          </mat-card>
+        }
+
+        @if (queryHistory().length) {
+          <mat-card class="surface-card history-card">
+            <h2>Recent queries</h2>
+            @for (query of queryHistory(); track query) {
+              <button class="history-item" type="button" (click)="restoreQuery(query)">
+                <code>{{ query }}</code><span>↗</span>
+              </button>
+            }
+          </mat-card>
+        }
+      }
+
+      @if (activeView() === 'update') {
+        <section class="page-heading compact-heading">
+          <div>
+            <div class="eyebrow">WORKSPACE / DATA</div>
+            <h1>Update & load</h1>
+            <p>Apply SPARQL Update statements or load RDF data into <strong>{{ currentNamespace() }}</strong>.</p>
+          </div>
+        </section>
+        <mat-card class="surface-card editor-card">
+          <div class="form-grid two-columns">
+            <mat-form-field appearance="outline">
+              <mat-label>Operation</mat-label>
+              <mat-select [(ngModel)]="updateMode">
+                <mat-option value="sparql">SPARQL Update</mat-option>
+                <mat-option value="rdf">Upload RDF data</mat-option>
+              </mat-select>
+            </mat-form-field>
+            @if (updateMode === 'rdf') {
+              <mat-form-field appearance="outline">
+                <mat-label>RDF format</mat-label>
+                <mat-select [(ngModel)]="rdfFormat">
+                  <mat-option value="text/turtle">Turtle</mat-option>
+                  <mat-option value="application/n-triples">N-Triples</mat-option>
+                  <mat-option value="application/n-quads">N-Quads</mat-option>
+                  <mat-option value="application/rdf+xml">RDF/XML</mat-option>
+                  <mat-option value="application/ld+json">JSON-LD</mat-option>
+                </mat-select>
+              </mat-form-field>
+            }
+          </div>
+          @if (updateMode === 'sparql') {
+            <mat-form-field appearance="outline" class="full-width code-field">
+              <mat-label>SPARQL Update</mat-label>
+              <textarea matInput rows="12" spellcheck="false" placeholder="INSERT DATA { ... }" [(ngModel)]="updateText"></textarea>
+            </mat-form-field>
+          } @else {
+            <label class="upload-drop">
+              <span class="upload-glyph">↥</span>
+              <strong>{{ selectedFile()?.name ?? 'Choose an RDF file' }}</strong>
+              <span>{{ selectedFile() ? 'Ready to load into the active namespace' : 'Select a local file to upload' }}</span>
+              <input type="file" accept=".ttl,.nt,.nq,.rdf,.xml,.jsonld,.trig" (change)="onFileSelected($event)">
+            </label>
+          }
+          @if (updateError()) { <p class="feedback error-feedback" role="alert">{{ updateError() }}</p> }
+          @if (updateMessage()) { <p class="feedback success-feedback" role="status">{{ updateMessage() }}</p> }
+          <div class="editor-actions">
+            <span class="muted">Changes apply to {{ currentNamespace() }}.</span>
+            <button mat-flat-button type="button" (click)="runUpdate()">Submit update</button>
+          </div>
+        </mat-card>
+      }
+
+      @if (activeView() === 'explore') {
+        <section class="page-heading compact-heading">
+          <div>
+            <div class="eyebrow">WORKSPACE / GRAPH</div>
+            <h1>Explore your graph</h1>
+            <p>Inspect statements connected to a resource in <strong>{{ currentNamespace() }}</strong>.</p>
+          </div>
+        </section>
+        <mat-card class="surface-card explore-card">
+          <form class="explore-form" (ngSubmit)="explore()">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Resource URI</mat-label>
+              <input matInput name="exploreUri" [(ngModel)]="exploreUri" placeholder="https://example.org/resource/123">
+            </mat-form-field>
+            <button mat-flat-button type="submit">Explore URI</button>
+          </form>
+          @if (exploreError()) { <p class="feedback error-feedback" role="alert">{{ exploreError() }}</p> }
+        </mat-card>
+        @if (exploreUri && (exploreOutgoing().length || exploreIncoming().length)) {
+          <section class="explore-results">
+            <mat-card class="surface-card">
+              <div class="card-overline">OUTGOING STATEMENTS</div>
+              <h2>{{ exploreOutgoing().length }} statements</h2>
+              @for (row of exploreOutgoing(); track $index) {
+                <div class="statement-row"><span>{{ cellValue(row, 'predicate') }}</span><strong>{{ cellValue(row, 'object') }}</strong></div>
+              } @empty { <p class="empty-state">No outgoing statements found.</p> }
+            </mat-card>
+            <mat-card class="surface-card">
+              <div class="card-overline">INCOMING STATEMENTS</div>
+              <h2>{{ exploreIncoming().length }} statements</h2>
+              @for (row of exploreIncoming(); track $index) {
+                <div class="statement-row"><span>{{ cellValue(row, 'predicate') }}</span><strong>{{ cellValue(row, 'subject') }}</strong></div>
+              } @empty { <p class="empty-state">No incoming statements found.</p> }
+            </mat-card>
+          </section>
+        }
+      }
+
+      @if (activeView() === 'namespaces') {
+        <section class="page-heading compact-heading">
+          <div>
+            <div class="eyebrow">ADMINISTRATION / DATA</div>
+            <h1>Namespaces</h1>
+            <p>Organize and configure graph data in your Blazegraph instance.</p>
+          </div>
+          <button mat-stroked-button type="button" (click)="loadNamespaces()">Refresh list</button>
+        </section>
+        @if (namespaceError()) { <p class="feedback error-feedback" role="alert">{{ namespaceError() }}</p> }
+        <mat-card class="surface-card namespace-card">
+          <div class="results-heading"><div><h2>Available namespaces</h2><span class="muted">{{ namespaces().length }} namespaces</span></div></div>
+          @if (namespaces().length) {
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead><tr><th>Name</th><th>Selection</th><th>Actions</th></tr></thead>
+                <tbody>
+                  @for (namespace of namespaces(); track trackNamespace($index, namespace)) {
+                    <tr>
+                      <td><strong>{{ namespace.name }}</strong></td>
+                      <td>
+                        @if (currentNamespace() === namespace.name) { <span class="selected-tag">Active</span> }
+                        @else { <button mat-button type="button" (click)="setCurrentNamespace(namespace.name)">Use namespace</button> }
+                      </td>
+                      <td class="table-actions">
+                        <button mat-button type="button" (click)="showNamespaceProperties(namespace.name)">Properties</button>
+                        <button mat-button type="button" [disabled]="namespace.name === defaultNamespace()" (click)="deleteNamespace(namespace.name)">Delete</button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          } @else { <p class="empty-state">No namespaces were returned by the server.</p> }
+        </mat-card>
+
+        @if (namespaceProperties(); as properties) {
+          <mat-card class="surface-card properties-card">
+            <div class="card-overline">NAMESPACE CONFIGURATION</div>
+            <h2>Properties</h2>
+            <div class="property-list">
+              @for (property of properties; track property[0]) {
+                <div><code>{{ property[0] }}</code><span>{{ property[1] }}</span></div>
+              }
+            </div>
+          </mat-card>
+        }
+
+        <mat-card class="surface-card create-card">
+          <div class="card-overline">SET UP A GRAPH</div>
+          <h2>Create namespace</h2>
+          <p class="muted">Choose a storage mode and optional indexes for this namespace.</p>
+          <form (ngSubmit)="createNamespace()">
+            <div class="form-grid two-columns">
+              <mat-form-field appearance="outline">
+                <mat-label>Name</mat-label>
+                <input matInput name="namespaceName" [(ngModel)]="namespaceName" required>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Storage mode</mat-label>
+                <mat-select name="namespaceMode" [(ngModel)]="namespaceMode">
+                  <mat-option value="triples">Triples</mat-option>
+                  <mat-option value="quads">Quads</mat-option>
+                  <mat-option value="rdr">Reification Done Right</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="checkbox-grid">
+              <mat-checkbox [(ngModel)]="namespaceInference" name="inference" [disabled]="namespaceMode !== 'triples' || namespaceIsolatableIndices">Inference</mat-checkbox>
+              <mat-checkbox [(ngModel)]="namespaceTextIndex" name="textIndex">Full-text index</mat-checkbox>
+              <mat-checkbox [(ngModel)]="namespaceGeoSpatial" name="geoSpatial">Geospatial index</mat-checkbox>
+              <mat-checkbox [(ngModel)]="namespaceIsolatableIndices" name="isolatable">Isolatable indices</mat-checkbox>
+            </div>
+            <div class="editor-actions"><span class="muted">The default namespace cannot be deleted.</span><button mat-flat-button type="submit">Create namespace</button></div>
+          </form>
+        </mat-card>
+      }
+
+      @if (activeView() === 'status') {
+        <section class="page-heading compact-heading">
+          <div><div class="eyebrow">ADMINISTRATION / ACTIVITY</div><h1>Running queries</h1><p>Review work currently executing on the server.</p></div>
+          <button mat-stroked-button type="button" (click)="loadStatus()">Refresh</button>
+        </section>
+        @if (panelError()) { <p class="feedback error-feedback" role="alert">{{ panelError() }}</p> }
+        <mat-card class="surface-card data-panel">
+          @if (panelLoading()) { <mat-spinner diameter="28"></mat-spinner> }
+          @else if (statusData()) { <pre>{{ pretty(statusData()) }}</pre> }
+          @else { <p class="empty-state">No running-query information is currently available.</p> }
+        </mat-card>
+      }
+
+      @if (activeView() === 'health') {
+        <section class="page-heading compact-heading">
+          <div><div class="eyebrow">ADMINISTRATION / SYSTEM</div><h1>Instance health</h1><p>Health information reported by the running Blazegraph service.</p></div>
+          <button mat-stroked-button type="button" (click)="loadHealth()">Refresh</button>
+        </section>
+        @if (panelError()) { <p class="feedback error-feedback" role="alert">{{ panelError() }}</p> }
+        <mat-card class="surface-card health-card">
+          <div class="health-card-title">
+            <span class="health-indicator" [class.attention]="healthLabel() === 'Attention'"></span>
+            <div><div class="card-overline">SERVICE STATUS</div><h2>{{ healthLabel() }}</h2></div>
+          </div>
+          @if (panelLoading()) { <mat-spinner diameter="28"></mat-spinner> }
+          @else if (healthData()) { <pre>{{ pretty(healthData()) }}</pre> }
+          @else { <p class="empty-state">Health data has not been returned by the server.</p> }
+        </mat-card>
+      }
+
+      @if (activeView() === 'performance') {
+        <section class="page-heading compact-heading">
+          <div><div class="eyebrow">ADMINISTRATION / SYSTEM</div><h1>Performance counters</h1><p>Inspect counters reported by your Blazegraph instance.</p></div>
+          <button mat-stroked-button type="button" (click)="loadPerformance()">Refresh</button>
+        </section>
+        @if (panelError()) { <p class="feedback error-feedback" role="alert">{{ panelError() }}</p> }
+        <mat-card class="surface-card data-panel">
+          @if (panelLoading()) { <mat-spinner diameter="28"></mat-spinner> }
+          @else if (performanceData()) { <pre>{{ performanceData() }}</pre> }
+          @else { <p class="empty-state">No performance data is currently available.</p> }
+        </mat-card>
+      }
+
+      <footer class="page-footer">
+        <span>Blazegraph 3 Workbench</span>
+        <a href="legacy.html">Open classic workbench</a>
+      </footer>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
