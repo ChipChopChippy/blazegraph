@@ -37,6 +37,71 @@ Copyright 2010 by TalkingTrends (Amsterdam, The Netherlands)
   <name>Blazegraph WAR HTML</name>
   <description>Blazegraph Web Application Archive</description>
   <packaging>war</packaging>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <version>2.0.2</version>
+        <configuration>
+          <workingDirectory>${project.basedir}/frontend</workingDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <id>install-frontend-toolchain</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>install-node-and-npm</goal>
+            </goals>
+            <configuration>
+              <nodeVersion>v24.15.0</nodeVersion>
+              <npmVersion>11.6.3</npmVersion>
+            </configuration>
+          </execution>
+          <execution>
+            <id>install-frontend-dependencies</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>ci</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>build-angular-workbench</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>run build</arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <webResources>
+            <resource>
+              <directory>${project.basedir}/frontend/target/generated-ui/browser</directory>
+              <filtering>false</filtering>
+            </resource>
+            <resource>
+              <directory>${project.basedir}/frontend/target/generated-ui</directory>
+              <targetPath>licenses</targetPath>
+              <filtering>false</filtering>
+              <includes>
+                <include>3rdpartylicenses.txt</include>
+              </includes>
+            </resource>
+          </webResources>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
   <reporting>
     <plugins>
       <plugin>

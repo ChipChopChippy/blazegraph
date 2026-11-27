@@ -1,0 +1,61 @@
+@use '@angular/material' as mat;
+
+html {
+  color-scheme: light;
+  @include mat.theme((
+    color: (
+      primary: mat.$azure-palette,
+      tertiary: mat.$spring-green-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+  background: var(--mat-sys-surface-container-low);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 360px;
+  min-height: 100vh;
+  margin: 0;
+  color: var(--mat-sys-on-surface);
+  font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+.mat-mdc-form-field {
+  --mat-form-field-container-height: 52px;
+}
+
+.code-field .mat-mdc-form-field-infix {
+  padding-block: 13px;
+}
+
+.mat-mdc-card {
+  --mdc-elevated-card-container-shape: 20px;
+}
+
+.mat-mdc-raised-button,
+.mat-mdc-unelevated-button {
+  --mdc-filled-button-container-shape: 13px;
+  font-weight: 650;
+}
+
+.mat-mdc-outlined-button {
+  --mdc-outlined-button-container-shape: 13px;
+}

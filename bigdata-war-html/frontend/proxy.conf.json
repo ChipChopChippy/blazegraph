@@ -1,0 +1,27 @@
+{
+  "/namespace": {
+    "target": "http://localhost:9999/blazegraph",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/sparql": {
+    "target": "http://localhost:9999/blazegraph",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/status": {
+    "target": "http://localhost:9999/blazegraph",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/counters": {
+    "target": "http://localhost:9999/blazegraph",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/LBS": {
+    "target": "http://localhost:9999/blazegraph",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

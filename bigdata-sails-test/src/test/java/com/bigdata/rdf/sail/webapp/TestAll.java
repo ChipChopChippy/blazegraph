@@ -61,6 +61,7 @@ public class TestAll extends TestCase {
         suite.addTestSuite(TestNanoSparqlServer.class);
 
         suite.addTestSuite(TestServiceWhiteList.class);
+        suite.addTestSuite(TestTupleQueryResultWriter.class);
 
 //
 //        /*

@@ -205,6 +205,6 @@
   </servlet-mapping>
   <!-- Map the initial request into the UI. -->
   <welcome-file-list>
-    <welcome-file>html/index.html</welcome-file>
+    <welcome-file>index.html</welcome-file>
   </welcome-file-list>
 </web-app>
