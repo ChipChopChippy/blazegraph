@@ -306,6 +306,8 @@ public class NanoSparqlServer {
 //   *            kilobytes, e.g., <code>5k</code>.</dd>
     public static void main(final String[] args) throws Exception {
 
+        ServerRuntime.requireSupported();
+
         Banner.banner();
 
         int port = 80;

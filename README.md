@@ -52,11 +52,85 @@ If you enable authentication and expose the Blazegraph workbench, you should als
 ### Building the code ###
 As a quick start, run `mvn install -DskipTests` or the utility script `./scripts/mavenInstall.sh `.
 
-Blazegraph 3 requires JDK 28 or later to build and run. To build the standalone executable JAR, run
+Blazegraph 3 requires JDK 27 or later to build and run the server. Java
+libraries are compiled for Java 21 so that Java 21 clients can use them.
+To build the standalone executable JAR, run
 `mvn -PDeployment -pl blazegraph-jar -am package -DskipTests`. Start it with
 `java -jar blazegraph-jar/target/blazegraph-jar-3.0.0-SNAPSHOT.jar` and open
 `http://localhost:9999/blazegraph/`. The build skips tests and uses the current
 snapshot version; it is not a published release.
+
+#### Experimental virtual-thread request dispatch ####
+
+The standalone executable JAR can opt into Jetty virtual-thread request dispatch:
+
+```
+java -Dblazegraph.virtualThreads.enabled=true -jar blazegraph-jar/target/blazegraph-jar-3.0.0-SNAPSHOT.jar
+```
+
+This is disabled by default; omit the property or set it to `false` to roll back.
+It applies to the standalone JAR, not external WAR containers. The Jetty
+platform-thread pool and the separate query executor remain in place. Custom
+Jetty configurations must use a `QueuedThreadPool` without an existing virtual
+threads executor when the flag is enabled. To bound
+HTTP work in this mode, the following JVM properties control Jetty's request
+admission handler:
+
+| Property | Default | Meaning |
+| --- | --- | --- |
+| `blazegraph.virtualThreads.maxRequests` | `64` | Maximum concurrent requests; must be positive. |
+| `blazegraph.virtualThreads.maxQueuedRequests` | `64` | Maximum suspended requests; zero rejects excess requests immediately. |
+| `blazegraph.virtualThreads.queueTimeoutMillis` | `30000` | Maximum queue wait in milliseconds; must be positive. |
+
+Requests exceeding the queue limit or timeout receive HTTP 503. These bounds
+apply only when the flag is enabled; configure them for the workload and
+available resources. The feature is experimental: benchmark it against the
+platform-thread mode, including a tuned Jetty pool, before enabling it in
+production. It does not increase the query executor's concurrency limit.
+Compare both modes on the same JDK, data and hardware, with the same query
+concurrency and comparable request admission limits. Include short queries,
+expensive joins, disk-heavy reads and slow clients at increasing concurrency;
+measure successful throughput, p95/p99 latency, rejections, memory, CPU and
+thread counts. Use an isolated test database and repeat runs after warmup.
+
+##### Virtual-thread benchmark results #####
+
+On 26 November 2026, the standalone server was benchmarked on Windows 11 with
+Oracle JDK 27.0.1.1 and an Intel Core i7-7700HQ (4 cores, 8 logical processors).
+Both modes used a 16-thread query executor and a synthetic, warm dataset of
+10,000 entities and 30,000 triples. The load generator and both server
+processes ran on the same machine; only one server was under load at a time.
+
+The table reports median successful requests per second and the median of the
+per-trial p95 latencies, from three trials per case. Each trial ran for at
+least eight seconds after a five-second warmup, including time to finish
+in-flight requests. Slow-streaming clients read responses in 2 KiB chunks
+with a 2 ms delay between reads. No request errors were observed.
+
+| Workload | Concurrent clients | Platform req/s | Platform p95 | Virtual req/s | Virtual p95 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Lookup | 8 | 304.6 | 31 ms | 306.8 | 33 ms |
+| Lookup | 48 | 311.0 | 170 ms | 302.1 | 171 ms |
+| Join | 8 | 313.7 | 30 ms | 314.9 | 30 ms |
+| Join | 48 | 307.4 | 183 ms | 311.1 | 167 ms |
+| Slow streaming | 8 | 7.7 | 1,089 ms | 8.0 | 1,022 ms |
+| Slow streaming | 48 | 31.0 | 1,708 ms | 30.0 | 1,825 ms |
+| Lookup, tuned pool | 96 | 302.7 | 341 ms | 303.4 | 346 ms |
+| Slow streaming, tuned pool | 96 | 66.4 | 1,530 ms | 64.6 | 1,534 ms |
+
+The 96-client cases used a 128-thread Jetty pool; the other cases used the
+default 64-thread pool. Virtual-thread admission limits were 128 and 64 active
+requests respectively. These results show no consistent throughput benefit, so
+virtual-thread dispatch remains disabled by default.
+
+This is not a production-representative benchmark: the dataset was small and
+cached, the trials were short, and the load generator shared the server's
+machine. Results do not cover cold-disk reads, updates, or remote services and
+should not be generalized to other workloads.
+
+The Maven build also compiles the Angular 22 and Angular Material 3 Workbench
+included in the WAR. The previous jQuery Workbench remains available at
+`/legacy.html`.
 
 For more detailed maven information see the [wiki](https://wiki.blazegraph.com/wiki/index.php/MavenNotes). 
 

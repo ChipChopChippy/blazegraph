@@ -152,6 +152,8 @@ public class BigdataRDFServletContextListener implements
     @Override
     public void contextInitialized(final ServletContextEvent e) {
 
+        ServerRuntime.requireSupported();
+
         if(log.isInfoEnabled())
             log.info("");
 

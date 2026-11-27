@@ -46,6 +46,7 @@ import com.bigdata.util.httpd.Config;
 public class StandaloneNanoSparqlServer extends NanoSparqlServer {
 
 	public static void main(String[] args) throws Exception {
+        ServerRuntime.requireSupported();
 		Banner.banner();
 
         int port = -1;
@@ -150,6 +151,7 @@ public class StandaloneNanoSparqlServer extends NanoSparqlServer {
         final Server server = StandaloneNanoSparqlServer.newInstance(port, jettyXml,
                 null/* indexManager */, initParams);
 
+        VirtualThreadRequestDispatch.configure(server, System.getProperties());
 
         awaitServerStart(server);
 

@@ -1705,15 +1705,7 @@ public class BigdataRDFContext extends BigdataBaseContext {
                 
             } else {
 
-                // Note: getQueryTask() verifies that format will be non-null.
-                final TupleQueryResultFormat format = TupleQueryResultWriterRegistry
-                        .getInstance().getFileFormatForMIMEType(mimeType)
-                        .map(f -> (TupleQueryResultFormat) f).orElse(null);
-
-                w = TupleQueryResultWriterRegistry.getInstance().get(format)
-                        .orElseThrow(() -> new IllegalStateException(
-                                "No tuple result writer for " + format))
-                        .getWriter(os);
+                w = createTupleQueryResultWriter(mimeType, os);
                 
             }
 
@@ -1722,6 +1714,20 @@ public class BigdataRDFContext extends BigdataBaseContext {
 		}
 
 	}
+
+    static TupleQueryResultWriter createTupleQueryResultWriter(
+            final String mimeType, final OutputStream os) {
+        final TupleQueryResultWriterRegistry registry = TupleQueryResultWriterRegistry.getInstance();
+        final TupleQueryResultFormat format = registry.getFileFormatForMIMEType(mimeType)
+                .map(f -> (TupleQueryResultFormat) f)
+                .orElseThrow(() -> new IllegalStateException(
+                        "No tuple result writer registered for MIME type: " + mimeType));
+
+        return registry.get(format)
+                .orElseThrow(() -> new IllegalStateException(
+                        "No tuple result writer registered for MIME type: " + mimeType))
+                .getWriter(os);
+    }
     
     private static class MyXMLWriter extends XMLWriter {
 
